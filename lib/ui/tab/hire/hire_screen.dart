@@ -129,7 +129,7 @@ class _HireScreenState extends State<HireScreen> {
                           cursorColor: Colors.blue,
                           focusNode: focus,
                           clearButtonMode: OverlayVisibilityMode.editing,
-                          placeholder: " Qidirish",
+                          placeholder: "search".tr(),
                           decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(12),
                             color: CupertinoColors.systemGrey6,
