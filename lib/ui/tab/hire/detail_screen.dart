@@ -1,0 +1,36 @@
+import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
+import 'package:ish_top/data/models/hire_model.dart';
+
+class DetailScreen extends StatelessWidget {
+  const DetailScreen({super.key, required this.hireModel});
+
+  final HireModel hireModel;
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      backgroundColor: CupertinoColors.systemGrey5,
+      appBar: AppBar(
+        backgroundColor: Colors.transparent,
+        title: const Text(
+          "Ish haqida",
+          style: TextStyle(color: Colors.black, shadows: [
+            Shadow(color: Colors.white, blurRadius: 10),
+          ]),
+        ),
+      ),
+      body: Center(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Text(hireModel.title),
+            Text(hireModel.description),
+            Text(hireModel.number),
+          ],
+        ),
+      ),
+    );
+  }
+}

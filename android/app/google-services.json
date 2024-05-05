@@ -1,0 +1,46 @@
+{
+  "project_info": {
+    "project_number": "1065279699955",
+    "project_id": "find-work-e1c7a",
+    "storage_bucket": "find-work-e1c7a.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1065279699955:android:f10d5c4308046324433086",
+        "android_client_info": {
+          "package_name": "com.example.ish_top"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1065279699955-acd18gg7qe574o7tee124m8fdp36ujdq.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCGkGfblS0fd3JSa8ojJ4XEUaTNT-3lfiA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1065279699955-acd18gg7qe574o7tee124m8fdp36ujdq.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "1065279699955-qgnn30c4r6puro5846f3fp213onf503g.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.ishTop"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
