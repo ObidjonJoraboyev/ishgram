@@ -3,6 +3,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_svg/flutter_svg.dart';
+import 'package:ish_top/data/local/local_storage.dart';
 import 'package:ish_top/ui/auth/auth_screen.dart';
 
 import '../../../blocs/auth/auth_bloc.dart';
@@ -57,19 +59,19 @@ class _RegisterScreenState extends State<RegisterScreen> {
                   key: formKey,
                   child: Column(
                     children: [
-                      // 60.getH(),
-                      Image.asset(
-                        AppImages.registerImage,
-                        height: 250.h,
-                        width: 225.w,
-                        fit: BoxFit.cover,
+                      60.getH(),
+                      SvgPicture.asset(
+                        AppImages.signUp,
+                        height: 180.h,
+                        width: 180.w,
+                        fit: BoxFit.fill,
                       ),
                       16.getH(),
                       Center(
                         child: Text(
-                          "Sign Up",
+                          "Ro'yxatdan o'tish",
                           style: TextStyle(
-                            color: AppColors.white,
+                            color: CupertinoColors.black.withOpacity(.6),
                             fontSize: 22.w,
                             fontWeight: FontWeight.w600,
                           ),
@@ -77,30 +79,46 @@ class _RegisterScreenState extends State<RegisterScreen> {
                       ),
                       16.getH(),
                       UniversalTextInput(
+                        onTap: (s) {
+                          setState(() {
+                            checkInput();
+                          });
+                        },
                         controller: firstNameController,
                         hintText: "Ism",
                         type: TextInputType.text,
                         regExp: AppConstants.textRegExp,
-                        errorTitle: 'First Name',
+                        errorTitle: "Ism noto'g'ri kiritilgan",
                         iconPath: const Icon(CupertinoIcons.star_fill),
                       ),
                       16.getH(),
                       UniversalTextInput(
+                        onTap: (s) {
+                          setState(() {
+                            checkInput();
+                          });
+                        },
                         controller: lastNameController,
                         hintText: "Familiya",
                         type: TextInputType.text,
                         regExp: AppConstants.textRegExp,
-                        errorTitle: 'Last Name',
+                        errorTitle: "Familiya noto'g'ri kiritilgan",
                         iconPath: const Icon(CupertinoIcons.star_lefthalf_fill),
                       ),
                       16.getH(),
                       UniversalTextInput(
+                        onTap: (s) {
+                          setState(() {
+                            checkInput();
+                          });
+                        },
                         controller: phoneController,
-                        hintText: "Telefon Raqam",
+                        hintText: "+998",
                         type: TextInputType.number,
                         regExp: AppConstants.phoneRegExp,
-                        errorTitle: 'Phone Number',
+                        errorTitle: "Raqam noto'g'ri kiritilgan",
                         iconPath: const Icon(CupertinoIcons.phone),
+                        isNumber: true,
                       ),
                       16.getH(),
                       PasswordTextInput(
@@ -127,12 +145,13 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                   ),
                                 ),
                               );
+                          StorageRepository.setBool(
+                              key: "isLogin", value: true);
                         },
                         isLoading: state.formStatus == FormStatus.loading,
-                        active: checkInput,
+                        active: checkInput(),
                       ),
                       13.getH(),
-
                       19.getH(),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.center,
@@ -199,9 +218,11 @@ class _RegisterScreenState extends State<RegisterScreen> {
     );
   }
 
-  bool get checkInput {
+  bool checkInput() {
     return AppConstants.textRegExp.hasMatch(firstNameController.text) &&
-        AppConstants.passwordRegExp.hasMatch(passwordController.text);
+        AppConstants.textRegExp.hasMatch(lastNameController.text) &&
+        AppConstants.passwordRegExp.hasMatch(passwordController.text) &&
+        AppConstants.phoneRegExp.hasMatch(phoneController.text);
   }
 
   @override

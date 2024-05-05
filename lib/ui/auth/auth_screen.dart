@@ -2,8 +2,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_svg/flutter_svg.dart';
-import 'package:flutter_svg/svg.dart';
 import 'package:ish_top/ui/auth/register/register_screen.dart';
 
 import '../../blocs/auth/auth_bloc.dart';
@@ -73,10 +71,6 @@ class _AuthScreenState extends State<AuthScreen>
                 children: [
                   const SizedBox(
                     height: 10,
-                  ),
-                  SvgPicture.asset(
-                    "assets/icons/bank.svg",
-                    width: 200,
                   ),
                   const SizedBox(
                     height: 5,
@@ -151,7 +145,7 @@ class _AuthScreenState extends State<AuthScreen>
                       const Text("Akkountingiz yo'qmi?"),
                       TextButton(
                         onPressed: () async {
-                          await Navigator.push(
+                          await Navigator.pushReplacement(
                               context,
                               MaterialPageRoute(
                                   builder: (context) =>

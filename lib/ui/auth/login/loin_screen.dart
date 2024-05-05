@@ -77,6 +77,7 @@ class _LoginScreenState extends State<LoginScreen> {
                               ),
                               16.getH(),
                               UniversalTextInput(
+                                onTap: (v) {},
                                 controller: emailController,
                                 hintText: "Email",
                                 type: TextInputType.text,

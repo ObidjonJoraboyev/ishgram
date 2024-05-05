@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:ish_top/utils/size/size_utils.dart';
 
@@ -22,8 +23,9 @@ class LoginButtonItems extends StatelessWidget {
           vertical: 18.h,
           horizontal: 80.w,
         ),
-        backgroundColor:
-            active ? AppColors.c_262626 : AppColors.c_262626.withOpacity(.5),
+        backgroundColor: active
+            ? CupertinoColors.activeBlue
+            : AppColors.c_262626.withOpacity(.5),
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(30),
         ),
@@ -33,10 +35,10 @@ class LoginButtonItems extends StatelessWidget {
         child: isLoading
             ? const CircularProgressIndicator.adaptive()
             : Text(
-                "LOGIN",
+                "REGISTER",
                 style: TextStyle(
                   color: AppColors.white,
-                  fontSize: 13.w,
+                  fontSize: 16.w,
                   fontWeight: FontWeight.w600,
                 ),
               ),

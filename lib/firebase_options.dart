@@ -51,7 +51,7 @@ class DefaultFirebaseOptions {
 
   static const FirebaseOptions android = FirebaseOptions(
     projectId: 'find-work-e1c7a',
-    apiKey: 'YOUR_API_KEY',
+    apiKey: 'AIzaSyBuYj7vWRNV9urCtg3TZFaWoXthcp-owV8',
     appId: '1:1065279699955:android:f10d5c4308046324433086',
     storageBucket: 'find-work-e1c7a.appspot.com',
     messagingSenderId: '1065279699955',
@@ -59,7 +59,7 @@ class DefaultFirebaseOptions {
 
   static const FirebaseOptions ios = FirebaseOptions(
     projectId: 'find-work-e1c7a',
-    iosBundleId: "ishTop",
+    iosBundleId: "com.example.ishTop",
     apiKey: 'AIzaSyBuYj7vWRNV9urCtg3TZFaWoXthcp-owV8',
     appId: '1:1065279699955:ios:7b5a73e85b5578bc433086',
     messagingSenderId: '1065279699955',

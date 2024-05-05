@@ -21,7 +21,7 @@ class _PasswordTextInputState extends State<PasswordTextInput> {
       autovalidateMode: AutovalidateMode.onUserInteraction,
       child: TextFormField(
         style: TextStyle(
-          color: AppColors.white.withOpacity(.8),
+          color: AppColors.black,
           fontSize: 13.w,
           fontWeight: FontWeight.w400,
         ),
