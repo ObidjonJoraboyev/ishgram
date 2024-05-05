@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -18,7 +19,7 @@ class _TabScreenState extends State<TabScreen> {
     const HireScreen(),
     const HistoryScreen(),
     const FeedbackScreen(),
-    ProfileScreen()
+    const ProfileScreen()
   ];
 
   int activeIndex = 0;
@@ -38,21 +39,21 @@ class _TabScreenState extends State<TabScreen> {
           activeIndex = v;
           setState(() {});
         },
-        items: const [
+        items: [
           BottomNavigationBarItem(
-            label: "E'lonlar",
+            label: "hires".tr(),
             icon: Icon(CupertinoIcons.house_fill),
           ),
           BottomNavigationBarItem(
-            label: "Tarix",
+            label: "history".tr(),
             icon: Icon(Icons.history),
           ),
           BottomNavigationBarItem(
-            label: "Fikr",
+            label: "feedback".tr(),
             icon: Icon(CupertinoIcons.chat_bubble_2_fill),
           ),
           BottomNavigationBarItem(
-            label: "Profile",
+            label: "profile".tr(),
             icon: Icon(CupertinoIcons.profile_circled),
           ),
         ],

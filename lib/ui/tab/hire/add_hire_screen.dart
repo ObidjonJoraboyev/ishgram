@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:ish_top/blocs/hire_bloc/hire_bloc.dart';
@@ -16,7 +17,7 @@ class AddHireScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Elon qo'shish"),
+        title: Text("add_hire".tr()),
       ),
       body: Column(
         children: [
@@ -33,10 +34,10 @@ class AddHireScreen extends StatelessWidget {
               cursorWidth: 3,
               decoration: InputDecoration(
                 hintStyle: TextStyle(color: Colors.white.withOpacity(.6)),
-                prefixIcon: const Padding(
+                prefixIcon: Padding(
                   padding: EdgeInsets.only(left: 16, top: 10, bottom: 10),
                   child: Text(
-                    "Ish Nomi ",
+                    "work_name".tr(),
                     style: TextStyle(
                         shadows: [Shadow(blurRadius: 0.5)],
                         color: Colors.white,
@@ -71,10 +72,10 @@ class AddHireScreen extends StatelessWidget {
               cursorWidth: 3,
               decoration: InputDecoration(
                 hintStyle: TextStyle(color: Colors.white.withOpacity(.6)),
-                prefixIcon: const Padding(
+                prefixIcon: Padding(
                   padding: EdgeInsets.only(left: 16, top: 10, bottom: 10),
                   child: Text(
-                    "Ish Haqida ",
+                    "about_work".tr(),
                     style: TextStyle(
                         shadows: [Shadow(blurRadius: 0.5)],
                         color: Colors.white,
@@ -109,10 +110,10 @@ class AddHireScreen extends StatelessWidget {
               cursorWidth: 3,
               decoration: InputDecoration(
                 hintStyle: TextStyle(color: Colors.white.withOpacity(.6)),
-                prefixIcon: const Padding(
+                prefixIcon: Padding(
                   padding: EdgeInsets.only(left: 16, top: 10, bottom: 10),
                   child: Text(
-                    "Mas'ul shaxs ",
+                    "your_name".tr(),
                     style: TextStyle(
                         shadows: [Shadow(blurRadius: 0.5)],
                         color: Colors.white,
@@ -147,10 +148,10 @@ class AddHireScreen extends StatelessWidget {
               cursorWidth: 3,
               decoration: InputDecoration(
                 hintStyle: TextStyle(color: Colors.white.withOpacity(.6)),
-                prefixIcon: const Padding(
+                prefixIcon: Padding(
                   padding: EdgeInsets.only(left: 16, top: 10, bottom: 10),
                   child: Text(
-                    "Telefon raqami ",
+                    "phone_number".tr(),
                     style: TextStyle(
                         shadows: [Shadow(blurRadius: 0.5)],
                         color: Colors.white,
@@ -190,7 +191,7 @@ class AddHireScreen extends StatelessWidget {
                         category: WorkCategory.easy)));
                 Navigator.pop(context);
               },
-              child: const Text("Qo'shish"))
+              child: Text("add".tr()))
         ],
       ),
     );

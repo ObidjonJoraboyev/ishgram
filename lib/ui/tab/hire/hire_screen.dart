@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -30,7 +31,7 @@ class _HireScreenState extends State<HireScreen> {
       backgroundColor: CupertinoColors.systemGrey5,
       appBar: AppBar(
         backgroundColor: CupertinoColors.systemGrey5,
-        title: const Text("Elonlar"),
+        title:  Text("hires".tr()),
         centerTitle: false,
         actions: [
           IconButton(
@@ -79,7 +80,7 @@ class _HireScreenState extends State<HireScreen> {
                     )
                   : Navigator.push(
                       context,
-                      CupertinoPageRoute(
+                      MaterialPageRoute(
                           builder: (context) => AddHireScreen()));
             },
             icon: const Icon(CupertinoIcons.add),
