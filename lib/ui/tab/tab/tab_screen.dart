@@ -42,19 +42,19 @@ class _TabScreenState extends State<TabScreen> {
         items: [
           BottomNavigationBarItem(
             label: "hires".tr(),
-            icon: Icon(CupertinoIcons.house_fill),
+            icon: const Icon(CupertinoIcons.house_fill),
           ),
           BottomNavigationBarItem(
             label: "history".tr(),
-            icon: Icon(Icons.history),
+            icon: const Icon(Icons.history),
           ),
           BottomNavigationBarItem(
             label: "feedback".tr(),
-            icon: Icon(CupertinoIcons.chat_bubble_2_fill),
+            icon: const Icon(CupertinoIcons.chat_bubble_2_fill),
           ),
           BottomNavigationBarItem(
             label: "profile".tr(),
-            icon: Icon(CupertinoIcons.profile_circled),
+            icon: const Icon(CupertinoIcons.profile_circled),
           ),
         ],
       ),

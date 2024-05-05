@@ -24,7 +24,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
           backgroundColor: CupertinoColors.systemGrey5,
           elevation: 0,
           scrolledUnderElevation: 0,
-          title: Text("profile").tr(),
+          title: const Text("profile").tr(),
         ),
         body: Column(
           children: [

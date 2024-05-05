@@ -35,10 +35,10 @@ class AddHireScreen extends StatelessWidget {
               decoration: InputDecoration(
                 hintStyle: TextStyle(color: Colors.white.withOpacity(.6)),
                 prefixIcon: Padding(
-                  padding: EdgeInsets.only(left: 16, top: 10, bottom: 10),
+                  padding: const EdgeInsets.only(left: 16, top: 10, bottom: 10),
                   child: Text(
                     "work_name".tr(),
-                    style: TextStyle(
+                    style: const TextStyle(
                         shadows: [Shadow(blurRadius: 0.5)],
                         color: Colors.white,
                         fontWeight: FontWeight.w700,
@@ -73,10 +73,10 @@ class AddHireScreen extends StatelessWidget {
               decoration: InputDecoration(
                 hintStyle: TextStyle(color: Colors.white.withOpacity(.6)),
                 prefixIcon: Padding(
-                  padding: EdgeInsets.only(left: 16, top: 10, bottom: 10),
+                  padding: const EdgeInsets.only(left: 16, top: 10, bottom: 10),
                   child: Text(
                     "about_work".tr(),
-                    style: TextStyle(
+                    style: const TextStyle(
                         shadows: [Shadow(blurRadius: 0.5)],
                         color: Colors.white,
                         fontWeight: FontWeight.w700,
@@ -111,10 +111,10 @@ class AddHireScreen extends StatelessWidget {
               decoration: InputDecoration(
                 hintStyle: TextStyle(color: Colors.white.withOpacity(.6)),
                 prefixIcon: Padding(
-                  padding: EdgeInsets.only(left: 16, top: 10, bottom: 10),
+                  padding: const EdgeInsets.only(left: 16, top: 10, bottom: 10),
                   child: Text(
                     "your_name".tr(),
-                    style: TextStyle(
+                    style: const TextStyle(
                         shadows: [Shadow(blurRadius: 0.5)],
                         color: Colors.white,
                         fontWeight: FontWeight.w700,
@@ -149,10 +149,10 @@ class AddHireScreen extends StatelessWidget {
               decoration: InputDecoration(
                 hintStyle: TextStyle(color: Colors.white.withOpacity(.6)),
                 prefixIcon: Padding(
-                  padding: EdgeInsets.only(left: 16, top: 10, bottom: 10),
+                  padding: const EdgeInsets.only(left: 16, top: 10, bottom: 10),
                   child: Text(
                     "phone_number".tr(),
-                    style: TextStyle(
+                    style: const TextStyle(
                         shadows: [Shadow(blurRadius: 0.5)],
                         color: Colors.white,
                         fontWeight: FontWeight.w700,
