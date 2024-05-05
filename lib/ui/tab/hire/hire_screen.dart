@@ -1,8 +1,8 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:ish_top/blocs/hire_bloc/hire_state.dart';
-import 'package:ish_top/data/local/local_storage.dart';
 import 'package:ish_top/data/models/hire_model.dart';
 import 'package:ish_top/ui/auth/auth_screen.dart';
 import 'package:ish_top/ui/tab/hire/add_hire_screen.dart';
@@ -22,6 +22,8 @@ class _HireScreenState extends State<HireScreen> {
   final TextEditingController controller = TextEditingController();
   String text = "";
 
+  final user = FirebaseAuth.instance.currentUser;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -33,7 +35,7 @@ class _HireScreenState extends State<HireScreen> {
         actions: [
           IconButton(
             onPressed: () async {
-              !StorageRepository.getBool(key: "isLogin")
+              user == null
                   ? showDialog(
                       context: context,
                       builder: (context) => CupertinoAlertDialog(
