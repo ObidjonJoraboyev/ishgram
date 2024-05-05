@@ -14,10 +14,10 @@ class TabScreen extends StatefulWidget {
 }
 
 class _TabScreenState extends State<TabScreen> {
-  final List<Widget> screens = const [
-    HireScreen(),
-    HistoryScreen(),
-    FeedbackScreen(),
+  final List<Widget> screens = [
+    const HireScreen(),
+    const HistoryScreen(),
+    const FeedbackScreen(),
     ProfileScreen()
   ];
 

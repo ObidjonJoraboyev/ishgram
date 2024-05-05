@@ -11,6 +11,7 @@ class AppImages {
   static const String transfer = "assets/icons/transfer.svg";
   static const String bill = "assets/icons/bill.svg";
   static const String signUp = "assets/icons/sign_up.svg";
+  static const String login = "assets/icons/login.svg";
   static const String sent = "assets/icons/sent.svg";
   static const String voucher = "assets/icons/vaucher.svg";
   static const String shopping = "assets/icons/shopping.svg";

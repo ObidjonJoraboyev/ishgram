@@ -7,6 +7,7 @@ import '../../../utils/colors/app_colors.dart';
 class LoginButtonItems extends StatelessWidget {
   const LoginButtonItems(
       {super.key,
+      this.title = "",
       required this.onTap,
       required this.isLoading,
       required this.active});
@@ -14,6 +15,7 @@ class LoginButtonItems extends StatelessWidget {
   final VoidCallback onTap;
   final bool isLoading;
   final bool active;
+  final String title;
 
   @override
   Widget build(BuildContext context) {
@@ -35,7 +37,7 @@ class LoginButtonItems extends StatelessWidget {
         child: isLoading
             ? const CircularProgressIndicator.adaptive()
             : Text(
-                "REGISTER",
+                title.isEmpty ? "REGISTER" : title,
                 style: TextStyle(
                   color: AppColors.white,
                   fontSize: 16.w,

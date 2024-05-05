@@ -88,6 +88,7 @@ class _LoginScreenState extends State<LoginScreen> {
                               ),
                               16.getH(),
                               PasswordTextInput(
+                                onChanged: (c) {},
                                 controller: passwordController,
                               ),
                               35.getH(),

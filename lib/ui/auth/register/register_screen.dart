@@ -122,6 +122,11 @@ class _RegisterScreenState extends State<RegisterScreen> {
                       ),
                       16.getH(),
                       PasswordTextInput(
+                        onChanged: (v) {
+                          setState(() {
+                            checkInput();
+                          });
+                        },
                         controller: passwordController,
                       ),
                       35.getH(),
@@ -160,7 +165,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
                             "Hisobingiz bormi?",
                             style: TextStyle(
                               color: AppColors.black.withOpacity(.8),
-                              fontSize: 12.w,
+                              letterSpacing: 0.7,
+                              fontSize: 16,
                               fontWeight: FontWeight.w400,
                             ),
                           ),
@@ -178,9 +184,9 @@ class _RegisterScreenState extends State<RegisterScreen> {
                             child: const Text(
                               "Login qilish",
                               style: TextStyle(
-                                color: CupertinoColors.activeBlue,
-                                fontWeight: FontWeight.w400,
-                              ),
+                                  color: CupertinoColors.activeBlue,
+                                  fontWeight: FontWeight.w500,
+                                  fontSize: 18),
                             ),
                           ),
                         ],
@@ -191,7 +197,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
               ),
             );
           },
-          listener: (BuildContext context, AuthState state) {
+          listener: (BuildContext context, AuthState state) async {
             if (state.formStatus == FormStatus.authenticated) {
               if (state.statusMessage == "registered") {
                 context.read<UserProfileBloc>().add(
@@ -205,6 +211,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
                   uid: FirebaseAuth.instance.currentUser!.uid,
                 ),
               );
+              await StorageRepository.setBool(key: "isLogin", value: true);
+              if (!context.mounted) return;
               Navigator.pushReplacement(
                 context,
                 MaterialPageRoute(

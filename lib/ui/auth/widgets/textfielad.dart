@@ -1,13 +1,16 @@
 import 'package:flutter/material.dart';
+import 'package:ish_top/utils/constants/app_constants.dart';
 import 'package:ish_top/utils/size/size_utils.dart';
 
 import '../../../utils/colors/app_colors.dart';
 
 class PasswordTextInput extends StatefulWidget {
-  const PasswordTextInput({super.key, required this.controller});
+  const PasswordTextInput(
+      {super.key, required this.controller, required this.onChanged});
 
   final TextEditingController controller;
 
+  final ValueChanged onChanged;
   @override
   State<PasswordTextInput> createState() => _PasswordTextInputState();
 }
@@ -20,6 +23,7 @@ class _PasswordTextInputState extends State<PasswordTextInput> {
     return Form(
       autovalidateMode: AutovalidateMode.onUserInteraction,
       child: TextFormField(
+        onChanged: widget.onChanged,
         style: TextStyle(
           color: AppColors.black,
           fontSize: 13.w,
@@ -31,7 +35,7 @@ class _PasswordTextInputState extends State<PasswordTextInput> {
           if (value == null ||
               value.isEmpty ||
               value.length < 3 ||
-              !RegExp(r'^.{6,}$').hasMatch(value)) {
+              !AppConstants.passwordRegExp.hasMatch(value)) {
             return "Kamida 5 ta belgi bo'lishi kerak.";
           }
           return null;
