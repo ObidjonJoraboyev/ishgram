@@ -5,12 +5,13 @@ import 'package:ish_top/utils/size/size_utils.dart';
 import '../../../utils/colors/app_colors.dart';
 
 class LoginButtonItems extends StatelessWidget {
-  const LoginButtonItems(
-      {super.key,
-      this.title = "",
-      required this.onTap,
-      required this.isLoading,
-      required this.active});
+  const LoginButtonItems({
+    super.key,
+    this.title = "",
+    required this.onTap,
+    required this.isLoading,
+    required this.active,
+  });
 
   final VoidCallback onTap;
   final bool isLoading;
