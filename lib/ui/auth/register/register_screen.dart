@@ -213,12 +213,10 @@ class _RegisterScreenState extends State<RegisterScreen> {
               );
               await StorageRepository.setBool(key: "isLogin", value: true);
               if (!context.mounted) return;
-              Navigator.pushReplacement(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => const TabScreen(),
-                ),
-              );
+              Navigator.pushAndRemoveUntil(
+                  context,
+                  MaterialPageRoute(builder: (context) => const TabScreen()),
+                  (route) => false);
             }
           },
         ),

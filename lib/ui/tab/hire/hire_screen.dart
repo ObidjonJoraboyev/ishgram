@@ -31,7 +31,7 @@ class _HireScreenState extends State<HireScreen> {
       backgroundColor: CupertinoColors.systemGrey5,
       appBar: AppBar(
         backgroundColor: CupertinoColors.systemGrey5,
-        title:  Text("hires".tr()),
+        title: Text("hires".tr()),
         centerTitle: false,
         actions: [
           IconButton(
@@ -78,10 +78,8 @@ class _HireScreenState extends State<HireScreen> {
                         ),
                       ),
                     )
-                  : Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => AddHireScreen()));
+                  : Navigator.push(context,
+                      MaterialPageRoute(builder: (context) => AddHireScreen()));
             },
             icon: const Icon(CupertinoIcons.add),
           )
@@ -140,9 +138,9 @@ class _HireScreenState extends State<HireScreen> {
                   ),
                   focus.hasFocus
                       ? CupertinoTextSelectionToolbarButton(
-                          child: const Text(
-                            "Cancel",
-                            style: TextStyle(color: Colors.blue),
+                          child: Text(
+                            "cancel".tr(),
+                            style: const TextStyle(color: Colors.blue),
                           ),
                           onPressed: () {
                             text = "";

@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -89,7 +90,7 @@ class _AuthScreenState extends State<AuthScreen>
                   ),
                   Center(
                     child: Text(
-                      "Hisobga kirish",
+                      "login".tr(),
                       style: TextStyle(
                         color: CupertinoColors.black.withOpacity(.6),
                         fontSize: 22.w,
@@ -109,10 +110,10 @@ class _AuthScreenState extends State<AuthScreen>
                         });
                       },
                       controller: emailController,
-                      hintText: "Ism",
+                      hintText: "name".tr(),
                       type: TextInputType.text,
                       regExp: AppConstants.textRegExp,
-                      errorTitle: "Ism noto'g'ri kiritilgan",
+                      errorTitle: "error_name".tr(),
                       iconPath: const Icon(CupertinoIcons.star_fill),
                     ),
                   ),
@@ -128,9 +129,9 @@ class _AuthScreenState extends State<AuthScreen>
                         });
                       },
                       controller: passwordController,
-                      hintText: "Password",
+                      hintText: "password".tr(),
                       type: TextInputType.text,
-                      regExp: AppConstants.textRegExp,
+                      regExp: AppConstants.passwordRegExp,
                       errorTitle: "Password noto'g'ri kiritilgan",
                       iconPath: const Icon(CupertinoIcons.padlock_solid),
                     ),
@@ -144,8 +145,9 @@ class _AuthScreenState extends State<AuthScreen>
                   Padding(
                     padding: EdgeInsets.symmetric(horizontal: 44.w),
                     child: LoginButtonItems(
-                      title:
-                          animationController.isAnimating ? "LOGGING" : "LOGIN",
+                      title: animationController.isAnimating
+                          ? "login_button".tr()
+                          : "login_button".tr(),
                       onTap: () {
                         animationController.repeat(reverse: true);
                         context.read<AuthBloc>().add(
@@ -169,12 +171,12 @@ class _AuthScreenState extends State<AuthScreen>
                     mainAxisAlignment: MainAxisAlignment.center,
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
-                      const Text(
-                        "Akkountingiz yo'qmi?",
-                        style: TextStyle(
+                      Text(
+                        "no_account".tr(),
+                        style: const TextStyle(
                             color: Colors.black,
                             fontSize: 16,
-                            letterSpacing: 0.7),
+                            letterSpacing: 0),
                       ),
                       TextButton(
                         onPressed: () async {
@@ -184,10 +186,10 @@ class _AuthScreenState extends State<AuthScreen>
                                   builder: (context) =>
                                       const RegisterScreen()));
                         },
-                        child: const Text(
-                          "Ro'yxatdan o'tish",
-                          style: TextStyle(
-                              color: CupertinoColors.activeBlue, fontSize: 18),
+                        child: Text(
+                          "no_acc_register".tr(),
+                          style: const TextStyle(
+                              color: CupertinoColors.activeBlue, fontSize: 17),
                         ),
                       ),
                     ],
@@ -201,8 +203,10 @@ class _AuthScreenState extends State<AuthScreen>
           if (state.formStatus == FormStatus.authenticated) {
             await StorageRepository.setBool(key: "isLogin", value: true);
             if (!context.mounted) return;
-            Navigator.pushReplacement(context,
-                MaterialPageRoute(builder: (context) => const TabScreen()));
+            Navigator.pushAndRemoveUntil(
+                context,
+                MaterialPageRoute(builder: (context) => const TabScreen()),
+                (route) => false);
           } else {
             animationController.stop();
           }

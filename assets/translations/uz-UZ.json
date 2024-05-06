@@ -9,5 +9,17 @@
   "your_name": "Mas'ul shaxs",
   "phone_number": "Telefon raqami",
   "add": "Qo'shish",
-  "search": "Qidirish"
+  "search": "Qidirish",
+  "language": "Uzbek tili",
+  "cancel": "Orqaga",
+  "error_name": "Ism noto'g'ri kiritilgan",
+  "name": "Ism",
+  "login": "Hisobga kirish",
+  "password": "Parol",
+  "no_account": "Akkountingiz yo'qmi?",
+  "no_acc_register": "Ro'yxatdan o'tish",
+  "login_button": "Kirish"
+
+
+
 }

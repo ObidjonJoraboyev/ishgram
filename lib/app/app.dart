@@ -36,7 +36,7 @@ class App extends StatelessWidget {
                 userProfileRepository: context.read<UserProfileRepository>()),
           ),
         ],
-        child:  MaterialApp(
+        child: MaterialApp(
           localizationsDelegates: context.localizationDelegates,
           supportedLocales: context.supportedLocales,
           locale: context.locale,
