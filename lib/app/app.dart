@@ -31,7 +31,8 @@ class App extends StatelessWidget {
           ),
           BlocProvider(
             create: (context) => HireBloc()..add(HireGetEvent()),
-          ), BlocProvider(
+          ),
+          BlocProvider(
             create: (context) => ImageBloc(),
           ),
           BlocProvider(

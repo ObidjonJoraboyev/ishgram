@@ -73,7 +73,6 @@ class HireModel extends Equatable {
       "long": long,
       "number": number,
       "category": category.name,
-
     };
   }
 

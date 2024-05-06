@@ -121,7 +121,7 @@ class _AuthScreenState extends State<AuthScreen>
                     height: 32,
                   ),
                   Padding(
-                    padding:  EdgeInsets.symmetric(horizontal: 44.w),
+                    padding: EdgeInsets.symmetric(horizontal: 44.w),
                     child: PasswordTextInput(
                       onChanged: (v) {
                         setState(() {

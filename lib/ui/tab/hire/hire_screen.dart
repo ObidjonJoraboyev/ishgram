@@ -209,7 +209,7 @@ class _HireScreenState extends State<HireScreen> {
             );
           }
           if (state is HireLoadingState) {
-            return  Center(
+            return Center(
               child: Column(
                 children: [
                   const CircularProgressIndicator.adaptive(),
