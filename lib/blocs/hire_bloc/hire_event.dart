@@ -2,22 +2,22 @@ import 'package:ish_top/data/models/hire_model.dart';
 
 abstract class HireEvent {}
 
-class HireAddEvent extends HireEvent {
+class AnnouncementAddEvent extends HireEvent {
   final HireModel hireModel;
 
-  HireAddEvent({required this.hireModel});
+  AnnouncementAddEvent({required this.hireModel});
 }
 
-class HireUpdateEvent extends HireEvent {
+class AnnouncementUpdateEvent extends HireEvent {
   final HireModel hireModel;
 
-  HireUpdateEvent({required this.hireModel});
+  AnnouncementUpdateEvent({required this.hireModel});
 }
 
-class HireRemoveEvent extends HireEvent {
+class AnnouncementRemoveEvent extends HireEvent {
   final String docId;
 
-  HireRemoveEvent({required this.docId});
+  AnnouncementRemoveEvent({required this.docId});
 }
 
-class HireGetEvent extends HireEvent {}
+class AnnouncementGetEvent extends HireEvent {}

@@ -32,27 +32,10 @@ class _AuthScreenState extends State<AuthScreen>
   TextEditingController nameCtrl = TextEditingController();
 
   bool check = false;
-  late AnimationController animationController;
-  late Animation colorAnimation;
 
-  @override
-  void initState() {
-    animationController =
-        AnimationController(vsync: this, duration: const Duration(seconds: 1));
-
-    colorAnimation =
-        ColorTween(begin: Colors.white, end: Colors.white.withOpacity(.01))
-            .animate(animationController)
-          ..addListener(() {
-            setState(() {});
-          });
-
-    super.initState();
-  }
 
   @override
   void dispose() {
-    animationController.dispose();
     emailController.dispose();
     passwordController.dispose();
     super.dispose();
@@ -140,11 +123,8 @@ class _AuthScreenState extends State<AuthScreen>
                   Padding(
                     padding: EdgeInsets.symmetric(horizontal: 44.w),
                     child: LoginButtonItems(
-                      title: animationController.isAnimating
-                          ? "login_button".tr()
-                          : "login_button".tr(),
+                      title: "login_button".tr(),
                       onTap: () {
-                        animationController.repeat(reverse: true);
                         context.read<AuthBloc>().add(
                               LoginUserEvent(
                                 username: emailController.text,
@@ -201,8 +181,6 @@ class _AuthScreenState extends State<AuthScreen>
                 context,
                 MaterialPageRoute(builder: (context) => const TabScreen()),
                 (route) => false);
-          } else {
-            animationController.stop();
           }
         },
       ),

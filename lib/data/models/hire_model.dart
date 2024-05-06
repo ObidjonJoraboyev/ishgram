@@ -3,7 +3,7 @@ import 'package:equatable/equatable.dart';
 class HireModel extends Equatable {
   final String title;
   final String description;
-  final int money;
+  final String money;
   final String timeInterval;
   final List<String> image;
   final bool isActive;
@@ -13,8 +13,14 @@ class HireModel extends Equatable {
   final WorkCategory category;
   final String docId;
   final String ownerName;
+  final String createdAt;
+  final String updatedAt;
+  final String location;
+  final int countView;
+  final bool isFavourite;
 
   const HireModel({
+    required this.createdAt,
     required this.ownerName,
     required this.title,
     required this.docId,
@@ -27,6 +33,10 @@ class HireModel extends Equatable {
     required this.long,
     required this.number,
     required this.category,
+    required this.updatedAt,
+    required this.location,
+    required this.countView,
+    required this.isFavourite,
   });
 
   HireModel copyWith({
@@ -34,13 +44,18 @@ class HireModel extends Equatable {
     String? ownerName,
     String? docId,
     String? description,
-    int? money,
+    String? money,
     String? timeInterval,
     List<String>? image,
     bool? isActive,
     double? lat,
     double? long,
+    bool? isFavourite,
     String? number,
+    String? location,
+    String? createdAt,
+    String? updatedAt,
+    int? countView,
     WorkCategory? category,
   }) {
     return HireModel(
@@ -56,6 +71,11 @@ class HireModel extends Equatable {
       long: long ?? this.long,
       number: number ?? this.number,
       category: category ?? this.category,
+      isFavourite: isFavourite ?? this.isFavourite,
+      countView: countView ?? this.countView,
+      location: location ?? this.location,
+      createdAt: createdAt ?? this.createdAt,
+      updatedAt: updatedAt ?? this.updatedAt,
     );
   }
 
@@ -73,6 +93,11 @@ class HireModel extends Equatable {
       "long": long,
       "number": number,
       "category": category.name,
+      "isFavourite": isFavourite,
+      "countView": countView,
+      "location": location,
+      "createdAt": createdAt,
+      "updatedAt": updatedAt,
     };
   }
 
@@ -89,6 +114,11 @@ class HireModel extends Equatable {
       "long": long,
       "number": number,
       "category": category.name,
+      "isFavourite": isFavourite,
+      "countView": countView,
+      "location": location,
+      "createdAt": createdAt,
+      "updatedAt": updatedAt,
     };
   }
 
@@ -98,14 +128,21 @@ class HireModel extends Equatable {
       docId: json["doc_id"] as String? ?? "",
       title: json["title"] as String,
       description: json["description"] as String,
-      money: json["money"] as int,
+      money: json["money"] as String? ?? "",
       timeInterval: json["timeInterval"] as String,
       image: json["image"] as List<String>? ?? [],
       isActive: json["isActive"] as bool,
       lat: json["lat"] as double,
       long: json["long"] as double,
       number: json["number"] as String,
-      category: enumFromString(json["category"] as String),
+      location: json["location"] as String,
+      createdAt: json["createdAt"] as String,
+      updatedAt: json["updatedAt"] as String? ?? "",
+      countView: json["countView"] as int? ?? 0,
+      isFavourite: json["isFavourite"] as bool? ?? false,
+      category: enumFromString(
+        json["category"] as String? ?? "",
+      ),
     );
   }
 
@@ -118,7 +155,7 @@ class HireModel extends Equatable {
     ownerName: "",
     title: 'salom',
     description: '',
-    money: 0,
+    money: "",
     timeInterval: '',
     image: [],
     isActive: false,
@@ -127,6 +164,11 @@ class HireModel extends Equatable {
     number: '',
     category: WorkCategory.easy,
     docId: '',
+    createdAt: '',
+    updatedAt: '',
+    location: '',
+    countView: 1,
+    isFavourite: false,
   );
 
   @override

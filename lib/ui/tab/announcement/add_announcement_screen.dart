@@ -193,20 +193,28 @@ class _AddHireScreenState extends State<AddHireScreen> {
           ),
           TextButton(
               onPressed: () async {
-                context.read<HireBloc>().add(HireAddEvent(
-                    hireModel: HireModel(
-                        ownerName: ownerCtrl.text,
-                        title: nameCtrl.text,
-                        docId: "",
-                        description: descriptionCtrl.text,
-                        money: 0,
-                        timeInterval: "",
-                        image: const [],
-                        isActive: false,
-                        lat: 1,
-                        long: 0,
-                        number: numberCtrl.text,
-                        category: WorkCategory.easy)));
+                context.read<AnnouncementBloc>().add(
+                      AnnouncementAddEvent(
+                        hireModel: HireModel(
+                            ownerName: ownerCtrl.text,
+                            title: nameCtrl.text,
+                            docId: "",
+                            description: descriptionCtrl.text,
+                            money: "",
+                            timeInterval: "",
+                            image: const [],
+                            isActive: false,
+                            lat: 1,
+                            long: 0,
+                            updatedAt: "",
+                            countView: 1,
+                            createdAt: "",
+                            isFavourite: false,
+                            number: numberCtrl.text,
+                            category: WorkCategory.easy,
+                            location: ''),
+                      ),
+                    );
                 Navigator.pop(context);
               },
               child: Text("add".tr())),

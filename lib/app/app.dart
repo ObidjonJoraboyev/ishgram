@@ -4,7 +4,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:ish_top/blocs/auth/auth_bloc.dart';
 import 'package:ish_top/blocs/hire_bloc/hire_bloc.dart';
 import 'package:ish_top/blocs/hire_bloc/hire_event.dart';
-import 'package:ish_top/blocs/image/image_bloc.dart';
 import 'package:ish_top/blocs/user_profile/user_profile_bloc.dart';
 import 'package:ish_top/data/repository/auth_repo.dart';
 import 'package:ish_top/data/repository/user_profile_repo.dart';
@@ -30,11 +29,9 @@ class App extends StatelessWidget {
                   ..add(CheckAuthenticationEvent()),
           ),
           BlocProvider(
-            create: (context) => HireBloc()..add(HireGetEvent()),
+            create: (context) => AnnouncementBloc()..add(AnnouncementGetEvent()),
           ),
-          BlocProvider(
-            create: (context) => ImageBloc(),
-          ),
+
           BlocProvider(
             create: (context) => UserProfileBloc(
                 userProfileRepository: context.read<UserProfileRepository>()),

@@ -1,13 +1,13 @@
 import '../../data/models/hire_model.dart';
 
-abstract class HireState {}
+abstract class AnnouncementState {}
 
-class HireInitial extends HireState {}
+class AnnouncementInitial extends AnnouncementState {}
 
-class HireGetState extends HireState {
+class AnnouncementGetState extends AnnouncementState {
   final List<HireModel> hires;
 
-  HireGetState({required this.hires});
+  AnnouncementGetState({required this.hires});
 }
 
-class HireLoadingState extends HireState {}
+class AnnouncementLoadingState extends AnnouncementState {}

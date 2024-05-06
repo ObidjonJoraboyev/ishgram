@@ -6,10 +6,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:ish_top/blocs/hire_bloc/hire_event.dart';
 import 'package:ish_top/blocs/hire_bloc/hire_state.dart';
 import 'package:ish_top/data/models/hire_model.dart';
-import 'package:ish_top/ui/auth/auth_screen.dart';
-import 'package:ish_top/ui/tab/hire/add_hire_screen.dart';
-import 'package:ish_top/ui/tab/hire/detail_screen.dart';
 import '../../../blocs/hire_bloc/hire_bloc.dart';
+import 'detail_screen.dart';
 
 class HireScreen extends StatefulWidget {
   const HireScreen({super.key});
@@ -33,62 +31,7 @@ class _HireScreenState extends State<HireScreen> {
         backgroundColor: CupertinoColors.systemGrey5,
         title: Text("hires".tr()),
         centerTitle: false,
-        actions: [
-          IconButton(
-            onPressed: () async {
-              user == null
-                  ? showDialog(
-                      context: context,
-                      builder: (context) => CupertinoAlertDialog(
-                        title: const Text("Login"),
-                        actions: [
-                          CupertinoDialogAction(
-                            child: const Text(
-                              'Orqaga',
-                              style: TextStyle(
-                                  fontSize: 18,
-                                  fontWeight: FontWeight.w400,
-                                  color: CupertinoColors.activeBlue),
-                            ),
-                            onPressed: () {
-                              Navigator.of(context).pop(); // Close the dialog
-                            },
-                          ),
-                          CupertinoDialogAction(
-                            child: const Text(
-                              'Login',
-                              style: TextStyle(
-                                  fontSize: 18,
-                                  fontWeight: FontWeight.w600,
-                                  color: CupertinoColors.activeBlue),
-                            ),
-                            onPressed: () {
-                              Navigator.of(context).pop();
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (context) => const AuthScreen(),
-                                ),
-                              );
-                            },
-                          ),
-                        ],
-                        content: const Text(
-                          "Siz e'lon qo'shish uchun login qilmagansiz.",
-                          style: TextStyle(fontSize: 16),
-                        ),
-                      ),
-                    )
-                  : Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => const AddHireScreen(),
-                      ),
-                    );
-            },
-            icon: const Icon(CupertinoIcons.add),
-          )
-        ],
+
         bottom: PreferredSize(
           preferredSize: const Size(double.infinity, 50),
           child: Column(
@@ -161,10 +104,10 @@ class _HireScreenState extends State<HireScreen> {
           ),
         ),
       ),
-      body: BlocBuilder<HireBloc, HireState>(
-        builder: (BuildContext context, HireState state) {
-          context.read<HireBloc>().add(HireGetEvent());
-          if (state is HireGetState) {
+      body: BlocBuilder<AnnouncementBloc, AnnouncementState>(
+        builder: (BuildContext context, AnnouncementState state) {
+          context.read<AnnouncementBloc>().add(AnnouncementGetEvent());
+          if (state is AnnouncementGetState) {
             List<HireModel> hires = state.hires
                 .where((element) =>
                     element.title.toLowerCase().contains(text.toLowerCase()))
@@ -208,14 +151,14 @@ class _HireScreenState extends State<HireScreen> {
               ],
             );
           }
-          if (state is HireLoadingState) {
+          if (state is AnnouncementLoadingState) {
             return Center(
               child: Column(
                 children: [
                   const CircularProgressIndicator.adaptive(),
                   Text(
                     state.runtimeType.toString(),
-                    style: const TextStyle(fontSize: 32, letterSpacing: 4),
+                    style: const TextStyle(fontSize: 25, letterSpacing: 3),
                   ),
                 ],
               ),

@@ -6,15 +6,15 @@ import 'package:ish_top/data/models/hire_model.dart';
 import 'hire_event.dart';
 import 'hire_state.dart';
 
-class HireBloc extends Bloc<HireEvent, HireState> {
-  HireBloc() : super(HireInitial()) {
-    on<HireAddEvent>(addHire);
-    on<HireGetEvent>(getHires);
-    on<HireRemoveEvent>(deleteHires);
+class AnnouncementBloc extends Bloc<HireEvent, AnnouncementState> {
+  AnnouncementBloc() : super(AnnouncementInitial()) {
+    on<AnnouncementAddEvent>(addAnnouncement);
+    on<AnnouncementGetEvent>(getAnnouncements);
+    on<AnnouncementRemoveEvent>(deleteAnnouncements);
   }
 
-  addHire(HireAddEvent event, emit) async {
-    emit(HireLoadingState());
+  addAnnouncement(AnnouncementAddEvent event, emit) async {
+    emit(AnnouncementLoadingState());
 
     try {
       var docId = await FirebaseFirestore.instance
@@ -35,20 +35,20 @@ class HireBloc extends Bloc<HireEvent, HireState> {
       .map((event) =>
           event.docs.map((doc) => HireModel.fromJson(doc.data())).toList());
 
-  getHires(HireGetEvent event, Emitter emit) async {
-    emit(HireLoadingState());
+  getAnnouncements(AnnouncementGetEvent event, Emitter emit) async {
+    emit(AnnouncementLoadingState());
     try {
       await emit.onEach(streamController,
           onData: (List<HireModel> hires) async {
-        emit(HireGetState(hires: hires));
+        emit(AnnouncementGetState(hires: hires));
       }, onError: (c, d) {});
     } catch (error) {
       debugPrint("ERROR CATCH $error");
     }
   }
 
-  deleteHires(HireRemoveEvent event, Emitter emit) async {
-    emit(HireLoadingState());
+  deleteAnnouncements(AnnouncementRemoveEvent event, Emitter emit) async {
+    emit(AnnouncementLoadingState());
     try {
       await FirebaseFirestore.instance
           .collection("hires")

@@ -1,9 +1,10 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:ish_top/ui/tab/announcement/add_Announcement_screen.dart';
 
+import '../announcement/announcement_screen.dart';
 import '../feedback/feedback_screen.dart';
-import '../hire/hire_screen.dart';
 import '../profile/profile_screen.dart';
 
 class TabScreen extends StatefulWidget {
@@ -18,8 +19,9 @@ class TabScreen extends StatefulWidget {
 class _TabScreenState extends State<TabScreen> {
   final List<Widget> screens = [
     const HireScreen(),
+    const AddHireScreen(),
     const FeedbackScreen(),
-    const ProfileScreen()
+    const ProfileScreen(),
   ];
 
   int activeIndex = 0;
@@ -55,7 +57,10 @@ class _TabScreenState extends State<TabScreen> {
               label: "hires".tr(),
               icon: const Icon(CupertinoIcons.house_fill),
             ),
-            BottomNavigationBarItem(
+            const BottomNavigationBarItem(
+              label: "Elon qo'shish",
+              icon: Icon(CupertinoIcons.plus),
+            ), BottomNavigationBarItem(
               label: "feedback".tr(),
               icon: const Icon(CupertinoIcons.chat_bubble_2_fill),
             ),
