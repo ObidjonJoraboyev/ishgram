@@ -53,7 +53,7 @@ class _PasswordTextInputState extends State<PasswordTextInput> {
               color: Colors.black.withOpacity(.7),
             ),
           ),
-          contentPadding: const EdgeInsets.all(12),
+          contentPadding: const EdgeInsets.all(16),
           hintText: "password".tr(),
           suffixIcon: IconButton(
             onPressed: () {

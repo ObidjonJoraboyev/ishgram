@@ -3,12 +3,12 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:ish_top/blocs/hire_bloc/hire_event.dart';
 import 'package:ish_top/blocs/hire_bloc/hire_state.dart';
 import 'package:ish_top/data/models/hire_model.dart';
 import 'package:ish_top/ui/auth/auth_screen.dart';
 import 'package:ish_top/ui/tab/hire/add_hire_screen.dart';
 import 'package:ish_top/ui/tab/hire/detail_screen.dart';
-
 import '../../../blocs/hire_bloc/hire_bloc.dart';
 
 class HireScreen extends StatefulWidget {
@@ -65,10 +65,11 @@ class _HireScreenState extends State<HireScreen> {
                             onPressed: () {
                               Navigator.of(context).pop();
                               Navigator.push(
-                                  context,
-                                  CupertinoPageRoute(
-                                      builder: (context) =>
-                                          const AuthScreen()));
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => const AuthScreen(),
+                                ),
+                              );
                             },
                           ),
                         ],
@@ -78,8 +79,12 @@ class _HireScreenState extends State<HireScreen> {
                         ),
                       ),
                     )
-                  : Navigator.push(context,
-                      MaterialPageRoute(builder: (context) => AddHireScreen()));
+                  : Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => const AddHireScreen(),
+                      ),
+                    );
             },
             icon: const Icon(CupertinoIcons.add),
           )
@@ -158,6 +163,7 @@ class _HireScreenState extends State<HireScreen> {
       ),
       body: BlocBuilder<HireBloc, HireState>(
         builder: (BuildContext context, HireState state) {
+          context.read<HireBloc>().add(HireGetEvent());
           if (state is HireGetState) {
             List<HireModel> hires = state.hires
                 .where((element) =>
@@ -176,7 +182,7 @@ class _HireScreenState extends State<HireScreen> {
                           onTap: () {
                             Navigator.push(
                               context,
-                              CupertinoPageRoute(
+                              MaterialPageRoute(
                                 builder: (context) => DetailScreen(
                                   hireModel: hires[index],
                                 ),
@@ -203,8 +209,16 @@ class _HireScreenState extends State<HireScreen> {
             );
           }
           if (state is HireLoadingState) {
-            return const Center(
-              child: CircularProgressIndicator.adaptive(),
+            return  Center(
+              child: Column(
+                children: [
+                  const CircularProgressIndicator.adaptive(),
+                  Text(
+                    state.runtimeType.toString(),
+                    style: const TextStyle(fontSize: 32, letterSpacing: 4),
+                  ),
+                ],
+              ),
             );
           }
           return SizedBox(

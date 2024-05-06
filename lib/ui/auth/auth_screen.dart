@@ -4,10 +4,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:ish_top/data/local/local_storage.dart';
 import 'package:ish_top/ui/auth/register/register_screen.dart';
 import 'package:ish_top/ui/auth/widgets/button.dart';
 import 'package:ish_top/ui/auth/widgets/global_textfield.dart';
+import 'package:ish_top/ui/auth/widgets/textfielad.dart';
 import 'package:ish_top/utils/size/size_utils.dart';
 
 import '../../blocs/auth/auth_bloc.dart';
@@ -121,19 +121,14 @@ class _AuthScreenState extends State<AuthScreen>
                     height: 32,
                   ),
                   Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 44.w),
-                    child: UniversalTextInput(
-                      onTap: (s) {
+                    padding:  EdgeInsets.symmetric(horizontal: 44.w),
+                    child: PasswordTextInput(
+                      onChanged: (v) {
                         setState(() {
                           checkInput();
                         });
                       },
                       controller: passwordController,
-                      hintText: "password".tr(),
-                      type: TextInputType.text,
-                      regExp: AppConstants.passwordRegExp,
-                      errorTitle: "error_password".tr(),
-                      iconPath: const Icon(CupertinoIcons.padlock_solid),
                     ),
                   ),
                   const SizedBox(
@@ -201,7 +196,6 @@ class _AuthScreenState extends State<AuthScreen>
         },
         listener: (BuildContext context, AuthState state) async {
           if (state.formStatus == FormStatus.authenticated) {
-            await StorageRepository.setBool(key: "isLogin", value: true);
             if (!context.mounted) return;
             Navigator.pushAndRemoveUntil(
                 context,

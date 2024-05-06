@@ -1,10 +1,8 @@
 import 'dart:async';
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:ish_top/data/models/hire_model.dart';
-
 import 'hire_event.dart';
 import 'hire_state.dart';
 
@@ -34,10 +32,8 @@ class HireBloc extends Bloc<HireEvent, HireState> {
   Stream<List<HireModel>> streamController = FirebaseFirestore.instance
       .collection("hires")
       .snapshots()
-      .map(
-        (event) =>
-            event.docs.map((doc) => HireModel.fromJson(doc.data())).toList(),
-      );
+      .map((event) =>
+          event.docs.map((doc) => HireModel.fromJson(doc.data())).toList());
 
   getHires(HireGetEvent event, Emitter emit) async {
     emit(HireLoadingState());

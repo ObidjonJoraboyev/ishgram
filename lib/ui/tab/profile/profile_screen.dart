@@ -16,7 +16,7 @@ class ProfileScreen extends StatefulWidget {
 class _ProfileScreenState extends State<ProfileScreen> {
   final user = FirebaseAuth.instance.currentUser;
 
-  bool check = true;
+  bool check = !StorageRepository.getBool(key: "language");
 
   @override
   Widget build(BuildContext context) {
@@ -77,7 +77,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       onPressed: () {
                         Navigator.push(
                             context,
-                            CupertinoPageRoute(
+                            MaterialPageRoute(
                                 builder: (context) => const AuthScreen()));
                       },
                       child: const Text("Login")),

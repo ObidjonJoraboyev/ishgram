@@ -1,17 +1,35 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:ish_top/blocs/hire_bloc/hire_bloc.dart';
 import 'package:ish_top/blocs/hire_bloc/hire_event.dart';
+import 'package:ish_top/blocs/image/image_bloc.dart';
+import 'package:ish_top/blocs/image/image_event.dart';
 import 'package:ish_top/data/models/hire_model.dart';
+import 'package:ish_top/utils/size/size_utils.dart';
 
-class AddHireScreen extends StatelessWidget {
-  AddHireScreen({super.key});
+class AddHireScreen extends StatefulWidget {
+  const AddHireScreen({super.key});
 
+  @override
+  State<AddHireScreen> createState() => _AddHireScreenState();
+}
+
+class _AddHireScreenState extends State<AddHireScreen> {
   final TextEditingController nameCtrl = TextEditingController();
+
   final TextEditingController numberCtrl = TextEditingController();
+
   final TextEditingController ownerCtrl = TextEditingController();
+
   final TextEditingController descriptionCtrl = TextEditingController();
+
+  final ImagePicker picker = ImagePicker();
+
+  HireModel hireModel = HireModel.initial;
+  String imageUrl = "";
+  String storagePath = "";
 
   @override
   Widget build(BuildContext context) {
@@ -183,7 +201,7 @@ class AddHireScreen extends StatelessWidget {
                         description: descriptionCtrl.text,
                         money: 0,
                         timeInterval: "",
-                        image: "",
+                        image: const [],
                         isActive: false,
                         lat: 1,
                         long: 0,
@@ -191,9 +209,99 @@ class AddHireScreen extends StatelessWidget {
                         category: WorkCategory.easy)));
                 Navigator.pop(context);
               },
-              child: Text("add".tr()))
+              child: Text("add".tr())),
+          TextButton(
+              onPressed: () async {
+                takeAnImage();
+              },
+              child: const Text("Image"))
         ],
       ),
+    );
+  }
+
+  Future<void> _getImageFromCamera() async {
+    XFile? image = await picker.pickImage(
+      source: ImageSource.camera,
+      maxHeight: 1024,
+      maxWidth: 1024,
+    );
+    if (image != null && context.mounted) {
+      debugPrint("IMAGE PATH:${image.path}");
+      storagePath = "files/images/${image.name}";
+      context.read<ImageBloc>().add(ImageEvent(
+            pickedFile: image,
+            storagePath: storagePath,
+          ));
+      imageUrl = context.read<ImageBloc>().state;
+      // contactModel= contactModel.copyWith(imageUrl: imageUrl);
+
+      debugPrint("DOWNLOAD URL:$imageUrl");
+    }
+  }
+
+  Future<void> _getImageFromGallery() async {
+    List<String> images = [];
+    List<XFile>? image = await picker.pickMultiImage(
+      limit: 4,
+      maxHeight: 1024,
+      maxWidth: 1024,
+    );
+    if (image.isNotEmpty && context.mounted) {
+      for (var i in image) {
+        storagePath = "files/images/${i.name}";
+
+        context.read<ImageBloc>().add(
+              ImageEvent(
+                pickedFile: i,
+                storagePath: storagePath,
+              ),
+            );
+        imageUrl = context.read<ImageBloc>().state;
+        images.add(imageUrl);
+      }
+
+      setState(() {});
+      hireModel = hireModel.copyWith(image: images);
+      debugPrint("DOWNLOAD URL:$imageUrl");
+    }
+  }
+
+  takeAnImage() {
+    showModalBottomSheet(
+      shape: const RoundedRectangleBorder(
+          borderRadius: BorderRadius.only(
+        topLeft: Radius.circular(16),
+        topRight: Radius.circular(16),
+      )),
+      context: context,
+      builder: (context) {
+        return Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            SizedBox(height: 12.h),
+            ListTile(
+              onTap: () async {
+                await _getImageFromGallery();
+                setState(() {});
+                // Navigator.pop(context);
+              },
+              leading: const Icon(Icons.photo_album_outlined),
+              title: const Text("Take From Gallery"),
+            ),
+            ListTile(
+              onTap: () async {
+                await _getImageFromCamera();
+                setState(() {});
+                Navigator.pop(context);
+              },
+              leading: const Icon(Icons.camera_alt),
+              title: const Text("Take From Camera"),
+            ),
+            SizedBox(height: 24.h),
+          ],
+        );
+      },
     );
   }
 }

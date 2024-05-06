@@ -5,9 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:ish_top/data/local/local_storage.dart';
 import 'package:ish_top/ui/auth/auth_screen.dart';
-
 import '../../../blocs/auth/auth_bloc.dart';
 import '../../../blocs/auth/auth_event.dart';
 import '../../../blocs/auth/auth_state.dart';
@@ -130,6 +128,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                     ),
                     35.getH(),
                     LoginButtonItems(
+                      title: "register".tr(),
                       onTap: () {
                         context.read<AuthBloc>().add(
                               RegisterUserEvent(
@@ -149,7 +148,6 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                 ),
                               ),
                             );
-                        StorageRepository.setBool(key: "isLogin", value: true);
                       },
                       isLoading: state.formStatus == FormStatus.loading,
                       active: checkInput(),
@@ -181,7 +179,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                           },
                           child: Text(
                             "login_button".tr(),
-                            style: TextStyle(
+                            style: const TextStyle(
                                 color: CupertinoColors.activeBlue,
                                 fontWeight: FontWeight.w500,
                                 fontSize: 18),
@@ -209,7 +207,6 @@ class _RegisterScreenState extends State<RegisterScreen> {
                 uid: FirebaseAuth.instance.currentUser!.uid,
               ),
             );
-            await StorageRepository.setBool(key: "isLogin", value: true);
             if (!context.mounted) return;
             Navigator.pushAndRemoveUntil(
                 context,

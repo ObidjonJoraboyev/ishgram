@@ -23,5 +23,6 @@
   "last_name": "Familiya",
   "error_lastname": "Familiya noto'g'ri kiritilgan",
   "error_password": "Parol noto'g'ri kiritilgan",
-  "error_phone": "Raqam noto'g'ri kiritilgan"
+  "error_phone": "Raqam noto'g'ri kiritilgan",
+  "register": "Ro'yxardan o'tish"
 }

@@ -5,7 +5,7 @@ class HireModel extends Equatable {
   final String description;
   final int money;
   final String timeInterval;
-  final String image;
+  final List<String> image;
   final bool isActive;
   final double lat;
   final double long;
@@ -36,7 +36,7 @@ class HireModel extends Equatable {
     String? description,
     int? money,
     String? timeInterval,
-    String? image,
+    List<String>? image,
     bool? isActive,
     double? lat,
     double? long,
@@ -73,6 +73,7 @@ class HireModel extends Equatable {
       "long": long,
       "number": number,
       "category": category.name,
+
     };
   }
 
@@ -100,7 +101,7 @@ class HireModel extends Equatable {
       description: json["description"] as String,
       money: json["money"] as int,
       timeInterval: json["timeInterval"] as String,
-      image: json["image"] as String,
+      image: json["image"] as List<String>? ?? [],
       isActive: json["isActive"] as bool,
       lat: json["lat"] as double,
       long: json["long"] as double,
@@ -120,7 +121,7 @@ class HireModel extends Equatable {
     description: '',
     money: 0,
     timeInterval: '',
-    image: '',
+    image: [],
     isActive: false,
     lat: 0.0,
     long: 0.0,
