@@ -13,11 +13,16 @@
   "language": "Узбекский язык",
   "cancel": "Назад",
   "error_name": "Имя было введено неверно",
+  "error_lastname": "Фамилия было введено неверно",
+  "error_phone": "Номер было введено неверно",
+  "error_password": "Пароль было введено неверно",
+
   "name": "Имя",
   "login": "Войти в аккаунт",
   "password": "Пароль",
   "no_account": "У тебя нет аккаунта?",
   "no_acc_register": "Зарегистрироваться",
-  "login_button": "Войти"
-
+  "login_button": "Войти",
+  "account_available": "У тебя есть аккаунт?",
+  "last_name": "Фамилия"
 }

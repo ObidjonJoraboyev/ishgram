@@ -18,8 +18,10 @@
   "password": "Parol",
   "no_account": "Akkountingiz yo'qmi?",
   "no_acc_register": "Ro'yxatdan o'tish",
-  "login_button": "Kirish"
-
-
-
+  "login_button": "Kirish",
+  "account_available": "Hisobingiz bormi?",
+  "last_name": "Familiya",
+  "error_lastname": "Familiya noto'g'ri kiritilgan",
+  "error_password": "Parol noto'g'ri kiritilgan",
+  "error_phone": "Raqam noto'g'ri kiritilgan"
 }

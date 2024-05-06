@@ -132,7 +132,7 @@ class _AuthScreenState extends State<AuthScreen>
                       hintText: "password".tr(),
                       type: TextInputType.text,
                       regExp: AppConstants.passwordRegExp,
-                      errorTitle: "Password noto'g'ri kiritilgan",
+                      errorTitle: "error_password".tr(),
                       iconPath: const Icon(CupertinoIcons.padlock_solid),
                     ),
                   ),

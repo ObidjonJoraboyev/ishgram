@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:ish_top/utils/constants/app_constants.dart';
 import 'package:ish_top/utils/size/size_utils.dart';
@@ -36,7 +37,7 @@ class _PasswordTextInputState extends State<PasswordTextInput> {
               value.isEmpty ||
               value.length < 3 ||
               !AppConstants.passwordRegExp.hasMatch(value)) {
-            return "Kamida 5 ta belgi bo'lishi kerak.";
+            return "error_password".tr();
           }
           return null;
         },
@@ -53,7 +54,7 @@ class _PasswordTextInputState extends State<PasswordTextInput> {
             ),
           ),
           contentPadding: const EdgeInsets.all(12),
-          hintText: "Parol",
+          hintText: "password".tr(),
           suffixIcon: IconButton(
             onPressed: () {
               passwordVisibility = !passwordVisibility;
