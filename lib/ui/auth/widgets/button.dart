@@ -23,7 +23,7 @@ class LoginButtonItems extends StatelessWidget {
       style: TextButton.styleFrom(
         padding: EdgeInsets.symmetric(
           vertical: 18.h,
-          horizontal: 80.w,
+          horizontal: 0.w,
         ),
         backgroundColor: active
             ? CupertinoColors.activeBlue
