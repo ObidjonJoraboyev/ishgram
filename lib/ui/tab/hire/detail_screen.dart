@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:ish_top/data/models/hire_model.dart';
@@ -13,9 +14,9 @@ class DetailScreen extends StatelessWidget {
       backgroundColor: CupertinoColors.systemGrey5,
       appBar: AppBar(
         backgroundColor: Colors.transparent,
-        title: const Text(
-          "Ish haqida",
-          style: TextStyle(color: Colors.black, shadows: [
+        title: Text(
+          "about_work".tr(),
+          style: const TextStyle(color: Colors.black, shadows: [
             Shadow(color: Colors.white, blurRadius: 10),
           ]),
         ),

@@ -16,7 +16,7 @@ class ProfileScreen extends StatefulWidget {
 class _ProfileScreenState extends State<ProfileScreen> {
   final user = FirebaseAuth.instance.currentUser;
 
-  bool check = false;
+  bool check = true;
 
   @override
   Widget build(BuildContext context) {
@@ -35,14 +35,14 @@ class _ProfileScreenState extends State<ProfileScreen> {
             trailing: CupertinoSwitch(
               value: check,
               onChanged: (v) async {
-                v
+                !v
                     ? await context.setLocale(const Locale("ru", "RU"))
                     : await context.setLocale(const Locale("uz", "UZ"));
                 setState(() {});
                 check = v;
                 await StorageRepository.setBool(
                   key: "language",
-                  value: !StorageRepository.getBool(key: "language"),
+                  value: check,
                 );
               },
             ),
