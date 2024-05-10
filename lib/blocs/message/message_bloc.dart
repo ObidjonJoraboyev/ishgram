@@ -28,7 +28,6 @@ class MessageBloc extends Bloc<MessageEvent, List<MessageModel>> {
       await emit.onEach(streamController,
           onData: (List<MessageModel> messages) async {
         emit(messages);
-        print("salomlarr");
       }, onError: (c, d) {
         debugPrint(d.toString());
       });

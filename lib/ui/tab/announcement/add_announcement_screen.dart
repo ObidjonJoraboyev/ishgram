@@ -240,10 +240,12 @@ class _AddHireScreenState extends State<AddHireScreen> {
     if (image != null && context.mounted) {
       debugPrint("IMAGE PATH:${image.path}");
       storagePath = "files/images/${image.name}";
+      if(!mounted)return;
       context.read<ImageBloc>().add(ImageEvent(
             pickedFile: image,
             storagePath: storagePath,
           ));
+      if(!mounted)return;
       imageUrl = context.read<ImageBloc>().state;
       // contactModel= contactModel.copyWith(imageUrl: imageUrl);
 
@@ -262,6 +264,7 @@ class _AddHireScreenState extends State<AddHireScreen> {
       for (var i in image) {
         storagePath = "files/images/${i.name}";
 
+        if(!mounted)return;
         context.read<ImageBloc>().add(
               ImageEvent(
                 pickedFile: i,
@@ -304,6 +307,7 @@ class _AddHireScreenState extends State<AddHireScreen> {
               onTap: () async {
                 await _getImageFromCamera();
                 setState(() {});
+                if(!context.mounted)return;
                 Navigator.pop(context);
               },
               leading: const Icon(Icons.camera_alt),

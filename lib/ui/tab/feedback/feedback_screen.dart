@@ -147,7 +147,7 @@ class _FeedbackScreenState extends State<FeedbackScreen> {
                     ))
             ],
             leading: selectMessages.isEmpty
-                ? SizedBox()
+                ? const SizedBox()
                 : IconButton(
                     onPressed: () {
                       if (selectMessages.length == list.length) {
@@ -208,12 +208,6 @@ class _FeedbackScreenState extends State<FeedbackScreen> {
             height: MediaQuery.sizeOf(context).height,
             child: Column(
               children: [
-                TextButton(
-                    onPressed: () {
-                      context.read<MessageBloc>().add(const MessageGetEvent());
-                      setState(() {});
-                    },
-                    child: Text("ksdcnkjsad")),
                 Expanded(
                   child: ListView(
                     controller: scrollController,
@@ -555,10 +549,13 @@ class _FeedbackScreenState extends State<FeedbackScreen> {
     if (image != null && context.mounted) {
       debugPrint("IMAGE PATH:${image.path}");
       storagePath = "files/images/${image.name}";
+      if(!mounted)return;
+
       context.read<ImageBloc>().add(ImageEvent(
             pickedFile: image,
             storagePath: storagePath,
           ));
+      if(!mounted)return;
       imageUrl = context.read<ImageBloc>().state;
       // contactModel= contactModel.copyWith(imageUrl: imageUrl);
 
@@ -576,6 +573,8 @@ class _FeedbackScreenState extends State<FeedbackScreen> {
     if (image.isNotEmpty && context.mounted) {
       for (var i in image) {
         storagePath = "files/images/${i.name}";
+
+        if(!mounted)return;
 
         context.read<ImageBloc>().add(
               ImageEvent(
@@ -618,6 +617,7 @@ class _FeedbackScreenState extends State<FeedbackScreen> {
               onTap: () async {
                 await _getImageFromCamera();
                 setState(() {});
+                if(!context.mounted)return;
                 Navigator.pop(context);
               },
               leading: const Icon(Icons.camera_alt),
