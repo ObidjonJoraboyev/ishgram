@@ -184,6 +184,9 @@ class AnnouncementModel extends Equatable {
         number,
         category,
       ];
+
 }
+
+
 
 enum WorkCategory { easy, medium, hard }

@@ -13,18 +13,19 @@ class UserModel extends Equatable {
   final String fcm;
   final String authUid;
 
-  const UserModel(
-      {required this.city,
-      required this.email,
-      required this.age,
-      required this.docId,
-      required this.name,
-      required this.number,
-      required this.lastName,
-      required this.image,
-      required this.authUid,
-      required this.fcm,
-      required this.password});
+  const UserModel({
+    required this.city,
+    required this.email,
+    required this.age,
+    required this.docId,
+    required this.name,
+    required this.number,
+    required this.lastName,
+    required this.image,
+    required this.authUid,
+    required this.fcm,
+    required this.password,
+  });
 
   UserModel copyWith(
       {String? name,
@@ -67,6 +68,7 @@ class UserModel extends Equatable {
         "last_name": lastName,
         "image": image,
       };
+
   Map<String, dynamic> toJsonForUpdate() => {
         "authUid": authUid,
         "password": password,

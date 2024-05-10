@@ -26,6 +26,7 @@ class _HireScreenState extends State<HireScreen> {
     return Scaffold(
       backgroundColor: CupertinoColors.systemGrey5,
       appBar: AppBar(
+        scrolledUnderElevation: 0,
         backgroundColor: CupertinoColors.systemGrey5,
         title: Text("hires".tr()),
         centerTitle: false,

@@ -1,6 +1,8 @@
 import 'dart:io';
 import 'dart:math';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:easy_localization/easy_localization.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -186,18 +188,11 @@ class _FeedbackScreenState extends State<FeedbackScreen> {
       ),
       body: BlocBuilder<MessageBloc, List<MessageModel>>(
         builder: (context, snapshot) {
-          //   .where(
-          //                     (e) =>
-          //                         ((e.idTo.split(" ").last ==
-          //                                 widget.userModel.number.split(" ").last)) &&
-          //                             (e.idFrom.split(" ").last ==
-          //                                 userNumber.split(" ").last) ||
-          //                         ((e.idFrom.split(" ").last ==
-          //                                 widget.userModel.number.split(" ").last) &&
-          //                             (e.idTo.split(" ").last ==
-          //                                 userNumber.split(" ").last)),
-          //                   )
-          //                   .toList();
+          list = snapshot
+              .where((e) =>
+                  (e.idFrom == FirebaseAuth.instance.currentUser?.email) &&
+                  e.idTo == "ibodulla@gmail.com")
+              .toList();
 
           if (list.isEmpty) {
             bottomVisibility = false;
@@ -215,11 +210,11 @@ class _FeedbackScreenState extends State<FeedbackScreen> {
                     physics: const BouncingScrollPhysics(),
                     children: [
                       ...List.generate(
-                        snapshot.length,
+                        list.length,
                         (index) {
                           return ZoomTapAnimation(
                             onTap: () {
-                              if (!snapshot[index].status &&
+                              if (!list[index].status &&
                                   selectMessages.isEmpty) {
                                 showDialog(
                                   barrierColor: Colors.black,
@@ -231,8 +226,8 @@ class _FeedbackScreenState extends State<FeedbackScreen> {
                                     contentPadding: EdgeInsets.zero,
                                     content: SizedBox(
                                       width: MediaQuery.sizeOf(context).width,
-                                      child: Image.network(
-                                        snapshot[index].messageText,
+                                      child: CachedNetworkImage(
+                                        imageUrl: list[index].messageText,
                                         width: MediaQuery.sizeOf(context).width,
                                         fit: BoxFit.cover,
                                         height: 400,
@@ -244,21 +239,21 @@ class _FeedbackScreenState extends State<FeedbackScreen> {
 
                               setState(() {});
                               if (check && selectMessages.isNotEmpty) {
-                                if (!selectMessages.contains(snapshot[index])) {
+                                if (!selectMessages.contains(list[index])) {
                                   setState(() {});
-                                  selectMessages.add(snapshot[index]);
+                                  selectMessages.add(list[index]);
                                 } else {
                                   setState(() {});
-                                  selectMessages.remove(snapshot[index]);
+                                  selectMessages.remove(list[index]);
                                 }
                               }
                             },
                             onLongTap: () {
                               setState(() {});
 
-                              if (!selectMessages.contains(snapshot[index])) {
+                              if (!selectMessages.contains(list[index])) {
                                 setState(() {});
-                                selectMessages.add(snapshot[index]);
+                                selectMessages.add(list[index]);
                               }
                               if (selectMessages.isNotEmpty) {
                                 check = true;
@@ -266,12 +261,12 @@ class _FeedbackScreenState extends State<FeedbackScreen> {
                               }
                             },
                             child: Row(
-                              mainAxisAlignment: snapshot[index].idTo ==
-                                      widget.userModel.number
-                                  ? MainAxisAlignment.end
-                                  : MainAxisAlignment.start,
+                              mainAxisAlignment:
+                                  list[index].idTo == "ibodulla@gmail.com"
+                                      ? MainAxisAlignment.end
+                                      : MainAxisAlignment.start,
                               children: [
-                                snapshot[index].status
+                                list[index].status
                                     ? Container(
                                         margin: const EdgeInsets.symmetric(
                                             vertical: 8, horizontal: 12),
@@ -290,18 +285,16 @@ class _FeedbackScreenState extends State<FeedbackScreen> {
                                                     const Radius.circular(10),
                                                 topRight:
                                                     const Radius.circular(10),
-                                                bottomRight: snapshot[index]
-                                                            .idTo !=
-                                                        widget.userModel.number
-                                                    ? const Radius.circular(10)
-                                                    : const Radius.circular(0),
-                                                bottomLeft: snapshot[index]
-                                                            .idTo ==
-                                                        widget.userModel.number
+                                                bottomRight: list[index].idTo ==
+                                                        "ibodulla@gmail.com"
+                                                    ? const Radius.circular(0)
+                                                    : const Radius.circular(10),
+                                                bottomLeft: list[index].idTo ==
+                                                        "ibodulla@gmail.com"
                                                     ? const Radius.circular(10)
                                                     : const Radius.circular(0)),
                                             color: selectMessages
-                                                    .contains(snapshot[index])
+                                                    .contains(list[index])
                                                 ? Colors.grey
                                                 : const Color(0xff30A3E6)),
                                         child: Column(
@@ -309,7 +302,7 @@ class _FeedbackScreenState extends State<FeedbackScreen> {
                                               CrossAxisAlignment.end,
                                           children: [
                                             Text(
-                                              snapshot[index].messageText,
+                                              list[index].messageText,
                                               style: const TextStyle(
                                                 overflow: TextOverflow.ellipsis,
                                                 color: Colors.white,
@@ -320,7 +313,7 @@ class _FeedbackScreenState extends State<FeedbackScreen> {
                                               maxLines: 1,
                                             ),
                                             Text(
-                                              "${DateTime.fromMillisecondsSinceEpoch(int.parse(snapshot[index].createdTime)).hour}:${DateTime.fromMillisecondsSinceEpoch(int.parse(snapshot[index].createdTime)).minute}",
+                                              "${DateTime.fromMillisecondsSinceEpoch(int.parse(list[index].createdTime)).hour}:${DateTime.fromMillisecondsSinceEpoch(int.parse(list[index].createdTime)).minute}",
                                               style: TextStyle(
                                                 color: Colors.white
                                                     .withOpacity(.6),
@@ -339,8 +332,8 @@ class _FeedbackScreenState extends State<FeedbackScreen> {
                                           decoration: BoxDecoration(
                                             border: Border.all(
                                                 width: 2,
-                                                color: selectMessages.contains(
-                                                        snapshot[index])
+                                                color: selectMessages
+                                                        .contains(list[index])
                                                     ? Colors.black
                                                     : Colors.white),
                                             borderRadius: BorderRadius.only(
@@ -348,13 +341,11 @@ class _FeedbackScreenState extends State<FeedbackScreen> {
                                                     const Radius.circular(12),
                                                 topRight:
                                                     const Radius.circular(12),
-                                                bottomRight: snapshot[index]
-                                                            .idTo !=
+                                                bottomRight: list[index].idTo !=
                                                         widget.userModel.number
                                                     ? const Radius.circular(12)
                                                     : const Radius.circular(0),
-                                                bottomLeft: snapshot[index]
-                                                            .idTo ==
+                                                bottomLeft: list[index].idTo ==
                                                         widget.userModel.number
                                                     ? const Radius.circular(12)
                                                     : const Radius.circular(0)),
@@ -365,26 +356,24 @@ class _FeedbackScreenState extends State<FeedbackScreen> {
                                                     const Radius.circular(10),
                                                 topRight:
                                                     const Radius.circular(10),
-                                                bottomRight: snapshot[index]
-                                                            .idTo !=
+                                                bottomRight: list[index].idTo !=
                                                         widget.userModel.number
                                                     ? const Radius.circular(10)
                                                     : const Radius.circular(0),
-                                                bottomLeft: snapshot[index]
-                                                            .idTo ==
+                                                bottomLeft: list[index].idTo ==
                                                         widget.userModel.number
                                                     ? const Radius.circular(10)
                                                     : const Radius.circular(0)),
                                             child: Stack(
                                               children: [
                                                 Image.network(
-                                                  snapshot[index].messageText,
+                                                  list[index].messageText,
                                                   width: 200,
                                                   height: 200,
                                                   fit: BoxFit.cover,
                                                 ),
-                                                selectMessages.contains(
-                                                        snapshot[index])
+                                                selectMessages
+                                                        .contains(list[index])
                                                     ? Container(
                                                         width: 200,
                                                         height: 200,
@@ -460,8 +449,9 @@ class _FeedbackScreenState extends State<FeedbackScreen> {
                                       messageText: controllerTemp,
                                       messageId: "",
                                       status: true,
-                                      idFrom: userNumber,
-                                      idTo: widget.userModel.number,
+                                      idFrom: FirebaseAuth
+                                          .instance.currentUser?.email,
+                                      idTo: "ibodulla@gmail.com",
                                     );
 
                                     context.read<MessageBloc>().add(
@@ -549,13 +539,13 @@ class _FeedbackScreenState extends State<FeedbackScreen> {
     if (image != null && context.mounted) {
       debugPrint("IMAGE PATH:${image.path}");
       storagePath = "files/images/${image.name}";
-      if(!mounted)return;
+      if (!mounted) return;
 
       context.read<ImageBloc>().add(ImageEvent(
             pickedFile: image,
             storagePath: storagePath,
           ));
-      if(!mounted)return;
+      if (!mounted) return;
       imageUrl = context.read<ImageBloc>().state;
       // contactModel= contactModel.copyWith(imageUrl: imageUrl);
 
@@ -574,7 +564,7 @@ class _FeedbackScreenState extends State<FeedbackScreen> {
       for (var i in image) {
         storagePath = "files/images/${i.name}";
 
-        if(!mounted)return;
+        if (!mounted) return;
 
         context.read<ImageBloc>().add(
               ImageEvent(
@@ -617,7 +607,7 @@ class _FeedbackScreenState extends State<FeedbackScreen> {
               onTap: () async {
                 await _getImageFromCamera();
                 setState(() {});
-                if(!context.mounted)return;
+                if (!context.mounted) return;
                 Navigator.pop(context);
               },
               leading: const Icon(Icons.camera_alt),
