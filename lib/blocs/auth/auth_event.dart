@@ -1,4 +1,5 @@
 import 'package:equatable/equatable.dart';
+import 'package:flutter/cupertino.dart';
 
 import '../../data/models/user_model.dart';
 
@@ -32,6 +33,8 @@ class RegisterUserEvent extends AuthEvent {
 }
 
 class LogOutEvent extends AuthEvent {
+  final BuildContext context;
+  LogOutEvent({required this.context});
   @override
   List<Object?> get props => [];
 }

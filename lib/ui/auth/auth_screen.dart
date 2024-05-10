@@ -93,7 +93,7 @@ class _AuthScreenState extends State<AuthScreen> {
                       controller: numberController,
                       hintText: "phone_number".tr(),
                       type: TextInputType.text,
-                      regExp: AppConstants.textRegExp,
+                      regExp: AppConstants.phoneRegExp,
                       errorTitle: "error_phone".tr(),
                       iconPath: const Icon(CupertinoIcons.star_fill),
                     ),
@@ -188,7 +188,7 @@ class _AuthScreenState extends State<AuthScreen> {
   }
 
   bool checkInput() {
-    return AppConstants.textRegExp.hasMatch(numberController.text) &&
+    return AppConstants.phoneRegExp.hasMatch(numberController.text) &&
         AppConstants.passwordRegExp.hasMatch(passwordController.text);
   }
 }

@@ -1,5 +1,4 @@
 import 'package:easy_localization/easy_localization.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:ish_top/data/local/local_storage.dart';
@@ -56,56 +55,50 @@ class _TabScreenState extends State<TabScreen> {
           type: BottomNavigationBarType.fixed,
           onTap: (v) {
             if (v == 1 &&
-                StorageRepository.getString(key: "userNumber").length != 13) {
+                StorageRepository.getString(key: "userNumber").isEmpty) {
+              print(StorageRepository.getString(key: "userNumber"));
               setState(() {});
-              FirebaseAuth.instance.currentUser == null
-                  ? showDialog(
-                      context: context,
-                      builder: (context) => CupertinoAlertDialog(
-                        title: const Text("Login"),
-                        actions: [
-                          CupertinoDialogAction(
-                            child: const Text(
-                              'Orqaga',
-                              style: TextStyle(
-                                  fontSize: 18,
-                                  fontWeight: FontWeight.w400,
-                                  color: CupertinoColors.activeBlue),
-                            ),
-                            onPressed: () {
-                              Navigator.of(context).pop(); // Close the dialog
-                            },
-                          ),
-                          CupertinoDialogAction(
-                            child: const Text(
-                              'Login',
-                              style: TextStyle(
-                                  fontSize: 18,
-                                  fontWeight: FontWeight.w600,
-                                  color: CupertinoColors.activeBlue),
-                            ),
-                            onPressed: () {
-                              Navigator.of(context).pop();
-                              Navigator.pushAndRemoveUntil(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (context) => const AuthScreen()),
-                                  (route) => false);
-                            },
-                          ),
-                        ],
-                        content: const Text(
-                          "Siz e'lon qo'shish uchun login qilmagansiz.",
-                          style: TextStyle(fontSize: 16),
-                        ),
+              showDialog(
+                context: context,
+                builder: (context) => CupertinoAlertDialog(
+                  title: const Text("Login"),
+                  actions: [
+                    CupertinoDialogAction(
+                      child: const Text(
+                        'Orqaga',
+                        style: TextStyle(
+                            fontSize: 18,
+                            fontWeight: FontWeight.w400,
+                            color: CupertinoColors.activeBlue),
                       ),
-                    )
-                  : Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => const AddHireScreen(),
+                      onPressed: () {
+                        Navigator.of(context).pop(); // Close the dialog
+                      },
+                    ),
+                    CupertinoDialogAction(
+                      child: const Text(
+                        'Login',
+                        style: TextStyle(
+                            fontSize: 18,
+                            fontWeight: FontWeight.w600,
+                            color: CupertinoColors.activeBlue),
                       ),
-                    );
+                      onPressed: () {
+                        Navigator.of(context).pop();
+                        Navigator.pushAndRemoveUntil(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => const AuthScreen()),
+                                (route) => false);
+                      },
+                    ),
+                  ],
+                  content: const Text(
+                    "Siz e'lon qo'shish uchun login qilmagansiz.",
+                    style: TextStyle(fontSize: 16),
+                  ),
+                ),
+              );
             } else {
               activeIndex = v;
               setState(() {});

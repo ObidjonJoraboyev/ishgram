@@ -2,8 +2,10 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:ish_top/blocs/auth/auth_bloc.dart';
+import 'package:ish_top/blocs/auth/auth_event.dart';
 import 'package:ish_top/data/local/local_storage.dart';
-import 'package:ish_top/ui/auth/auth_screen.dart';
 import 'package:ish_top/ui/history/history_screen.dart';
 
 class ProfileScreen extends StatefulWidget {
@@ -75,7 +77,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
             child: Column(
               children: [
                 Text(
-                  StorageRepository.getString(key: "userNumber") ,
+                  StorageRepository.getString(key: "userNumber"),
                   style: const TextStyle(fontSize: 32),
                 ),
                 const SizedBox(
@@ -83,16 +85,10 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 ),
                 GestureDetector(
                   onTap: () {
-                    FirebaseAuth.instance.signOut();
-                    Navigator.pushAndRemoveUntil(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => const AuthScreen(),
-                        ),
-                        (r) => false);
+                    context.read<AuthBloc>().add(LogOutEvent(context: context));
                   },
                   child: const Text(
-                    "LOG OUT",
+                    "Log out",
                     style: TextStyle(color: Colors.red),
                   ),
                 )

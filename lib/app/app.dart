@@ -4,7 +4,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:ish_top/blocs/auth/auth_bloc.dart';
 import 'package:ish_top/blocs/message/message_bloc.dart';
 import 'package:ish_top/blocs/message/message_event.dart';
-import 'package:ish_top/data/repository/user_profile_repo.dart';
 import 'package:ish_top/ui/splash/splash_screen.dart';
 
 import '../blocs/announcement_bloc/hire_bloc.dart';
@@ -15,30 +14,27 @@ class App extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MultiRepositoryProvider(
+    return MultiBlocProvider(
       providers: [
-        RepositoryProvider(create: (_) => UserProfileRepository()),
-      ],
-      child: MultiBlocProvider(
-        providers: [
-          BlocProvider(
-            create: (context) =>
-                AuthBloc(),
-          ),
-          BlocProvider(create: (context) => MessageBloc()..add(const MessageGetEvent())),
-          BlocProvider(
-            create: (context) =>
-                AnnouncementBloc()..add(AnnouncementGetEvent()),
-          ),
-
-        ],
-        child: MaterialApp(
-          localizationsDelegates: context.localizationDelegates,
-          supportedLocales: context.supportedLocales,
-          locale: context.locale,
-          debugShowCheckedModeBanner: false,
-          home: const SplashScreen(),
+        BlocProvider(
+          create: (context) => AuthBloc(),
         ),
+        BlocProvider(
+          create: (context) => MessageBloc()
+            ..add(
+              const MessageGetEvent(),
+            ),
+        ),
+        BlocProvider(
+          create: (context) => AnnouncementBloc()..add(AnnouncementGetEvent()),
+        ),
+      ],
+      child: MaterialApp(
+        localizationsDelegates: context.localizationDelegates,
+        supportedLocales: context.supportedLocales,
+        locale: context.locale,
+        debugShowCheckedModeBanner: false,
+        home: const SplashScreen(),
       ),
     );
   }
