@@ -1,11 +1,11 @@
 import 'package:equatable/equatable.dart';
 
-class HireModel extends Equatable {
+class AnnouncementModel extends Equatable {
   final String title;
   final String description;
   final String money;
   final String timeInterval;
-  final List<String> image;
+  final List<dynamic> image;
   final bool isActive;
   final double lat;
   final double long;
@@ -19,7 +19,7 @@ class HireModel extends Equatable {
   final int countView;
   final bool isFavourite;
 
-  const HireModel({
+  const AnnouncementModel({
     required this.createdAt,
     required this.ownerName,
     required this.title,
@@ -39,7 +39,7 @@ class HireModel extends Equatable {
     required this.isFavourite,
   });
 
-  HireModel copyWith({
+  AnnouncementModel copyWith({
     String? title,
     String? ownerName,
     String? docId,
@@ -58,7 +58,7 @@ class HireModel extends Equatable {
     int? countView,
     WorkCategory? category,
   }) {
-    return HireModel(
+    return AnnouncementModel(
       ownerName: ownerName ?? this.ownerName,
       docId: docId ?? this.docId,
       title: title ?? this.title,
@@ -122,15 +122,15 @@ class HireModel extends Equatable {
     };
   }
 
-  factory HireModel.fromJson(Map<String, dynamic> json) {
-    return HireModel(
+  factory AnnouncementModel.fromJson(Map<String, dynamic> json) {
+    return AnnouncementModel(
       ownerName: json["owner_name"] as String? ?? "",
       docId: json["doc_id"] as String? ?? "",
       title: json["title"] as String,
       description: json["description"] as String,
       money: json["money"] as String? ?? "",
       timeInterval: json["timeInterval"] as String,
-      image: json["image"] as List<String>? ?? [],
+      image: json["image"] as List? ?? [],
       isActive: json["isActive"] as bool,
       lat: json["lat"] as double,
       long: json["long"] as double,
@@ -151,7 +151,7 @@ class HireModel extends Equatable {
         .firstWhere((type) => type.toString() == 'WorkCategory.$value');
   }
 
-  static const HireModel initial = HireModel(
+  static const AnnouncementModel initial = AnnouncementModel(
     ownerName: "",
     title: 'salom',
     description: '',

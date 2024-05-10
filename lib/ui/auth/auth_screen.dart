@@ -33,7 +33,6 @@ class _AuthScreenState extends State<AuthScreen>
 
   bool check = false;
 
-
   @override
   void dispose() {
     emailController.dispose();

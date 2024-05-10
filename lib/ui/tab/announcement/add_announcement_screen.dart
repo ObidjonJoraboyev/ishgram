@@ -1,13 +1,15 @@
 import 'package:easy_localization/easy_localization.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:ish_top/blocs/hire_bloc/hire_bloc.dart';
-import 'package:ish_top/blocs/hire_bloc/hire_event.dart';
 import 'package:ish_top/blocs/image/image_bloc.dart';
 import 'package:ish_top/blocs/image/image_event.dart';
-import 'package:ish_top/data/models/hire_model.dart';
+import 'package:ish_top/data/models/announcement.dart';
 import 'package:ish_top/utils/size/size_utils.dart';
+
+import '../../../blocs/announcement_bloc/hire_bloc.dart';
+import '../../../blocs/announcement_bloc/hire_event.dart';
 
 class AddHireScreen extends StatefulWidget {
   const AddHireScreen({super.key});
@@ -27,14 +29,16 @@ class _AddHireScreenState extends State<AddHireScreen> {
 
   final ImagePicker picker = ImagePicker();
 
-  HireModel hireModel = HireModel.initial;
+  AnnouncementModel hireModel = AnnouncementModel.initial;
   String imageUrl = "";
   String storagePath = "";
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: CupertinoColors.systemGrey5,
       appBar: AppBar(
+        backgroundColor: Colors.transparent,
         title: Text("add_hire".tr()),
       ),
       body: Column(
@@ -195,7 +199,7 @@ class _AddHireScreenState extends State<AddHireScreen> {
               onPressed: () async {
                 context.read<AnnouncementBloc>().add(
                       AnnouncementAddEvent(
-                        hireModel: HireModel(
+                        hireModel: AnnouncementModel(
                             ownerName: ownerCtrl.text,
                             title: nameCtrl.text,
                             docId: "",
@@ -215,7 +219,6 @@ class _AddHireScreenState extends State<AddHireScreen> {
                             location: ''),
                       ),
                     );
-                Navigator.pop(context);
               },
               child: Text("add".tr())),
           TextButton(

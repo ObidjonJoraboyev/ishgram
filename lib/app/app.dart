@@ -2,13 +2,15 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:ish_top/blocs/auth/auth_bloc.dart';
-import 'package:ish_top/blocs/hire_bloc/hire_bloc.dart';
-import 'package:ish_top/blocs/hire_bloc/hire_event.dart';
+import 'package:ish_top/blocs/message/message_bloc.dart';
+import 'package:ish_top/blocs/message/message_event.dart';
 import 'package:ish_top/blocs/user_profile/user_profile_bloc.dart';
 import 'package:ish_top/data/repository/auth_repo.dart';
 import 'package:ish_top/data/repository/user_profile_repo.dart';
 import 'package:ish_top/ui/splash/splash_screen.dart';
 
+import '../blocs/announcement_bloc/hire_bloc.dart';
+import '../blocs/announcement_bloc/hire_event.dart';
 import '../blocs/auth/auth_event.dart';
 
 class App extends StatelessWidget {
@@ -28,10 +30,11 @@ class App extends StatelessWidget {
                 AuthBloc(authRepository: context.read<AuthRepository>())
                   ..add(CheckAuthenticationEvent()),
           ),
+          BlocProvider(create: (context) => MessageBloc()..add(const MessageGetEvent())),
           BlocProvider(
-            create: (context) => AnnouncementBloc()..add(AnnouncementGetEvent()),
+            create: (context) =>
+                AnnouncementBloc()..add(AnnouncementGetEvent()),
           ),
-
           BlocProvider(
             create: (context) => UserProfileBloc(
                 userProfileRepository: context.read<UserProfileRepository>()),

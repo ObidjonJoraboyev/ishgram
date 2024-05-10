@@ -1,12 +1,12 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:ish_top/data/models/hire_model.dart';
+import 'package:ish_top/data/models/announcement.dart';
 
 class DetailScreen extends StatelessWidget {
   const DetailScreen({super.key, required this.hireModel});
 
-  final HireModel hireModel;
+  final AnnouncementModel hireModel;
 
   @override
   Widget build(BuildContext context) {

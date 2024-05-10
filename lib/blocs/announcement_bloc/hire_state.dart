@@ -1,11 +1,11 @@
-import '../../data/models/hire_model.dart';
+import '../../data/models/announcement.dart';
 
 abstract class AnnouncementState {}
 
 class AnnouncementInitial extends AnnouncementState {}
 
 class AnnouncementGetState extends AnnouncementState {
-  final List<HireModel> hires;
+  final List<AnnouncementModel> hires;
 
   AnnouncementGetState({required this.hires});
 }

@@ -1,8 +1,11 @@
 import 'package:easy_localization/easy_localization.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:ish_top/data/models/user_model.dart';
 import 'package:ish_top/ui/tab/announcement/add_Announcement_screen.dart';
 
+import '../../auth/auth_screen.dart';
 import '../announcement/announcement_screen.dart';
 import '../feedback/feedback_screen.dart';
 import '../profile/profile_screen.dart';
@@ -20,7 +23,9 @@ class _TabScreenState extends State<TabScreen> {
   final List<Widget> screens = [
     const HireScreen(),
     const AddHireScreen(),
-    const FeedbackScreen(),
+    FeedbackScreen(
+      userModel: UserModel.initial,
+    ),
     const ProfileScreen(),
   ];
 
@@ -49,8 +54,60 @@ class _TabScreenState extends State<TabScreen> {
           currentIndex: activeIndex,
           type: BottomNavigationBarType.fixed,
           onTap: (v) {
-            activeIndex = v;
-            setState(() {});
+            if (v == 1 && FirebaseAuth.instance.currentUser == null) {
+              setState(() {});
+              FirebaseAuth.instance.currentUser == null
+                  ? showDialog(
+                      context: context,
+                      builder: (context) => CupertinoAlertDialog(
+                        title: const Text("Login"),
+                        actions: [
+                          CupertinoDialogAction(
+                            child: const Text(
+                              'Orqaga',
+                              style: TextStyle(
+                                  fontSize: 18,
+                                  fontWeight: FontWeight.w400,
+                                  color: CupertinoColors.activeBlue),
+                            ),
+                            onPressed: () {
+                              Navigator.of(context).pop(); // Close the dialog
+                            },
+                          ),
+                          CupertinoDialogAction(
+                            child: const Text(
+                              'Login',
+                              style: TextStyle(
+                                  fontSize: 18,
+                                  fontWeight: FontWeight.w600,
+                                  color: CupertinoColors.activeBlue),
+                            ),
+                            onPressed: () {
+                              Navigator.of(context).pop();
+                              Navigator.pushAndRemoveUntil(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) => const AuthScreen()),
+                                  (route) => false);
+                            },
+                          ),
+                        ],
+                        content: const Text(
+                          "Siz e'lon qo'shish uchun login qilmagansiz.",
+                          style: TextStyle(fontSize: 16),
+                        ),
+                      ),
+                    )
+                  : Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => const AddHireScreen(),
+                      ),
+                    );
+            } else {
+              activeIndex = v;
+              setState(() {});
+            }
           },
           items: [
             BottomNavigationBarItem(
@@ -59,8 +116,9 @@ class _TabScreenState extends State<TabScreen> {
             ),
             const BottomNavigationBarItem(
               label: "Elon qo'shish",
-              icon: Icon(CupertinoIcons.plus),
-            ), BottomNavigationBarItem(
+              icon: Icon(CupertinoIcons.add_circled),
+            ),
+            BottomNavigationBarItem(
               label: "feedback".tr(),
               icon: const Icon(CupertinoIcons.chat_bubble_2_fill),
             ),

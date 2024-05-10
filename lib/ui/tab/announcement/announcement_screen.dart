@@ -3,10 +3,8 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:ish_top/blocs/hire_bloc/hire_event.dart';
-import 'package:ish_top/blocs/hire_bloc/hire_state.dart';
-import 'package:ish_top/data/models/hire_model.dart';
-import '../../../blocs/hire_bloc/hire_bloc.dart';
+import 'package:ish_top/data/models/announcement.dart';
+import '../../../blocs/announcement_bloc/hire_bloc.dart';
 import 'detail_screen.dart';
 
 class HireScreen extends StatefulWidget {
@@ -31,7 +29,6 @@ class _HireScreenState extends State<HireScreen> {
         backgroundColor: CupertinoColors.systemGrey5,
         title: Text("hires".tr()),
         centerTitle: false,
-
         bottom: PreferredSize(
           preferredSize: const Size(double.infinity, 50),
           child: Column(
@@ -49,10 +46,11 @@ class _HireScreenState extends State<HireScreen> {
                         decoration: BoxDecoration(
                           boxShadow: [
                             BoxShadow(
-                                spreadRadius: 1,
-                                blurRadius: 16,
-                                color:
-                                    CupertinoColors.systemGrey4.withOpacity(.5))
+                              spreadRadius: 1,
+                              blurRadius: 16,
+                              color:
+                                  CupertinoColors.systemGrey4.withOpacity(.5),
+                            )
                           ],
                         ),
                         child: CupertinoTextField(
@@ -104,71 +102,48 @@ class _HireScreenState extends State<HireScreen> {
           ),
         ),
       ),
-      body: BlocBuilder<AnnouncementBloc, AnnouncementState>(
-        builder: (BuildContext context, AnnouncementState state) {
-          context.read<AnnouncementBloc>().add(AnnouncementGetEvent());
-          if (state is AnnouncementGetState) {
-            List<HireModel> hires = state.hires
-                .where((element) =>
-                    element.title.toLowerCase().contains(text.toLowerCase()))
-                .toList();
-            return ListView(
-              physics: const BouncingScrollPhysics(
-                  decelerationRate: ScrollDecelerationRate.normal),
-              children: [
-                ...List.generate(
-                  hires.length,
-                  (index) {
-                    return Column(
-                      children: [
-                        ListTile(
-                          onTap: () {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => DetailScreen(
-                                  hireModel: hires[index],
-                                ),
+      body: BlocBuilder<AnnouncementBloc, List<AnnouncementModel>>(
+        builder: (BuildContext context, List<AnnouncementModel> state) {
+          List<AnnouncementModel> hires = state
+              .where((element) =>
+                  element.title.toLowerCase().contains(text.toLowerCase()))
+              .toList();
+          return ListView(
+            physics: const BouncingScrollPhysics(
+                decelerationRate: ScrollDecelerationRate.normal),
+            children: [
+              ...List.generate(
+                hires.length,
+                (index) {
+                  return Column(
+                    children: [
+                      ListTile(
+                        onTap: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => DetailScreen(
+                                hireModel: hires[index],
                               ),
-                            );
-                          },
-                          title: Text(hires[index].title),
-                          subtitle: Text(
-                            hires[index].description,
-                            style:
-                                TextStyle(color: Colors.black.withOpacity(.5)),
-                          ),
+                            ),
+                          );
+                        },
+                        title: Text(hires[index].title),
+                        subtitle: Text(
+                          hires[index].description,
+                          style: TextStyle(color: Colors.black.withOpacity(.5)),
                         ),
-                        Container(
-                          width: double.infinity,
-                          height: 0.55,
-                          color: Colors.black.withOpacity(.6),
-                        )
-                      ],
-                    );
-                  },
-                )
-              ],
-            );
-          }
-          if (state is AnnouncementLoadingState) {
-            return Center(
-              child: Column(
-                children: [
-                  const CircularProgressIndicator.adaptive(),
-                  Text(
-                    state.runtimeType.toString(),
-                    style: const TextStyle(fontSize: 25, letterSpacing: 3),
-                  ),
-                ],
-              ),
-            );
-          }
-          return SizedBox(
-            child: Text(
-              state.runtimeType.toString(),
-              style: const TextStyle(fontSize: 32, letterSpacing: 4),
-            ),
+                      ),
+                      Container(
+                        width: double.infinity,
+                        height: 0.55,
+                        color: Colors.black.withOpacity(.6),
+                      )
+                    ],
+                  );
+                },
+              )
+            ],
           );
         },
       ),

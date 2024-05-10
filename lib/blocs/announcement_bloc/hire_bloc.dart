@@ -2,19 +2,17 @@ import 'dart:async';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:ish_top/data/models/hire_model.dart';
+import 'package:ish_top/data/models/announcement.dart';
 import 'hire_event.dart';
-import 'hire_state.dart';
 
-class AnnouncementBloc extends Bloc<HireEvent, AnnouncementState> {
-  AnnouncementBloc() : super(AnnouncementInitial()) {
+class AnnouncementBloc extends Bloc<HireEvent, List<AnnouncementModel>> {
+  AnnouncementBloc() : super([]) {
     on<AnnouncementAddEvent>(addAnnouncement);
     on<AnnouncementGetEvent>(getAnnouncements);
     on<AnnouncementRemoveEvent>(deleteAnnouncements);
   }
 
   addAnnouncement(AnnouncementAddEvent event, emit) async {
-    emit(AnnouncementLoadingState());
 
     try {
       var docId = await FirebaseFirestore.instance
@@ -29,26 +27,26 @@ class AnnouncementBloc extends Bloc<HireEvent, AnnouncementState> {
     }
   }
 
-  Stream<List<HireModel>> streamController = FirebaseFirestore.instance
+  Stream<List<AnnouncementModel>> streamController = FirebaseFirestore.instance
       .collection("hires")
       .snapshots()
-      .map((event) =>
-          event.docs.map((doc) => HireModel.fromJson(doc.data())).toList());
+      .map((event) => event.docs
+          .map((doc) => AnnouncementModel.fromJson(doc.data()))
+          .toList());
 
   getAnnouncements(AnnouncementGetEvent event, Emitter emit) async {
-    emit(AnnouncementLoadingState());
     try {
       await emit.onEach(streamController,
-          onData: (List<HireModel> hires) async {
-        emit(AnnouncementGetState(hires: hires));
-      }, onError: (c, d) {});
+          onData: (List<AnnouncementModel> hires) async {
+        emit(hires);
+      }, onError: (c, d) {
+          });
     } catch (error) {
       debugPrint("ERROR CATCH $error");
     }
   }
 
   deleteAnnouncements(AnnouncementRemoveEvent event, Emitter emit) async {
-    emit(AnnouncementLoadingState());
     try {
       await FirebaseFirestore.instance
           .collection("hires")

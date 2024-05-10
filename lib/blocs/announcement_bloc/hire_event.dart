@@ -1,15 +1,15 @@
-import 'package:ish_top/data/models/hire_model.dart';
+import 'package:ish_top/data/models/announcement.dart';
 
 abstract class HireEvent {}
 
 class AnnouncementAddEvent extends HireEvent {
-  final HireModel hireModel;
+  final AnnouncementModel hireModel;
 
   AnnouncementAddEvent({required this.hireModel});
 }
 
 class AnnouncementUpdateEvent extends HireEvent {
-  final HireModel hireModel;
+  final AnnouncementModel hireModel;
 
   AnnouncementUpdateEvent({required this.hireModel});
 }
