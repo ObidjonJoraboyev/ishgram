@@ -2,6 +2,7 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:ish_top/data/local/local_storage.dart';
 import 'package:ish_top/data/models/user_model.dart';
 import 'package:ish_top/ui/tab/announcement/add_Announcement_screen.dart';
 
@@ -54,7 +55,8 @@ class _TabScreenState extends State<TabScreen> {
           currentIndex: activeIndex,
           type: BottomNavigationBarType.fixed,
           onTap: (v) {
-            if (v == 1 && FirebaseAuth.instance.currentUser == null) {
+            if (v == 1 &&
+                StorageRepository.getString(key: "userNumber").length != 13) {
               setState(() {});
               FirebaseAuth.instance.currentUser == null
                   ? showDialog(

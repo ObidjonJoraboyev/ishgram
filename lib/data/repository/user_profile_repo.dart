@@ -15,7 +15,7 @@ class UserProfileRepository {
           .toList();
       bool isExist = false;
       for (var user in users) {
-        if (user.email == userModel.email) {
+        if (user.number == userModel.number) {
           isExist = true;
         }
       }

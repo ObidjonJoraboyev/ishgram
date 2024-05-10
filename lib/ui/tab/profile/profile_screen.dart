@@ -71,43 +71,34 @@ class _ProfileScreenState extends State<ProfileScreen> {
           const SizedBox(
             height: 50,
           ),
-          user == null
-              ? Center(
-                  child: TextButton(
-                      onPressed: () {
-                        Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => const AuthScreen()));
-                      },
-                      child: const Text("Login")),
-                )
-              : Center(
-                  child: Column(
-                    children: [
-                      Text(user?.email ??
-                          "Email topilmadi lekin login qilingan"),
-                      const SizedBox(
-                        height: 15,
-                      ),
-                      GestureDetector(
-                        onTap: () {
-                          FirebaseAuth.instance.signOut();
-                          Navigator.pushAndRemoveUntil(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => const AuthScreen(),
-                              ),
-                              (r) => false);
-                        },
-                        child: const Text(
-                          "LOG OUT",
-                          style: TextStyle(color: Colors.red),
-                        ),
-                      )
-                    ],
-                  ),
+          Center(
+            child: Column(
+              children: [
+                Text(
+                  StorageRepository.getString(key: "userNumber") ,
+                  style: const TextStyle(fontSize: 32),
                 ),
+                const SizedBox(
+                  height: 15,
+                ),
+                GestureDetector(
+                  onTap: () {
+                    FirebaseAuth.instance.signOut();
+                    Navigator.pushAndRemoveUntil(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => const AuthScreen(),
+                        ),
+                        (r) => false);
+                  },
+                  child: const Text(
+                    "LOG OUT",
+                    style: TextStyle(color: Colors.red),
+                  ),
+                )
+              ],
+            ),
+          ),
         ],
       ),
     );

@@ -14,6 +14,7 @@ import '../../blocs/auth/auth_bloc.dart';
 import '../../blocs/auth/auth_event.dart';
 import '../../blocs/auth/auth_state.dart';
 import '../../data/forms/form_status.dart';
+import '../../data/local/local_storage.dart';
 import '../../utils/constants/app_constants.dart';
 import '../../utils/images/app_images.dart';
 import '../tab/tab/tab_screen.dart';
@@ -25,17 +26,15 @@ class AuthScreen extends StatefulWidget {
   State<AuthScreen> createState() => _AuthScreenState();
 }
 
-class _AuthScreenState extends State<AuthScreen>
-    with SingleTickerProviderStateMixin {
-  TextEditingController emailController = TextEditingController();
+class _AuthScreenState extends State<AuthScreen> {
+  TextEditingController numberController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
-  TextEditingController nameCtrl = TextEditingController();
 
   bool check = false;
 
   @override
   void dispose() {
-    emailController.dispose();
+    numberController.dispose();
     passwordController.dispose();
     super.dispose();
   }
@@ -91,11 +90,11 @@ class _AuthScreenState extends State<AuthScreen>
                           checkInput();
                         });
                       },
-                      controller: emailController,
-                      hintText: "name".tr(),
+                      controller: numberController,
+                      hintText: "phone_number".tr(),
                       type: TextInputType.text,
                       regExp: AppConstants.textRegExp,
-                      errorTitle: "error_name".tr(),
+                      errorTitle: "error_phone".tr(),
                       iconPath: const Icon(CupertinoIcons.star_fill),
                     ),
                   ),
@@ -126,10 +125,12 @@ class _AuthScreenState extends State<AuthScreen>
                       onTap: () {
                         context.read<AuthBloc>().add(
                               LoginUserEvent(
-                                username: emailController.text,
                                 password: passwordController.text,
+                                number: numberController.text.trim(),
                               ),
                             );
+                        StorageRepository.setString(
+                            key: "userNumber", value: "+998${numberController.text}");
                       },
                       isLoading: state.formStatus == FormStatus.loading,
                       active: checkInput(),
@@ -187,7 +188,7 @@ class _AuthScreenState extends State<AuthScreen>
   }
 
   bool checkInput() {
-    return AppConstants.textRegExp.hasMatch(emailController.text) &&
+    return AppConstants.textRegExp.hasMatch(numberController.text) &&
         AppConstants.passwordRegExp.hasMatch(passwordController.text);
   }
 }

@@ -13,13 +13,13 @@ class CheckAuthenticationEvent extends AuthEvent {
 }
 
 class LoginUserEvent extends AuthEvent {
-  LoginUserEvent({required this.username, required this.password});
+  LoginUserEvent({required this.number, required this.password});
 
-  final String username;
+  final String number;
   final String password;
 
   @override
-  List<Object?> get props => [username, password];
+  List<Object?> get props => [number, password];
 }
 
 class RegisterUserEvent extends AuthEvent {

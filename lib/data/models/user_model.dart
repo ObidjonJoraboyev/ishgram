@@ -9,20 +9,16 @@ class UserModel extends Equatable {
   final String docId;
   final String image;
   final String city;
-  final String email;
   final String fcm;
-  final String authUid;
 
   const UserModel({
     required this.city,
-    required this.email,
     required this.age,
     required this.docId,
     required this.name,
     required this.number,
     required this.lastName,
     required this.image,
-    required this.authUid,
     required this.fcm,
     required this.password,
   });
@@ -30,7 +26,6 @@ class UserModel extends Equatable {
   UserModel copyWith(
       {String? name,
       String? lastName,
-      String? email,
       String? number,
       String? docId,
       String? image,
@@ -38,14 +33,11 @@ class UserModel extends Equatable {
       String? userId,
       String? fcm,
       String? password,
-      String? authUid,
       int? age}) {
     return UserModel(
       password: password ?? this.password,
       fcm: fcm ?? this.fcm,
       city: city ?? this.city,
-      authUid: authUid ?? this.authUid,
-      email: email ?? this.email,
       age: age ?? this.age,
       docId: docId ?? this.docId,
       name: name ?? this.name,
@@ -56,9 +48,7 @@ class UserModel extends Equatable {
   }
 
   Map<String, dynamic> toJson() => {
-        "authUid": authUid,
         "password": password,
-        "email": email,
         "city": city,
         "age": age,
         "doc_id": docId,
@@ -70,9 +60,7 @@ class UserModel extends Equatable {
       };
 
   Map<String, dynamic> toJsonForUpdate() => {
-        "authUid": authUid,
         "password": password,
-        "email": email,
         "city": city,
         "age": age,
         "doc_id": docId,
@@ -87,7 +75,6 @@ class UserModel extends Equatable {
     return UserModel(
       password: json["password"] as String? ?? "",
       city: json["city"] as String? ?? "",
-      email: json["email"] as String? ?? "",
       age: json["age"] as int? ?? 0,
       image: json["image"] as String? ?? "",
       docId: json["doc_id"] as String? ?? "",
@@ -95,17 +82,14 @@ class UserModel extends Equatable {
       lastName: json["last_name"] as String? ?? "",
       name: json["name"] as String? ?? "",
       fcm: json["fcm"] as String? ?? "",
-      authUid: json["authUid"] as String? ?? "",
     );
   }
 
   static UserModel initial = const UserModel(
       password: "",
       age: 0,
-      email: "",
       city: "",
       fcm: "",
-      authUid: "",
       docId: "",
       name: "",
       number: "1111111",
@@ -123,7 +107,5 @@ class UserModel extends Equatable {
         docId,
         age,
         city,
-        email,
-        authUid
       ];
 }

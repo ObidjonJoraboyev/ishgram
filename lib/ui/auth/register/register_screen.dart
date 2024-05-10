@@ -1,16 +1,14 @@
 import 'package:easy_localization/easy_localization.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:ish_top/data/local/local_storage.dart';
 import 'package:ish_top/ui/auth/auth_screen.dart';
 import '../../../blocs/auth/auth_bloc.dart';
 import '../../../blocs/auth/auth_event.dart';
 import '../../../blocs/auth/auth_state.dart';
-import '../../../blocs/user_profile/user_profile_bloc.dart';
-import '../../../blocs/user_profile/user_profile_event.dart';
 import '../../../data/forms/form_status.dart';
 import '../../../data/models/user_model.dart';
 import '../../../utils/colors/app_colors.dart';
@@ -129,25 +127,24 @@ class _RegisterScreenState extends State<RegisterScreen> {
                     35.getH(),
                     LoginButtonItems(
                       title: "register".tr(),
-                      onTap: () {
+                      onTap: () async {
                         context.read<AuthBloc>().add(
                               RegisterUserEvent(
                                 userModel: UserModel(
                                   image: "",
-                                  email:
-                                      "${firstNameController.text.toLowerCase()}@gmail.com",
                                   lastName: lastNameController.text,
                                   password: passwordController.text,
                                   number: phoneController.text,
                                   docId: "",
                                   name: firstNameController.text,
                                   fcm: "",
-                                  authUid: "",
                                   city: '',
                                   age: 12,
                                 ),
                               ),
                             );
+                       await StorageRepository.setString(
+                            key: "userNumber", value: "+998${phoneController.text}");
                       },
                       isLoading: state.formStatus == FormStatus.loading,
                       active: checkInput(),
@@ -196,17 +193,11 @@ class _RegisterScreenState extends State<RegisterScreen> {
         listener: (BuildContext context, AuthState state) async {
           if (state.formStatus == FormStatus.authenticated) {
             if (state.statusMessage == "registered") {
-              context.read<UserProfileBloc>().add(
-                    AddUserEvent(
-                      userModel: state.userModel,
-                    ),
-                  );
+              context
+                  .read<AuthBloc>()
+                  .add(RegisterUserEvent(userModel: state.userModel));
             }
-            BlocProvider.of<UserProfileBloc>(context).add(
-              GetCurrentUserEvent(
-                uid: FirebaseAuth.instance.currentUser!.uid,
-              ),
-            );
+
             if (!context.mounted) return;
             Navigator.pushAndRemoveUntil(
                 context,
