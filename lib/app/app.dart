@@ -2,6 +2,7 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:ish_top/blocs/auth/auth_bloc.dart';
+import 'package:ish_top/blocs/image/image_bloc.dart';
 import 'package:ish_top/blocs/message/message_bloc.dart';
 import 'package:ish_top/blocs/message/message_event.dart';
 import 'package:ish_top/ui/splash/splash_screen.dart';
@@ -27,6 +28,9 @@ class App extends StatelessWidget {
         ),
         BlocProvider(
           create: (context) => AnnouncementBloc()..add(AnnouncementGetEvent()),
+        ),
+        BlocProvider(
+          create: (context) => ImageBloc(),
         ),
       ],
       child: MaterialApp(
