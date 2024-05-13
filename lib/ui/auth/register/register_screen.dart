@@ -1,4 +1,5 @@
 import 'package:easy_localization/easy_localization.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -143,8 +144,9 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                 ),
                               ),
                             );
-                       await StorageRepository.setString(
-                            key: "userNumber", value: "+998${phoneController.text}");
+                        await StorageRepository.setString(
+                            key: "userNumber",
+                            value: "+998${phoneController.text}");
                       },
                       isLoading: state.formStatus == FormStatus.loading,
                       active: checkInput(),
@@ -191,13 +193,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
           );
         },
         listener: (BuildContext context, AuthState state) async {
-          if (state.formStatus == FormStatus.authenticated) {
-            if (state.statusMessage == "registered") {
-              context
-                  .read<AuthBloc>()
-                  .add(RegisterUserEvent(userModel: state.userModel));
-            }
-
+          String? fcm = await FirebaseMessaging.instance.getToken();
+          if (state.formStatus == FormStatus.authenticated ) {
             if (!context.mounted) return;
             Navigator.pushAndRemoveUntil(
                 context,

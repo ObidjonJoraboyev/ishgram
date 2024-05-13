@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -23,23 +25,21 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     on<RegisterUserEvent>(_registerUser);
   }
 
-  Future<void> _loginUser(LoginUserEvent event1, Emitter emit) async {
+  Stream<List<UserModel>> response = FirebaseFirestore.instance
+      .collection("users")
+      .snapshots()
+      .map((event) =>
+          event.docs.map((doc) => UserModel.fromJson(doc.data())).toList());
+
+  Future<void> _loginUser(
+      LoginUserEvent event1, Emitter<AuthState> emit) async {
     emit(state.copyWith(formStatus: FormStatus.loading));
 
     try {
-      Stream<List<UserModel>> response = FirebaseFirestore.instance
-          .collection("users")
-          .snapshots()
-          .map((event) =>
-              event.docs.map((doc) => UserModel.fromJson(doc.data())).toList());
-
-      await emit.onEach(
+      emit.onEach(
         response,
         onData: (List<UserModel> event) async {
           for (int i = 0; i < event.length; i++) {
-            print("EVENT !${event[i].number}");
-            print("EVENT !${event1.number}");
-
             if (event[i].number == event1.number &&
                 event[i].password == event1.password) {
               emit(state.copyWith(formStatus: FormStatus.authenticated));
@@ -47,7 +47,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
               await StorageRepository.setString(
                   key: "userNumber", value: "+998${event[i].number}");
               break;
-            }else{
+            } else {
               emit(
                 state.copyWith(
                   formStatus: FormStatus.error,
@@ -68,37 +68,54 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     }
   }
 
-  _registerUser(RegisterUserEvent event, emit) async {
+  _registerUser(RegisterUserEvent event1, Emitter emit) async {
     emit(state.copyWith(formStatus: FormStatus.loading));
 
-    try {
-      var docId = await FirebaseFirestore.instance
-          .collection("users")
-          .add(event.userModel.toJson());
+    print("STATE EEEE     !${event1.userModel.number}");
+    print("STATE EEEE     !${event1.userModel.name}");
+    emit.onEach(
+      response,
+      onData: (List<UserModel> event) async {
+        for (int i = 0; i < event.length; i++) {
+          if (event[i].number == event1.userModel.number) {
+            emit(state.copyWith(formStatus: FormStatus.unauthenticated));
+            break;
+          } else {
+            emit(state.copyWith(formStatus: FormStatus.pure));
+          }
+        }
+      },
+    );
 
-      await FirebaseFirestore.instance
-          .collection("users")
-          .doc(docId.id)
-          .update({"doc_id": docId.id});
+    if (state.formStatus != FormStatus.unauthenticated) {
+      print(state.formStatus);
+      try {
+        var docId = await FirebaseFirestore.instance
+            .collection("users")
+            .add(event1.userModel.toJson());
 
-      await StorageRepository.setString(
-          key: "userNumber", value: "+998${event.userModel.number}");
-      emit(
-        state.copyWith(
-          formStatus: FormStatus.authenticated,
-          userModel: event.userModel,
-        ),
-      );
+        await FirebaseFirestore.instance
+            .collection("users")
+            .doc(docId.id)
+            .update({"doc_id": docId.id});
 
-      await StorageRepository.setString(
-          key: "userNumber", value: "+998${event.userModel.number}");
-    } catch (er) {
-      emit(
-        state.copyWith(
-          formStatus: FormStatus.error,
-          errorMessage: er.toString(),
-        ),
-      );
+        await StorageRepository.setString(
+            key: "userNumber", value: "+998${event1.userModel.number}");
+        emit(
+          state.copyWith(
+            formStatus: FormStatus.authenticated,
+          ),
+        );
+      } catch (er) {
+        emit(
+          state.copyWith(
+            formStatus: FormStatus.error,
+            errorMessage: er.toString(),
+          ),
+        );
+      }
+    } else {
+      print(state.formStatus);
     }
   }
 

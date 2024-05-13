@@ -89,7 +89,7 @@ class _TabScreenState extends State<TabScreen> {
                             context,
                             MaterialPageRoute(
                                 builder: (context) => const AuthScreen()),
-                                (route) => false);
+                            (route) => false);
                       },
                     ),
                   ],
