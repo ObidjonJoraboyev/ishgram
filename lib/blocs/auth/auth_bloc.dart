@@ -71,8 +71,6 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
   _registerUser(RegisterUserEvent event1, Emitter emit) async {
     emit(state.copyWith(formStatus: FormStatus.loading));
 
-    print("STATE EEEE     !${event1.userModel.number}");
-    print("STATE EEEE     !${event1.userModel.name}");
     emit.onEach(
       response,
       onData: (List<UserModel> event) async {
@@ -88,7 +86,6 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     );
 
     if (state.formStatus != FormStatus.unauthenticated) {
-      print(state.formStatus);
       try {
         var docId = await FirebaseFirestore.instance
             .collection("users")
@@ -115,7 +112,6 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
         );
       }
     } else {
-      print(state.formStatus);
     }
   }
 
@@ -125,7 +121,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     if (!event.context.mounted) return;
     Navigator.pushAndRemoveUntil(
         event.context,
-        MaterialPageRoute(builder: (context) => AuthScreen()),
+        MaterialPageRoute(builder: (context) => const AuthScreen(),),
         (route) => false);
 
     emit(state.copyWith(formStatus: FormStatus.success));

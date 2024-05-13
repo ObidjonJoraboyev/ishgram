@@ -56,7 +56,6 @@ class _TabScreenState extends State<TabScreen> {
           onTap: (v) {
             if (v == 1 &&
                 StorageRepository.getString(key: "userNumber").isEmpty) {
-              print(StorageRepository.getString(key: "userNumber"));
               setState(() {});
               showDialog(
                 context: context,
