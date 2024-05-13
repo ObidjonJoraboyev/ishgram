@@ -111,8 +111,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
           ),
         );
       }
-    } else {
-    }
+    } else {}
   }
 
   _logOutUser(LogOutEvent event, emit) async {
@@ -121,7 +120,9 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     if (!event.context.mounted) return;
     Navigator.pushAndRemoveUntil(
         event.context,
-        MaterialPageRoute(builder: (context) => const AuthScreen(),),
+        MaterialPageRoute(
+          builder: (context) => const AuthScreen(),
+        ),
         (route) => false);
 
     emit(state.copyWith(formStatus: FormStatus.success));
