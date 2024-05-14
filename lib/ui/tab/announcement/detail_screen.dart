@@ -22,13 +22,28 @@ class DetailScreen extends StatelessWidget {
         ),
       ),
       body: Center(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          mainAxisAlignment: MainAxisAlignment.center,
+        child: ListView(
           children: [
+            SizedBox(
+              height: 300,
+              child: PageView(
+                scrollDirection: Axis.horizontal,
+                children: [
+                  ...List.generate(
+                    hireModel.image.length,
+                    (index) => Image.network(
+                      hireModel.image[index],
+                      width: MediaQuery.sizeOf(context).width,
+                      fit: BoxFit.cover,
+                    ),
+                  )
+                ],
+              ),
+            ),
             Text(hireModel.title),
             Text(hireModel.description),
             Text(hireModel.number),
+            Text(hireModel.image.length.toString()),
           ],
         ),
       ),

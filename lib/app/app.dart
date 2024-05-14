@@ -1,6 +1,7 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:ish_top/blocs/auth/auth_bloc.dart';
 import 'package:ish_top/blocs/image/image_bloc.dart';
 import 'package:ish_top/blocs/message/message_bloc.dart';
@@ -33,12 +34,15 @@ class App extends StatelessWidget {
           create: (context) => ImageBloc(),
         ),
       ],
-      child: MaterialApp(
-        localizationsDelegates: context.localizationDelegates,
-        supportedLocales: context.supportedLocales,
-        locale: context.locale,
-        debugShowCheckedModeBanner: false,
-        home: const SplashScreen(),
+      child: ScreenUtilInit(
+        designSize: const Size(357, 812),
+        child: MaterialApp(
+          localizationsDelegates: context.localizationDelegates,
+          supportedLocales: context.supportedLocales,
+          locale: context.locale,
+          debugShowCheckedModeBanner: false,
+          home: const SplashScreen(),
+        ),
       ),
     );
   }

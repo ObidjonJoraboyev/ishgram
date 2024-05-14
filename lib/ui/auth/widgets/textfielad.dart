@@ -1,7 +1,7 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:ish_top/utils/constants/app_constants.dart';
-import 'package:ish_top/utils/size/size_utils.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../../../utils/colors/app_colors.dart';
 

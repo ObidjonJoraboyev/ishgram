@@ -17,6 +17,7 @@ import '../../../utils/images/app_images.dart';
 import '../../../utils/size/size_utils.dart';
 import '../../tab/tab/tab_screen.dart';
 import '../widgets/button.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../widgets/global_textfield.dart';
 import '../widgets/textfielad.dart';
 

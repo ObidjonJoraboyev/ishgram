@@ -2,13 +2,12 @@ import 'package:equatable/equatable.dart';
 import 'package:image_picker/image_picker.dart';
 
 class ImageEvent extends Equatable {
-  const ImageEvent({required this.pickedFile, required this.storagePath});
+  const ImageEvent({required this.pickedFile});
 
-  final XFile pickedFile;
-  final String storagePath;
+  final List<XFile> pickedFile;
 
   @override
-  List<Object?> get props => [pickedFile, storagePath];
+  List<Object?> get props => [pickedFile];
 }
 
 // Future<String> uploadImage(

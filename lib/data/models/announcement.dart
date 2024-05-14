@@ -13,7 +13,7 @@ class AnnouncementModel extends Equatable {
   final WorkCategory category;
   final String docId;
   final String ownerName;
-  final String createdAt;
+  final int createdAt;
   final String updatedAt;
   final String location;
   final int countView;
@@ -53,7 +53,7 @@ class AnnouncementModel extends Equatable {
     bool? isFavourite,
     String? number,
     String? location,
-    String? createdAt,
+    int? createdAt,
     String? updatedAt,
     int? countView,
     WorkCategory? category,
@@ -126,17 +126,17 @@ class AnnouncementModel extends Equatable {
     return AnnouncementModel(
       ownerName: json["owner_name"] as String? ?? "",
       docId: json["doc_id"] as String? ?? "",
-      title: json["title"] as String,
-      description: json["description"] as String,
+      title: json["title"] as String? ?? "",
+      description: json["description"] as String? ?? "",
       money: json["money"] as String? ?? "",
-      timeInterval: json["timeInterval"] as String,
+      timeInterval: json["timeInterval"] as String? ?? "",
       image: json["image"] as List? ?? [],
-      isActive: json["isActive"] as bool,
-      lat: json["lat"] as double,
-      long: json["long"] as double,
-      number: json["number"] as String,
-      location: json["location"] as String,
-      createdAt: json["createdAt"] as String,
+      isActive: json["isActive"] as bool? ?? false,
+      lat: json["lat"] as double? ?? 0.0,
+      long: json["long"] as double? ?? 0.0,
+      number: json["number"] as String? ?? "",
+      location: json["location"] as String? ?? "",
+      createdAt: json["createdAt"] as int? ?? 0,
       updatedAt: json["updatedAt"] as String? ?? "",
       countView: json["countView"] as int? ?? 0,
       isFavourite: json["isFavourite"] as bool? ?? false,
@@ -153,7 +153,7 @@ class AnnouncementModel extends Equatable {
 
   static const AnnouncementModel initial = AnnouncementModel(
     ownerName: "",
-    title: 'salom',
+    title: '',
     description: '',
     money: "",
     timeInterval: '',
@@ -164,10 +164,10 @@ class AnnouncementModel extends Equatable {
     number: '',
     category: WorkCategory.easy,
     docId: '',
-    createdAt: '',
+    createdAt: 0,
     updatedAt: '',
     location: '',
-    countView: 1,
+    countView: 0,
     isFavourite: false,
   );
 
@@ -183,10 +183,8 @@ class AnnouncementModel extends Equatable {
         long,
         number,
         category,
+        createdAt
       ];
-
 }
-
-
 
 enum WorkCategory { easy, medium, hard }
