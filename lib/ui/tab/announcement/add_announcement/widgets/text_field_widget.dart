@@ -1,5 +1,6 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:ish_top/utils/formatters/formatters.dart';
 
 class GlobalTextFiled extends StatelessWidget {
@@ -10,6 +11,7 @@ class GlobalTextFiled extends StatelessWidget {
     this.isPhone,
     this.maxLines,
     this.maxLength,
+    this.formatter,
   });
 
   final TextEditingController controller;
@@ -17,14 +19,25 @@ class GlobalTextFiled extends StatelessWidget {
   final int? maxLength;
   final int? maxLines;
   final bool? isPhone;
+  final TextInputFormatter? formatter;
 
   @override
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 10),
       child: TextField(
-        inputFormatters:
-            isPhone != null ? [AppInputFormatters.phoneFormatter] : [],
+        onChanged: (c) {
+          if (formatter == AppInputFormatters.moneyFormatter) {
+            if (c.isNotEmpty) {
+              controller.text = "$c so'm";
+            }
+          }
+        },
+        keyboardType: (formatter == AppInputFormatters.moneyFormatter) ||
+                (formatter == AppInputFormatters.phoneFormatter)
+            ? TextInputType.phone
+            : TextInputType.text,
+        inputFormatters: isPhone != null ? [formatter!] : [],
         controller: controller,
         decoration: InputDecoration(
           hintStyle: TextStyle(color: Colors.white.withOpacity(.6)),

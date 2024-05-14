@@ -131,7 +131,8 @@ class _AuthScreenState extends State<AuthScreen> {
                               ),
                             );
                         StorageRepository.setString(
-                            key: "userNumber", value: "+998${numberController.text}");
+                            key: "userNumber",
+                            value: "+998${numberController.text}");
                       },
                       isLoading: state.formStatus == FormStatus.loading,
                       active: checkInput(),

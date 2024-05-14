@@ -156,7 +156,7 @@ class _HireScreenState extends State<HireScreen>
             children: [
               ...List.generate(
                 hires.length,
-                (index) => ZoomTapAnimation(
+                (index1) => ZoomTapAnimation(
                   end: 1,
                   begin: 1,
                   onTap: () {
@@ -164,7 +164,7 @@ class _HireScreenState extends State<HireScreen>
                       context,
                       MaterialPageRoute(
                         builder: (context) => DetailScreen(
-                          hireModel: hires[index],
+                          hireModel: hires[index1],
                         ),
                       ),
                     );
@@ -186,12 +186,12 @@ class _HireScreenState extends State<HireScreen>
                       children: [
                         SizedBox(
                           height: 300,
-                          child: hires[index].image.isNotEmpty
+                          child: hires[index1].image.isNotEmpty
                               ? PageView(
                                   scrollDirection: Axis.horizontal,
                                   children: [
                                     ...List.generate(
-                                      hires[index].image.length,
+                                      hires[index1].image.length,
                                       (index) => Padding(
                                         padding: const EdgeInsets.all(8.0),
                                         child: ClipRRect(
@@ -213,7 +213,7 @@ class _HireScreenState extends State<HireScreen>
                                                 fit: BoxFit.cover,
                                               );
                                             },
-                                            imageUrl: hires[index]
+                                            imageUrl: hires[index1]
                                                 .image
                                                 .firstOrNull
                                                 .toString(),
@@ -228,14 +228,14 @@ class _HireScreenState extends State<HireScreen>
                               : const Text("hvbk"),
                         ),
                         Text(
-                          hires[index].title,
+                          hires[index1].title,
                           style: TextStyle(
                               fontSize: 18.sp, fontWeight: FontWeight.w500),
                           maxLines: 2,
                           overflow: TextOverflow.ellipsis,
                         ),
                         Text(
-                          hires[index].money,
+                          hires[index1].money,
                           style: TextStyle(
                               fontSize: 19.sp, fontWeight: FontWeight.w600),
                           maxLines: 1,
@@ -247,7 +247,7 @@ class _HireScreenState extends State<HireScreen>
                               DateFormat("HH:mm").format(
                                 DateTime.fromMillisecondsSinceEpoch(
                                   int.parse(
-                                    hires[index].createdAt.toString(),
+                                    hires[index1].createdAt.toString(),
                                   ),
                                 ),
                               ),

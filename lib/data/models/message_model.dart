@@ -8,7 +8,6 @@ class MessageModel extends Equatable {
   final String idFrom;
   final String idTo;
 
-
   const MessageModel({
     required this.idFrom,
     required this.idTo,

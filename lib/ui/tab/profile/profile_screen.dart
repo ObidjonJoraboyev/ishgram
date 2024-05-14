@@ -3,10 +3,13 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:ish_top/blocs/auth/auth_bloc.dart';
 import 'package:ish_top/blocs/auth/auth_event.dart';
 import 'package:ish_top/data/local/local_storage.dart';
 import 'package:ish_top/ui/history/history_screen.dart';
+import 'package:ish_top/utils/size/size_utils.dart';
+import 'package:zoom_tap_animation/zoom_tap_animation.dart';
 
 class ProfileScreen extends StatefulWidget {
   const ProfileScreen({super.key});
@@ -34,20 +37,76 @@ class _ProfileScreenState extends State<ProfileScreen> {
         children: [
           ListTile(
             leading: const Icon(Icons.language),
-            trailing: CupertinoSwitch(
-              value: check,
-              onChanged: (v) async {
-                !v
-                    ? await context.setLocale(const Locale("ru", "RU"))
-                    : await context.setLocale(const Locale("uz", "UZ"));
-                setState(() {});
-                check = v;
-                await StorageRepository.setBool(
-                  key: "language",
-                  value: check,
-                );
-              },
-            ),
+            onTap: () {
+              showDialog(
+                context: context,
+                builder: (context) {
+                  return CupertinoAlertDialog(
+                    actions: [
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          10.getH(),
+                          ZoomTapAnimation(
+                            onTap: () async {
+                              await context.setLocale(const Locale("uz", "UZ"));
+                              if (!context.mounted) return;
+                              Navigator.pop(context);
+                            },
+                            child: Text(
+                              "uz".tr(),
+                              style: TextStyle(
+                                color: CupertinoColors.activeBlue,
+                                fontWeight: FontWeight.w400,
+                                fontSize: 16.sp,
+                              ),
+                            ),
+                          ),
+                          5.getH(),
+                          const Divider(),
+                          5.getH(),
+                          ZoomTapAnimation(
+                            onTap: () async {
+                              await context.setLocale(const Locale("ru", "RU"));
+                              if (!context.mounted) return;
+                              Navigator.pop(context);
+                            },
+                            child: Text(
+                              "ru".tr(),
+                              style: TextStyle(
+                                color: CupertinoColors.activeBlue,
+                                fontWeight: FontWeight.w400,
+                                fontSize: 16.sp,
+                              ),
+                            ),
+                          ),
+                          5.getH(),
+                          const Divider(),
+                          Center(
+                            child: Padding(
+                              padding:
+                                  const EdgeInsets.only(top: 5, bottom: 15),
+                              child: ZoomTapAnimation(
+                                onTap: () {
+                                  Navigator.pop(context);
+                                },
+                                child: Text(
+                                  "cancel".tr(),
+                                  style: TextStyle(
+                                      color: CupertinoColors.activeBlue,
+                                      fontWeight: FontWeight.w500,
+                                      fontSize: 16.sp),
+                                ),
+                              ),
+                            ),
+                          ),
+                        ],
+                      )
+                    ],
+                  );
+                },
+              );
+            },
             title: Text("language".tr()),
           ),
           Container(

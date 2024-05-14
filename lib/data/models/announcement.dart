@@ -1,11 +1,35 @@
 import 'package:equatable/equatable.dart';
 
+class ImageModel {
+  final String imageUrl;
+  final String imageDocId;
+
+  factory ImageModel.fromJson(
+    Map<String, dynamic> json,
+  ) {
+    return ImageModel(
+      imageUrl: json['imageUrl'],
+      imageDocId: json['imageDocId'],
+    );
+  }
+
+  Map<String, dynamic> toJson() => {
+        "imageUrl": imageUrl,
+        "imageDocId": imageDocId,
+      };
+
+  ImageModel({
+    required this.imageUrl,
+    required this.imageDocId,
+  });
+}
+
 class AnnouncementModel extends Equatable {
   final String title;
   final String description;
   final String money;
   final String timeInterval;
-  final List<dynamic> image;
+  final List<ImageModel> image;
   final bool isActive;
   final double lat;
   final double long;
@@ -46,7 +70,7 @@ class AnnouncementModel extends Equatable {
     String? description,
     String? money,
     String? timeInterval,
-    List<String>? image,
+    List<ImageModel>? image,
     bool? isActive,
     double? lat,
     double? long,
@@ -87,7 +111,7 @@ class AnnouncementModel extends Equatable {
       "description": description,
       "money": money,
       "timeInterval": timeInterval,
-      "image": image,
+      "image": image.map((img) => img.toJson()).toList(),
       "isActive": isActive,
       "lat": lat,
       "long": long,
@@ -130,7 +154,10 @@ class AnnouncementModel extends Equatable {
       description: json["description"] as String? ?? "",
       money: json["money"] as String? ?? "",
       timeInterval: json["timeInterval"] as String? ?? "",
-      image: json["image"] as List? ?? [],
+      image: (json["image"] as List<dynamic>?)
+              ?.map((e) => ImageModel.fromJson(e as Map<String, dynamic>))
+              .toList() ??
+          [],
       isActive: json["isActive"] as bool? ?? false,
       lat: json["lat"] as double? ?? 0.0,
       long: json["long"] as double? ?? 0.0,
@@ -183,7 +210,11 @@ class AnnouncementModel extends Equatable {
         long,
         number,
         category,
-        createdAt
+        createdAt,
+        updatedAt,
+        location,
+        countView,
+        isFavourite,
       ];
 }
 

@@ -193,7 +193,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
           );
         },
         listener: (BuildContext context, AuthState state) async {
-          if (state.formStatus == FormStatus.authenticated ) {
+          if (state.formStatus == FormStatus.authenticated) {
             if (!context.mounted) return;
             Navigator.pushAndRemoveUntil(
                 context,

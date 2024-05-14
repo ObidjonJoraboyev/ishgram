@@ -107,9 +107,9 @@ class _TabScreenState extends State<TabScreen> {
               label: "hires".tr(),
               icon: const Icon(CupertinoIcons.house_fill),
             ),
-            const BottomNavigationBarItem(
-              label: "Elon qo'shish",
-              icon: Icon(CupertinoIcons.add_circled),
+            BottomNavigationBarItem(
+              label: "add_hire".tr(),
+              icon: const Icon(CupertinoIcons.add_circled),
             ),
             BottomNavigationBarItem(
               label: "feedback".tr(),

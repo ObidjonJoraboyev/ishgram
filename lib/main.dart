@@ -11,9 +11,10 @@ import 'firebase_options.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await EasyLocalization.ensureInitialized();
-  await Firebase.initializeApp(options: Platform.isIOS?DefaultFirebaseOptions.currentPlatform:null);
+  await Firebase.initializeApp(
+      options: Platform.isIOS ? DefaultFirebaseOptions.currentPlatform : null);
   // await Firebase.initializeApp();
-   StorageRepository.instance;
+  StorageRepository.instance;
   runApp(
     EasyLocalization(
       supportedLocales: const [

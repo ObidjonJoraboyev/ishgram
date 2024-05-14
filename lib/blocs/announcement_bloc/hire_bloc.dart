@@ -13,7 +13,6 @@ class AnnouncementBloc extends Bloc<HireEvent, List<AnnouncementModel>> {
   }
 
   addAnnouncement(AnnouncementAddEvent event, emit) async {
-
     try {
       var docId = await FirebaseFirestore.instance
           .collection("hires")
@@ -39,8 +38,7 @@ class AnnouncementBloc extends Bloc<HireEvent, List<AnnouncementModel>> {
       await emit.onEach(streamController,
           onData: (List<AnnouncementModel> hires) async {
         emit(hires);
-      }, onError: (c, d) {
-          });
+      }, onError: (c, d) {});
     } catch (error) {
       debugPrint("ERROR CATCH $error");
     }

@@ -24,5 +24,7 @@
   "error_lastname": "Familiya noto'g'ri kiritilgan",
   "error_password": "Parol noto'g'ri kiritilgan",
   "error_phone": "Raqam noto'g'ri kiritilgan",
-  "register": "Ro'yxardan o'tish"
+  "register": "Ro'yxardan o'tish",
+  "uz": "🇺🇿  Uzbek tili",
+  "ru": "🇷🇺  Rus tili"
 }

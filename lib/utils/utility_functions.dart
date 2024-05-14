@@ -6,11 +6,12 @@ import 'package:image_picker/image_picker.dart';
 import '../blocs/image/image_bloc.dart';
 import '../blocs/image/image_event.dart';
 
-Future<void> _getImageFromGallery(BuildContext context) async {
+Future<void> _getImageFromGallery(BuildContext context,
+    {required int limit}) async {
   final ImagePicker picker = ImagePicker();
 
   List<XFile>? image = await picker.pickMultiImage(
-    limit: 12,
+    limit: limit,
     maxHeight: 1024,
     maxWidth: 1024,
   );
@@ -18,7 +19,10 @@ Future<void> _getImageFromGallery(BuildContext context) async {
   context.read<ImageBloc>().add(ImageEvent(pickedFile: image));
 }
 
-takeAnImage(BuildContext context) {
+takeAnImage(
+  BuildContext context, {
+  required int limit,
+}) {
   showModalBottomSheet(
     shape: const RoundedRectangleBorder(
       borderRadius: BorderRadius.only(
@@ -34,7 +38,7 @@ takeAnImage(BuildContext context) {
           SizedBox(height: 12.h),
           ListTile(
             onTap: () async {
-              await _getImageFromGallery(context);
+              await _getImageFromGallery(context, limit: limit);
               // Navigator.pop(context);
             },
             leading: const Icon(Icons.photo_album_outlined),

@@ -48,9 +48,6 @@ class MessageBloc extends Bloc<MessageEvent, List<MessageModel>> {
     } catch (error) {
       debugPrint("ERROR CATCH $error");
     }
-
-
-
   }
 
   deleteMessage(MessageDeleteEvent event, Emitter emit) async {

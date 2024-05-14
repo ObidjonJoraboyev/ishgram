@@ -29,6 +29,7 @@ dependencies:
   zoom_tap_animation: ^1.1.0
   flutter_screenutil: ^5.9.0
   mask_text_input_formatter: ^2.9.0
+  easy_image_viewer: ^1.5.0
 
 
 dev_dependencies:

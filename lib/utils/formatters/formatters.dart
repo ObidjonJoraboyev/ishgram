@@ -5,8 +5,8 @@ class AppInputFormatters {
       mask: '+998 (##) ###-##-##',
       filter: {'#': RegExp(r'[\+0-9]')},
       type: MaskAutoCompletionType.lazy);
-  static final cardNumberFormatter = MaskTextInputFormatter(
-      mask: '#### #### #### ####',
+  static final moneyFormatter = MaskTextInputFormatter(
+      mask: "### ### ### ###",
       filter: {"#": RegExp(r'[0-9]')},
       type: MaskAutoCompletionType.lazy);
 
