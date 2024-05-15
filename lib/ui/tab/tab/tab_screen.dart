@@ -30,6 +30,8 @@ class _TabScreenState extends State<TabScreen> {
 
   int activeIndex = 0;
 
+  PageController pageController = PageController();
+
   @override
   void initState() {
     activeIndex = widget.index;
@@ -44,7 +46,11 @@ class _TabScreenState extends State<TabScreen> {
       locale: context.locale,
       debugShowCheckedModeBanner: false,
       home: Scaffold(
-        body: screens[activeIndex],
+        body: PageView(
+          physics: const NeverScrollableScrollPhysics(),
+          controller: pageController,
+          children: screens,
+        ),
         bottomNavigationBar: BottomNavigationBar(
           backgroundColor: CupertinoColors.systemGrey6,
           selectedItemColor: CupertinoColors.activeBlue,
@@ -99,6 +105,11 @@ class _TabScreenState extends State<TabScreen> {
               );
             } else {
               activeIndex = v;
+              pageController.animateToPage(
+                v,
+                duration: const Duration(milliseconds: 250),
+                curve: Curves.easeInOut,
+              );
               setState(() {});
             }
           },

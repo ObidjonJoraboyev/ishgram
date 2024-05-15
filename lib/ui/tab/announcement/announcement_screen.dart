@@ -214,9 +214,8 @@ class _HireScreenState extends State<HireScreen>
                                               );
                                             },
                                             imageUrl: hires[index1]
-                                                .image
-                                                .firstOrNull
-                                                .toString(),
+                                                .image[index]
+                                                .imageUrl,
                                             height: 100,
                                             fit: BoxFit.cover,
                                           ),

@@ -1,7 +1,6 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:easy_image_viewer/easy_image_viewer.dart';
 import 'package:easy_localization/easy_localization.dart';
-import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -37,21 +36,8 @@ class _DetailScreenState extends State<DetailScreen> {
           padding: const EdgeInsets.symmetric(horizontal: 0),
           child: ListView(
             children: [
-              TextButton(
-                onPressed: () async {
-                  try {
-                    await FirebaseStorage.instance
-                        .ref(
-                            "files/images/image_picker_0561379A-FAED-4DF2-8568-3434C180F111-14860-000000623ADAD7F2.jpg")
-                        .delete();
-                  } catch (e) {
-                    debugPrint(e.toString());
-                  }
-                },
-                child: const Text("DELETE"),
-              ),
               SizedBox(
-                height: 300,
+                height: 340,
                 child: PageView(
                   scrollDirection: Axis.horizontal,
                   children: [
@@ -66,24 +52,34 @@ class _DetailScreenState extends State<DetailScreen> {
                             onTap: () {
                               showImageViewer(
                                 context,
-                                Image.network(
+                                CachedNetworkImageProvider(
                                   widget.hireModel.image[index].imageUrl,
-                                  width: MediaQuery.sizeOf(context).width,
-                                  fit: BoxFit.cover,
-                                  height: 300.h,
-                                ).image,
+                                ),
                                 swipeDismissible: true,
                                 doubleTapZoomable: true,
                               );
                             },
-                            child: ClipRRect(
-                              borderRadius: BorderRadius.circular(16.r),
-                              child: CachedNetworkImage(
-                                imageUrl:
-                                    widget.hireModel.image[index].imageUrl,
-                                width: MediaQuery.sizeOf(context).width - 20.w,
-                                fit: BoxFit.cover,
-                                height: 300,
+                            child: Container(
+                              decoration: BoxDecoration(
+                                  boxShadow: const [
+                                    BoxShadow(
+                                        spreadRadius: 3,
+                                        blurRadius: 10,
+                                        color: CupertinoColors.systemGrey4)
+                                  ],
+                                  borderRadius: BorderRadius.circular(20.r),
+                                  border: Border.all(
+                                      width: 4.w, color: Colors.white)),
+                              child: ClipRRect(
+                                borderRadius: BorderRadius.circular(16.r),
+                                child: CachedNetworkImage(
+                                  imageUrl:
+                                      widget.hireModel.image[index].imageUrl,
+                                  width:
+                                      MediaQuery.sizeOf(context).width - 30.w,
+                                  fit: BoxFit.cover,
+                                  height: 300,
+                                ),
                               ),
                             ),
                           ),
@@ -96,6 +92,7 @@ class _DetailScreenState extends State<DetailScreen> {
                   ],
                 ),
               ),
+              20.getH(),
               Padding(
                 padding: EdgeInsets.symmetric(horizontal: 10.w),
                 child: Text(

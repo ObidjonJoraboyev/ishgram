@@ -6,8 +6,10 @@ class AppInputFormatters {
       filter: {'#': RegExp(r'[\+0-9]')},
       type: MaskAutoCompletionType.lazy);
   static final moneyFormatter = MaskTextInputFormatter(
-      mask: "### ### ### ###",
-      filter: {"#": RegExp(r'[0-9]')},
+      mask: "### ### ### ###sum",
+      filter: {
+        "#": RegExp(r'^\$?(\d{1,3}(,\d{3})*(\.\d{1,2})?|\d+(\.\d{1,2})?)$')
+      },
       type: MaskAutoCompletionType.lazy);
 
   static final cardExpirationDateFormatter = MaskTextInputFormatter(

@@ -3,6 +3,8 @@ import 'package:ish_top/data/models/announcement.dart';
 
 class ImageUploadState extends Equatable {
   final String downloadImage;
+
+  final double progress;
   final List<ImageModel> images;
   final FormStatus formStatus;
 
@@ -10,17 +12,20 @@ class ImageUploadState extends Equatable {
     required this.images,
     required this.downloadImage,
     required this.formStatus,
+    required this.progress,
   });
 
   static ImageUploadState imageUploadState = const ImageUploadState(
-      downloadImage: "", formStatus: FormStatus.pure, images: []);
+      progress: 0, downloadImage: "", formStatus: FormStatus.pure, images: []);
 
   ImageUploadState copyWith({
     String? downloadImage,
     FormStatus? formStatus,
     List<ImageModel>? images,
+    double? progress,
   }) {
     return ImageUploadState(
+      progress: progress ?? this.progress,
       downloadImage: downloadImage ?? this.downloadImage,
       formStatus: formStatus ?? this.formStatus,
       images: images ?? this.images,
@@ -32,6 +37,7 @@ class ImageUploadState extends Equatable {
         downloadImage,
         formStatus,
         images,
+        progress,
       ];
 }
 

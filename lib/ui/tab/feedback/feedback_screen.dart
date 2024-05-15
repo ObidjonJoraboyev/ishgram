@@ -76,6 +76,7 @@ class _FeedbackScreenState extends State<FeedbackScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: CupertinoColors.systemGrey5,
       appBar: PreferredSize(
         preferredSize: const Size(double.infinity, 65),
         child: Container(
@@ -85,6 +86,7 @@ class _FeedbackScreenState extends State<FeedbackScreen> {
             ),
           ),
           child: AppBar(
+            backgroundColor: CupertinoColors.systemGrey6,
             toolbarHeight: 65,
             actions: [
               (selectMessages.isEmpty
@@ -109,21 +111,18 @@ class _FeedbackScreenState extends State<FeedbackScreen> {
                                     begin: Alignment.topCenter,
                                     end: Alignment.bottomCenter,
                                     colors: [
-                                      Color(int.parse(widget.userModel.image))
-                                          .withOpacity(.7),
-                                      Color(int.parse(widget.userModel.image)),
+                                      CupertinoColors.activeBlue
+                                          .withOpacity(.6),
+                                      CupertinoColors.activeBlue
+                                          .withOpacity(.99),
                                     ],
                                   ),
                                 ),
                                 child: const Center(
-                                  child: Text(
-                                    "",
-                                    style: TextStyle(
-                                        color: Colors.white,
-                                        fontSize: 20,
-                                        fontWeight: FontWeight.w700),
-                                  ),
-                                ),
+                                    child: Icon(
+                                  Icons.support_agent_sharp,
+                                  color: Colors.white,
+                                )),
                               ),
                             ),
                     )
@@ -418,7 +417,7 @@ class _FeedbackScreenState extends State<FeedbackScreen> {
                   ),
                 ),
                 Container(
-                  color: Colors.white.withOpacity(.3),
+                  color: CupertinoColors.systemGrey5,
                   height: Platform.isIOS ? 75 : null,
                   alignment: Alignment.topCenter,
                   child: Row(

@@ -1,13 +1,29 @@
 import 'package:equatable/equatable.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:ish_top/data/models/announcement.dart';
 
-class ImageEvent extends Equatable {
-  const ImageEvent({required this.pickedFile});
+abstract class ImageEvent extends Equatable {}
+
+class ImageSetEvent extends ImageEvent {
+  ImageSetEvent({
+    required this.pickedFile,
+    required this.images,
+  });
 
   final List<XFile> pickedFile;
+  final List<ImageModel> images;
 
   @override
   List<Object?> get props => [pickedFile];
+}
+
+class ImageRemoveEvent extends ImageEvent {
+  ImageRemoveEvent({required this.docId});
+
+  final String docId;
+
+  @override
+  List<Object?> get props => [docId];
 }
 
 // Future<String> uploadImage(

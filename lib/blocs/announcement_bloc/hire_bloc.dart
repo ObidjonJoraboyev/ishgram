@@ -37,6 +37,7 @@ class AnnouncementBloc extends Bloc<HireEvent, List<AnnouncementModel>> {
     try {
       await emit.onEach(streamController,
           onData: (List<AnnouncementModel> hires) async {
+        hires.sort((a, b) => b.createdAt.compareTo(a.createdAt));
         emit(hires);
       }, onError: (c, d) {});
     } catch (error) {

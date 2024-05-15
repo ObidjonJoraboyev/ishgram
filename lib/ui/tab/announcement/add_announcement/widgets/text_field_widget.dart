@@ -8,6 +8,7 @@ class GlobalTextFiled extends StatelessWidget {
     super.key,
     required this.controller,
     required this.labelText,
+    required this.onChanged,
     this.isPhone,
     this.maxLines,
     this.maxLength,
@@ -20,19 +21,14 @@ class GlobalTextFiled extends StatelessWidget {
   final int? maxLines;
   final bool? isPhone;
   final TextInputFormatter? formatter;
+  final ValueChanged<String> onChanged;
 
   @override
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 10),
       child: TextField(
-        onChanged: (c) {
-          if (formatter == AppInputFormatters.moneyFormatter) {
-            if (c.isNotEmpty) {
-              controller.text = "$c so'm";
-            }
-          }
-        },
+        onChanged: onChanged,
         keyboardType: (formatter == AppInputFormatters.moneyFormatter) ||
                 (formatter == AppInputFormatters.phoneFormatter)
             ? TextInputType.phone

@@ -3,11 +3,15 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_multi_formatter/flutter_multi_formatter.dart';
 import 'package:ish_top/blocs/image/image_bloc.dart';
+import 'package:ish_top/blocs/image/image_event.dart';
 import 'package:ish_top/blocs/image/image_state.dart';
 import 'package:ish_top/data/models/announcement.dart';
+import 'package:ish_top/ui/tab/announcement/add_announcement/widgets/global_button.dart';
 import 'package:ish_top/ui/tab/announcement/add_announcement/widgets/text_field_widget.dart';
 import 'package:ish_top/utils/formatters/formatters.dart';
+import 'package:ish_top/utils/size/size_utils.dart';
 import 'package:zoom_tap_animation/zoom_tap_animation.dart';
 import '../../../../blocs/announcement_bloc/hire_bloc.dart';
 import '../../../../blocs/announcement_bloc/hire_event.dart';
@@ -40,52 +44,79 @@ class _AddHireScreenState extends State<AddHireScreen> {
       appBar: AppBar(
         backgroundColor: Colors.transparent,
         title: Text("add_hire".tr()),
+        actions: [
+          BlocBuilder<ImageBloc, ImageUploadState>(
+            builder: (context, state) {
+              return Visibility(
+                  visible: nameCtrl.text.isNotEmpty ||
+                      numberCtrl.text.isNotEmpty ||
+                      money.text.isNotEmpty ||
+                      ownerCtrl.text.isNotEmpty ||
+                      descriptionCtrl.text.isNotEmpty ||
+                      state.images.isNotEmpty,
+                  child: ZoomTapAnimation(
+                    onTap: () {
+                      nameCtrl.clear();
+                      numberCtrl.clear();
+                      money.clear();
+                      ownerCtrl.clear();
+                      descriptionCtrl.clear();
+                      for (int i = 0; i < state.images.length; i++) {
+                        context.read<ImageBloc>().add(
+                              ImageRemoveEvent(
+                                docId: state.images[i].imageDocId,
+                              ),
+                            );
+                      }
+                    },
+                    child: const Padding(
+                      padding: EdgeInsets.only(right: 12),
+                      child: Text(
+                        "Reset",
+                        style: TextStyle(
+                          fontWeight: FontWeight.w400,
+                          fontSize: 16,
+                          color: Colors.red,
+                        ),
+                      ),
+                    ),
+                  ));
+            },
+          )
+        ],
       ),
       body: BlocConsumer<ImageBloc, ImageUploadState>(
         listener: (context, state) {},
         builder: (context, state) {
-          if (state.formStatus != FormStatus.uploading) {
-            return ListView(
-              children: [
-                SizedBox(
-                  height: 200,
-                  child: ListView(
-                    scrollDirection: Axis.horizontal,
-                    children: [
-                      ...List.generate(
-                        state.images.length,
-                        (index) => Padding(
+          return ListView(
+            children: [
+              SizedBox(
+                height: 160,
+                child: ListView(
+                  scrollDirection: Axis.horizontal,
+                  children: [
+                    12.getW(),
+                    ...List.generate(
+                      state.images.length,
+                      (index) => ClipRRect(
+                        borderRadius: BorderRadius.circular(16),
+                        child: Padding(
                           padding: const EdgeInsets.all(8.0),
                           child: ClipRRect(
                             borderRadius: BorderRadius.circular(16),
                             child: CupertinoContextMenu(
-                              actions: <Widget>[
+                              enableHapticFeedback: false,
+                              actions: [
                                 CupertinoContextMenuAction(
-                                  onPressed: () {
-                                    Navigator.pop(context);
-                                  },
-                                  isDefaultAction: true,
-                                  trailingIcon:
-                                      CupertinoIcons.doc_on_clipboard_fill,
-                                  child: const Text('Copy'),
-                                ),
-                                CupertinoContextMenuAction(
-                                  onPressed: () {
-                                    Navigator.pop(context);
-                                  },
-                                  trailingIcon: CupertinoIcons.share,
-                                  child: const Text('Share'),
-                                ),
-                                CupertinoContextMenuAction(
-                                  onPressed: () {
-                                    Navigator.pop(context);
-                                  },
-                                  trailingIcon: CupertinoIcons.heart,
-                                  child: const Text('Favorite'),
-                                ),
-                                CupertinoContextMenuAction(
-                                  onPressed: () {
-                                    Navigator.pop(context);
+                                  onPressed: () async {
+                                    context.read<ImageBloc>().add(
+                                          ImageRemoveEvent(
+                                            docId:
+                                                state.images[index].imageDocId,
+                                          ),
+                                        );
+
+                                    setState(() {});
                                   },
                                   isDestructiveAction: true,
                                   trailingIcon: CupertinoIcons.delete,
@@ -95,96 +126,191 @@ class _AddHireScreenState extends State<AddHireScreen> {
                               child: CachedNetworkImage(
                                 imageUrl: state.images[index].imageUrl,
                                 fit: BoxFit.cover,
-                                placeholder: (context, url) => const Center(
-                                    child: CircularProgressIndicator()),
+                                width: 160,
+                                placeholder: (s, w) {
+                                  return Padding(
+                                    padding: const EdgeInsets.all(0),
+                                    child: ClipRRect(
+                                      borderRadius: BorderRadius.circular(16),
+                                      child: Container(
+                                        width: 150,
+                                        color: CupertinoColors.systemGrey2,
+                                        child: (state.formStatus ==
+                                                    FormStatus.uploading) &&
+                                                (state.images.length >
+                                                    index + 1)
+                                            ? const Center(
+                                                child:
+                                                    CircularProgressIndicator(),
+                                              )
+                                            : Center(
+                                                child: Text("add_image".tr()),
+                                              ),
+                                      ),
+                                    ),
+                                  );
+                                },
                               ),
                             ),
                           ),
                         ),
                       ),
-                      ...List.generate(
-                        5 - state.images.length,
-                        (index) => ZoomTapAnimation(
-                          onTap: () {
-                            takeAnImage(context,
-                                limit: 5 - state.images.length);
-                          },
-                          child: Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: ClipRRect(
-                              borderRadius: BorderRadius.circular(16),
-                              child: Container(
-                                width: 200,
-                                height: 200,
-                                color: Colors.red,
-                              ),
+                    ),
+                    ...List.generate(
+                      (5 - state.images.length),
+                      (index) => ZoomTapAnimation(
+                        onTap: () {
+                          takeAnImage(context,
+                              limit: 5 - state.images.length,
+                              images: state.images);
+                        },
+                        child: Padding(
+                          padding: const EdgeInsets.all(10.0),
+                          child: ClipRRect(
+                            borderRadius: BorderRadius.circular(16),
+                            child: Container(
+                              width: 160,
+                              color: CupertinoColors.systemGrey2,
+                              child: (state.formStatus ==
+                                          FormStatus.uploading) &&
+                                      (state.images.length > index)
+                                  ? const Center(
+                                      child:
+                                          CircularProgressIndicator.adaptive(),
+                                    )
+                                  : Center(
+                                      child: Text(
+                                        "add_image".tr(),
+                                        textAlign: TextAlign.center,
+                                      ),
+                                    ),
                             ),
                           ),
                         ),
                       ),
+                    ),
+                    12.getW(),
+                  ],
+                ),
+              ),
+              30.getH(),
+              GlobalTextFiled(
+                onChanged: (v) {
+                  setState(() {});
+                },
+                controller: nameCtrl,
+                labelText: "work_name",
+                maxLines: 1,
+                maxLength: 100,
+              ),
+              GlobalTextFiled(
+                onChanged: (v) {
+                  setState(() {});
+                },
+                controller: ownerCtrl,
+                labelText: "your_name",
+                maxLines: 1,
+                maxLength: 50,
+              ),
+              GlobalTextFiled(
+                onChanged: (v) {
+                  setState(() {});
+                },
+                controller: descriptionCtrl,
+                labelText: "about_work",
+                maxLength: 500,
+              ),
+              0.getH(),
+              GlobalTextFiled(
+                onChanged: (v) {
+                  setState(() {});
+                },
+                controller: numberCtrl,
+                labelText: "phone_number",
+                maxLines: 1,
+                formatter: AppInputFormatters.phoneFormatter,
+                isPhone: true,
+              ),
+              14.getH(),
+              Padding(
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 24, vertical: 10),
+                child: TextField(
+                  textInputAction: TextInputAction.done,
+                  maxLength: 14,
+                  onChanged: (c) {},
+                  keyboardType: TextInputType.phone,
+                  controller: money,
+                  inputFormatters: [
+                    CurrencyInputFormatter(
+                      mantissaLength: 0,
+                      maxTextLength: 10,
+                      useSymbolPadding: false,
+                      trailingSymbol: "‎ so'm",
+                      thousandSeparator: ThousandSeparator.Space,
+                    )
+                  ],
+                  decoration: InputDecoration(
+                    counterText: "",
+                    hintStyle: TextStyle(color: Colors.white.withOpacity(.6)),
+                    labelText: "salary".tr(),
+                    labelStyle: TextStyle(
+                      color: Colors.black.withOpacity(.8),
+                      fontWeight: FontWeight.w500,
+                      shadows: [
+                        BoxShadow(
+                          color: Colors.white.withOpacity(.1),
+                          blurRadius: 10,
+                          spreadRadius: 0,
+                        )
+                      ],
+                      fontSize: 16,
+                    ),
+                    contentPadding: const EdgeInsets.all(12),
+                    fillColor: Colors.grey.withOpacity(.7),
+                    filled: true,
+                    focusedBorder: OutlineInputBorder(
+                      borderSide:
+                          const BorderSide(width: 0, color: Colors.grey),
+                      borderRadius: BorderRadius.circular(16),
+                    ),
+                    enabledBorder: OutlineInputBorder(
+                      borderSide:
+                          const BorderSide(width: 0, color: Colors.grey),
+                      borderRadius: BorderRadius.circular(16),
+                    ),
+                  ),
+                  style: TextStyle(
+                    color: Colors.white,
+                    shadows: [
+                      Shadow(
+                          color: Colors.black.withOpacity(.4), blurRadius: 10)
                     ],
                   ),
                 ),
-                GlobalTextFiled(
-                  controller: nameCtrl,
-                  labelText: "work_name",
-                  maxLines: 1,
-                  maxLength: 100,
-                ),
-                GlobalTextFiled(
-                  controller: ownerCtrl,
-                  labelText: "your_name",
-                  maxLines: 1,
-                  maxLength: 50,
-                ),
-                GlobalTextFiled(
-                  controller: numberCtrl,
-                  labelText: "phone_number",
-                  maxLines: 1,
-                  formatter: AppInputFormatters.phoneFormatter,
-                  isPhone: true,
-                ),
-                GlobalTextFiled(
-                  controller: descriptionCtrl,
-                  labelText: "about_work",
-                  maxLength: 500,
-                ),
-                GlobalTextFiled(
-                  controller: money,
-                  labelText: "Ish haqqi",
-                  maxLength: 500,
-                  isPhone: true,
-                  formatter: AppInputFormatters.moneyFormatter,
-                ),
-                TextButton(
-                  onPressed: () async {
-                    hireModel = hireModel.copyWith(
-                      ownerName: ownerCtrl.text,
-                      title: nameCtrl.text,
-                      description: descriptionCtrl.text,
-                      image: context.read<ImageBloc>().state.images,
-                      isActive: false,
-                      money: money.text,
-                      number: numberCtrl.text,
-                      createdAt: DateTime.now().millisecondsSinceEpoch,
-                    );
-                    context.read<AnnouncementBloc>().add(
-                          AnnouncementAddEvent(hireModel: hireModel),
-                        );
-                  },
-                  child: Text("add".tr()),
-                ),
-                TextButton(
-                  onPressed: () async {
-                    takeAnImage(context, limit: 5 - state.images.length);
-                  },
-                  child: const Text("Image"),
-                ),
-              ],
-            );
-          }
-          return const Center(
-            child: CircularProgressIndicator.adaptive(),
+              ),
+              Padding(
+                padding: const EdgeInsets.all(24.0),
+                child: GlobalButton(
+                    title: "add".tr(),
+                    color: Colors.green,
+                    onTap: () {
+                      hireModel = hireModel.copyWith(
+                        ownerName: ownerCtrl.text,
+                        title: nameCtrl.text,
+                        description: descriptionCtrl.text,
+                        image: context.read<ImageBloc>().state.images,
+                        isActive: false,
+                        money: money.text,
+                        number: numberCtrl.text,
+                        createdAt: DateTime.now().millisecondsSinceEpoch,
+                      );
+                      context
+                          .read<AnnouncementBloc>()
+                          .add(AnnouncementAddEvent(hireModel: hireModel));
+                    }),
+              )
+            ],
           );
         },
       ),
