@@ -49,39 +49,40 @@ class _AddHireScreenState extends State<AddHireScreen> {
           BlocBuilder<ImageBloc, ImageUploadState>(
             builder: (context, state) {
               return Visibility(
-                  visible: nameCtrl.text.isNotEmpty ||
-                      numberCtrl.text.isNotEmpty ||
-                      money.text.isNotEmpty ||
-                      ownerCtrl.text.isNotEmpty ||
-                      descriptionCtrl.text.isNotEmpty ||
-                      state.images.isNotEmpty,
-                  child: ZoomTapAnimation(
-                    onTap: () {
-                      nameCtrl.clear();
-                      numberCtrl.clear();
-                      money.clear();
-                      ownerCtrl.clear();
-                      descriptionCtrl.clear();
-                      for (int i = 0; i < state.images.length; i++) {
-                        context.read<ImageBloc>().add(
-                              ImageRemoveEvent(
-                                docId: state.images[i].imageDocId,
-                              ),
-                            );
-                      }
-                    },
-                    child: Padding(
-                      padding: const EdgeInsets.only(right: 12),
-                      child: Text(
-                        "reset".tr(),
-                        style: const TextStyle(
-                          fontWeight: FontWeight.w400,
-                          fontSize: 16,
-                          color: Colors.red,
-                        ),
+                visible: nameCtrl.text.isNotEmpty ||
+                    numberCtrl.text.isNotEmpty ||
+                    money.text.isNotEmpty ||
+                    ownerCtrl.text.isNotEmpty ||
+                    descriptionCtrl.text.isNotEmpty ||
+                    state.images.isNotEmpty,
+                child: ZoomTapAnimation(
+                  onTap: () {
+                    nameCtrl.clear();
+                    numberCtrl.clear();
+                    money.clear();
+                    ownerCtrl.clear();
+                    descriptionCtrl.clear();
+                    for (int i = 0; i < state.images.length; i++) {
+                      context.read<ImageBloc>().add(
+                            ImageRemoveEvent(
+                              docId: state.images[i].imageDocId,
+                            ),
+                          );
+                    }
+                  },
+                  child: Padding(
+                    padding: EdgeInsets.only(right: 12.w),
+                    child: Text(
+                      "reset".tr(),
+                      style: TextStyle(
+                        fontWeight: FontWeight.w400,
+                        fontSize: 14.sp,
+                        color: Colors.red,
                       ),
                     ),
-                  ));
+                  ),
+                ),
+              );
             },
           )
         ],
@@ -92,7 +93,7 @@ class _AddHireScreenState extends State<AddHireScreen> {
           return ListView(
             children: [
               SizedBox(
-                height: 160,
+                height: 150.w,
                 child: ListView(
                   scrollDirection: Axis.horizontal,
                   children: [
@@ -100,9 +101,9 @@ class _AddHireScreenState extends State<AddHireScreen> {
                     ...List.generate(
                       state.images.length,
                       (index) => ClipRRect(
-                        borderRadius: BorderRadius.circular(16),
+                        borderRadius: BorderRadius.circular(16.r),
                         child: Padding(
-                          padding: const EdgeInsets.all(8.0),
+                          padding: EdgeInsets.all(8.0.w),
                           child: ClipRRect(
                             borderRadius: BorderRadius.circular(16),
                             child: CupertinoContextMenu(
@@ -127,19 +128,18 @@ class _AddHireScreenState extends State<AddHireScreen> {
                               child: CachedNetworkImage(
                                 imageUrl: state.images[index].imageUrl,
                                 fit: BoxFit.cover,
-                                width: 160,
+                                width: 150.w,
                                 placeholder: (s, w) {
                                   return Padding(
                                     padding: const EdgeInsets.all(0),
                                     child: ClipRRect(
                                       borderRadius: BorderRadius.circular(16),
                                       child: Container(
-                                        width: 150,
+                                        width: 150.w,
                                         color: CupertinoColors.systemGrey2,
                                         child: (state.formStatus ==
                                                     FormStatus.uploading) &&
-                                                (state.images.length >
-                                                    index + 1)
+                                                (index == 0)
                                             ? const Center(
                                                 child:
                                                     CircularProgressIndicator(),
@@ -183,9 +183,9 @@ class _AddHireScreenState extends State<AddHireScreen> {
                           );
                         },
                         child: Padding(
-                          padding: const EdgeInsets.all(10.0),
+                          padding: EdgeInsets.all(8.0.sp),
                           child: ClipRRect(
-                            borderRadius: BorderRadius.circular(16),
+                            borderRadius: BorderRadius.circular(16.r),
                             child: Container(
                               decoration: const BoxDecoration(
                                 color: CupertinoColors.systemGrey2,
@@ -196,10 +196,10 @@ class _AddHireScreenState extends State<AddHireScreen> {
                                       color: Colors.black)
                                 ],
                               ),
-                              width: 160,
+                              width: 150.w,
                               child: (state.formStatus ==
                                           FormStatus.uploading) &&
-                                      (state.images.length - index >= index)
+                                      (index == 0)
                                   ? const Center(
                                       child:
                                           CircularProgressIndicator.adaptive(),
@@ -303,20 +303,20 @@ class _AddHireScreenState extends State<AddHireScreen> {
                           spreadRadius: 0,
                         )
                       ],
-                      fontSize: 16,
+                      fontSize: 16.sp,
                     ),
-                    contentPadding: const EdgeInsets.all(12),
+                    contentPadding: EdgeInsets.all(12.sp),
                     fillColor: Colors.grey.withOpacity(.7),
                     filled: true,
                     focusedBorder: OutlineInputBorder(
                       borderSide:
                           const BorderSide(width: 0, color: Colors.grey),
-                      borderRadius: BorderRadius.circular(16),
+                      borderRadius: BorderRadius.circular(16.r),
                     ),
                     enabledBorder: OutlineInputBorder(
                       borderSide:
                           const BorderSide(width: 0, color: Colors.grey),
-                      borderRadius: BorderRadius.circular(16),
+                      borderRadius: BorderRadius.circular(16.r),
                     ),
                   ),
                   style: TextStyle(
@@ -329,24 +329,25 @@ class _AddHireScreenState extends State<AddHireScreen> {
                 ),
               ),
               Padding(
-                padding: const EdgeInsets.all(24.0),
+                padding: EdgeInsets.all(24.0.sp),
                 child: GlobalButton(
-                    title: "add".tr(),
-                    color: Colors.green,
-                    onTap: () {
-                      hireModel = hireModel.copyWith(
-                        ownerName: ownerCtrl.text,
-                        title: nameCtrl.text,
-                        description: descriptionCtrl.text,
-                        image: context.read<ImageBloc>().state.images,
-                        money: money.text,
-                        number: numberCtrl.text,
-                        createdAt: DateTime.now().millisecondsSinceEpoch,
-                      );
-                      context
-                          .read<AnnouncementBloc>()
-                          .add(AnnouncementAddEvent(hireModel: hireModel));
-                    }),
+                  title: "add".tr(),
+                  color: Colors.green,
+                  onTap: () {
+                    hireModel = hireModel.copyWith(
+                      ownerName: ownerCtrl.text,
+                      title: nameCtrl.text,
+                      description: descriptionCtrl.text,
+                      image: context.read<ImageBloc>().state.images,
+                      money: money.text,
+                      number: numberCtrl.text,
+                      createdAt: DateTime.now().millisecondsSinceEpoch,
+                    );
+                    context
+                        .read<AnnouncementBloc>()
+                        .add(AnnouncementAddEvent(hireModel: hireModel));
+                  },
+                ),
               )
             ],
           );

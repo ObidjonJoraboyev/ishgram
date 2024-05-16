@@ -119,6 +119,15 @@ class _DetailScreenState extends State<DetailScreen> {
                 widget.hireModel.number,
                 style: TextStyle(fontWeight: FontWeight.w500, fontSize: 18.sp),
               ),
+              10.getH(),
+              const Divider(),
+              10.getH(),
+              Row(
+                children: [
+                  Icon(CupertinoIcons.eye_fill),
+                  Text(widget.hireModel.countView.toString())
+                ],
+              )
             ],
           ),
         ),

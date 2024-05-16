@@ -10,6 +10,7 @@ class AnnouncementBloc extends Bloc<HireEvent, List<AnnouncementModel>> {
     on<AnnouncementAddEvent>(addAnnouncement);
     on<AnnouncementGetEvent>(getAnnouncements);
     on<AnnouncementRemoveEvent>(deleteAnnouncements);
+    on<AnnouncementUpdateEvent>(updateAnnouncement);
   }
 
   addAnnouncement(AnnouncementAddEvent event, emit) async {
@@ -21,6 +22,15 @@ class AnnouncementBloc extends Bloc<HireEvent, List<AnnouncementModel>> {
           .collection("hires")
           .doc(docId.id)
           .update({"doc_id": docId.id});
+    } catch (error) {
+      debugPrint("ERROR CATCH $error");
+    }
+  }
+  updateAnnouncement(AnnouncementUpdateEvent event, emit) async {
+    try {
+       await FirebaseFirestore.instance
+          .collection("hires")
+          .doc(event.hireModel.docId).update(event.hireModel.toJsonForUpdate());
     } catch (error) {
       debugPrint("ERROR CATCH $error");
     }

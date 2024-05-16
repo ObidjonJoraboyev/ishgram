@@ -11,15 +11,27 @@ Future<void> _getImageFromGallery(BuildContext context,
     {required int limit, required List<ImageModel> images}) async {
   final ImagePicker picker = ImagePicker();
 
-  List<XFile>? image = await picker.pickMultiImage(
-    limit: limit,
-    maxHeight: 1024,
-    maxWidth: 1024,
-  );
-  if (!context.mounted) return;
-  context
-      .read<ImageBloc>()
-      .add(ImageSetEvent(pickedFile: image, images: images));
+  if (limit != 1) {
+    List<XFile>? image = await picker.pickMultiImage(
+      limit: limit,
+      maxHeight: 1024,
+      maxWidth: 1024,
+    );
+    if (!context.mounted) return;
+    context
+        .read<ImageBloc>()
+        .add(ImageSetEvent(pickedFile: image, images: images));
+  } else {
+    XFile? image = await picker.pickImage(
+      maxHeight: 1024,
+      maxWidth: 1024,
+      source: ImageSource.gallery,
+    );
+    if (!context.mounted) return;
+    context
+        .read<ImageBloc>()
+        .add(ImageSetEvent(pickedFile: [image!], images: images));
+  }
 }
 
 takeAnImage(

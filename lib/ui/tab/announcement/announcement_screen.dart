@@ -5,6 +5,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:ish_top/blocs/announcement_bloc/hire_event.dart';
 import 'package:ish_top/data/models/announcement.dart';
 import 'package:ish_top/utils/size/size_utils.dart';
 import 'package:zoom_tap_animation/zoom_tap_animation.dart';
@@ -24,7 +25,7 @@ class _HireScreenState extends State<HireScreen>
   final TextEditingController controller = TextEditingController();
   String text = "";
 
-  final ScrollController scrollController=ScrollController();
+  final ScrollController scrollController = ScrollController();
   final user = FirebaseAuth.instance.currentUser;
 
   late AnimationController animationController;
@@ -162,18 +163,31 @@ class _HireScreenState extends State<HireScreen>
               ),
               padding: const EdgeInsets.symmetric(horizontal: 18),
               itemCount: hires.length,
+              physics: const AlwaysScrollableScrollPhysics(),
               itemBuilder: (context, index1) {
                 return ZoomTapAnimation(
-                  end: 1,
-                  begin: 1,
-                  onTap: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => DetailScreen(
-                          hireModel: hires[index1],
-                        ),
-                      ),
+                  onTap: () async {
+                    context.read<AnnouncementBloc>().add(
+                          AnnouncementUpdateEvent(
+                            hireModel: state[index1].copyWith(
+                                countView: state[index1].countView + 1),
+                          ),
+                        );
+
+                    setState(() {
+
+                    });
+                    Future.microtask(
+                      () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => DetailScreen(
+                              hireModel: state[index1].copyWith(countView:state[index1].countView+1 ),
+                            ),
+                          ),
+                        );
+                      },
                     );
                   },
                   child: Container(
@@ -203,7 +217,8 @@ class _HireScreenState extends State<HireScreen>
                                       (index) => Padding(
                                         padding: const EdgeInsets.all(8.0),
                                         child: ClipRRect(
-                                          borderRadius: BorderRadius.circular(16),
+                                          borderRadius:
+                                              BorderRadius.circular(16),
                                           child: CachedNetworkImage(
                                             placeholder: (context, st) {
                                               return Image.asset(

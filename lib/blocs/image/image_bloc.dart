@@ -1,5 +1,4 @@
 import 'dart:io';
-
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -34,7 +33,6 @@ class ImageBloc extends Bloc<ImageEvent, ImageUploadState> {
           emit(state.copyWith(progress: progress));
         }, onError: (dynamic error) {});
 
-        // Wait for the upload to complete
         TaskSnapshot taskSnapshot = await uploadTask;
 
         String downloadUrl = await taskSnapshot.ref.getDownloadURL();
