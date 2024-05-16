@@ -30,7 +30,6 @@ class AnnouncementModel extends Equatable {
   final String money;
   final String timeInterval;
   final List<ImageModel> image;
-  final bool isActive;
   final double lat;
   final double long;
   final String number;
@@ -41,7 +40,7 @@ class AnnouncementModel extends Equatable {
   final String updatedAt;
   final String location;
   final int countView;
-  final bool isFavourite;
+  final StatusAnnouncement status;
 
   const AnnouncementModel({
     required this.createdAt,
@@ -52,7 +51,6 @@ class AnnouncementModel extends Equatable {
     required this.money,
     required this.timeInterval,
     required this.image,
-    required this.isActive,
     required this.lat,
     required this.long,
     required this.number,
@@ -60,7 +58,7 @@ class AnnouncementModel extends Equatable {
     required this.updatedAt,
     required this.location,
     required this.countView,
-    required this.isFavourite,
+    required this.status,
   });
 
   AnnouncementModel copyWith({
@@ -71,7 +69,6 @@ class AnnouncementModel extends Equatable {
     String? money,
     String? timeInterval,
     List<ImageModel>? image,
-    bool? isActive,
     double? lat,
     double? long,
     bool? isFavourite,
@@ -90,16 +87,15 @@ class AnnouncementModel extends Equatable {
       money: money ?? this.money,
       timeInterval: timeInterval ?? this.timeInterval,
       image: image ?? this.image,
-      isActive: isActive ?? this.isActive,
       lat: lat ?? this.lat,
       long: long ?? this.long,
       number: number ?? this.number,
       category: category ?? this.category,
-      isFavourite: isFavourite ?? this.isFavourite,
-      countView: countView ?? this.countView,
-      location: location ?? this.location,
       createdAt: createdAt ?? this.createdAt,
       updatedAt: updatedAt ?? this.updatedAt,
+      location: location ?? this.location,
+      countView: countView ?? this.countView,
+      status: status,
     );
   }
 
@@ -112,16 +108,15 @@ class AnnouncementModel extends Equatable {
       "money": money,
       "timeInterval": timeInterval,
       "image": image.map((img) => img.toJson()).toList(),
-      "isActive": isActive,
       "lat": lat,
       "long": long,
       "number": number,
       "category": category.name,
-      "isFavourite": isFavourite,
       "countView": countView,
       "location": location,
       "createdAt": createdAt,
       "updatedAt": updatedAt,
+      "status": status.name
     };
   }
 
@@ -133,16 +128,15 @@ class AnnouncementModel extends Equatable {
       "money": money,
       "timeInterval": timeInterval,
       "image": image,
-      "isActive": isActive,
       "lat": lat,
       "long": long,
       "number": number,
       "category": category.name,
-      "isFavourite": isFavourite,
       "countView": countView,
       "location": location,
       "createdAt": createdAt,
       "updatedAt": updatedAt,
+      "status": status.name
     };
   }
 
@@ -158,7 +152,6 @@ class AnnouncementModel extends Equatable {
               ?.map((e) => ImageModel.fromJson(e as Map<String, dynamic>))
               .toList() ??
           [],
-      isActive: json["isActive"] as bool? ?? false,
       lat: json["lat"] as double? ?? 0.0,
       long: json["long"] as double? ?? 0.0,
       number: json["number"] as String? ?? "",
@@ -166,9 +159,11 @@ class AnnouncementModel extends Equatable {
       createdAt: json["createdAt"] as int? ?? 0,
       updatedAt: json["updatedAt"] as String? ?? "",
       countView: json["countView"] as int? ?? 0,
-      isFavourite: json["isFavourite"] as bool? ?? false,
       category: enumFromString(
         json["category"] as String? ?? "",
+      ),
+      status: enumFromString2(
+        json["status"] as String? ?? "",
       ),
     );
   }
@@ -178,6 +173,11 @@ class AnnouncementModel extends Equatable {
         .firstWhere((type) => type.toString() == 'WorkCategory.$value');
   }
 
+  static StatusAnnouncement enumFromString2(String value) {
+    return StatusAnnouncement.values
+        .firstWhere((type) => type.toString() == 'StatusAnnouncement.$value');
+  }
+
   static const AnnouncementModel initial = AnnouncementModel(
     ownerName: "",
     title: '',
@@ -185,7 +185,6 @@ class AnnouncementModel extends Equatable {
     money: "",
     timeInterval: '',
     image: [],
-    isActive: false,
     lat: 0.0,
     long: 0.0,
     number: '',
@@ -195,7 +194,7 @@ class AnnouncementModel extends Equatable {
     updatedAt: '',
     location: '',
     countView: 0,
-    isFavourite: false,
+    status: StatusAnnouncement.pure,
   );
 
   @override
@@ -205,7 +204,6 @@ class AnnouncementModel extends Equatable {
         money,
         timeInterval,
         image,
-        isActive,
         lat,
         long,
         number,
@@ -214,8 +212,10 @@ class AnnouncementModel extends Equatable {
         updatedAt,
         location,
         countView,
-        isFavourite,
+        status,
       ];
 }
 
 enum WorkCategory { easy, medium, hard }
+
+enum StatusAnnouncement { active, done, canceled, pure }

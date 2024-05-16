@@ -24,6 +24,7 @@ class _HireScreenState extends State<HireScreen>
   final TextEditingController controller = TextEditingController();
   String text = "";
 
+  final ScrollController scrollController=ScrollController();
   final user = FirebaseAuth.instance.currentUser;
 
   late AnimationController animationController;
@@ -53,6 +54,7 @@ class _HireScreenState extends State<HireScreen>
   @override
   void dispose() {
     animationController.dispose();
+    scrollController.dispose();
     super.dispose();
   }
 
@@ -149,14 +151,19 @@ class _HireScreenState extends State<HireScreen>
               .where((element) =>
                   element.title.toLowerCase().contains(text.toLowerCase()))
               .toList();
-          return GridView.count(
-            crossAxisCount: 1,
-            childAspectRatio: 0.8,
-            padding: const EdgeInsets.symmetric(horizontal: 18),
-            children: [
-              ...List.generate(
-                hires.length,
-                (index1) => ZoomTapAnimation(
+          return Scrollbar(
+            controller: scrollController,
+            radius: const Radius.circular(19),
+            child: GridView.builder(
+              controller: scrollController,
+              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                crossAxisCount: 1,
+                childAspectRatio: 0.8,
+              ),
+              padding: const EdgeInsets.symmetric(horizontal: 18),
+              itemCount: hires.length,
+              itemBuilder: (context, index1) {
+                return ZoomTapAnimation(
                   end: 1,
                   begin: 1,
                   onTap: () {
@@ -176,9 +183,10 @@ class _HireScreenState extends State<HireScreen>
                       borderRadius: BorderRadius.circular(16),
                       boxShadow: [
                         BoxShadow(
-                            spreadRadius: 2,
-                            blurRadius: 10,
-                            color: CupertinoColors.systemGrey.withOpacity(.1))
+                          spreadRadius: 2,
+                          blurRadius: 10,
+                          color: CupertinoColors.systemGrey.withOpacity(.1),
+                        )
                       ],
                       color: CupertinoColors.white.withOpacity(.9),
                     ),
@@ -195,8 +203,7 @@ class _HireScreenState extends State<HireScreen>
                                       (index) => Padding(
                                         padding: const EdgeInsets.all(8.0),
                                         child: ClipRRect(
-                                          borderRadius:
-                                              BorderRadius.circular(16),
+                                          borderRadius: BorderRadius.circular(16),
                                           child: CachedNetworkImage(
                                             placeholder: (context, st) {
                                               return Image.asset(
@@ -221,22 +228,26 @@ class _HireScreenState extends State<HireScreen>
                                           ),
                                         ),
                                       ),
-                                    )
+                                    ),
                                   ],
                                 )
-                              : const Text("hvbk"),
+                              : const Text("No Image"),
                         ),
                         Text(
                           hires[index1].title,
                           style: TextStyle(
-                              fontSize: 18.sp, fontWeight: FontWeight.w500),
+                            fontSize: 18.sp,
+                            fontWeight: FontWeight.w500,
+                          ),
                           maxLines: 2,
                           overflow: TextOverflow.ellipsis,
                         ),
                         Text(
                           hires[index1].money,
                           style: TextStyle(
-                              fontSize: 19.sp, fontWeight: FontWeight.w600),
+                            fontSize: 19.sp,
+                            fontWeight: FontWeight.w600,
+                          ),
                           maxLines: 1,
                           overflow: TextOverflow.ellipsis,
                         ),
@@ -245,20 +256,18 @@ class _HireScreenState extends State<HireScreen>
                             Text(
                               DateFormat("HH:mm").format(
                                 DateTime.fromMillisecondsSinceEpoch(
-                                  int.parse(
-                                    hires[index1].createdAt.toString(),
-                                  ),
+                                  int.parse(hires[index1].createdAt.toString()),
                                 ),
                               ),
-                            )
+                            ),
                           ],
-                        )
+                        ),
                       ],
                     ),
                   ),
-                ),
-              ),
-            ],
+                );
+              },
+            ),
           );
         },
       ),

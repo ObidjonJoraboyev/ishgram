@@ -131,16 +131,11 @@ class _RegisterScreenState extends State<RegisterScreen> {
                       onTap: () async {
                         context.read<AuthBloc>().add(
                               RegisterUserEvent(
-                                userModel: UserModel(
-                                  image: "",
+                                userModel: UserModel.initial.copyWith(
                                   lastName: lastNameController.text,
                                   password: passwordController.text,
                                   number: phoneController.text,
-                                  docId: "",
                                   name: firstNameController.text,
-                                  fcm: "",
-                                  city: '',
-                                  age: 12,
                                 ),
                               ),
                             );

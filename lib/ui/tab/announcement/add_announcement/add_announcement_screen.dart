@@ -4,6 +4,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_multi_formatter/flutter_multi_formatter.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:ish_top/blocs/image/image_bloc.dart';
 import 'package:ish_top/blocs/image/image_event.dart';
 import 'package:ish_top/blocs/image/image_state.dart';
@@ -69,11 +70,11 @@ class _AddHireScreenState extends State<AddHireScreen> {
                             );
                       }
                     },
-                    child: const Padding(
-                      padding: EdgeInsets.only(right: 12),
+                    child: Padding(
+                      padding: const EdgeInsets.only(right: 12),
                       child: Text(
-                        "Reset",
-                        style: TextStyle(
+                        "reset".tr(),
+                        style: const TextStyle(
                           fontWeight: FontWeight.w400,
                           fontSize: 16,
                           color: Colors.red,
@@ -144,7 +145,22 @@ class _AddHireScreenState extends State<AddHireScreen> {
                                                     CircularProgressIndicator(),
                                               )
                                             : Center(
-                                                child: Text("add_image".tr()),
+                                                child: Text(
+                                                  "add_image".tr(),
+                                                  style: TextStyle(
+                                                    fontSize: 15.sp,
+                                                    fontWeight: FontWeight.w600,
+                                                    color: Colors.white,
+                                                    shadows: [
+                                                      BoxShadow(
+                                                        spreadRadius: 0,
+                                                        blurRadius: 10,
+                                                        color: Colors.black
+                                                            .withOpacity(.6),
+                                                      )
+                                                    ],
+                                                  ),
+                                                ),
                                               ),
                                       ),
                                     ),
@@ -160,20 +176,30 @@ class _AddHireScreenState extends State<AddHireScreen> {
                       (5 - state.images.length),
                       (index) => ZoomTapAnimation(
                         onTap: () {
-                          takeAnImage(context,
-                              limit: 5 - state.images.length,
-                              images: state.images);
+                          takeAnImage(
+                            context,
+                            limit: 5 - state.images.length,
+                            images: state.images,
+                          );
                         },
                         child: Padding(
                           padding: const EdgeInsets.all(10.0),
                           child: ClipRRect(
                             borderRadius: BorderRadius.circular(16),
                             child: Container(
+                              decoration: const BoxDecoration(
+                                color: CupertinoColors.systemGrey2,
+                                boxShadow: [
+                                  BoxShadow(
+                                      spreadRadius: 0,
+                                      blurRadius: 10,
+                                      color: Colors.black)
+                                ],
+                              ),
                               width: 160,
-                              color: CupertinoColors.systemGrey2,
                               child: (state.formStatus ==
                                           FormStatus.uploading) &&
-                                      (state.images.length > index)
+                                      (state.images.length - index >= index)
                                   ? const Center(
                                       child:
                                           CircularProgressIndicator.adaptive(),
@@ -182,6 +208,19 @@ class _AddHireScreenState extends State<AddHireScreen> {
                                       child: Text(
                                         "add_image".tr(),
                                         textAlign: TextAlign.center,
+                                        style: TextStyle(
+                                          fontSize: 15.sp,
+                                          fontWeight: FontWeight.w600,
+                                          color: Colors.white,
+                                          shadows: [
+                                            BoxShadow(
+                                              spreadRadius: 0,
+                                              blurRadius: 10,
+                                              color:
+                                                  Colors.black.withOpacity(.6),
+                                            )
+                                          ],
+                                        ),
                                       ),
                                     ),
                             ),
@@ -237,16 +276,16 @@ class _AddHireScreenState extends State<AddHireScreen> {
                     const EdgeInsets.symmetric(horizontal: 24, vertical: 10),
                 child: TextField(
                   textInputAction: TextInputAction.done,
-                  maxLength: 14,
+                  maxLength: 15,
                   onChanged: (c) {},
                   keyboardType: TextInputType.phone,
                   controller: money,
                   inputFormatters: [
                     CurrencyInputFormatter(
                       mantissaLength: 0,
-                      maxTextLength: 10,
+                      maxTextLength: 1,
                       useSymbolPadding: false,
-                      trailingSymbol: "‎ so'm",
+                      trailingSymbol: " so'm",
                       thousandSeparator: ThousandSeparator.Space,
                     )
                   ],
@@ -300,7 +339,6 @@ class _AddHireScreenState extends State<AddHireScreen> {
                         title: nameCtrl.text,
                         description: descriptionCtrl.text,
                         image: context.read<ImageBloc>().state.images,
-                        isActive: false,
                         money: money.text,
                         number: numberCtrl.text,
                         createdAt: DateTime.now().millisecondsSinceEpoch,
