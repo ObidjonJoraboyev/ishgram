@@ -61,6 +61,7 @@ class UserModel extends Equatable {
     String? location,
     List<String>? announcements,
     List<String>? likedHiring,
+    List<String>? allHiring,
   }) {
     return UserModel(
       password: password ?? this.password,
@@ -79,7 +80,7 @@ class UserModel extends Equatable {
       bio: bio ?? this.bio,
       updatedAt: updatedAt ?? this.updatedAt,
       createdAt: createdAt ?? this.createdAt,
-      allHiring: announcements ?? this.allHiring,
+      allHiring: allHiring ?? this.allHiring,
       likedHiring: likedHiring ?? this.likedHiring,
     );
   }
@@ -122,7 +123,7 @@ class UserModel extends Equatable {
         "updatedAt": updatedAt,
         "createdAt": createdAt,
         "announcements": allHiring,
-        "likedHiring": likedHiring
+        "likedHiring": likedHiring,
       };
 
   factory UserModel.fromJson(Map<String, dynamic> json) {

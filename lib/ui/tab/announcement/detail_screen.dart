@@ -3,9 +3,11 @@ import 'package:easy_image_viewer/easy_image_viewer.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:ish_top/data/models/announcement.dart';
 import 'package:ish_top/utils/size/size_utils.dart';
+import 'package:shimmer/shimmer.dart';
 import 'package:zoom_tap_animation/zoom_tap_animation.dart';
 
 class DetailScreen extends StatefulWidget {
@@ -23,6 +25,10 @@ class _DetailScreenState extends State<DetailScreen> {
     return Scaffold(
       backgroundColor: CupertinoColors.systemGrey5,
       appBar: AppBar(
+        systemOverlayStyle: const SystemUiOverlayStyle(
+          statusBarColor: Colors.transparent,
+          statusBarIconBrightness: Brightness.dark,
+        ),
         backgroundColor: Colors.transparent,
         title: Text(
           "about_work".tr(),
@@ -69,10 +75,38 @@ class _DetailScreenState extends State<DetailScreen> {
                                   ],
                                   borderRadius: BorderRadius.circular(20.r),
                                   border: Border.all(
-                                      width: 4.w, color: Colors.white)),
+                                      width: 3.w, color: Colors.white)),
                               child: ClipRRect(
                                 borderRadius: BorderRadius.circular(16.r),
                                 child: CachedNetworkImage(
+                                  placeholder: (v, w) {
+                                    return Shimmer.fromColors(
+                                      baseColor: Colors.white,
+                                      highlightColor: Colors.grey,
+                                      child: Container(
+                                        height: 80.h,
+                                        decoration: BoxDecoration(
+                                          color: Colors.white,
+                                          borderRadius:
+                                              BorderRadius.circular(16),
+                                        ),
+                                      ),
+                                    );
+                                  },
+                                  errorWidget: (v, w, d) {
+                                    return Shimmer.fromColors(
+                                      baseColor: Colors.white,
+                                      highlightColor: Colors.grey,
+                                      child: Container(
+                                        height: 80.h,
+                                        decoration: BoxDecoration(
+                                          color: Colors.white,
+                                          borderRadius:
+                                              BorderRadius.circular(16),
+                                        ),
+                                      ),
+                                    );
+                                  },
                                   imageUrl:
                                       widget.hireModel.image[index].imageUrl,
                                   width:

@@ -10,10 +10,11 @@ class SalaryTextField extends StatelessWidget {
 
   final TextEditingController controller;
   final ValueChanged valueChanged;
+
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 10),
+      padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 13.h),
       child: TextField(
         textInputAction: TextInputAction.done,
         maxLength: 15,
@@ -38,12 +39,11 @@ class SalaryTextField extends StatelessWidget {
             fontWeight: FontWeight.w500,
             shadows: [
               BoxShadow(
-                color: Colors.white.withOpacity(.1),
-                blurRadius: 10,
-                spreadRadius: 0,
-              )
+                  color: Colors.white.withOpacity(.1),
+                  blurRadius: 10,
+                  spreadRadius: 0)
             ],
-            fontSize: 16.sp,
+            fontSize: 15.sp,
           ),
           contentPadding: EdgeInsets.all(12.sp),
           fillColor: Colors.grey.withOpacity(.7),

@@ -2,6 +2,7 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:shimmer/shimmer.dart';
 import 'package:zoom_tap_animation/zoom_tap_animation.dart';
 
 import '../../../../../blocs/image/image_state.dart';
@@ -11,6 +12,7 @@ class GenerateBlame extends StatelessWidget {
   const GenerateBlame({super.key, required this.state});
 
   final ImageUploadState state;
+
   @override
   Widget build(BuildContext context) {
     return Row(
@@ -40,8 +42,17 @@ class GenerateBlame extends StatelessWidget {
                   width: 150.w,
                   child:
                       (state.formStatus == FormStatus.uploading) && (index == 0)
-                          ? const Center(
-                              child: CircularProgressIndicator.adaptive(),
+                          ? Shimmer.fromColors(
+                              baseColor: CupertinoColors.systemGrey2,
+                              highlightColor: CupertinoColors.systemGrey,
+                              child: Container(
+                                height: 150.h,
+                                width: 150.h,
+                                decoration: BoxDecoration(
+                                  color: Colors.white,
+                                  borderRadius: BorderRadius.circular(16.r),
+                                ),
+                              ),
                             )
                           : Center(
                               child: Text(

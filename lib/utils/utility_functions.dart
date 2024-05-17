@@ -82,7 +82,7 @@ void takeAnImage(
             },
             child: Text(
               "takeCamera".tr(),
-              style: TextStyle(color: CupertinoColors.activeBlue),
+              style: const TextStyle(color: CupertinoColors.activeBlue),
             ),
           ),
           CupertinoActionSheetAction(
@@ -91,7 +91,7 @@ void takeAnImage(
             },
             child: Text(
               "takeGallery".tr(),
-              style: TextStyle(color: CupertinoColors.activeBlue),
+              style: const TextStyle(color: CupertinoColors.activeBlue),
             ),
           ),
         ],

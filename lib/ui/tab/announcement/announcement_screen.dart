@@ -2,6 +2,7 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:ish_top/blocs/announcement_bloc/hire_event.dart';
 import 'package:ish_top/blocs/connectivity/connectivity_bloc.dart';
 import 'package:ish_top/blocs/connectivity/connectivity_state.dart';
@@ -41,6 +42,15 @@ class _HireScreenState extends State<HireScreen>
         backgroundColor: CupertinoColors.systemGrey5,
         title: Text("hires".tr()),
         centerTitle: false,
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.search),
+            onPressed: () {
+              context.read<AnnouncementBloc>().add(AnnouncementGetEvent());
+              setState(() {});
+            },
+          )
+        ],
         bottom: PreferredSize(
           preferredSize: const Size(double.infinity, 50),
           child: Column(
@@ -67,17 +77,24 @@ class _HireScreenState extends State<HireScreen>
                       .contains(controller.text.toLowerCase()))
                   .toList();
               return RefreshIndicator.adaptive(
+
                 onRefresh: () async {
                   context.read<AnnouncementBloc>().add(AnnouncementGetEvent());
                   setState(() {});
                 },
                 child: Scrollbar(
-                  thickness: 5,
+                  thickness: 5.w,
                   controller: scrollController,
                   radius: const Radius.circular(19),
-                  child: HiringItem(
-                    hires: hires,
-                    scrollController: scrollController,
+                  child: Column(
+                    children: [
+                      Expanded(
+                        child: HiringItem(
+                          hires: hires,
+                          scrollController: scrollController,
+                        ),
+                      ),
+                    ],
                   ),
                 ),
               );

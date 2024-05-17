@@ -112,7 +112,7 @@ class AnnouncementModel extends Equatable {
       "long": long,
       "number": number,
       "category": category.name,
-      "countView": countView,
+      "countView": countView.map((e) => e.toString()).toList(),
       "location": location,
       "createdAt": createdAt,
       "updatedAt": updatedAt,
@@ -158,7 +158,7 @@ class AnnouncementModel extends Equatable {
       location: json["location"] as String? ?? "",
       createdAt: json["createdAt"] as int? ?? 0,
       updatedAt: json["updatedAt"] as String? ?? "",
-      countView: json["countView"] as List<String>? ?? [],
+      countView: (json["countView"] as List? ?? []).map((e) => e.toString()).toList(),
       category: enumFromString(
         json["category"] as String? ?? "",
       ),

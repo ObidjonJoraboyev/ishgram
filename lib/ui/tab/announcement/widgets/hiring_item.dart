@@ -5,6 +5,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:ish_top/data/models/announcement.dart';
+import 'package:ish_top/utils/size/size_utils.dart';
+import 'package:shimmer/shimmer.dart';
 import 'package:zoom_tap_animation/zoom_tap_animation.dart';
 
 import '../../../../blocs/announcement_bloc/hire_bloc.dart';
@@ -37,8 +39,8 @@ class HiringItem extends StatelessWidget {
           onTap: () async {
             context.read<AnnouncementBloc>().add(
                   AnnouncementUpdateEvent(
-                    hireModel: hires[index1]
-                        .copyWith(countView: hires[index1].countView),
+                    hireModel: hires[index1].copyWith(
+                        countView: hires[index1].countView + ["salom"]),
                   ),
                 );
 
@@ -83,18 +85,32 @@ class HiringItem extends StatelessWidget {
                                   borderRadius: BorderRadius.circular(16),
                                   child: CachedNetworkImage(
                                     placeholder: (context, st) {
-                                      return Image.asset(
-                                        "assets/images/back.webp",
-                                        height: 80.h,
-                                        fit: BoxFit.cover,
+                                      return Shimmer.fromColors(
+                                        baseColor: Colors.white,
+                                        highlightColor: Colors.grey,
+                                        child: Container(
+                                          height: 80.h,
+                                          decoration: BoxDecoration(
+                                            color: Colors.white,
+                                            borderRadius:
+                                                BorderRadius.circular(16),
+                                          ),
+                                        ),
                                       );
                                     },
                                     errorWidget:
                                         (BuildContext context, String st, a) {
-                                      return Image.asset(
-                                        "assets/images/back.webp",
-                                        height: 80.h,
-                                        fit: BoxFit.cover,
+                                      return Shimmer.fromColors(
+                                        baseColor: Colors.white,
+                                        highlightColor: Colors.grey,
+                                        child: Container(
+                                          height: 80.h,
+                                          decoration: BoxDecoration(
+                                            color: Colors.white,
+                                            borderRadius:
+                                                BorderRadius.circular(16),
+                                          ),
+                                        ),
                                       );
                                     },
                                     imageUrl:
@@ -129,12 +145,26 @@ class HiringItem extends StatelessWidget {
                 ),
                 Row(
                   children: [
+                    Icon(
+                      CupertinoIcons.eye_solid,
+                      color: CupertinoColors.black.withOpacity(.6),
+                    ),
+                    3.getW(),
+                    Text(
+                      hires[index1].countView.length.toString(),
+                      style: TextStyle(
+                        color: CupertinoColors.black.withOpacity(.6),
+                      ),
+                    ),
+                    6.getW(),
                     Text(
                       DateFormat("HH:mm").format(
                         DateTime.fromMillisecondsSinceEpoch(
                           int.parse(hires[index1].createdAt.toString()),
                         ),
                       ),
+                      style: TextStyle(
+                          color: CupertinoColors.black.withOpacity(.6)),
                     ),
                   ],
                 ),

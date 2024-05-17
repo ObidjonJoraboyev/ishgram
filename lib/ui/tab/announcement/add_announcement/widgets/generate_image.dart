@@ -1,5 +1,4 @@
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -24,7 +23,7 @@ class GenerateImage extends StatelessWidget {
             child: Padding(
               padding: EdgeInsets.all(8.0.w),
               child: ClipRRect(
-                borderRadius: BorderRadius.circular(16),
+                borderRadius: BorderRadius.circular(16.r),
                 child: CupertinoContextMenu(
                   enableHapticFeedback: false,
                   actions: [
@@ -52,31 +51,17 @@ class GenerateImage extends StatelessWidget {
                         child: ClipRRect(
                           borderRadius: BorderRadius.circular(16),
                           child: Container(
-                            width: 150.w,
-                            color: CupertinoColors.systemGrey2,
-                            child: (state.formStatus == FormStatus.uploading) &&
-                                    (index == 0)
-                                ? const Center(
-                                    child: CircularProgressIndicator())
-                                : Center(
-                                    child: Text(
-                                      "add_image".tr(),
-                                      textAlign: TextAlign.center,
-                                      style: TextStyle(
-                                        fontSize: 15.sp,
-                                        fontWeight: FontWeight.w600,
-                                        color: Colors.white,
-                                        shadows: [
-                                          BoxShadow(
-                                            spreadRadius: 0,
-                                            blurRadius: 10,
-                                            color: Colors.black.withOpacity(.6),
-                                          ),
-                                        ],
-                                      ),
-                                    ),
-                                  ),
-                          ),
+                              width: 150.w,
+                              color: CupertinoColors.systemGrey2,
+                              child: (state.formStatus ==
+                                          FormStatus.uploading) &&
+                                      (index == 0)
+                                  ? const Center(
+                                      child: CircularProgressIndicator())
+                                  : const Center(
+                                      child:
+                                          CircularProgressIndicator.adaptive(),
+                                    )),
                         ),
                       );
                     },

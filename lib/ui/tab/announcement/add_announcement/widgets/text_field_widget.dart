@@ -1,6 +1,7 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:ish_top/utils/formatters/formatters.dart';
 
 class GlobalTextFiled extends StatelessWidget {
@@ -26,7 +27,7 @@ class GlobalTextFiled extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 10),
+      padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 10.h),
       child: TextField(
         onChanged: onChanged,
         keyboardType: (formatter == AppInputFormatters.moneyFormatter) ||
@@ -47,18 +48,18 @@ class GlobalTextFiled extends StatelessWidget {
                   blurRadius: 10,
                   spreadRadius: 0)
             ],
-            fontSize: 16,
+            fontSize: 15.sp,
           ),
-          contentPadding: const EdgeInsets.all(12),
+          contentPadding:  EdgeInsets.all(12.sp),
           fillColor: Colors.grey.withOpacity(.7),
           filled: true,
           focusedBorder: OutlineInputBorder(
             borderSide: const BorderSide(width: 0, color: Colors.grey),
-            borderRadius: BorderRadius.circular(16),
+            borderRadius: BorderRadius.circular(16.r),
           ),
           enabledBorder: OutlineInputBorder(
             borderSide: const BorderSide(width: 0, color: Colors.grey),
-            borderRadius: BorderRadius.circular(16),
+            borderRadius: BorderRadius.circular(16.r),
           ),
         ),
         style: TextStyle(

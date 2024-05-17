@@ -19,7 +19,9 @@ import 'package:ish_top/utils/size/size_utils.dart';
 import 'package:zoom_tap_animation/zoom_tap_animation.dart';
 
 class AddHireScreen extends StatefulWidget {
-  const AddHireScreen({super.key});
+  const AddHireScreen({super.key, required this.voidCallback});
+
+  final ValueChanged voidCallback;
 
   @override
   State<AddHireScreen> createState() => _AddHireScreenState();
@@ -91,10 +93,12 @@ class _AddHireScreenState extends State<AddHireScreen> {
         listener: (context, state) {},
         builder: (context, state) {
           return ListView(
+            physics: const BouncingScrollPhysics(),
             children: [
               SizedBox(
                 height: 150.w,
                 child: ListView(
+                  physics: const BouncingScrollPhysics(),
                   scrollDirection: Axis.horizontal,
                   children: [
                     12.getW(),
@@ -104,7 +108,21 @@ class _AddHireScreenState extends State<AddHireScreen> {
                   ],
                 ),
               ),
-              30.getH(),
+              2.getH(),
+              Align(
+                alignment: AlignmentDirectional.centerEnd,
+                child: Padding(
+                  padding: EdgeInsets.only(right: 16.w),
+                  child: Text(
+                    "${state.images.length}/5",
+                    style: TextStyle(
+                        color: Colors.black,
+                        fontWeight: FontWeight.w500,
+                        fontSize: 14.sp),
+                  ),
+                ),
+              ),
+              12.getH(),
               GlobalTextFiled(
                 onChanged: (v) {
                   setState(() {});
@@ -129,7 +147,7 @@ class _AddHireScreenState extends State<AddHireScreen> {
                 },
                 controller: descriptionCtrl,
                 labelText: "about_work",
-                maxLength: 500,
+                maxLength: 800,
               ),
               0.getH(),
               GlobalTextFiled(
@@ -150,10 +168,17 @@ class _AddHireScreenState extends State<AddHireScreen> {
                 },
               ),
               Padding(
-                padding: EdgeInsets.all(24.0.sp),
+                padding: EdgeInsets.all(16.w),
                 child: GlobalButton(
                   title: "add".tr(),
-                  color: Colors.green,
+                  color: isValid(
+                          nameCtrl: nameCtrl,
+                          numberCtrl: numberCtrl,
+                          money: money,
+                          ownerCtrl: ownerCtrl,
+                          descriptionCtrl: descriptionCtrl)
+                      ? Colors.green
+                      : Colors.grey,
                   onTap: () {
                     hireModel = hireModel.copyWith(
                       ownerName: ownerCtrl.text,
@@ -167,6 +192,14 @@ class _AddHireScreenState extends State<AddHireScreen> {
                     context.read<AnnouncementBloc>().add(
                           AnnouncementAddEvent(hireModel: hireModel),
                         );
+
+                    widget.voidCallback.call(() {});
+
+                    nameCtrl.clear();
+                    numberCtrl.clear();
+                    money.clear();
+                    ownerCtrl.clear();
+                    descriptionCtrl.clear();
                   },
                 ),
               )
@@ -176,4 +209,18 @@ class _AddHireScreenState extends State<AddHireScreen> {
       ),
     );
   }
+}
+
+bool isValid({
+  required TextEditingController nameCtrl,
+  required TextEditingController numberCtrl,
+  required TextEditingController money,
+  required TextEditingController ownerCtrl,
+  required TextEditingController descriptionCtrl,
+}) {
+  return nameCtrl.text.isNotEmpty &&
+      numberCtrl.text.length == 19 &&
+      money.text != "0 so'm" &&
+      ownerCtrl.text.isNotEmpty &&
+      descriptionCtrl.text.isNotEmpty;
 }

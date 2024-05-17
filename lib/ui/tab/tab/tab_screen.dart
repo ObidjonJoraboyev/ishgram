@@ -17,12 +17,7 @@ class TabScreen extends StatefulWidget {
 }
 
 class _TabScreenState extends State<TabScreen> {
-  List<Widget> screens = [
-    const HireScreen(),
-    const AddHireScreen(),
-    FeedbackScreen(userModel: UserModel.initial),
-    const ProfileScreen(),
-  ];
+
 
   int activeIndex = 0;
 
@@ -30,6 +25,18 @@ class _TabScreenState extends State<TabScreen> {
 
   @override
   Widget build(BuildContext context) {
+    List<Widget> screens = [
+      const HireScreen(),
+      AddHireScreen(voidCallback: (v){
+
+        activeIndex=0;
+        setState(() {
+
+        });
+      },),
+      FeedbackScreen(userModel: UserModel.initial),
+      const ProfileScreen(),
+    ];
     return MaterialApp(
       localizationsDelegates: context.localizationDelegates,
       supportedLocales: context.supportedLocales,

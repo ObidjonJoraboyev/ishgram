@@ -33,6 +33,7 @@ dependencies:
   image: ^3.0.1
   flutter_multi_formatter: ^2.12.8
   connectivity_plus: ^6.0.3
+  shimmer: ^3.0.0
 
 dev_dependencies:
   flutter_test:
