@@ -124,7 +124,7 @@ class _DetailScreenState extends State<DetailScreen> {
               10.getH(),
               Row(
                 children: [
-                  Icon(CupertinoIcons.eye_fill),
+                  const Icon(CupertinoIcons.eye_fill),
                   Text(widget.hireModel.countView.toString())
                 ],
               )

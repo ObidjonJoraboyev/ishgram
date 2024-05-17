@@ -1,15 +1,11 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:easy_localization/easy_localization.dart';
-import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:ish_top/blocs/auth/auth_bloc.dart';
-import 'package:ish_top/blocs/auth/auth_event.dart';
-import 'package:ish_top/data/local/local_storage.dart';
-import 'package:ish_top/ui/history/history_screen.dart';
-import 'package:ish_top/utils/size/size_utils.dart';
-import 'package:zoom_tap_animation/zoom_tap_animation.dart';
+import 'package:image_picker/image_picker.dart';
+import 'package:permission_handler/permission_handler.dart';
+import '../../../data/models/user_model.dart';
 
 class ProfileScreen extends StatefulWidget {
   const ProfileScreen({super.key});
@@ -19,142 +15,334 @@ class ProfileScreen extends StatefulWidget {
 }
 
 class _ProfileScreenState extends State<ProfileScreen> {
-  final user = FirebaseAuth.instance.currentUser;
+  final ImagePicker picker = ImagePicker();
+  String imageUrl = "";
+  String storagePath = "";
+  String fcm = "";
 
-  bool check = !StorageRepository.getBool(key: "language");
+  UserModel thisUser = UserModel.initial;
+
+  Future<void> init() async {
+    fcm = (await FirebaseMessaging.instance.getToken())!;
+    setState(() {});
+    if (!context.mounted) return;
+  }
+
+  @override
+  void initState() {
+    init();
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: CupertinoColors.systemGrey5,
-      appBar: AppBar(
-        backgroundColor: CupertinoColors.systemGrey5,
-        elevation: 0,
-        scrolledUnderElevation: 0,
-        title: const Text("profile").tr(),
-      ),
-      body: Column(
-        children: [
-          ListTile(
-            leading: const Icon(Icons.language),
-            onTap: () {
-              showDialog(
-                context: context,
-                builder: (context) {
-                  return CupertinoAlertDialog(
-                    actions: [
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: [
-                          10.getH(),
-                          ZoomTapAnimation(
-                            onTap: () async {
-                              await context.setLocale(const Locale("uz", "UZ"));
-                              if (!context.mounted) return;
-                              Navigator.pop(context);
-                            },
-                            child: Text(
-                              "uz".tr(),
-                              style: TextStyle(
-                                color: CupertinoColors.activeBlue,
-                                fontWeight: FontWeight.w400,
-                                fontSize: 16.sp,
-                              ),
+    return MaterialApp(
+      localizationsDelegates: context.localizationDelegates,
+      supportedLocales: context.supportedLocales,
+      locale: context.locale,
+      debugShowCheckedModeBanner: false,
+      home: Scaffold(
+        backgroundColor: Colors.grey.withOpacity(.06),
+        appBar: AppBar(
+          backgroundColor: Colors.grey.withOpacity(.02),
+          leading: IconButton(
+            style: IconButton.styleFrom(foregroundColor: Colors.white),
+            onPressed: () {},
+            icon: const Icon(
+              CupertinoIcons.qrcode,
+              color: CupertinoColors.activeBlue,
+              size: 28,
+            ),
+          ),
+          actions: [
+            TextButton(
+              style: TextButton.styleFrom(foregroundColor: Colors.white),
+              child: const Text(
+                "Edit",
+                style: TextStyle(
+                    color: CupertinoColors.activeBlue,
+                    fontWeight: FontWeight.w500,
+                    fontSize: 18),
+              ),
+              onPressed: () {},
+            )
+          ],
+          bottom: PreferredSize(
+            preferredSize: const Size(100, 70),
+            child: 1 == 2
+                ? GestureDetector(
+                    onTap: () {
+                      showDialog(
+                        barrierColor: Colors.black,
+                        context: context,
+                        builder: (context) => AlertDialog(
+                          shadowColor: Colors.black,
+                          backgroundColor: Colors.black,
+                          insetPadding: EdgeInsets.zero,
+                          contentPadding: EdgeInsets.zero,
+                          content: SizedBox(
+                            width: MediaQuery.sizeOf(context).width,
+                            child: CachedNetworkImage(
+                              imageUrl: thisUser.image,
+                              width: MediaQuery.sizeOf(context).width,
+                              fit: BoxFit.cover,
+                              height: 360,
                             ),
                           ),
-                          5.getH(),
-                          const Divider(),
-                          5.getH(),
-                          ZoomTapAnimation(
-                            onTap: () async {
-                              await context.setLocale(const Locale("ru", "RU"));
-                              if (!context.mounted) return;
-                              Navigator.pop(context);
-                            },
-                            child: Text(
-                              "ru".tr(),
-                              style: TextStyle(
-                                color: CupertinoColors.activeBlue,
-                                fontWeight: FontWeight.w400,
-                                fontSize: 16.sp,
-                              ),
+                        ),
+                      );
+                    },
+                    child: ClipRRect(
+                      borderRadius: BorderRadius.circular(10000),
+                      child: Image.network(
+                        thisUser.image,
+                        width: 90,
+                        height: 90,
+                        fit: BoxFit.cover,
+                      ),
+                    ),
+                  )
+                : GestureDetector(
+                    onTap: () async {
+                      await Permission.storage.request();
+                      await Permission.photos.request();
+                      if (await Permission.photos.isPermanentlyDenied ||
+                          await Permission.storage.isPermanentlyDenied) {
+                        openAppSettings();
+                      }
+
+                      setState(
+                        () {},
+                      );
+                    },
+                    child: Container(
+                      width: 90,
+                      height: 90,
+                      decoration: const BoxDecoration(
+                        shape: BoxShape.circle,
+                        color: Colors.red,
+                      ),
+                      child: Center(
+                        child: Text(
+                          thisUser.name.toUpperCase(),
+                          style: const TextStyle(
+                            fontSize: 32,
+                            color: Colors.white,
+                            fontWeight: FontWeight.w600,
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+          ),
+        ),
+        body: Column(
+          children: [
+            Column(
+              children: [
+                const SizedBox(
+                  height: 15,
+                ),
+                Text(
+                  thisUser.name,
+                  style: const TextStyle(
+                      fontWeight: FontWeight.w700, fontSize: 24),
+                ),
+                Text(
+                  thisUser.number,
+                  style: TextStyle(
+                    fontWeight: FontWeight.w400,
+                    fontSize: 18,
+                    color: Colors.black.withOpacity(.4),
+                  ),
+                ),
+                const SizedBox(
+                  height: 20,
+                ),
+                Padding(
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 18, vertical: 5),
+                  child: ClipRRect(
+                    borderRadius: BorderRadius.circular(12),
+                    child: CupertinoListTile(
+                        leadingSize: 35,
+                        onTap: () {},
+                        backgroundColorActivated: Colors.white,
+                        backgroundColor: Colors.white,
+                        leading: const Icon(
+                          CupertinoIcons.camera,
+                          color: CupertinoColors.activeBlue,
+                        ),
+                        title: const Text(
+                          "Change Profile Photo",
+                          style: TextStyle(color: CupertinoColors.activeBlue),
+                        )),
+                  ),
+                ),
+                Padding(
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 18, vertical: 15),
+                  child: ClipRRect(
+                    borderRadius: BorderRadius.circular(12),
+                    child: CupertinoListTile(
+                        trailing: const Icon(
+                          CupertinoIcons.right_chevron,
+                          size: 22,
+                          color: Colors.grey,
+                        ),
+                        onTap: () {},
+                        backgroundColorActivated: Colors.white,
+                        backgroundColor: Colors.white,
+                        leadingSize: 35,
+                        leading: Container(
+                          width: 32,
+                          height: 32,
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(8),
+                            color: Colors.red,
+                          ),
+                          child: const Padding(
+                            padding: EdgeInsets.only(top: 2),
+                            child: Icon(
+                              CupertinoIcons.person_circle_fill,
+                              color: CupertinoColors.white,
                             ),
                           ),
-                          5.getH(),
-                          const Divider(),
-                          Center(
-                            child: Padding(
-                              padding:
-                                  const EdgeInsets.only(top: 5, bottom: 15),
-                              child: ZoomTapAnimation(
-                                onTap: () {
+                        ),
+                        title: const Text(
+                          "My Profile",
+                          style: TextStyle(color: CupertinoColors.black),
+                        )),
+                  ),
+                ),
+                Padding(
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 18, vertical: 8),
+                  child: ClipRRect(
+                    borderRadius: BorderRadius.circular(12),
+                    child: CupertinoListTile(
+                      trailing: const Icon(
+                        CupertinoIcons.right_chevron,
+                        size: 22,
+                        color: Colors.grey,
+                      ),
+                      onTap: () {},
+                      backgroundColorActivated: Colors.white,
+                      backgroundColor: Colors.white,
+                      leadingSize: 35,
+                      leading: Container(
+                        width: 32,
+                        height: 32,
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(8),
+                          color: CupertinoColors.activeBlue,
+                        ),
+                        child: const Padding(
+                          padding: EdgeInsets.only(top: 2),
+                          child: Icon(
+                            CupertinoIcons.creditcard_fill,
+                            color: CupertinoColors.white,
+                          ),
+                        ),
+                      ),
+                      title: const Text(
+                        "Wallet",
+                        style: TextStyle(
+                          color: CupertinoColors.black,
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+                Padding(
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 18, vertical: 8),
+                  child: ClipRRect(
+                    borderRadius: BorderRadius.circular(12),
+                    child: CupertinoListTile(
+                      trailing: const Icon(
+                        CupertinoIcons.right_chevron,
+                        size: 22,
+                        color: Colors.grey,
+                      ),
+                      onTap: () {
+                        showCupertinoModalPopup(
+                          context: context,
+                          builder: (context) {
+                            return CupertinoActionSheet(
+                              cancelButton: CupertinoActionSheetAction(
+                                onPressed: () {
                                   Navigator.pop(context);
                                 },
                                 child: Text(
                                   "cancel".tr(),
-                                  style: TextStyle(
-                                      color: CupertinoColors.activeBlue,
-                                      fontWeight: FontWeight.w500,
-                                      fontSize: 16.sp),
+                                  style: const TextStyle(
+                                      color: CupertinoColors.activeBlue),
                                 ),
                               ),
-                            ),
+                              actions: [
+                                CupertinoActionSheetAction(
+                                  onPressed: () async {
+                                    await context
+                                        .setLocale(const Locale("uz", "UZ"));
+                                    if (!context.mounted) return;
+                                    Navigator.pop(context);
+                                  },
+                                  child: Text(
+                                    "uz".tr(),
+                                    style: const TextStyle(
+                                        color: CupertinoColors.activeBlue),
+                                  ),
+                                ),
+                                CupertinoActionSheetAction(
+                                  onPressed: () async {
+                                    await context
+                                        .setLocale(const Locale("ru", "RU"));
+                                    if (!context.mounted) return;
+                                    Navigator.pop(context);
+                                  },
+                                  child: Text(
+                                    "ru".tr(),
+                                    style: const TextStyle(
+                                        color: CupertinoColors.activeBlue),
+                                  ),
+                                ),
+                              ],
+                            );
+                          },
+                        );
+                      },
+                      backgroundColorActivated: Colors.white,
+                      backgroundColor: Colors.white,
+                      leadingSize: 35,
+                      leading: Container(
+                        width: 32,
+                        height: 32,
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(8),
+                          color: CupertinoColors.activeBlue,
+                        ),
+                        child: const Padding(
+                          padding: EdgeInsets.only(top: 2),
+                          child: Icon(
+                            Icons.language,
+                            color: CupertinoColors.white,
                           ),
-                        ],
-                      )
-                    ],
-                  );
-                },
-              );
-            },
-            title: Text("language".tr()),
-          ),
-          Container(
-            width: double.infinity,
-            height: 0.66,
-            color: Colors.black.withOpacity(.5),
-          ),
-          ListTile(
-            leading: const Icon(Icons.history),
-            title: Text("history".tr()),
-            onTap: () {
-              Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                      builder: (context) => const HistoryScreen()));
-            },
-          ),
-          Container(
-            width: double.infinity,
-            height: 0.66,
-            color: Colors.black.withOpacity(.5),
-          ),
-          const SizedBox(
-            height: 50,
-          ),
-          Center(
-            child: Column(
-              children: [
-                Text(
-                  StorageRepository.getString(key: "userNumber"),
-                  style: const TextStyle(fontSize: 32),
-                ),
-                const SizedBox(
-                  height: 15,
-                ),
-                GestureDetector(
-                  onTap: () {
-                    context.read<AuthBloc>().add(LogOutEvent(context: context));
-                  },
-                  child: const Text(
-                    "Log out",
-                    style: TextStyle(color: Colors.red),
+                        ),
+                      ),
+                      title: Text(
+                        "language".tr(),
+                        style: const TextStyle(
+                          color: CupertinoColors.black,
+                        ),
+                      ),
+                    ),
                   ),
-                )
+                ),
               ],
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }

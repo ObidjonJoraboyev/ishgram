@@ -4,6 +4,8 @@ class UserModel extends Equatable {
   final String name;
   final String password;
   final String lastName;
+  final List<String> allHiring;
+  final List<String> likedHiring;
   final int age;
   final int updatedAt;
   final int createdAt;
@@ -35,6 +37,8 @@ class UserModel extends Equatable {
     required this.bio,
     required this.updatedAt,
     required this.createdAt,
+    required this.allHiring,
+    required this.likedHiring,
   });
 
   UserModel copyWith({
@@ -55,6 +59,8 @@ class UserModel extends Equatable {
     int? updatedAt,
     int? createdAt,
     String? location,
+    List<String>? announcements,
+    List<String>? likedHiring,
   }) {
     return UserModel(
       password: password ?? this.password,
@@ -73,6 +79,8 @@ class UserModel extends Equatable {
       bio: bio ?? this.bio,
       updatedAt: updatedAt ?? this.updatedAt,
       createdAt: createdAt ?? this.createdAt,
+      allHiring: announcements ?? this.allHiring,
+      likedHiring: likedHiring ?? this.likedHiring,
     );
   }
 
@@ -93,6 +101,8 @@ class UserModel extends Equatable {
         "bio": bio,
         "updatedAt": updatedAt,
         "createdAt": createdAt,
+        "announcements": allHiring,
+        "likedHiring": likedHiring
       };
 
   Map<String, dynamic> toJsonForUpdate() => {
@@ -111,6 +121,8 @@ class UserModel extends Equatable {
         "bio": bio,
         "updatedAt": updatedAt,
         "createdAt": createdAt,
+        "announcements": allHiring,
+        "likedHiring": likedHiring
       };
 
   factory UserModel.fromJson(Map<String, dynamic> json) {
@@ -131,6 +143,8 @@ class UserModel extends Equatable {
       bio: json["bio"] as String? ?? "",
       updatedAt: json["updatedAt"] as int? ?? 0,
       createdAt: json["createdAt"] as int? ?? 0,
+      allHiring: json["announcements"] as List<String>? ?? [],
+      likedHiring: json["likedHiring"] as List<String>? ?? [],
     );
   }
 
@@ -141,9 +155,9 @@ class UserModel extends Equatable {
     fcm: "",
     docId: "",
     name: "",
-    number: "1111111",
+    number: "",
     lastName: "",
-    image: "1111",
+    image: "",
     lat: 0,
     long: 0,
     region: "",
@@ -151,6 +165,8 @@ class UserModel extends Equatable {
     bio: "",
     updatedAt: 0,
     createdAt: 0,
+    allHiring: [],
+    likedHiring: [],
   );
 
   @override
@@ -171,5 +187,7 @@ class UserModel extends Equatable {
         bio,
         updatedAt,
         createdAt,
+        allHiring,
+        likedHiring
       ];
 }

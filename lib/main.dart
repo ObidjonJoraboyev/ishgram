@@ -13,7 +13,6 @@ void main() async {
   await EasyLocalization.ensureInitialized();
   await Firebase.initializeApp(
       options: Platform.isIOS ? DefaultFirebaseOptions.currentPlatform : null);
-  // await Firebase.initializeApp();
   StorageRepository.instance;
   runApp(
     EasyLocalization(

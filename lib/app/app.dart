@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:ish_top/blocs/auth/auth_bloc.dart';
+import 'package:ish_top/blocs/connectivity/connectivity_bloc.dart';
 import 'package:ish_top/blocs/image/image_bloc.dart';
 import 'package:ish_top/blocs/message/message_bloc.dart';
 import 'package:ish_top/blocs/message/message_event.dart';
@@ -10,6 +11,7 @@ import 'package:ish_top/ui/splash/splash_screen.dart';
 
 import '../blocs/announcement_bloc/hire_bloc.dart';
 import '../blocs/announcement_bloc/hire_event.dart';
+import '../blocs/connectivity/connectivity_event.dart';
 
 class App extends StatelessWidget {
   const App({super.key});
@@ -32,6 +34,9 @@ class App extends StatelessWidget {
         ),
         BlocProvider(
           create: (context) => ImageBloc(),
+        ),
+        BlocProvider(
+          create: (_) => ConnectBloc()..add(CheckConnect()),
         ),
       ],
       child: ScreenUtilInit(

@@ -10,7 +10,7 @@
   "phone_number": "Telefon raqami",
   "add": "Qo'shish",
   "search": "Qidirish",
-  "language": "Uzbek tili",
+  "language": "Tilni o'zgartirish",
   "cancel": "Orqaga",
   "error_name": "Ism noto'g'ri kiritilgan",
   "name": "Ism",
@@ -29,7 +29,11 @@
   "ru": "🇷🇺  Rus tili",
   "salary": "Ish haqi",
   "add_image": "Rasm qo'shish",
-  "reset": "Tozalash"
+  "reset": "Tozalash",
+  "takeGallery": "Galereyadan tanlash",
+
+  "takeCamera": "Kamerdan olish"
+
 
 
 }

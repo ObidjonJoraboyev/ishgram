@@ -39,7 +39,7 @@ class AnnouncementModel extends Equatable {
   final int createdAt;
   final String updatedAt;
   final String location;
-  final int countView;
+  final List<String> countView;
   final StatusAnnouncement status;
 
   const AnnouncementModel({
@@ -76,7 +76,7 @@ class AnnouncementModel extends Equatable {
     String? location,
     int? createdAt,
     String? updatedAt,
-    int? countView,
+    List<String>? countView,
     WorkCategory? category,
   }) {
     return AnnouncementModel(
@@ -158,7 +158,7 @@ class AnnouncementModel extends Equatable {
       location: json["location"] as String? ?? "",
       createdAt: json["createdAt"] as int? ?? 0,
       updatedAt: json["updatedAt"] as String? ?? "",
-      countView: json["countView"] as int? ?? 0,
+      countView: json["countView"] as List<String>? ?? [],
       category: enumFromString(
         json["category"] as String? ?? "",
       ),
@@ -193,7 +193,7 @@ class AnnouncementModel extends Equatable {
     createdAt: 0,
     updatedAt: '',
     location: '',
-    countView: 0,
+    countView: [],
     status: StatusAnnouncement.pure,
   );
 

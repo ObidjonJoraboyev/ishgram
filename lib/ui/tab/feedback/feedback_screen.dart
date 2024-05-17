@@ -49,6 +49,7 @@ class _FeedbackScreenState extends State<FeedbackScreen> {
 
   @override
   void initState() {
+    if (!context.mounted) return;
     scrollController.addListener(
       () {
         if (scrollController.position.pixels >
@@ -92,7 +93,7 @@ class _FeedbackScreenState extends State<FeedbackScreen> {
               (selectMessages.isEmpty
                   ? ClipRRect(
                       borderRadius: BorderRadius.circular(1000),
-                      child: widget.userModel.image[0] == "h"
+                      child: "s" == "h"
                           ? ClipRRect(
                               borderRadius: BorderRadius.circular(1000),
                               child: Container(
