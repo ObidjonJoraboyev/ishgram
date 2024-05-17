@@ -21,7 +21,7 @@ import 'package:zoom_tap_animation/zoom_tap_animation.dart';
 class AddHireScreen extends StatefulWidget {
   const AddHireScreen({super.key, required this.voidCallback});
 
-  final ValueChanged voidCallback;
+  final ValueChanged<void> voidCallback;
 
   @override
   State<AddHireScreen> createState() => _AddHireScreenState();
@@ -29,14 +29,13 @@ class AddHireScreen extends StatefulWidget {
 
 class _AddHireScreenState extends State<AddHireScreen> {
   final TextEditingController nameCtrl = TextEditingController();
-
   final TextEditingController numberCtrl = TextEditingController();
   final TextEditingController money = TextEditingController();
-
   final TextEditingController ownerCtrl = TextEditingController();
-
   final TextEditingController descriptionCtrl = TextEditingController();
 
+  int startWork = 0;
+  int endWork = 0;
   int takenImages = 0;
   AnnouncementModel hireModel = AnnouncementModel.initial;
 
@@ -167,6 +166,127 @@ class _AddHireScreenState extends State<AddHireScreen> {
                   setState(() {});
                 },
               ),
+              const Divider(),
+              CupertinoListTile(
+                onTap: () {
+                  showModalBottomSheet(
+                    context: context,
+                    isScrollControlled: true,
+                    builder: (context) {
+                      DateTime initialDateTime = DateTime.now();
+                      DateTime minimumDate = DateTime.now();
+                      return Container(
+                        padding: EdgeInsets.symmetric(horizontal: 16.w),
+                        height: MediaQuery.sizeOf(context).height - 56,
+                        decoration: BoxDecoration(
+                          color: Colors.white,
+                          borderRadius: BorderRadius.only(
+                            topLeft: Radius.circular(16.r),
+                            topRight: Radius.circular(16.r),
+                          ),
+                        ),
+                        child: Column(
+                          children: [
+                            20.getH(),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                ZoomTapAnimation(
+                                  onTap: () {
+                                    Navigator.pop(context);
+                                  },
+                                  child: Text(
+                                    "cancel".tr(),
+                                    style: TextStyle(
+                                        color: CupertinoColors.activeBlue,
+                                        fontSize: 16.sp,
+                                        fontWeight: FontWeight.w400),
+                                  ),
+                                ),
+                                ZoomTapAnimation(
+                                  child: Text(
+                                    "Done",
+                                    style: TextStyle(
+                                        color: CupertinoColors.activeBlue,
+                                        fontSize: 16.sp,
+                                        fontWeight: FontWeight.w600),
+                                  ),
+                                  onTap: () {
+                                    Navigator.pop(context);
+                                  },
+                                ),
+                              ],
+                            ),
+                            20.getH(),
+                            Align(
+                              alignment:
+                              AlignmentDirectional.centerStart,
+                              child: Text(
+                                "Boshlanish vaqti",
+                                style: TextStyle(
+                                  fontWeight: FontWeight.w600,
+                                  fontSize: 18.sp,
+                                ),
+                              ),
+                            ),
+                            SizedBox(
+                              height: 200.h,
+                              child: CupertinoDatePicker(
+                                initialDateTime: initialDateTime
+                                    .isBefore(minimumDate)
+                                    ? minimumDate
+                                    : initialDateTime,
+                                use24hFormat: true,
+                                showDayOfWeek: true,
+                                itemExtent: 55,
+                                minimumDate: minimumDate,
+                                onDateTimeChanged: (v) {
+                                  startWork =
+                                      v.millisecondsSinceEpoch;
+                                  setState(() {});
+                                },
+                              ),
+                            ),
+                            40.getH(),
+                            Align(
+                              alignment:
+                              AlignmentDirectional.centerStart,
+                              child: Text(
+                                "Tugash vaqti",
+                                style: TextStyle(
+                                  fontWeight: FontWeight.w600,
+                                  fontSize: 18.sp,
+                                ),
+                              ),
+                            ),
+                            SizedBox(
+                              height: 200.h,
+                              child: CupertinoDatePicker(
+                                initialDateTime: initialDateTime
+                                    .isBefore(minimumDate)
+                                    ? minimumDate
+                                    : initialDateTime,
+                                use24hFormat: true,
+                                showDayOfWeek: true,
+                                itemExtent: 55,
+                                minimumDate: minimumDate,
+                                onDateTimeChanged: (v) {
+                                  endWork = v.millisecondsSinceEpoch;
+                                  setState(
+                                        () {},
+                                  );
+
+                                },
+                              ),
+                            ),
+                          ],
+                        ),
+                      );
+                    },
+                  );
+                },
+                title: const Text("Ish vaqt oralig'i"),
+              ),
               Padding(
                 padding: EdgeInsets.all(16.w),
                 child: GlobalButton(
@@ -178,7 +298,7 @@ class _AddHireScreenState extends State<AddHireScreen> {
                           ownerCtrl: ownerCtrl,
                           descriptionCtrl: descriptionCtrl)
                       ? Colors.green
-                      : Colors.grey,
+                      : CupertinoColors.systemGrey,
                   onTap: () {
                     hireModel = hireModel.copyWith(
                       ownerName: ownerCtrl.text,
@@ -189,12 +309,11 @@ class _AddHireScreenState extends State<AddHireScreen> {
                       number: numberCtrl.text,
                       createdAt: DateTime.now().millisecondsSinceEpoch,
                     );
-                    context.read<AnnouncementBloc>().add(
-                          AnnouncementAddEvent(hireModel: hireModel),
-                        );
+                    context
+                        .read<AnnouncementBloc>()
+                        .add(AnnouncementAddEvent(hireModel: hireModel));
 
-                    widget.voidCallback.call(() {});
-
+                    widget.voidCallback.call;
                     nameCtrl.clear();
                     numberCtrl.clear();
                     money.clear();

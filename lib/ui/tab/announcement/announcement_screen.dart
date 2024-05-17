@@ -46,7 +46,7 @@ class _HireScreenState extends State<HireScreen>
           IconButton(
             icon: const Icon(Icons.search),
             onPressed: () {
-              context.read<AnnouncementBloc>().add(AnnouncementGetEvent());
+              context.read<AnnouncementBloc>().add(AnnouncementInitialEvent());
               setState(() {});
             },
           )
@@ -77,7 +77,6 @@ class _HireScreenState extends State<HireScreen>
                       .contains(controller.text.toLowerCase()))
                   .toList();
               return RefreshIndicator.adaptive(
-
                 onRefresh: () async {
                   context.read<AnnouncementBloc>().add(AnnouncementGetEvent());
                   setState(() {});

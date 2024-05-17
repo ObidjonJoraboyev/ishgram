@@ -5,12 +5,18 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:ish_top/data/models/announcement.dart';
 import 'hire_event.dart';
 
+import 'package:bloc_concurrency/bloc_concurrency.dart' as bloc;
+
 class AnnouncementBloc extends Bloc<HireEvent, List<AnnouncementModel>> {
   AnnouncementBloc() : super([]) {
     on<AnnouncementAddEvent>(addAnnouncement);
     on<AnnouncementGetEvent>(getAnnouncements);
     on<AnnouncementRemoveEvent>(deleteAnnouncements);
     on<AnnouncementUpdateEvent>(updateAnnouncement);
+    on<AnnouncementInitialEvent>(
+      initial,
+      transformer: bloc.restartable(),
+    );
   }
 
   addAnnouncement(AnnouncementAddEvent event, emit) async {
@@ -66,5 +72,10 @@ class AnnouncementBloc extends Bloc<HireEvent, List<AnnouncementModel>> {
     } catch (error) {
       debugPrint("ERROR CATCH $error");
     }
+  }
+
+  initial(AnnouncementInitialEvent event, Emitter emit) async {
+
+    await Future.delayed(const Duration(seconds: 1));
   }
 }
