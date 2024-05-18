@@ -7,8 +7,6 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:ish_top/data/models/announcement.dart';
 import 'package:ish_top/utils/size/size_utils.dart';
 import 'package:shimmer/shimmer.dart';
-import 'package:zoom_tap_animation/zoom_tap_animation.dart';
-
 import '../../../../blocs/announcement_bloc/hire_bloc.dart';
 import '../../../../blocs/announcement_bloc/hire_event.dart';
 import '../detail/detail_screen.dart';
@@ -35,7 +33,7 @@ class HiringItem extends StatelessWidget {
       itemCount: hires.length,
       physics: const AlwaysScrollableScrollPhysics(),
       itemBuilder: (context, index1) {
-        return ZoomTapAnimation(
+        return GestureDetector(
           onTap: () async {
             context.read<AnnouncementBloc>().add(
                   AnnouncementUpdateEvent(
@@ -81,43 +79,66 @@ class HiringItem extends StatelessWidget {
                               hires[index1].image.length,
                               (index) => Padding(
                                 padding: const EdgeInsets.all(8.0),
-                                child: ClipRRect(
-                                  borderRadius: BorderRadius.circular(16),
-                                  child: CachedNetworkImage(
-                                    placeholder: (context, st) {
-                                      return Shimmer.fromColors(
-                                        baseColor: Colors.white,
-                                        highlightColor: Colors.grey,
-                                        child: Container(
-                                          height: 80.h,
-                                          decoration: BoxDecoration(
-                                            color: Colors.white,
-                                            borderRadius:
-                                                BorderRadius.circular(16),
-                                          ),
-                                        ),
-                                      );
-                                    },
-                                    errorWidget:
-                                        (BuildContext context, String st, a) {
-                                      return Shimmer.fromColors(
-                                        baseColor: Colors.white,
-                                        highlightColor: Colors.grey,
-                                        child: Container(
-                                          height: 80.h,
-                                          decoration: BoxDecoration(
-                                            color: Colors.white,
-                                            borderRadius:
-                                                BorderRadius.circular(16),
-                                          ),
-                                        ),
-                                      );
-                                    },
-                                    imageUrl:
-                                        hires[index1].image[index].imageUrl,
-                                    height: 80.h,
-                                    fit: BoxFit.cover,
-                                  ),
+                                child: Stack(
+                                  children: [
+                                    ClipRRect(
+                                      borderRadius: BorderRadius.circular(16),
+                                      child: CachedNetworkImage(
+                                        placeholder: (context, st) {
+                                          return Shimmer.fromColors(
+                                            baseColor: Colors.white,
+                                            highlightColor: Colors.grey,
+                                            child: Container(
+                                              height: 80.h,
+                                              decoration: BoxDecoration(
+                                                color: Colors.white,
+                                                borderRadius:
+                                                    BorderRadius.circular(16),
+                                              ),
+                                            ),
+                                          );
+                                        },
+                                        errorWidget: (BuildContext context,
+                                            String st, a) {
+                                          return Shimmer.fromColors(
+                                            baseColor: Colors.white,
+                                            highlightColor: Colors.grey,
+                                            child: Container(
+                                              height: 80.h,
+                                              decoration: BoxDecoration(
+                                                color: Colors.white,
+                                                borderRadius:
+                                                    BorderRadius.circular(16),
+                                              ),
+                                            ),
+                                          );
+                                        },
+                                        imageUrl:
+                                            hires[index1].image[index].imageUrl,
+                                        fit: BoxFit.cover,
+                                        width: double.infinity,
+                                      ),
+                                    ),
+                                    Positioned(
+                                      bottom: 0,
+                                      right: 0,
+                                      child: Row(
+                                        children: [
+                                          ...List.generate(
+                                            hires[index1].image.length,
+                                            (index) => Container(
+                                              margin: const EdgeInsets.all(12),
+                                              width: 10,
+                                              height: 10,
+                                              decoration: const BoxDecoration(
+                                                  shape: BoxShape.circle,
+                                                  color: Colors.white),
+                                            ),
+                                          )
+                                        ],
+                                      ),
+                                    )
+                                  ],
                                 ),
                               ),
                             ),

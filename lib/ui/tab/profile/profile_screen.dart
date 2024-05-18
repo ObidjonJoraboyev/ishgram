@@ -1,6 +1,5 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:easy_localization/easy_localization.dart';
-import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
@@ -23,7 +22,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
   UserModel thisUser = UserModel.initial;
 
   Future<void> init() async {
-    fcm = (await FirebaseMessaging.instance.getToken())!;
+
     setState(() {});
     if (!context.mounted) return;
   }

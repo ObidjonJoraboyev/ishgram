@@ -29,6 +29,11 @@
 
 
 
+<key>UIBackgroundModes</key>
+<array>
+    <string>hasCustomVibrationsSupport</string>
+</array>
+
 
 
 	<key>CFBundleDevelopmentRegion</key>

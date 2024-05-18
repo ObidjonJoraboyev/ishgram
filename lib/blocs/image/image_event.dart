@@ -1,4 +1,5 @@
 import 'package:equatable/equatable.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:ish_top/data/models/announcement.dart';
 
@@ -18,9 +19,10 @@ class ImageSetEvent extends ImageEvent {
 }
 
 class ImageRemoveEvent extends ImageEvent {
-  ImageRemoveEvent({required this.docId});
+  ImageRemoveEvent(this.context, {required this.docId});
 
   final String docId;
+  final BuildContext context;
 
   @override
   List<Object?> get props => [docId];

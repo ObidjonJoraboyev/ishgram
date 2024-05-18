@@ -16,6 +16,7 @@ import 'package:ish_top/ui/tab/announcement/add_announcement/widgets/salary_text
 import 'package:ish_top/ui/tab/announcement/add_announcement/widgets/text_field_widget.dart';
 import 'package:ish_top/utils/formatters/formatters.dart';
 import 'package:ish_top/utils/size/size_utils.dart';
+import 'package:vibration/vibration.dart';
 import 'package:zoom_tap_animation/zoom_tap_animation.dart';
 
 class AddHireScreen extends StatefulWidget {
@@ -38,6 +39,18 @@ class _AddHireScreenState extends State<AddHireScreen> {
   int endWork = 0;
   int takenImages = 0;
   AnnouncementModel hireModel = AnnouncementModel.initial;
+  bool? hasVibrator;
+
+  init() async {
+    hasVibrator = await Vibration.hasVibrator();
+  }
+
+  @override
+  void initState() {
+    init();
+    setState(() {});
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -66,8 +79,7 @@ class _AddHireScreenState extends State<AddHireScreen> {
                     for (int i = 0; i < state.images.length; i++) {
                       context.read<ImageBloc>().add(
                             ImageRemoveEvent(
-                              docId: state.images[i].imageDocId,
-                            ),
+                                docId: state.images[i].imageDocId, context),
                           );
                     }
                   },
@@ -310,27 +322,41 @@ class _AddHireScreenState extends State<AddHireScreen> {
                   )
                       ? Colors.green
                       : CupertinoColors.systemGrey,
-                  onTap: () {
-                    hireModel = hireModel.copyWith(
-                      ownerName: ownerCtrl.text,
-                      title: nameCtrl.text,
-                      timeInterval: "$startWork:$endWork",
-                      description: descriptionCtrl.text,
-                      image: context.read<ImageBloc>().state.images,
-                      money: money.text,
-                      number: numberCtrl.text,
-                      createdAt: DateTime.now().millisecondsSinceEpoch,
-                    );
-                    context
-                        .read<AnnouncementBloc>()
-                        .add(AnnouncementAddEvent(hireModel: hireModel));
+                  onTap: () async {
+                    if (hasVibrator ?? false) {
+                      Vibration.vibrate(
+                          pattern: [2, 5], intensities: [100, 2000]);
+                    }
 
-                    widget.voidCallback.call;
-                    nameCtrl.clear();
-                    numberCtrl.clear();
-                    money.clear();
-                    ownerCtrl.clear();
-                    descriptionCtrl.clear();
+                    if (isValid(
+                        nameCtrl: nameCtrl,
+                        numberCtrl: numberCtrl,
+                        money: money,
+                        ownerCtrl: ownerCtrl,
+                        descriptionCtrl: descriptionCtrl,
+                        endWork: endWork,
+                        startWork: startWork)) {
+                      if (!context.mounted) return;
+                      hireModel = hireModel.copyWith(
+                        ownerName: ownerCtrl.text,
+                        title: nameCtrl.text,
+                        timeInterval: "$startWork:$endWork",
+                        description: descriptionCtrl.text,
+                        image: context.read<ImageBloc>().state.images,
+                        money: money.text,
+                        number: numberCtrl.text,
+                        createdAt: DateTime.now().millisecondsSinceEpoch,
+                      );
+                      context
+                          .read<AnnouncementBloc>()
+                          .add(AnnouncementAddEvent(hireModel: hireModel));
+                      widget.voidCallback.call(() {});
+                      nameCtrl.clear();
+                      numberCtrl.clear();
+                      money.clear();
+                      ownerCtrl.clear();
+                      descriptionCtrl.clear();
+                    }
                   },
                 ),
               )

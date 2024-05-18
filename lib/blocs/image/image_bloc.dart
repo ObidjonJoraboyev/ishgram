@@ -1,6 +1,5 @@
 import 'dart:io';
 import 'package:firebase_storage/firebase_storage.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:image_picker/image_picker.dart';
@@ -69,6 +68,8 @@ class ImageBloc extends Bloc<ImageEvent, ImageUploadState> {
           formStatus: FormStatus.success,
         ),
       );
+
+
     } on FirebaseException catch (error) {
       debugPrint(error.message);
       throw Exception();

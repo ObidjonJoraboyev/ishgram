@@ -1,4 +1,5 @@
 import 'package:easy_localization/easy_localization.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -36,10 +37,13 @@ class GlobalTextFiled extends StatelessWidget {
             : TextInputType.text,
         inputFormatters: isPhone != null ? [formatter!] : [],
         controller: controller,
+        cursorColor: CupertinoColors.activeBlue,
         decoration: InputDecoration(
+
           hintStyle: TextStyle(color: Colors.white.withOpacity(.6)),
           labelText: labelText.tr(),
           labelStyle: TextStyle(
+
             color: Colors.black.withOpacity(.8),
             fontWeight: FontWeight.w500,
             shadows: [

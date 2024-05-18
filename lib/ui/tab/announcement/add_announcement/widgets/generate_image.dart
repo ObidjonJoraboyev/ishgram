@@ -7,15 +7,22 @@ import '../../../../../blocs/image/image_bloc.dart';
 import '../../../../../blocs/image/image_event.dart';
 import '../../../../../blocs/image/image_state.dart';
 
-class GenerateImage extends StatelessWidget {
+class GenerateImage extends StatefulWidget {
   const GenerateImage({super.key, required this.state});
+
   final ImageUploadState state;
+
+  @override
+  _GenerateImageState createState() => _GenerateImageState();
+}
+
+class _GenerateImageState extends State<GenerateImage> {
   @override
   Widget build(BuildContext context) {
     return Row(
       children: [
         ...List.generate(
-          state.images.length,
+          widget.state.images.length,
           (index) => ClipRRect(
             borderRadius: BorderRadius.circular(16.r),
             child: Padding(
@@ -29,9 +36,11 @@ class GenerateImage extends StatelessWidget {
                       onPressed: () async {
                         context.read<ImageBloc>().add(
                               ImageRemoveEvent(
-                                docId: state.images[index].imageDocId,
+                                context,
+                                docId: widget.state.images[index].imageDocId,
                               ),
                             );
+                        Navigator.of(context, rootNavigator: true).pop();
                       },
                       isDestructiveAction: true,
                       trailingIcon: CupertinoIcons.delete,
@@ -39,7 +48,7 @@ class GenerateImage extends StatelessWidget {
                     ),
                   ],
                   child: CachedNetworkImage(
-                    imageUrl: state.images[index].imageUrl,
+                    imageUrl: widget.state.images[index].imageUrl,
                     fit: BoxFit.cover,
                     width: 150.w,
                     height: 150.w,
@@ -51,7 +60,8 @@ class GenerateImage extends StatelessWidget {
                           child: Container(
                             width: 150.w,
                             color: CupertinoColors.systemGrey2,
-                            child: (state.formStatus == FormStatus.uploading) &&
+                            child: (widget.state.formStatus ==
+                                        FormStatus.uploading) &&
                                     (index == 0)
                                 ? const Center(
                                     child: CircularProgressIndicator())
