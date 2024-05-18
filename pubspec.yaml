@@ -35,6 +35,8 @@ dependencies:
   connectivity_plus: ^6.0.3
   shimmer: ^3.0.0
   bloc_concurrency: ^0.2.5
+  url_launcher: ^6.2.6
+  flutter_phone_direct_caller: ^2.1.1
 
 dev_dependencies:
   flutter_test:

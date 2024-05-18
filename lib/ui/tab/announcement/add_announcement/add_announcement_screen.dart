@@ -167,142 +167,154 @@ class _AddHireScreenState extends State<AddHireScreen> {
                 },
               ),
               const Divider(),
-              CupertinoListTile(
-                onTap: () {
-                  showModalBottomSheet(
-                    context: context,
-                    isScrollControlled: true,
-                    builder: (context) {
-                      DateTime initialDateTime = DateTime.now();
-                      DateTime minimumDate = DateTime.now();
-                      return Container(
-                        padding: EdgeInsets.symmetric(horizontal: 16.w),
-                        height: MediaQuery.sizeOf(context).height - 56,
-                        decoration: BoxDecoration(
-                          color: Colors.white,
-                          borderRadius: BorderRadius.only(
-                            topLeft: Radius.circular(16.r),
-                            topRight: Radius.circular(16.r),
+              StatefulBuilder(builder: (context, setState) {
+                return CupertinoListTile(
+                  onTap: () {
+                    showModalBottomSheet(
+                      context: context,
+                      isScrollControlled: true,
+                      builder: (context) {
+                        DateTime initialDateTime = DateTime.now();
+                        DateTime minimumDate = DateTime.now();
+                        return Container(
+                          padding: EdgeInsets.symmetric(horizontal: 16.w),
+                          height: MediaQuery.sizeOf(context).height - 56,
+                          decoration: BoxDecoration(
+                            color: Colors.white,
+                            borderRadius: BorderRadius.only(
+                              topLeft: Radius.circular(16.r),
+                              topRight: Radius.circular(16.r),
+                            ),
                           ),
-                        ),
-                        child: Column(
-                          children: [
-                            20.getH(),
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                ZoomTapAnimation(
-                                  onTap: () {
-                                    Navigator.pop(context);
-                                  },
-                                  child: Text(
-                                    "cancel".tr(),
-                                    style: TextStyle(
-                                        color: CupertinoColors.activeBlue,
-                                        fontSize: 16.sp,
-                                        fontWeight: FontWeight.w400),
+                          child: Column(
+                            children: [
+                              20.getH(),
+                              Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  ZoomTapAnimation(
+                                    onTap: () {
+                                      endWork = 0;
+                                      startWork = 0;
+                                      Navigator.pop(context);
+                                    },
+                                    child: Text(
+                                      "cancel".tr(),
+                                      style: TextStyle(
+                                          color: CupertinoColors.activeBlue,
+                                          fontSize: 16.sp,
+                                          fontWeight: FontWeight.w400),
+                                    ),
+                                  ),
+                                  ZoomTapAnimation(
+                                    child: Text(
+                                      "Done",
+                                      style: TextStyle(
+                                          color: CupertinoColors.activeBlue,
+                                          fontSize: 16.sp,
+                                          fontWeight: FontWeight.w600),
+                                    ),
+                                    onTap: () {
+                                      if (endWork !=
+                                              DateTime.now()
+                                                  .millisecondsSinceEpoch &&
+                                          startWork < endWork &&
+                                          startWork != endWork) {
+                                        Navigator.pop(context);
+                                      }
+                                    },
+                                  ),
+                                ],
+                              ),
+                              20.getH(),
+                              Align(
+                                alignment: AlignmentDirectional.centerStart,
+                                child: Text(
+                                  "Boshlanish vaqti",
+                                  style: TextStyle(
+                                    fontWeight: FontWeight.w600,
+                                    fontSize: 18.sp,
                                   ),
                                 ),
-                                ZoomTapAnimation(
-                                  child: Text(
-                                    "Done",
-                                    style: TextStyle(
-                                        color: CupertinoColors.activeBlue,
-                                        fontSize: 16.sp,
-                                        fontWeight: FontWeight.w600),
-                                  ),
-                                  onTap: () {
-                                    Navigator.pop(context);
+                              ),
+                              Text(startWork.toString()),
+                              SizedBox(
+                                height: 200.h,
+                                child: CupertinoDatePicker(
+                                  initialDateTime:
+                                      initialDateTime.isBefore(minimumDate)
+                                          ? minimumDate
+                                          : initialDateTime,
+                                  use24hFormat: true,
+                                  showDayOfWeek: true,
+                                  itemExtent: 55,
+                                  minimumDate: minimumDate,
+                                  onDateTimeChanged: (v) {
+                                    startWork = v.millisecondsSinceEpoch;
+                                    setState(() {});
                                   },
                                 ),
-                              ],
-                            ),
-                            20.getH(),
-                            Align(
-                              alignment:
-                              AlignmentDirectional.centerStart,
-                              child: Text(
-                                "Boshlanish vaqti",
-                                style: TextStyle(
-                                  fontWeight: FontWeight.w600,
-                                  fontSize: 18.sp,
+                              ),
+                              40.getH(),
+                              Align(
+                                alignment: AlignmentDirectional.centerStart,
+                                child: Text(
+                                  "Tugash vaqti",
+                                  style: TextStyle(
+                                    fontWeight: FontWeight.w600,
+                                    fontSize: 18.sp,
+                                  ),
                                 ),
                               ),
-                            ),
-                            SizedBox(
-                              height: 200.h,
-                              child: CupertinoDatePicker(
-                                initialDateTime: initialDateTime
-                                    .isBefore(minimumDate)
-                                    ? minimumDate
-                                    : initialDateTime,
-                                use24hFormat: true,
-                                showDayOfWeek: true,
-                                itemExtent: 55,
-                                minimumDate: minimumDate,
-                                onDateTimeChanged: (v) {
-                                  startWork =
-                                      v.millisecondsSinceEpoch;
-                                  setState(() {});
-                                },
-                              ),
-                            ),
-                            40.getH(),
-                            Align(
-                              alignment:
-                              AlignmentDirectional.centerStart,
-                              child: Text(
-                                "Tugash vaqti",
-                                style: TextStyle(
-                                  fontWeight: FontWeight.w600,
-                                  fontSize: 18.sp,
+                              SizedBox(
+                                height: 200.h,
+                                child: CupertinoDatePicker(
+                                  initialDateTime:
+                                      initialDateTime.isBefore(minimumDate)
+                                          ? minimumDate
+                                          : initialDateTime,
+                                  use24hFormat: true,
+                                  showDayOfWeek: true,
+                                  itemExtent: 55,
+                                  minimumDate: minimumDate,
+                                  onDateTimeChanged: (v) {
+                                    endWork = v.millisecondsSinceEpoch;
+                                    setState(
+                                      () {},
+                                    );
+                                  },
                                 ),
                               ),
-                            ),
-                            SizedBox(
-                              height: 200.h,
-                              child: CupertinoDatePicker(
-                                initialDateTime: initialDateTime
-                                    .isBefore(minimumDate)
-                                    ? minimumDate
-                                    : initialDateTime,
-                                use24hFormat: true,
-                                showDayOfWeek: true,
-                                itemExtent: 55,
-                                minimumDate: minimumDate,
-                                onDateTimeChanged: (v) {
-                                  endWork = v.millisecondsSinceEpoch;
-                                  setState(
-                                        () {},
-                                  );
-
-                                },
-                              ),
-                            ),
-                          ],
-                        ),
-                      );
-                    },
-                  );
-                },
-                title: const Text("Ish vaqt oralig'i"),
-              ),
+                            ],
+                          ),
+                        );
+                      },
+                    );
+                  },
+                  title: const Text("Ish vaqt oralig'i"),
+                );
+              }),
               Padding(
                 padding: EdgeInsets.all(16.w),
                 child: GlobalButton(
                   title: "add".tr(),
                   color: isValid(
-                          nameCtrl: nameCtrl,
-                          numberCtrl: numberCtrl,
-                          money: money,
-                          ownerCtrl: ownerCtrl,
-                          descriptionCtrl: descriptionCtrl)
+                    startWork: startWork,
+                    endWork: endWork,
+                    nameCtrl: nameCtrl,
+                    numberCtrl: numberCtrl,
+                    money: money,
+                    ownerCtrl: ownerCtrl,
+                    descriptionCtrl: descriptionCtrl,
+                  )
                       ? Colors.green
                       : CupertinoColors.systemGrey,
                   onTap: () {
                     hireModel = hireModel.copyWith(
                       ownerName: ownerCtrl.text,
                       title: nameCtrl.text,
+                      timeInterval: "$startWork:$endWork",
                       description: descriptionCtrl.text,
                       image: context.read<ImageBloc>().state.images,
                       money: money.text,
@@ -336,10 +348,15 @@ bool isValid({
   required TextEditingController money,
   required TextEditingController ownerCtrl,
   required TextEditingController descriptionCtrl,
+  required int endWork,
+  required int startWork,
 }) {
   return nameCtrl.text.isNotEmpty &&
       numberCtrl.text.length == 19 &&
       money.text != "0 so'm" &&
+      money.text.isNotEmpty &&
       ownerCtrl.text.isNotEmpty &&
+      startWork != 0 &&
+      endWork != 0 &&
       descriptionCtrl.text.isNotEmpty;
 }

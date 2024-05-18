@@ -6,8 +6,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:ish_top/data/models/announcement.dart';
-import 'package:ish_top/utils/size/size_utils.dart';
+import 'package:ish_top/ui/tab/announcement/detail/widgets/widget_detail.dart';
 import 'package:shimmer/shimmer.dart';
+import 'package:url_launcher/url_launcher.dart';
 import 'package:zoom_tap_animation/zoom_tap_animation.dart';
 
 class DetailScreen extends StatefulWidget {
@@ -23,7 +24,6 @@ class _DetailScreenState extends State<DetailScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: CupertinoColors.systemGrey5,
       appBar: AppBar(
         systemOverlayStyle: const SystemUiOverlayStyle(
           statusBarColor: Colors.transparent,
@@ -37,6 +37,7 @@ class _DetailScreenState extends State<DetailScreen> {
           ]),
         ),
       ),
+      backgroundColor: CupertinoColors.systemGrey5,
       body: Center(
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 0),
@@ -73,9 +74,11 @@ class _DetailScreenState extends State<DetailScreen> {
                                         blurRadius: 10,
                                         color: CupertinoColors.systemGrey4)
                                   ],
-                                  borderRadius: BorderRadius.circular(20.r),
+                                  borderRadius: BorderRadius.circular(18.r),
                                   border: Border.all(
-                                      width: 3.w, color: Colors.white)),
+                                    width: 2.w,
+                                    color: Colors.white,
+                                  )),
                               child: ClipRRect(
                                 borderRadius: BorderRadius.circular(16.r),
                                 child: CachedNetworkImage(
@@ -88,7 +91,7 @@ class _DetailScreenState extends State<DetailScreen> {
                                         decoration: BoxDecoration(
                                           color: Colors.white,
                                           borderRadius:
-                                              BorderRadius.circular(16),
+                                              BorderRadius.circular(16.r),
                                         ),
                                       ),
                                     );
@@ -102,7 +105,7 @@ class _DetailScreenState extends State<DetailScreen> {
                                         decoration: BoxDecoration(
                                           color: Colors.white,
                                           borderRadius:
-                                              BorderRadius.circular(16),
+                                              BorderRadius.circular(16.r),
                                         ),
                                       ),
                                     );
@@ -126,46 +129,23 @@ class _DetailScreenState extends State<DetailScreen> {
                   ],
                 ),
               ),
-              20.getH(),
-              Padding(
-                padding: EdgeInsets.symmetric(horizontal: 10.w),
-                child: Text(
-                  widget.hireModel.title,
-                  style:
-                      TextStyle(fontSize: 16.sp, fontWeight: FontWeight.w600),
-                ),
-              ),
-              10.getH(),
-              const Divider(),
-              10.getH(),
-              Padding(
-                padding: EdgeInsets.symmetric(horizontal: 10.w),
-                child: Text(
-                  widget.hireModel.description,
-                  style:
-                      TextStyle(fontWeight: FontWeight.w400, fontSize: 14.sp),
-                ),
-              ),
-              10.getH(),
-              const Divider(),
-              10.getH(),
-              Text(
-                widget.hireModel.number,
-                style: TextStyle(fontWeight: FontWeight.w500, fontSize: 18.sp),
-              ),
-              10.getH(),
-              const Divider(),
-              10.getH(),
-              Row(
-                children: [
-                  const Icon(CupertinoIcons.eye_fill),
-                  Text(widget.hireModel.countView.toString())
-                ],
-              )
+              WidgetOfDetail(hireModel: widget.hireModel)
             ],
           ),
         ),
       ),
     );
+  }
+}
+
+Future<void> launchCaller(String phoneNumber) async {
+  final Uri launchUri = Uri(
+    scheme: 'tel',
+    path: phoneNumber,
+  );
+  if (await canLaunchUrl(launchUri)) {
+    await launchUrl(launchUri);
+  } else {
+    throw 'Could not launch $launchUri';
   }
 }

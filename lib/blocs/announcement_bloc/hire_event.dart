@@ -21,4 +21,5 @@ class AnnouncementRemoveEvent extends HireEvent {
 }
 
 class AnnouncementGetEvent extends HireEvent {}
+
 class AnnouncementInitialEvent extends HireEvent {}

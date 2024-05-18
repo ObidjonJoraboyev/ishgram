@@ -50,7 +50,7 @@ class GlobalTextFiled extends StatelessWidget {
             ],
             fontSize: 15.sp,
           ),
-          contentPadding:  EdgeInsets.all(12.sp),
+          contentPadding: EdgeInsets.all(12.sp),
           fillColor: Colors.grey.withOpacity(.7),
           filled: true,
           focusedBorder: OutlineInputBorder(

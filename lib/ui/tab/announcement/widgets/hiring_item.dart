@@ -11,7 +11,7 @@ import 'package:zoom_tap_animation/zoom_tap_animation.dart';
 
 import '../../../../blocs/announcement_bloc/hire_bloc.dart';
 import '../../../../blocs/announcement_bloc/hire_event.dart';
-import '../detail_screen.dart';
+import '../detail/detail_screen.dart';
 
 class HiringItem extends StatelessWidget {
   const HiringItem({

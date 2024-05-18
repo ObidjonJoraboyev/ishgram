@@ -18,6 +18,19 @@
     	<string>en</string>
     	<string>ru</string>
         </array>
+
+
+
+    <key>LSApplicationQueriesSchemes</key>
+    <array>
+      <string>tel</string>
+    </array>
+
+
+
+
+
+
 	<key>CFBundleDevelopmentRegion</key>
 	<string>$(DEVELOPMENT_LANGUAGE)</string>
 	<key>CFBundleDisplayName</key>

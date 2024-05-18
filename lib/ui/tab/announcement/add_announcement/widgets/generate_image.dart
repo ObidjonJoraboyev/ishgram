@@ -9,9 +9,7 @@ import '../../../../../blocs/image/image_state.dart';
 
 class GenerateImage extends StatelessWidget {
   const GenerateImage({super.key, required this.state});
-
   final ImageUploadState state;
-
   @override
   Widget build(BuildContext context) {
     return Row(
@@ -51,17 +49,16 @@ class GenerateImage extends StatelessWidget {
                         child: ClipRRect(
                           borderRadius: BorderRadius.circular(16),
                           child: Container(
-                              width: 150.w,
-                              color: CupertinoColors.systemGrey2,
-                              child: (state.formStatus ==
-                                          FormStatus.uploading) &&
-                                      (index == 0)
-                                  ? const Center(
-                                      child: CircularProgressIndicator())
-                                  : const Center(
-                                      child:
-                                          CircularProgressIndicator.adaptive(),
-                                    )),
+                            width: 150.w,
+                            color: CupertinoColors.systemGrey2,
+                            child: (state.formStatus == FormStatus.uploading) &&
+                                    (index == 0)
+                                ? const Center(
+                                    child: CircularProgressIndicator())
+                                : const Center(
+                                    child: CircularProgressIndicator.adaptive(),
+                                  ),
+                          ),
                         ),
                       );
                     },

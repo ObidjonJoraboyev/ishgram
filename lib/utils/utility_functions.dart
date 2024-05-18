@@ -30,7 +30,6 @@ Future<void> _getImageFromGallery(BuildContext context,
     );
     if (!context.mounted) return;
 
-    // Close the dialog
     Navigator.pop(context);
 
     context

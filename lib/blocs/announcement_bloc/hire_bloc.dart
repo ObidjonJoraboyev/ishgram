@@ -75,7 +75,6 @@ class AnnouncementBloc extends Bloc<HireEvent, List<AnnouncementModel>> {
   }
 
   initial(AnnouncementInitialEvent event, Emitter emit) async {
-
     await Future.delayed(const Duration(seconds: 1));
   }
 }

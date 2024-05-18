@@ -17,8 +17,6 @@ class TabScreen extends StatefulWidget {
 }
 
 class _TabScreenState extends State<TabScreen> {
-
-
   int activeIndex = 0;
 
   PageController pageController = PageController();
@@ -27,13 +25,12 @@ class _TabScreenState extends State<TabScreen> {
   Widget build(BuildContext context) {
     List<Widget> screens = [
       const HireScreen(),
-      AddHireScreen(voidCallback: (v){
-
-        activeIndex=0;
-        setState(() {
-
-        });
-      },),
+      AddHireScreen(
+        voidCallback: (v) {
+          activeIndex = 0;
+          setState(() {});
+        },
+      ),
       FeedbackScreen(userModel: UserModel.initial),
       const ProfileScreen(),
     ];
