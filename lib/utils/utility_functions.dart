@@ -1,7 +1,11 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:ish_top/utils/size/size_utils.dart';
+import 'package:zoom_tap_animation/zoom_tap_animation.dart';
 import '../blocs/image/image_bloc.dart';
 import '../blocs/image/image_event.dart';
 import '../data/models/announcement.dart';
@@ -97,4 +101,122 @@ void takeAnImage(
       );
     },
   );
+}
+
+
+
+
+show({
+  required BuildContext context,
+  required VoidCallback cancelButton,
+  required VoidCallback doneButton,
+  required ValueChanged<DateTime> onStartChange,
+  required ValueChanged<DateTime> onEndChange,
+}){
+
+
+  showModalBottomSheet(
+    context: context,
+    isScrollControlled: true,
+    builder: (context) {
+      DateTime initialDateTime = DateTime.now();
+      DateTime minimumDate = DateTime.now();
+      return Container(
+        padding: EdgeInsets.symmetric(horizontal: 16.w),
+        height: MediaQuery.sizeOf(context).height - 56,
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.only(
+            topLeft: Radius.circular(16.r),
+            topRight: Radius.circular(16.r),
+          ),
+        ),
+        child: Column(
+          children: [
+            20.getH(),
+            Row(
+              mainAxisAlignment:
+              MainAxisAlignment.spaceBetween,
+              children: [
+                ZoomTapAnimation(
+                  onTap: cancelButton,
+                  child: Text(
+                    "cancel".tr(),
+                    style: TextStyle(
+                        color: CupertinoColors.activeBlue,
+                        fontSize: 16.sp,
+                        fontWeight: FontWeight.w400),
+                  ),
+                ),
+                ZoomTapAnimation(
+                  onTap: doneButton,
+                  child: Text(
+                    "Done",
+                    style: TextStyle(
+                        color: CupertinoColors.activeBlue,
+                        fontSize: 16.sp,
+                        fontWeight: FontWeight.w600),
+                  )
+                ),
+              ],
+            ),
+            20.getH(),
+            Align(
+              alignment: AlignmentDirectional.centerStart,
+              child: Text(
+                "Boshlanish vaqti",
+                style: TextStyle(
+                  fontWeight: FontWeight.w600,
+                  fontSize: 18.sp,
+                ),
+              ),
+            ),
+
+            SizedBox(
+              height: 200.h,
+              child: CupertinoDatePicker(
+                initialDateTime:
+                initialDateTime.isBefore(minimumDate)
+                    ? minimumDate
+                    : initialDateTime,
+                use24hFormat: true,
+                showDayOfWeek: true,
+                itemExtent: 55,
+                minimumDate: minimumDate,
+                onDateTimeChanged:onStartChange
+              ),
+            ),
+            40.getH(),
+            Align(
+              alignment: AlignmentDirectional.centerStart,
+              child: Text(
+                "Tugash vaqti",
+                style: TextStyle(
+                  fontWeight: FontWeight.w600,
+                  fontSize: 18.sp,
+                ),
+              ),
+            ),
+            SizedBox(
+              height: 200.h,
+              child: CupertinoDatePicker(
+                initialDateTime:
+                initialDateTime.isBefore(minimumDate)
+                    ? minimumDate
+                    : initialDateTime,
+                use24hFormat: true,
+                showDayOfWeek: true,
+                itemExtent: 55,
+                minimumDate: minimumDate,
+                onDateTimeChanged:onEndChange
+              ),
+            ),
+          ],
+        ),
+      );
+    },
+  );
+
+
+
 }

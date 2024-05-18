@@ -16,6 +16,7 @@ import 'package:ish_top/ui/tab/announcement/add_announcement/widgets/salary_text
 import 'package:ish_top/ui/tab/announcement/add_announcement/widgets/text_field_widget.dart';
 import 'package:ish_top/utils/formatters/formatters.dart';
 import 'package:ish_top/utils/size/size_utils.dart';
+import 'package:ish_top/utils/utility_functions.dart';
 import 'package:vibration/vibration.dart';
 import 'package:zoom_tap_animation/zoom_tap_animation.dart';
 
@@ -182,124 +183,28 @@ class _AddHireScreenState extends State<AddHireScreen> {
               StatefulBuilder(builder: (context, setState) {
                 return CupertinoListTile(
                   onTap: () {
-                    showModalBottomSheet(
+                    show(
                       context: context,
-                      isScrollControlled: true,
-                      builder: (context) {
-                        DateTime initialDateTime = DateTime.now();
-                        DateTime minimumDate = DateTime.now();
-                        return Container(
-                          padding: EdgeInsets.symmetric(horizontal: 16.w),
-                          height: MediaQuery.sizeOf(context).height - 56,
-                          decoration: BoxDecoration(
-                            color: Colors.white,
-                            borderRadius: BorderRadius.only(
-                              topLeft: Radius.circular(16.r),
-                              topRight: Radius.circular(16.r),
-                            ),
-                          ),
-                          child: Column(
-                            children: [
-                              20.getH(),
-                              Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                children: [
-                                  ZoomTapAnimation(
-                                    onTap: () {
-                                      endWork = 0;
-                                      startWork = 0;
-                                      Navigator.pop(context);
-                                    },
-                                    child: Text(
-                                      "cancel".tr(),
-                                      style: TextStyle(
-                                          color: CupertinoColors.activeBlue,
-                                          fontSize: 16.sp,
-                                          fontWeight: FontWeight.w400),
-                                    ),
-                                  ),
-                                  ZoomTapAnimation(
-                                    child: Text(
-                                      "Done",
-                                      style: TextStyle(
-                                          color: CupertinoColors.activeBlue,
-                                          fontSize: 16.sp,
-                                          fontWeight: FontWeight.w600),
-                                    ),
-                                    onTap: () {
-                                      if (endWork !=
-                                              DateTime.now()
-                                                  .millisecondsSinceEpoch &&
-                                          startWork < endWork &&
-                                          startWork != endWork) {
-                                        Navigator.pop(context);
-                                      }
-                                    },
-                                  ),
-                                ],
-                              ),
-                              20.getH(),
-                              Align(
-                                alignment: AlignmentDirectional.centerStart,
-                                child: Text(
-                                  "Boshlanish vaqti",
-                                  style: TextStyle(
-                                    fontWeight: FontWeight.w600,
-                                    fontSize: 18.sp,
-                                  ),
-                                ),
-                              ),
-                              Text(startWork.toString()),
-                              SizedBox(
-                                height: 200.h,
-                                child: CupertinoDatePicker(
-                                  initialDateTime:
-                                      initialDateTime.isBefore(minimumDate)
-                                          ? minimumDate
-                                          : initialDateTime,
-                                  use24hFormat: true,
-                                  showDayOfWeek: true,
-                                  itemExtent: 55,
-                                  minimumDate: minimumDate,
-                                  onDateTimeChanged: (v) {
-                                    startWork = v.millisecondsSinceEpoch;
-                                    setState(() {});
-                                  },
-                                ),
-                              ),
-                              40.getH(),
-                              Align(
-                                alignment: AlignmentDirectional.centerStart,
-                                child: Text(
-                                  "Tugash vaqti",
-                                  style: TextStyle(
-                                    fontWeight: FontWeight.w600,
-                                    fontSize: 18.sp,
-                                  ),
-                                ),
-                              ),
-                              SizedBox(
-                                height: 200.h,
-                                child: CupertinoDatePicker(
-                                  initialDateTime:
-                                      initialDateTime.isBefore(minimumDate)
-                                          ? minimumDate
-                                          : initialDateTime,
-                                  use24hFormat: true,
-                                  showDayOfWeek: true,
-                                  itemExtent: 55,
-                                  minimumDate: minimumDate,
-                                  onDateTimeChanged: (v) {
-                                    endWork = v.millisecondsSinceEpoch;
-                                    setState(
-                                      () {},
-                                    );
-                                  },
-                                ),
-                              ),
-                            ],
-                          ),
+                      cancelButton: () {
+                        endWork = 0;
+                        startWork = 0;
+                        Navigator.pop(context);
+                      },
+                      doneButton: () {
+                        if (endWork != DateTime.now().millisecondsSinceEpoch &&
+                            startWork < endWork &&
+                            startWork != endWork) {
+                          Navigator.pop(context);
+                        }
+                      },
+                      onStartChange: (v) {
+                        startWork = v.millisecondsSinceEpoch;
+                        setState(() {});
+                      },
+                      onEndChange: (v) {
+                        endWork = v.millisecondsSinceEpoch;
+                        setState(
+                          () {},
                         );
                       },
                     );
@@ -311,31 +216,14 @@ class _AddHireScreenState extends State<AddHireScreen> {
                 padding: EdgeInsets.all(16.w),
                 child: GlobalButton(
                   title: "add".tr(),
-                  color: isValid(
-                    startWork: startWork,
-                    endWork: endWork,
-                    nameCtrl: nameCtrl,
-                    numberCtrl: numberCtrl,
-                    money: money,
-                    ownerCtrl: ownerCtrl,
-                    descriptionCtrl: descriptionCtrl,
-                  )
-                      ? Colors.green
-                      : CupertinoColors.systemGrey,
+                  color: isValid() ? Colors.green : CupertinoColors.systemGrey,
                   onTap: () async {
                     if (hasVibrator ?? false) {
                       Vibration.vibrate(
                           pattern: [2, 5], intensities: [100, 2000]);
                     }
 
-                    if (isValid(
-                        nameCtrl: nameCtrl,
-                        numberCtrl: numberCtrl,
-                        money: money,
-                        ownerCtrl: ownerCtrl,
-                        descriptionCtrl: descriptionCtrl,
-                        endWork: endWork,
-                        startWork: startWork)) {
+                    if (isValid()) {
                       if (!context.mounted) return;
                       hireModel = hireModel.copyWith(
                         ownerName: ownerCtrl.text,
@@ -366,23 +254,15 @@ class _AddHireScreenState extends State<AddHireScreen> {
       ),
     );
   }
-}
 
-bool isValid({
-  required TextEditingController nameCtrl,
-  required TextEditingController numberCtrl,
-  required TextEditingController money,
-  required TextEditingController ownerCtrl,
-  required TextEditingController descriptionCtrl,
-  required int endWork,
-  required int startWork,
-}) {
-  return nameCtrl.text.isNotEmpty &&
-      numberCtrl.text.length == 19 &&
-      money.text != "0 so'm" &&
-      money.text.isNotEmpty &&
-      ownerCtrl.text.isNotEmpty &&
-      startWork != 0 &&
-      endWork != 0 &&
-      descriptionCtrl.text.isNotEmpty;
+  bool isValid() {
+    return nameCtrl.text.isNotEmpty &&
+        numberCtrl.text.length == 19 &&
+        money.text != "0 so'm" &&
+        money.text.isNotEmpty &&
+        ownerCtrl.text.isNotEmpty &&
+        startWork != 0 &&
+        endWork != 0 &&
+        descriptionCtrl.text.isNotEmpty;
+  }
 }
