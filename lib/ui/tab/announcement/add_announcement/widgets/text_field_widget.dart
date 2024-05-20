@@ -39,11 +39,9 @@ class GlobalTextFiled extends StatelessWidget {
         controller: controller,
         cursorColor: CupertinoColors.activeBlue,
         decoration: InputDecoration(
-
           hintStyle: TextStyle(color: Colors.white.withOpacity(.6)),
           labelText: labelText.tr(),
           labelStyle: TextStyle(
-
             color: Colors.black.withOpacity(.8),
             fontWeight: FontWeight.w500,
             shadows: [

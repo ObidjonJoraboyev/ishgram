@@ -1,16 +1,45 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:ish_top/data/models/announcement.dart';
 import 'package:ish_top/utils/size/size_utils.dart';
-import 'package:url_launcher/url_launcher.dart';
-import 'package:zoom_tap_animation/zoom_tap_animation.dart';
+import '../../../../../utils/utility_functions.dart';
 
-class WidgetOfDetail extends StatelessWidget {
+class WidgetOfDetail extends StatefulWidget {
   const WidgetOfDetail({super.key, required this.hireModel});
 
   final AnnouncementModel hireModel;
+
+  @override
+  State<WidgetOfDetail> createState() => _WidgetOfDetailState();
+}
+
+class _WidgetOfDetailState extends State<WidgetOfDetail>
+    with SingleTickerProviderStateMixin {
+  bool isCallOpen = false;
+  late AnimationController controller;
+  late Animation<double> animation;
+
+  @override
+  void initState() {
+    controller = AnimationController(
+      vsync: this,
+      duration: const Duration(seconds: 2),
+    )
+      ..forward()
+      ..repeat();
+    animation = Tween<double>(begin: 0.0, end: 1.0).animate(controller);
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    controller.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -20,7 +49,7 @@ class WidgetOfDetail extends StatelessWidget {
         Padding(
           padding: EdgeInsets.symmetric(horizontal: 10.w),
           child: Text(
-            hireModel.title,
+            widget.hireModel.title,
             style: TextStyle(fontSize: 16.sp, fontWeight: FontWeight.w600),
           ),
         ),
@@ -33,7 +62,7 @@ class WidgetOfDetail extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                hireModel.description,
+                widget.hireModel.description,
                 style: TextStyle(fontWeight: FontWeight.w400, fontSize: 14.sp),
               ),
               15.getH(),
@@ -42,7 +71,7 @@ class WidgetOfDetail extends StatelessWidget {
                   Text(
                     DateFormat('dd MMM HH:mm').format(
                       DateTime.fromMillisecondsSinceEpoch(
-                        int.parse(hireModel.timeInterval.split(":")[0]),
+                        int.parse(widget.hireModel.timeInterval.split(":")[0]),
                       ),
                     ),
                     style: TextStyle(
@@ -53,7 +82,7 @@ class WidgetOfDetail extends StatelessWidget {
                   Text(
                     "  -  ${DateFormat('dd MMM HH:mm').format(
                       DateTime.fromMillisecondsSinceEpoch(
-                        int.parse(hireModel.timeInterval.split(":")[1]),
+                        int.parse(widget.hireModel.timeInterval.split(":")[1]),
                       ),
                     )}",
                     style: TextStyle(
@@ -66,24 +95,85 @@ class WidgetOfDetail extends StatelessWidget {
             ],
           ),
         ),
-        10.getH(),
-        const Divider(),
-        10.getH(),
-        Padding(
-          padding: EdgeInsets.symmetric(horizontal: 10.w),
-          child: ZoomTapAnimation(
-            onTap: () async {
-              _handlePhoneCall(hireModel.number);
-            },
-            child: Text(
-              hireModel.number,
-              style: TextStyle(fontWeight: FontWeight.w500, fontSize: 18.sp),
+        SizedBox(
+          height: 10.h,
+        ),
+        Container(
+          width: double.infinity,
+          height: 1,
+          color: Colors.grey,
+        ),
+        Column(children: [
+          SizedBox(
+            height: 48.h,
+            child: ListTile(
+              onTap: () {
+                setState(() {
+                  isCallOpen = !isCallOpen;
+                });
+              },
+              title: Text(
+                widget.hireModel.number,
+                style: TextStyle(fontWeight: FontWeight.w500, fontSize: 18.sp),
+              ),
+              trailing: Icon(
+                isCallOpen ? Icons.expand_less : Icons.expand_more,
+              ),
             ),
           ),
+          AnimatedContainer(
+            duration: const Duration(milliseconds: 300),
+            curve: Curves.easeInOut,
+            height: isCallOpen ? 45.h : 0.0,
+            child: SingleChildScrollView(
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  IconButton(
+                      icon: const Icon(
+                        CupertinoIcons.phone_fill,
+                        color: Colors.green,
+                        size: 30,
+                      ),
+                      onPressed: () {
+                        launchCaller(widget.hireModel.number);
+                      }),
+                  IconButton(
+                      icon: const Icon(
+                        CupertinoIcons.chat_bubble_2_fill,
+                        color: CupertinoColors.activeBlue,
+                        size: 30,
+                      ),
+                      onPressed: () {
+                        launchSms(widget.hireModel.number);
+                      }),
+                  IconButton(
+                    icon: const Icon(Icons.copy),
+                    onPressed: () async {
+                      await Clipboard.setData(
+                          ClipboardData(text: widget.hireModel.number));
+                      Fluttertoast.showToast(
+                        msg: "copy".tr(),
+                        toastLength: Toast.LENGTH_SHORT,
+                        gravity: ToastGravity.TOP,
+                        timeInSecForIosWeb: 1,
+                        backgroundColor: Colors.grey,
+                        textColor: Colors.white,
+                        fontSize: 16.0,
+                      );
+                    },
+                  ),
+                ],
+              ),
+            ),
+          )
+        ]),
+        Container(
+          width: double.infinity,
+          height: 1,
+          color: Colors.grey,
         ),
-        10.getH(),
-        const Divider(),
-        10.getH(),
+        5.getH(),
         Row(
           children: [
             const Icon(
@@ -91,7 +181,7 @@ class WidgetOfDetail extends StatelessWidget {
               color: CupertinoColors.systemGrey,
             ),
             Text(
-              " ${hireModel.countView.length}",
+              " ${widget.hireModel.countView.length}",
               style: TextStyle(
                 fontSize: 14.sp,
                 fontWeight: FontWeight.w500,
@@ -99,7 +189,7 @@ class WidgetOfDetail extends StatelessWidget {
               ),
             ),
             Text(
-              " ${hireModel.money}",
+              " ${widget.hireModel.money}",
               style: TextStyle(
                 fontSize: 14.sp,
                 fontWeight: FontWeight.w500,
@@ -110,20 +200,5 @@ class WidgetOfDetail extends StatelessWidget {
         )
       ],
     );
-  }
-}
-
-Future<void> _handlePhoneCall(String phoneNumber) async {
-
-    _makePhoneCall(phoneNumber);
-
-}
-
-void _makePhoneCall(String phoneNumber) async {
-  final String phoneUrl = 'tel:$phoneNumber';
-  if (await canLaunchUrl(Uri.parse(phoneUrl))) {
-    await launchUrl(Uri.parse(phoneUrl));
-  } else {
-    throw 'Could not launch $phoneUrl';
   }
 }

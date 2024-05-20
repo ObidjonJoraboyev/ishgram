@@ -68,8 +68,6 @@ class ImageBloc extends Bloc<ImageEvent, ImageUploadState> {
           formStatus: FormStatus.success,
         ),
       );
-
-
     } on FirebaseException catch (error) {
       debugPrint(error.message);
       throw Exception();

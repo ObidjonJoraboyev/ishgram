@@ -31,5 +31,7 @@
   "add_image": "Rasm qo'shish",
   "reset": "Tozalash",
   "takeGallery": "Galereyadan tanlash",
-  "takeCamera": "Kamerdan olish"
+  "takeCamera": "Kamerdan olish",
+  "hi": "Assalomu aleykum",
+  "copy": "Nusxalandi"
 }

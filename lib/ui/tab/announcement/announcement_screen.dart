@@ -48,7 +48,6 @@ class _HireScreenState extends State<HireScreen>
           IconButton(
             icon: const Icon(Icons.search),
             onPressed: () {
-
               setState(() {});
             },
           )
@@ -91,7 +90,6 @@ class _HireScreenState extends State<HireScreen>
                     children: [
                       Expanded(
                         child: HiringItem(
-
                           hires: hires,
                           scrollController: scrollController,
                         ),
