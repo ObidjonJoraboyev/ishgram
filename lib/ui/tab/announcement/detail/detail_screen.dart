@@ -123,7 +123,7 @@ class _DetailScreenState extends State<DetailScreen> {
                   color: Colors.white,
                 ),
                 child: WidgetOfDetail(hireModel: widget.hireModel),
-              )
+              ),
             ],
           ),
         ],

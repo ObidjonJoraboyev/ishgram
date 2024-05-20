@@ -102,7 +102,7 @@ class _WidgetOfDetailState extends State<WidgetOfDetail>
         Container(
           width: double.infinity,
           height: 1,
-          color: Colors.grey,
+          color: Colors.grey.withOpacity(.7),
         ),
         Column(children: [
           SizedBox(
@@ -172,10 +172,21 @@ class _WidgetOfDetailState extends State<WidgetOfDetail>
         Container(
           width: double.infinity,
           height: 1,
-          color: Colors.grey,
+          color: Colors.grey.withOpacity(.7),
         ),
+        10.getH(),
         Row(
+          mainAxisAlignment: MainAxisAlignment.end,
           children: [
+            Text(
+              "    ${widget.hireModel.money}",
+              style: TextStyle(
+                fontSize: 14.sp,
+                fontWeight: FontWeight.w500,
+                color: CupertinoColors.black,
+              ),
+            ),
+            Spacer(),
             const Icon(
               CupertinoIcons.eye_fill,
               color: CupertinoColors.systemGrey,
@@ -188,16 +199,10 @@ class _WidgetOfDetailState extends State<WidgetOfDetail>
                 color: CupertinoColors.systemGrey,
               ),
             ),
-            Text(
-              " ${widget.hireModel.money}",
-              style: TextStyle(
-                fontSize: 14.sp,
-                fontWeight: FontWeight.w500,
-                color: CupertinoColors.systemGrey,
-              ),
-            ),
+            10.getW()
           ],
-        )
+        ),
+        10.getH(),
       ],
     );
   }
