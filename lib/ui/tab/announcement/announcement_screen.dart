@@ -31,6 +31,8 @@ class _HireScreenState extends State<HireScreen>
     super.dispose();
   }
 
+  int activeIndex = 0;
+
   @override
   Widget build(BuildContext context) {
     width = MediaQuery.sizeOf(context).width;
@@ -46,7 +48,7 @@ class _HireScreenState extends State<HireScreen>
           IconButton(
             icon: const Icon(Icons.search),
             onPressed: () {
-              context.read<AnnouncementBloc>().add(AnnouncementInitialEvent());
+
               setState(() {});
             },
           )
@@ -89,6 +91,7 @@ class _HireScreenState extends State<HireScreen>
                     children: [
                       Expanded(
                         child: HiringItem(
+
                           hires: hires,
                           scrollController: scrollController,
                         ),

@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:easy_image_viewer/easy_image_viewer.dart';
 import 'package:easy_localization/easy_localization.dart';
@@ -141,10 +143,17 @@ class _DetailScreenState extends State<DetailScreen> {
 Future<void> launchCaller(String phoneNumber) async {
   final Uri launchUri = Uri(
     scheme: 'tel',
-    path: phoneNumber,
+    path: "+12-3333-23",
   );
   if (await canLaunchUrl(launchUri)) {
     await launchUrl(launchUri);
+  } else {
+    throw 'Could not launch $launchUri';
+  }
+}Future<void> launchSms(String phoneNumber) async {
+  final Uri launchUri = Uri.parse("sms:$phoneNumber${Platform.isIOS?"&":"?"}body=Assalomu aleykum");
+  if (await canLaunchUrl(launchUri)) {
+    await launchUrl(launchUri,mode: LaunchMode.externalApplication);
   } else {
     throw 'Could not launch $launchUri';
   }

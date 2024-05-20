@@ -22,7 +22,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
   UserModel thisUser = UserModel.initial;
 
   Future<void> init() async {
-
     setState(() {});
     if (!context.mounted) return;
   }
@@ -290,7 +289,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                   child: Text(
                                     "uz".tr(),
                                     style: const TextStyle(
-                                        color: CupertinoColors.activeBlue),
+                                        color: CupertinoColors.activeBlue,
+                                        fontWeight: FontWeight.w500),
                                   ),
                                 ),
                                 CupertinoActionSheetAction(
@@ -303,7 +303,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                   child: Text(
                                     "ru".tr(),
                                     style: const TextStyle(
-                                        color: CupertinoColors.activeBlue),
+                                        color: CupertinoColors.activeBlue,
+                                        fontWeight: FontWeight.w500),
                                   ),
                                 ),
                               ],
