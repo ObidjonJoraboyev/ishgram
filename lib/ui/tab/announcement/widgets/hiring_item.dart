@@ -75,10 +75,10 @@ class _HiringItemState extends State<HiringItem> {
                   );
                 },
                 child: Container(
-                  margin: const EdgeInsets.symmetric(vertical: 12),
-                  padding: const EdgeInsets.all(12),
+                  margin: EdgeInsets.symmetric(vertical: 12.h),
+                  padding: EdgeInsets.all(7.sp),
                   decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(16),
+                    borderRadius: BorderRadius.circular(24),
                     boxShadow: [
                       BoxShadow(
                         spreadRadius: 2,
@@ -94,7 +94,7 @@ class _HiringItemState extends State<HiringItem> {
                       Stack(
                         children: [
                           SizedBox(
-                            height: 300,
+                            height: 300.h,
                             child: widget.hires[index1].image.isNotEmpty
                                 ? PageView(
                                     onPageChanged: (index) {
@@ -148,6 +148,7 @@ class _HiringItemState extends State<HiringItem> {
                                                   .image[index].imageUrl,
                                               fit: BoxFit.cover,
                                               width: double.infinity,
+                                              height: 300.h,
                                             ),
                                           ),
                                         ),
@@ -158,11 +159,11 @@ class _HiringItemState extends State<HiringItem> {
                           ),
                           widget.hires[index1].image.length > 1
                               ? Positioned(
-                                  bottom: 15,
-                                  right: 15,
+                                  bottom: 15.w,
+                                  right: 15.w,
                                   child: Container(
-                                    padding:
-                                        EdgeInsets.symmetric(horizontal: 2.w),
+                                    padding: EdgeInsets.symmetric(
+                                        horizontal: 2.w, vertical: 2.w),
                                     decoration: BoxDecoration(
                                       borderRadius: BorderRadius.circular(100),
                                       color: CupertinoColors.systemGrey6,
@@ -179,12 +180,12 @@ class _HiringItemState extends State<HiringItem> {
                                               margin: EdgeInsets.all(1.sp),
                                               width:
                                                   activeIndexes[index1] != index
-                                                      ? 6
-                                                      : 7,
+                                                      ? 6.sp
+                                                      : 7.sp,
                                               height:
                                                   activeIndexes[index1] != index
-                                                      ? 8
-                                                      : 10,
+                                                      ? 6.sp
+                                                      : 7.sp,
                                               decoration: BoxDecoration(
                                                   shape: BoxShape.circle,
                                                   color:
@@ -221,7 +222,9 @@ class _HiringItemState extends State<HiringItem> {
                         maxLines: 1,
                         overflow: TextOverflow.ellipsis,
                       ),
+                      const Spacer(),
                       Row(
+                        mainAxisAlignment: MainAxisAlignment.end,
                         children: [
                           Icon(
                             CupertinoIcons.eye_solid,
@@ -231,6 +234,7 @@ class _HiringItemState extends State<HiringItem> {
                           Text(
                             widget.hires[index1].countView.length.toString(),
                             style: TextStyle(
+                              fontWeight: FontWeight.w500,
                               color: CupertinoColors.black.withOpacity(.6),
                             ),
                           ),
@@ -243,8 +247,10 @@ class _HiringItemState extends State<HiringItem> {
                               ),
                             ),
                             style: TextStyle(
-                                color: CupertinoColors.black.withOpacity(.6)),
+                                color: CupertinoColors.black.withOpacity(.6),
+                                fontWeight: FontWeight.w500),
                           ),
+                          8.getW()
                         ],
                       ),
                     ],

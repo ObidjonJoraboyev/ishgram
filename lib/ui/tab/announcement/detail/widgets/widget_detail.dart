@@ -44,6 +44,7 @@ class _WidgetOfDetailState extends State<WidgetOfDetail>
   @override
   Widget build(BuildContext context) {
     return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         20.getH(),
         Padding(
@@ -105,7 +106,7 @@ class _WidgetOfDetailState extends State<WidgetOfDetail>
         ),
         Column(children: [
           SizedBox(
-            height: 48.h,
+            height: 45.h,
             child: ListTile(
               onTap: () {
                 setState(() {
@@ -173,7 +174,6 @@ class _WidgetOfDetailState extends State<WidgetOfDetail>
           height: 1,
           color: Colors.grey,
         ),
-        5.getH(),
         Row(
           children: [
             const Icon(
