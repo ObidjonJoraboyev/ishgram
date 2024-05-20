@@ -160,40 +160,44 @@ class _HiringItemState extends State<HiringItem> {
                               ? Positioned(
                                   bottom: 15,
                                   right: 15,
-                                  child: Row(
-                                    children: [
-                                      ...List.generate(
+                                  child: Container(
+                                    padding:
+                                        EdgeInsets.symmetric(horizontal: 2.w),
+                                    decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(100),
+                                      color: CupertinoColors.systemGrey6,
+                                    ),
+                                    child: Row(
+                                      children: [
+                                        ...List.generate(
                                           widget.hires[index1].image.length,
                                           (index) {
-                                        return AnimatedContainer(
-                                          curve: Curves.linear,
-                                          duration:
-                                              const Duration(milliseconds: 200),
-                                          margin: const EdgeInsets.all(2),
-                                          width: activeIndexes[index1] != index
-                                              ? 8
-                                              : 10,
-                                          height: activeIndexes[index1] != index
-                                              ? 8
-                                              : 10,
-                                          decoration: BoxDecoration(
-                                              boxShadow: const [
-                                                BoxShadow(
-                                                  spreadRadius: 1,
-                                                  blurRadius: 0,
-                                                  color: 1 == 2
-                                                      ? Color(0xFFBDBDBD)
-                                                      : Colors.black,
-                                                )
-                                              ],
-                                              shape: BoxShape.circle,
-                                              color:
+                                            return AnimatedContainer(
+                                              curve: Curves.linear,
+                                              duration: const Duration(
+                                                  milliseconds: 200),
+                                              margin: EdgeInsets.all(1.sp),
+                                              width:
                                                   activeIndexes[index1] != index
-                                                      ? Colors.white
-                                                      : Colors.black),
-                                        );
-                                      })
-                                    ],
+                                                      ? 6
+                                                      : 7,
+                                              height:
+                                                  activeIndexes[index1] != index
+                                                      ? 8
+                                                      : 10,
+                                              decoration: BoxDecoration(
+                                                  shape: BoxShape.circle,
+                                                  color:
+                                                      activeIndexes[index1] !=
+                                                              index
+                                                          ? Colors.grey
+                                                          : CupertinoColors
+                                                              .activeBlue),
+                                            );
+                                          },
+                                        )
+                                      ],
+                                    ),
                                   ),
                                 )
                               : const SizedBox()

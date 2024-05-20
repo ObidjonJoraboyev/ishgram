@@ -165,13 +165,13 @@ class _FeedbackScreenState extends State<FeedbackScreen> {
                     ),
                   ),
             centerTitle: true,
-            title: const Column(
+            title: Column(
               children: [
                 Text(
-                  "Qo'llab quvvatlash",
-                  style: TextStyle(fontWeight: FontWeight.w600),
+                  "support".tr(),
+                  style: const TextStyle(fontWeight: FontWeight.w600),
                 ),
-                Text(
+                const Text(
                   "Online",
                   style: TextStyle(
                       fontWeight: FontWeight.w400,

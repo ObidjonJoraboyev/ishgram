@@ -33,5 +33,18 @@
   "takeGallery": "Galereyadan tanlash",
   "takeCamera": "Kamerdan olish",
   "hi": "Assalomu aleykum",
-  "copy": "Nusxalandi"
+  "copy": "Nusxalandi",
+  "added_hiring": "E'loningiz muvaffaqiyatli qo'shildi",
+  "done": "Bajarildi",
+  "start_time": "Boshlanish vaqti",
+  "end_time": "Tugash vaqti",
+  "edit_start": "Boshlash vaqtini tahrirlash",
+  "set_end_time": "Tugash vaqtini o'rnatish",
+  "will_start": "Boshlanadi: ",
+  "will_end": "Tugaydi: ",
+  "support": "Qo'llab quvvatlash"
+
+
+
+
 }

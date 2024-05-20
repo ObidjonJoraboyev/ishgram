@@ -39,6 +39,7 @@ dependencies:
   flutter_phone_direct_caller: ^2.1.1
   vibration: ^1.8.4
   fluttertoast: ^8.2.5
+  carousel_slider: ^4.2.1
 
 dev_dependencies:
   flutter_test:

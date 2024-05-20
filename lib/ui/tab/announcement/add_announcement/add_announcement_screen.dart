@@ -3,6 +3,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:ish_top/blocs/announcement_bloc/hire_bloc.dart';
 import 'package:ish_top/blocs/announcement_bloc/hire_event.dart';
 import 'package:ish_top/blocs/image/image_bloc.dart';
@@ -23,7 +24,7 @@ import 'package:zoom_tap_animation/zoom_tap_animation.dart';
 class AddHireScreen extends StatefulWidget {
   const AddHireScreen({super.key, required this.voidCallback});
 
-  final ValueChanged<void> voidCallback;
+  final void Function() voidCallback;
 
   @override
   State<AddHireScreen> createState() => _AddHireScreenState();
@@ -41,6 +42,7 @@ class _AddHireScreenState extends State<AddHireScreen> {
   int takenImages = 0;
   AnnouncementModel hireModel = AnnouncementModel.initial;
   bool? hasVibrator;
+  FToast t = FToast();
 
   init() async {
     hasVibrator = await Vibration.hasVibrator();
@@ -50,6 +52,7 @@ class _AddHireScreenState extends State<AddHireScreen> {
   void initState() {
     init();
     setState(() {});
+    t.init(context);
     super.initState();
   }
 
@@ -180,38 +183,41 @@ class _AddHireScreenState extends State<AddHireScreen> {
                 },
               ),
               const Divider(),
-              StatefulBuilder(builder: (context, setState) {
-                return CupertinoListTile(
-                  onTap: () {
-                    show(
-                      context: context,
-                      cancelButton: () {
-                        endWork = 0;
-                        startWork = 0;
-                        Navigator.pop(context);
-                      },
-                      doneButton: () {
-                        if (endWork != DateTime.now().millisecondsSinceEpoch &&
-                            startWork < endWork &&
-                            startWork != endWork) {
+              StatefulBuilder(
+                builder: (context, setState) {
+                  return CupertinoListTile(
+                    onTap: () {
+                      show(
+                        context: context,
+                        cancelButton: () {
+                          endWork = 0;
+                          startWork = 0;
                           Navigator.pop(context);
-                        }
-                      },
-                      onStartChange: (v) {
-                        startWork = v.millisecondsSinceEpoch;
-                        setState(() {});
-                      },
-                      onEndChange: (v) {
-                        endWork = v.millisecondsSinceEpoch;
-                        setState(
-                          () {},
-                        );
-                      },
-                    );
-                  },
-                  title: const Text("Ish vaqt oralig'i"),
-                );
-              }),
+                        },
+                        doneButton: () {
+                          if (endWork !=
+                                  DateTime.now().millisecondsSinceEpoch &&
+                              startWork < endWork &&
+                              startWork != endWork) {
+                            Navigator.pop(context);
+                          }
+                        },
+                        onStartChange: (v) {
+                          startWork = v.millisecondsSinceEpoch;
+                          setState(() {});
+                        },
+                        onEndChange: (v) {
+                          endWork = v.millisecondsSinceEpoch;
+                          setState(
+                            () {},
+                          );
+                        },
+                      );
+                    },
+                    title: const Text("Ish vaqt oralig'i"),
+                  );
+                },
+              ),
               Padding(
                 padding: EdgeInsets.all(16.w),
                 child: GlobalButton(
@@ -238,7 +244,36 @@ class _AddHireScreenState extends State<AddHireScreen> {
                       context
                           .read<AnnouncementBloc>()
                           .add(AnnouncementAddEvent(hireModel: hireModel));
-                      widget.voidCallback.call(() {});
+                      widget.voidCallback.call();
+                      Widget toast = Container(
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 24.0, vertical: 12.0),
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(10.0),
+                          color: Colors.green,
+                        ),
+                        child: Row(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            const Icon(
+                              Icons.check,
+                              color: Colors.white,
+                            ),
+                            const SizedBox(
+                              width: 12.0,
+                            ),
+                            Text(
+                              "added_hiring".tr(),
+                              style: TextStyle(
+                                  color: Colors.white,
+                                  fontWeight: FontWeight.w500,
+                                  fontSize: 14.sp),
+                            ),
+                          ],
+                        ),
+                      );
+
+                      t.showToast(child: toast);
                       nameCtrl.clear();
                       numberCtrl.clear();
                       money.clear();

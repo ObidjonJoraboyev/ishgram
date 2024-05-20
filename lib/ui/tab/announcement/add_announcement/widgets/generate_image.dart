@@ -13,7 +13,7 @@ class GenerateImage extends StatefulWidget {
   final ImageUploadState state;
 
   @override
-  _GenerateImageState createState() => _GenerateImageState();
+  State<GenerateImage> createState() => _GenerateImageState();
 }
 
 class _GenerateImageState extends State<GenerateImage> {

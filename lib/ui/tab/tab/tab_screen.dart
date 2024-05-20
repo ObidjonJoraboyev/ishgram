@@ -26,7 +26,7 @@ class _TabScreenState extends State<TabScreen> {
     List<Widget> screens = [
       const HireScreen(),
       AddHireScreen(
-        voidCallback: (v) {
+        voidCallback: () {
           activeIndex = 0;
           setState(() {});
         },
