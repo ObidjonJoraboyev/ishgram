@@ -186,7 +186,7 @@ class _WidgetOfDetailState extends State<WidgetOfDetail>
                 color: CupertinoColors.black,
               ),
             ),
-            Spacer(),
+            const Spacer(),
             const Icon(
               CupertinoIcons.eye_fill,
               color: CupertinoColors.systemGrey,

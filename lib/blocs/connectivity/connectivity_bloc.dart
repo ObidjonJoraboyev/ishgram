@@ -1,5 +1,4 @@
 import 'package:connectivity_plus/connectivity_plus.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'connectivity_event.dart';
 import 'connectivity_state.dart';
@@ -31,8 +30,6 @@ class ConnectBloc extends Bloc<ConnectEvent, ConnectState> {
       } else {
         emit(state.copyWith(hasInternet: false));
       }
-      debugPrint("HAS INTERNET CONTINUES CHECK:${state.hasInternet}");
-      debugPrint("HAS INTERNET CONTINUES STATES:$results");
-    });
+    },);
   }
 }

@@ -37,8 +37,8 @@ class _AddHireScreenState extends State<AddHireScreen> {
   final TextEditingController ownerCtrl = TextEditingController();
   final TextEditingController descriptionCtrl = TextEditingController();
 
-  int startWork = 0;
-  int endWork = 0;
+  int startWork = DateTime.now().millisecondsSinceEpoch;
+  int endWork = DateTime.now().millisecondsSinceEpoch;
   int takenImages = 0;
   AnnouncementModel hireModel = AnnouncementModel.initial;
   bool? hasVibrator;
@@ -188,31 +188,31 @@ class _AddHireScreenState extends State<AddHireScreen> {
                   return CupertinoListTile(
                     onTap: () {
                       show(
-                        context: context,
-                        cancelButton: () {
-                          endWork = 0;
-                          startWork = 0;
-                          Navigator.pop(context);
-                        },
-                        doneButton: () {
-                          if (endWork !=
-                                  DateTime.now().millisecondsSinceEpoch &&
-                              startWork < endWork &&
-                              startWork != endWork) {
+                          context: context,
+                          cancelButton: () {
                             Navigator.pop(context);
-                          }
-                        },
-                        onStartChange: (v) {
-                          startWork = v.millisecondsSinceEpoch;
-                          setState(() {});
-                        },
-                        onEndChange: (v) {
-                          endWork = v.millisecondsSinceEpoch;
-                          setState(
-                            () {},
-                          );
-                        },
-                      );
+                            setState(() {});
+                          },
+                          doneButton: () {
+                            if (endWork !=
+                                    DateTime.now().millisecondsSinceEpoch &&
+                                startWork < endWork &&
+                                startWork != endWork) {
+                              Navigator.pop(context);
+                            }
+                          },
+                          onStartChange: (v) {
+                            startWork = v.millisecondsSinceEpoch;
+                            setState(() {});
+                          },
+                          onEndChange: (v) {
+                            endWork = v.millisecondsSinceEpoch;
+                            setState(
+                              () {},
+                            );
+                          },
+                          startTime: startWork,
+                          endTime: endWork);
                     },
                     title: const Text("Ish vaqt oralig'i"),
                   );

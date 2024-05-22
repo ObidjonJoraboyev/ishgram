@@ -109,15 +109,14 @@ void takeAnImage(
   );
 }
 
-show({
-  required BuildContext context,
-  required VoidCallback cancelButton,
-  required VoidCallback doneButton,
-  required ValueChanged<DateTime> onStartChange,
-  required ValueChanged<DateTime> onEndChange,
-}) {
-  int startTime = DateTime.now().millisecondsSinceEpoch;
-  int endTime = DateTime.now().millisecondsSinceEpoch;
+show(
+    {required BuildContext context,
+    required VoidCallback cancelButton,
+    required VoidCallback doneButton,
+    required ValueChanged<DateTime> onStartChange,
+    required ValueChanged<DateTime> onEndChange,
+    required int startTime,
+    required int endTime}) {
   int currentPage = 0;
 
   final PageController controller = PageController();
@@ -169,6 +168,7 @@ show({
                 20.getH(),
                 Expanded(
                   child: PageView(
+                    physics: const NeverScrollableScrollPhysics(),
                     onPageChanged: (v) {
                       currentPage = v;
                       setState(() {});

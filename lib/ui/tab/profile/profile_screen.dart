@@ -1,9 +1,9 @@
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:permission_handler/permission_handler.dart';
+import 'package:ish_top/utils/utility_functions.dart';
 import '../../../data/models/user_model.dart';
 
 class ProfileScreen extends StatefulWidget {
@@ -67,71 +67,33 @@ class _ProfileScreenState extends State<ProfileScreen> {
           ],
           bottom: PreferredSize(
             preferredSize: const Size(100, 70),
-            child: 1 == 2
-                ? GestureDetector(
-                    onTap: () {
-                      showDialog(
-                        barrierColor: Colors.black,
-                        context: context,
-                        builder: (context) => AlertDialog(
-                          shadowColor: Colors.black,
-                          backgroundColor: Colors.black,
-                          insetPadding: EdgeInsets.zero,
-                          contentPadding: EdgeInsets.zero,
-                          content: SizedBox(
-                            width: MediaQuery.sizeOf(context).width,
-                            child: CachedNetworkImage(
-                              imageUrl: thisUser.image,
-                              width: MediaQuery.sizeOf(context).width,
-                              fit: BoxFit.cover,
-                              height: 360,
-                            ),
-                          ),
-                        ),
-                      );
-                    },
-                    child: ClipRRect(
-                      borderRadius: BorderRadius.circular(10000),
-                      child: Image.network(
-                        thisUser.image,
-                        width: 90,
-                        height: 90,
-                        fit: BoxFit.cover,
-                      ),
-                    ),
-                  )
-                : GestureDetector(
-                    onTap: () async {
-                      await Permission.storage.request();
-                      await Permission.photos.request();
-                      if (await Permission.photos.isPermanentlyDenied ||
-                          await Permission.storage.isPermanentlyDenied) {
-                        openAppSettings();
-                      }
+            child: GestureDetector(
+              onTap: () async {
+                takeAnImage(context, limit: 1, images: []);
 
-                      setState(
-                        () {},
-                      );
-                    },
-                    child: Container(
-                      width: 90,
-                      height: 90,
-                      decoration: const BoxDecoration(
-                        shape: BoxShape.circle,
-                        color: Colors.red,
-                      ),
-                      child: Center(
-                        child: Text(
-                          thisUser.name.toUpperCase(),
-                          style: const TextStyle(
-                            fontSize: 32,
-                            color: Colors.white,
-                            fontWeight: FontWeight.w600,
-                          ),
-                        ),
-                      ),
+                setState(
+                  () {},
+                );
+              },
+              child: Container(
+                width: 90,
+                height: 90,
+                decoration: const BoxDecoration(
+                  shape: BoxShape.circle,
+                  color: Colors.red,
+                ),
+                child: Center(
+                  child: Text(
+                    thisUser.name.toUpperCase(),
+                    style: const TextStyle(
+                      fontSize: 32,
+                      color: Colors.white,
+                      fontWeight: FontWeight.w600,
                     ),
                   ),
+                ),
+              ),
+            ),
           ),
         ),
         body: Column(
@@ -274,8 +236,10 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                 },
                                 child: Text(
                                   "cancel".tr(),
-                                  style: const TextStyle(
-                                      color: CupertinoColors.activeBlue),
+                                  style: TextStyle(
+                                      color: CupertinoColors.activeBlue,
+                                      fontSize: 16.sp,
+                                      fontWeight: FontWeight.w500),
                                 ),
                               ),
                               actions: [
@@ -288,9 +252,10 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                   },
                                   child: Text(
                                     "uz".tr(),
-                                    style: const TextStyle(
+                                    style: TextStyle(
                                         color: CupertinoColors.activeBlue,
-                                        fontWeight: FontWeight.w500),
+                                        fontWeight: FontWeight.w500,
+                                        fontSize: 15.sp),
                                   ),
                                 ),
                                 CupertinoActionSheetAction(
@@ -302,9 +267,10 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                   },
                                   child: Text(
                                     "ru".tr(),
-                                    style: const TextStyle(
+                                    style: TextStyle(
                                         color: CupertinoColors.activeBlue,
-                                        fontWeight: FontWeight.w500),
+                                        fontWeight: FontWeight.w500,
+                                        fontSize: 15.sp),
                                   ),
                                 ),
                               ],

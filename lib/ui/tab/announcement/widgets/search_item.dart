@@ -100,7 +100,8 @@ class _SearchItemState extends State<SearchItem>
         ),
         ZoomTapAnimation(
           onTap: () {
-            widget.controller.text = "";
+            widget.controller.clear();
+            widget.valueChanged("");
             setState(() {});
             animationController.reverse();
             widget.focus.unfocus();
