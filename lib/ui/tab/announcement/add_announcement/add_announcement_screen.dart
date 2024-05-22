@@ -1,6 +1,7 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -24,7 +25,7 @@ import 'package:zoom_tap_animation/zoom_tap_animation.dart';
 class AddHireScreen extends StatefulWidget {
   const AddHireScreen({super.key, required this.voidCallback});
 
-  final void Function() voidCallback;
+  final ValueChanged voidCallback;
 
   @override
   State<AddHireScreen> createState() => _AddHireScreenState();
@@ -37,6 +38,7 @@ class _AddHireScreenState extends State<AddHireScreen> {
   final TextEditingController ownerCtrl = TextEditingController();
   final TextEditingController descriptionCtrl = TextEditingController();
 
+  final ScrollController controller = ScrollController();
   int startWork = DateTime.now().millisecondsSinceEpoch;
   int endWork = DateTime.now().millisecondsSinceEpoch;
   int takenImages = 0;
@@ -49,10 +51,28 @@ class _AddHireScreenState extends State<AddHireScreen> {
   }
 
   @override
+  void dispose() {
+    nameCtrl.dispose();
+    numberCtrl.dispose();
+    money.dispose();
+    ownerCtrl.dispose();
+    descriptionCtrl.dispose();
+    super.dispose();
+  }
+
+  @override
   void initState() {
     init();
     setState(() {});
     t.init(context);
+    controller.addListener(
+      () {
+        if (controller.position.userScrollDirection ==
+            ScrollDirection.forward) {
+          FocusScope.of(context).unfocus();
+        }
+      },
+    );
     super.initState();
   }
 
@@ -108,6 +128,7 @@ class _AddHireScreenState extends State<AddHireScreen> {
         listener: (context, state) {},
         builder: (context, state) {
           return ListView(
+            controller: controller,
             physics: const BouncingScrollPhysics(),
             children: [
               SizedBox(
@@ -244,7 +265,10 @@ class _AddHireScreenState extends State<AddHireScreen> {
                       context
                           .read<AnnouncementBloc>()
                           .add(AnnouncementAddEvent(hireModel: hireModel));
-                      widget.voidCallback.call();
+                      widget.voidCallback.call(() {
+                        startWork = DateTime.now().millisecondsSinceEpoch;
+                        endWork = DateTime.now().millisecondsSinceEpoch;
+                      });
                       Widget toast = Container(
                         padding: const EdgeInsets.symmetric(
                             horizontal: 24.0, vertical: 12.0),
@@ -298,6 +322,8 @@ class _AddHireScreenState extends State<AddHireScreen> {
         ownerCtrl.text.isNotEmpty &&
         startWork != 0 &&
         endWork != 0 &&
-        descriptionCtrl.text.isNotEmpty;
+        descriptionCtrl.text.isNotEmpty &&
+        startWork != DateTime.now().millisecondsSinceEpoch &&
+        endWork != DateTime.now().millisecondsSinceEpoch;
   }
 }

@@ -109,14 +109,15 @@ void takeAnImage(
   );
 }
 
-show(
-    {required BuildContext context,
-    required VoidCallback cancelButton,
-    required VoidCallback doneButton,
-    required ValueChanged<DateTime> onStartChange,
-    required ValueChanged<DateTime> onEndChange,
-    required int startTime,
-    required int endTime}) {
+show({
+  required BuildContext context,
+  required VoidCallback cancelButton,
+  required VoidCallback doneButton,
+  required ValueChanged<DateTime> onStartChange,
+  required ValueChanged<DateTime> onEndChange,
+  required int startTime,
+  required int endTime,
+}) {
   int currentPage = 0;
 
   final PageController controller = PageController();
@@ -124,8 +125,19 @@ show(
     context: context,
     isScrollControlled: true,
     builder: (context) {
-      DateTime initialDateTime = DateTime.now();
       DateTime minimumDate = DateTime.now();
+
+      DateTime initialStartTime =
+          DateTime.fromMillisecondsSinceEpoch(startTime);
+      DateTime initialEndTime = DateTime.fromMillisecondsSinceEpoch(endTime);
+
+      if (initialStartTime.isBefore(minimumDate)) {
+        initialStartTime = minimumDate;
+      }
+      if (initialEndTime.isBefore(minimumDate)) {
+        initialEndTime = minimumDate;
+      }
+
       return StatefulBuilder(
         builder: (context, setState) {
           return Container(
@@ -155,14 +167,15 @@ show(
                       ),
                     ),
                     ZoomTapAnimation(
-                        onTap: doneButton,
-                        child: Text(
-                          "done".tr(),
-                          style: TextStyle(
-                              color: CupertinoColors.activeBlue,
-                              fontSize: 16.sp,
-                              fontWeight: FontWeight.w600),
-                        )),
+                      onTap: doneButton,
+                      child: Text(
+                        "done".tr(),
+                        style: TextStyle(
+                            color: CupertinoColors.activeBlue,
+                            fontSize: 16.sp,
+                            fontWeight: FontWeight.w600),
+                      ),
+                    ),
                   ],
                 ),
                 20.getH(),
@@ -191,19 +204,17 @@ show(
                           SizedBox(
                             height: 200.h,
                             child: CupertinoDatePicker(
-                                initialDateTime:
-                                    initialDateTime.isBefore(minimumDate)
-                                        ? minimumDate
-                                        : initialDateTime,
-                                use24hFormat: true,
-                                showDayOfWeek: true,
-                                itemExtent: 55,
-                                minimumDate: minimumDate,
-                                onDateTimeChanged: (v) {
-                                  onStartChange(v);
-                                  startTime = v.millisecondsSinceEpoch;
-                                  setState(() {});
-                                }),
+                              initialDateTime: initialStartTime,
+                              use24hFormat: true,
+                              showDayOfWeek: true,
+                              itemExtent: 55,
+                              minimumDate: minimumDate,
+                              onDateTimeChanged: (v) {
+                                onStartChange(v);
+                                startTime = v.millisecondsSinceEpoch;
+                                setState(() {});
+                              },
+                            ),
                           ),
                         ],
                       ),
@@ -222,10 +233,7 @@ show(
                           SizedBox(
                             height: 200.h,
                             child: CupertinoDatePicker(
-                              initialDateTime:
-                                  initialDateTime.isBefore(minimumDate)
-                                      ? minimumDate
-                                      : initialDateTime,
+                              initialDateTime: initialEndTime,
                               use24hFormat: true,
                               showDayOfWeek: true,
                               itemExtent: 55,
@@ -238,7 +246,7 @@ show(
                             ),
                           ),
                         ],
-                      )
+                      ),
                     ],
                   ),
                 ),

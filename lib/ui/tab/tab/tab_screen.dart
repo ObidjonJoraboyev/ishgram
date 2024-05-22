@@ -1,7 +1,10 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:ish_top/blocs/image/image_event.dart';
 import 'package:ish_top/data/models/user_model.dart';
+import '../../../blocs/image/image_bloc.dart';
 import '../announcement/add_announcement/add_announcement_screen.dart';
 import '../announcement/announcement_screen.dart';
 import '../feedback/feedback_screen.dart';
@@ -26,8 +29,9 @@ class _TabScreenState extends State<TabScreen> {
     List<Widget> screens = [
       const HireScreen(),
       AddHireScreen(
-        voidCallback: () {
+        voidCallback: (v) {
           activeIndex = 0;
+          context.read<ImageBloc>().add(ImageCleanEvent());
           setState(() {});
         },
       ),
