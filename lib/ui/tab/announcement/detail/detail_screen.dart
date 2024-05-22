@@ -51,13 +51,25 @@ class _DetailScreenState extends State<DetailScreen> {
                         children: [
                           GestureDetector(
                             onTap: () {
-                              showImageViewer(
-                                context,
-                                CachedNetworkImageProvider(
-                                  widget.hireModel.image[index].imageUrl,
-                                ),
+                              showImageViewerPager(
                                 swipeDismissible: true,
                                 doubleTapZoomable: true,
+                                useSafeArea: true,
+                                context,
+                                MultiImageProvider(
+                                  [
+                                    ...List.generate(
+                                      widget.hireModel.image.length,
+                                      (index) => CachedNetworkImageProvider(
+                                        widget.hireModel.image[index].imageUrl,
+                                        maxWidth: MediaQuery.sizeOf(context)
+                                            .width
+                                            .toInt(),
+                                        maxHeight: 800.h.toInt(),
+                                      ),
+                                    )
+                                  ],
+                                ),
                               );
                             },
                             child: Container(

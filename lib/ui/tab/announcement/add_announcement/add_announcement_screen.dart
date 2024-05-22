@@ -5,6 +5,7 @@ import 'package:flutter/rendering.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:ish_top/blocs/announcement_bloc/hire_bloc.dart';
 import 'package:ish_top/blocs/announcement_bloc/hire_event.dart';
 import 'package:ish_top/blocs/image/image_bloc.dart';
@@ -75,6 +76,8 @@ class _AddHireScreenState extends State<AddHireScreen> {
     );
     super.initState();
   }
+
+  int activeCategory = 1;
 
   @override
   Widget build(BuildContext context) {
@@ -203,10 +206,15 @@ class _AddHireScreenState extends State<AddHireScreen> {
                   setState(() {});
                 },
               ),
-              const Divider(),
+              Container(
+                width: double.infinity,
+                height: 0.6,
+                color: Colors.grey,
+              ),
               StatefulBuilder(
                 builder: (context, setState) {
-                  return CupertinoListTile(
+                  return ListTile(
+                    contentPadding: EdgeInsets.symmetric(horizontal: 16.w),
                     onTap: () {
                       show(
                           context: context,
@@ -235,10 +243,76 @@ class _AddHireScreenState extends State<AddHireScreen> {
                           startTime: startWork,
                           endTime: endWork);
                     },
-                    title: const Text("Ish vaqt oralig'i"),
+                    title: Text(
+                      "Ish vaqt oralig'i",
+                      style: TextStyle(
+                          fontWeight: FontWeight.w500, fontSize: 16.sp),
+                    ),
                   );
                 },
               ),
+              Container(
+                width: double.infinity,
+                height: 0.6,
+                color: Colors.grey,
+              ),
+              Padding(
+                padding: EdgeInsets.symmetric(horizontal: 14.w),
+                child: DropdownButton(
+                  underline: const SizedBox(),
+                  value: activeCategory,
+                  items: [
+                    DropdownMenuItem(
+                      value: 0,
+                      child: Text(
+                        " Oson",
+                        style: TextStyle(
+                          color: Colors.black,
+                          fontWeight: FontWeight.w500,
+                          fontSize: 14.sp,
+                        ),
+                      ),
+                    ),
+                    DropdownMenuItem(
+                      value: 1,
+                      child: Text(
+                        " O'rtacha",
+                        style: TextStyle(
+                          color: Colors.black,
+                          fontWeight: FontWeight.w500,
+                          fontSize: 14.sp,
+                        ),
+                      ),
+                    ),
+                    DropdownMenuItem(
+                      value: 2,
+                      child: Text(
+                        " Qiyin",
+                        style: TextStyle(
+                          color: Colors.black,
+                          fontWeight: FontWeight.w500,
+                          fontSize: 14.sp,
+                        ),
+                      ),
+                    ),
+                  ],
+                  onChanged: (v) {
+                    activeCategory = v!;
+                    setState(() {});
+                  },
+                ),
+              ),
+              Container(
+                width: double.infinity,
+                height: 0.6,
+                color: Colors.grey,
+              ),
+              SizedBox(
+                  height: 100,
+                  width: MediaQuery.sizeOf(context).width,
+                  child: const GoogleMap(
+                      initialCameraPosition:
+                          CameraPosition(target: LatLng(12, 12)))),
               Padding(
                 padding: EdgeInsets.all(16.w),
                 child: GlobalButton(
@@ -253,6 +327,7 @@ class _AddHireScreenState extends State<AddHireScreen> {
                     if (isValid()) {
                       if (!context.mounted) return;
                       hireModel = hireModel.copyWith(
+                        category: WorkCategory.values[activeCategory],
                         ownerName: ownerCtrl.text,
                         title: nameCtrl.text,
                         timeInterval: "$startWork:$endWork",
@@ -266,43 +341,15 @@ class _AddHireScreenState extends State<AddHireScreen> {
                           .read<AnnouncementBloc>()
                           .add(AnnouncementAddEvent(hireModel: hireModel));
                       widget.voidCallback.call(() {
+                        t.showToast(child: toast);
+                        nameCtrl.clear();
+                        numberCtrl.clear();
+                        money.clear();
+                        ownerCtrl.clear();
+                        descriptionCtrl.clear();
                         startWork = DateTime.now().millisecondsSinceEpoch;
                         endWork = DateTime.now().millisecondsSinceEpoch;
                       });
-                      Widget toast = Container(
-                        padding: const EdgeInsets.symmetric(
-                            horizontal: 24.0, vertical: 12.0),
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(10.0),
-                          color: Colors.green,
-                        ),
-                        child: Row(
-                          mainAxisSize: MainAxisSize.min,
-                          children: [
-                            const Icon(
-                              Icons.check,
-                              color: Colors.white,
-                            ),
-                            const SizedBox(
-                              width: 12.0,
-                            ),
-                            Text(
-                              "added_hiring".tr(),
-                              style: TextStyle(
-                                  color: Colors.white,
-                                  fontWeight: FontWeight.w500,
-                                  fontSize: 14.sp),
-                            ),
-                          ],
-                        ),
-                      );
-
-                      t.showToast(child: toast);
-                      nameCtrl.clear();
-                      numberCtrl.clear();
-                      money.clear();
-                      ownerCtrl.clear();
-                      descriptionCtrl.clear();
                     }
                   },
                 ),

@@ -34,4 +34,3 @@ class ImageCleanEvent extends ImageEvent {
   @override
   List<Object?> get props => [];
 }
-

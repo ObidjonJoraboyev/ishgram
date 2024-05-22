@@ -1,3 +1,4 @@
+import 'package:add_2_calendar/add_2_calendar.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -33,6 +34,27 @@ class _WidgetOfDetailState extends State<WidgetOfDetail>
       ..repeat();
     animation = Tween<double>(begin: 0.0, end: 1.0).animate(controller);
     super.initState();
+  }
+
+  final GlobalKey<ScaffoldMessengerState> scaffoldMessengerKey =
+      GlobalKey<ScaffoldMessengerState>();
+
+  Event buildEvent({Recurrence? recurrence}) {
+    return Event(
+      title: widget.hireModel.title,
+      description: widget.hireModel.description,
+      location: widget.hireModel.location,
+      startDate: DateTime.fromMillisecondsSinceEpoch(
+          int.parse(widget.hireModel.timeInterval.split(":")[0])),
+      endDate: DateTime.fromMillisecondsSinceEpoch(
+          int.parse(widget.hireModel.timeInterval.split(":")[1])),
+      allDay: false,
+      iosParams: const IOSParams(
+        reminder: Duration(minutes: 40),
+      ),
+      androidParams: const AndroidParams(),
+      recurrence: recurrence,
+    );
   }
 
   @override
@@ -91,6 +113,18 @@ class _WidgetOfDetailState extends State<WidgetOfDetail>
                         fontSize: 14.sp,
                         color: Colors.black),
                   ),
+                  const Spacer(),
+                  IconButton(
+                    onPressed: () async {
+                      Add2Calendar.addEvent2Cal(
+                        buildEvent(),
+                      );
+                    },
+                    icon: const Icon(
+                      CupertinoIcons.calendar_badge_plus,
+                      color: CupertinoColors.activeGreen,
+                    ),
+                  ),
                 ],
               )
             ],
@@ -127,6 +161,7 @@ class _WidgetOfDetailState extends State<WidgetOfDetail>
             curve: Curves.easeInOut,
             height: isCallOpen ? 45.h : 0.0,
             child: SingleChildScrollView(
+              physics: const NeverScrollableScrollPhysics(),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [

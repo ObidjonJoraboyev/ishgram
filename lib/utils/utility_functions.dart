@@ -358,3 +358,28 @@ Future<void> launchSms(String phoneNumber) async {
     throw 'Could not launch $launchUri';
   }
 }
+
+Widget toast = Container(
+  padding: const EdgeInsets.symmetric(horizontal: 24.0, vertical: 12.0),
+  decoration: BoxDecoration(
+    borderRadius: BorderRadius.circular(10.0),
+    color: Colors.green,
+  ),
+  child: Row(
+    mainAxisSize: MainAxisSize.min,
+    children: [
+      const Icon(
+        Icons.check,
+        color: Colors.white,
+      ),
+      const SizedBox(
+        width: 12.0,
+      ),
+      Text(
+        "added_hiring".tr(),
+        style: TextStyle(
+            color: Colors.white, fontWeight: FontWeight.w500, fontSize: 14.sp),
+      ),
+    ],
+  ),
+);

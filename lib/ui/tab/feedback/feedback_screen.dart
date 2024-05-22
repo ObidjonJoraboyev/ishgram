@@ -506,14 +506,19 @@ class _FeedbackScreenState extends State<FeedbackScreen> {
                           ),
                         ),
                       ),
-                      IconButton(
-                        onPressed: () {},
-                        icon: Icon(
-                          Icons.mic_none,
-                          size: 26,
-                          color: Colors.grey.withOpacity(.8),
-                        ),
-                      ),
+
+                      //Align(
+                      //                         alignment: Alignment.centerRight,
+                      //                         child: SizedBox(
+                      //                           child: SocialMediaRecorder(
+                      //                             encode: AudioEncoderType.AAC,
+                      //                             sendRequestFunction: (File soundFile, String time) {
+                      //                               print(time);
+                      //                               print(soundFile.path);
+                      //                             },
+                      //                           ),
+                      //                         ),
+                      //                       )
                     ],
                   ),
                 ),
