@@ -20,7 +20,6 @@ class StorageRepository {
     required int value,
   }) async {
     if (_preference != null) {
-      debugPrint("SAVING INT:$value");
       _preference!.setInt(key, value);
     }
   }

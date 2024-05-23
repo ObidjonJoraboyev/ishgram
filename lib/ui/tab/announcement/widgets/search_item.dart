@@ -14,6 +14,7 @@ class SearchItem extends StatefulWidget {
   final ValueChanged valueChanged;
   final TextEditingController controller;
   final FocusNode focus;
+
   @override
   State<SearchItem> createState() => _SearchItemState();
 }
@@ -39,6 +40,10 @@ class _SearchItemState extends State<SearchItem>
       ),
     )
       ..addListener(() {
+        if (widget.focus.hasFocus == false) {
+          animationController.reverse();
+          setState(() {});
+        }
         setState(() {});
       })
       ..addStatusListener((status) {});
@@ -52,6 +57,13 @@ class _SearchItemState extends State<SearchItem>
 
   @override
   Widget build(BuildContext context) {
+    if (widget.focus.hasFocus == false) {
+      animationController.reverse();
+      setState(() {});
+    } else {
+      animationController.forward();
+      setState(() {});
+    }
     return Row(
       children: [
         Expanded(
@@ -103,6 +115,7 @@ class _SearchItemState extends State<SearchItem>
             widget.controller.clear();
             widget.valueChanged("");
             setState(() {});
+
             animationController.reverse();
             widget.focus.unfocus();
           },

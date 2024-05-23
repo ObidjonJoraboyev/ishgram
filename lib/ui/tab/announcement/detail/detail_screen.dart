@@ -27,7 +27,9 @@ class _DetailScreenState extends State<DetailScreen> {
           statusBarColor: Colors.transparent,
           statusBarIconBrightness: Brightness.dark,
         ),
-        backgroundColor: Colors.transparent,
+        backgroundColor: CupertinoColors.systemGrey5,
+        elevation: 0,
+        scrolledUnderElevation: 0,
         title: Text(
           "about_work".tr(),
           style: const TextStyle(color: Colors.black, shadows: [
@@ -54,7 +56,7 @@ class _DetailScreenState extends State<DetailScreen> {
                               showImageViewerPager(
                                 swipeDismissible: true,
                                 doubleTapZoomable: true,
-                                useSafeArea: true,
+                                useSafeArea: false,
                                 context,
                                 MultiImageProvider(
                                   [

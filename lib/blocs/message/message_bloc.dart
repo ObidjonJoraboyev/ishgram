@@ -29,7 +29,6 @@ class MessageBloc extends Bloc<MessageEvent, List<MessageModel>> {
           onData: (List<MessageModel> messages) async {
         emit(messages);
       }, onError: (c, d) {
-        debugPrint(d.toString());
       });
     } catch (error) {
       debugPrint("ERROR CATCH $error");

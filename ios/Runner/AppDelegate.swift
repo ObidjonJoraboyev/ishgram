@@ -1,14 +1,19 @@
 import UIKit
 import Flutter
-
+import GoogleMaps
+import UserNotifications
+import alarm
 @UIApplicationMain
 @objc class AppDelegate: FlutterAppDelegate {
   override func application(
     _ application: UIApplication,
     didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?
   ) -> Bool {
-
-    GMSServices.provideAPIKey("AIzaSyDJ5sV6ATL9NgsLzJP7Cg-qmpecD_xi-gA")
+      if #available(iOS 10.0, *) {
+        UNUserNotificationCenter.current().delegate = self as UNUserNotificationCenterDelegate
+      }
+      SwiftAlarmPlugin.registerBackgroundTasks()
+    GMSServices.provideAPIKey("AIzaSyD4Mqs5tTezA_uU9y4kDyronAGWRmA1MBA")
     GeneratedPluginRegistrant.register(with: self)
     return super.application(application, didFinishLaunchingWithOptions: launchOptions)
   }

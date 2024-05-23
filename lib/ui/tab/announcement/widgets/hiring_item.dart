@@ -15,18 +15,19 @@ class HiringItem extends StatefulWidget {
   const HiringItem({
     super.key,
     required this.hires,
+    required this.voidCallback,
     required this.scrollController,
   });
 
   final List<AnnouncementModel> hires;
   final ScrollController scrollController;
+  final VoidCallback voidCallback;
 
   @override
   State<HiringItem> createState() => _HiringItemState();
 }
 
 class _HiringItemState extends State<HiringItem> {
-  // Maintain the activeIndex state inside each HiringItem
   List<int> activeIndexes = [];
 
   @override
@@ -62,6 +63,10 @@ class _HiringItemState extends State<HiringItem> {
                           ),
                         ),
                       );
+
+
+
+                  widget.voidCallback.call();
 
                   Navigator.push(
                     context,

@@ -507,18 +507,7 @@ class _FeedbackScreenState extends State<FeedbackScreen> {
                         ),
                       ),
 
-                      //Align(
-                      //                         alignment: Alignment.centerRight,
-                      //                         child: SizedBox(
-                      //                           child: SocialMediaRecorder(
-                      //                             encode: AudioEncoderType.AAC,
-                      //                             sendRequestFunction: (File soundFile, String time) {
-                      //                               print(time);
-                      //                               print(soundFile.path);
-                      //                             },
-                      //                           ),
-                      //                         ),
-                      //                       )
+
                     ],
                   ),
                 ),

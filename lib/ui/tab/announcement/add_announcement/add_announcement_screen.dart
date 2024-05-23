@@ -307,12 +307,17 @@ class _AddHireScreenState extends State<AddHireScreen> {
                 height: 0.6,
                 color: Colors.grey,
               ),
-              SizedBox(
-                  height: 100,
-                  width: MediaQuery.sizeOf(context).width,
-                  child: const GoogleMap(
-                      initialCameraPosition:
-                          CameraPosition(target: LatLng(12, 12)))),
+              const SizedBox(
+                height: 200,
+                width: 300,
+                child: GoogleMap(
+                  mapType: MapType.hybrid,
+
+                  initialCameraPosition: CameraPosition(
+                    target: LatLng(12, 12),
+                  ),
+                ),
+              ),
               Padding(
                 padding: EdgeInsets.all(16.w),
                 child: GlobalButton(

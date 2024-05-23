@@ -1,4 +1,5 @@
 import 'package:add_2_calendar/add_2_calendar.dart';
+import 'package:alarm/alarm.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -7,6 +8,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:ish_top/data/models/announcement.dart';
 import 'package:ish_top/utils/size/size_utils.dart';
+import 'package:permission_handler/permission_handler.dart';
 import '../../../../../utils/utility_functions.dart';
 
 class WidgetOfDetail extends StatefulWidget {
@@ -24,6 +26,8 @@ class _WidgetOfDetailState extends State<WidgetOfDetail>
   late AnimationController controller;
   late Animation<double> animation;
 
+  String time = "";
+
   @override
   void initState() {
     controller = AnimationController(
@@ -33,6 +37,15 @@ class _WidgetOfDetailState extends State<WidgetOfDetail>
       ..forward()
       ..repeat();
     animation = Tween<double>(begin: 0.0, end: 1.0).animate(controller);
+    time = "${DateFormat('dd MMM HH:mm').format(
+      DateTime.fromMillisecondsSinceEpoch(
+        int.parse(widget.hireModel.timeInterval.split(":")[0]),
+      ),
+    )}  -  ${DateFormat('dd MMM HH:mm').format(
+      DateTime.fromMillisecondsSinceEpoch(
+        int.parse(widget.hireModel.timeInterval.split(":")[1]),
+      ),
+    )}";
     super.initState();
   }
 
@@ -92,22 +105,7 @@ class _WidgetOfDetailState extends State<WidgetOfDetail>
               Row(
                 children: [
                   Text(
-                    DateFormat('dd MMM HH:mm').format(
-                      DateTime.fromMillisecondsSinceEpoch(
-                        int.parse(widget.hireModel.timeInterval.split(":")[0]),
-                      ),
-                    ),
-                    style: TextStyle(
-                        fontWeight: FontWeight.w600,
-                        fontSize: 14.sp,
-                        color: Colors.black),
-                  ),
-                  Text(
-                    "  -  ${DateFormat('dd MMM HH:mm').format(
-                      DateTime.fromMillisecondsSinceEpoch(
-                        int.parse(widget.hireModel.timeInterval.split(":")[1]),
-                      ),
-                    )}",
+                    time,
                     style: TextStyle(
                         fontWeight: FontWeight.w600,
                         fontSize: 14.sp,
@@ -122,9 +120,31 @@ class _WidgetOfDetailState extends State<WidgetOfDetail>
                     },
                     icon: const Icon(
                       CupertinoIcons.calendar_badge_plus,
-                      color: CupertinoColors.activeGreen,
+                      color: CupertinoColors.activeOrange,
                     ),
                   ),
+                  IconButton(
+                    onPressed: () async {
+                      final status = await Permission.scheduleExactAlarm.status;
+                      if (status.isDenied) {
+                        await Permission.scheduleExactAlarm.request();
+                      }
+                      if (!context.mounted) return;
+
+                      addAlarm(context1: context, hireModel: widget.hireModel,valueChanged: (v){
+                        setState(() {});
+                      });
+                      setState(() {});
+                    },
+                    icon: Icon(
+                      Alarm.getAlarm(42) == null
+                          ? Icons.alarm_add
+                          : Icons.alarm_on_sharp,
+                      color: Alarm.getAlarm(42) == null
+                          ? CupertinoColors.activeOrange
+                          : CupertinoColors.destructiveRed,
+                    ),
+                  )
                 ],
               )
             ],

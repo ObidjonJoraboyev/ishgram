@@ -7,6 +7,7 @@ import '../../blocs/connectivity/connectivity_state.dart';
 
 class InternetScreen extends StatefulWidget {
   const InternetScreen({super.key, required this.onInternetComeBack});
+
   final VoidCallback onInternetComeBack;
 
   @override
@@ -18,9 +19,7 @@ class _InternetScreenState extends State<InternetScreen> {
   Widget build(BuildContext context) {
     return PopScope(
       canPop: false,
-      onPopInvoked: (value) {
-        debugPrint("ON POP INVOKED:$value");
-      },
+      onPopInvoked: (value) {},
       child: Scaffold(
           backgroundColor: Colors.white,
           body: BlocListener<ConnectBloc, ConnectState>(
