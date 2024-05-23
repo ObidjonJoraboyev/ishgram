@@ -42,7 +42,10 @@
   "set_end_time": "Tugash vaqtini o'rnatish",
   "will_start": "Boshlanadi: ",
   "will_end": "Tugaydi: ",
-  "support": "Qo'llab quvvatlash"
+  "support": "Qo'llab quvvatlash",
+  "add_note": "Eslatma qo'shildi",
+  "remove_note": "Eslaatma o'chirildi"
+
 
 
 

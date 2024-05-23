@@ -6,6 +6,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:ish_top/utils/size/size_utils.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -432,9 +433,20 @@ addAlarm(
 
                         alarm = Alarm.getAlarm(42);
                         valueChanged.call("");
-
                         if (!context.mounted) return;
-                        Navigator.pop(context);
+                        await Fluttertoast.showToast(
+                          msg: "add_note".tr(),
+                          toastLength: Toast.LENGTH_SHORT,
+                          gravity: ToastGravity.TOP,
+                          timeInSecForIosWeb: 1,
+                          backgroundColor: Colors.grey,
+                          textColor: Colors.white,
+                          fontSize: 16.0,
+                        ).then((v) {
+                          if (v != null && v) {
+                            Navigator.pop(context);
+                          }
+                        });
                       },
                       child: Text(
                         "Eslatma qo'shish",
@@ -454,6 +466,15 @@ addAlarm(
                         valueChanged.call("");
 
                         if (!context.mounted) return;
+                        await Fluttertoast.showToast(
+                          msg: "remove_note".tr(),
+                          toastLength: Toast.LENGTH_SHORT,
+                          gravity: ToastGravity.TOP,
+                          timeInSecForIosWeb: 1,
+                          backgroundColor: Colors.red,
+                          textColor: Colors.white,
+                          fontSize: 16.0,
+                        );
                         Navigator.pop(context);
                       },
                       child: Text(

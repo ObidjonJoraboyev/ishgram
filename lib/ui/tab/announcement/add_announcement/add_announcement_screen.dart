@@ -78,6 +78,7 @@ class _AddHireScreenState extends State<AddHireScreen> {
   }
 
   int activeCategory = 1;
+  Sky _selectedSegment = Sky.midnight;
 
   @override
   Widget build(BuildContext context) {
@@ -130,237 +131,250 @@ class _AddHireScreenState extends State<AddHireScreen> {
       body: BlocConsumer<ImageBloc, ImageUploadState>(
         listener: (context, state) {},
         builder: (context, state) {
-          return ListView(
-            controller: controller,
-            physics: const BouncingScrollPhysics(),
+          return Column(
             children: [
-              SizedBox(
-                height: 150.w,
+              Expanded(
                 child: ListView(
+                  controller: controller,
                   physics: const BouncingScrollPhysics(),
-                  scrollDirection: Axis.horizontal,
                   children: [
-                    12.getW(),
-                    GenerateImage(state: state),
-                    GenerateBlame(state: state),
-                    12.getW(),
+                    SizedBox(
+                      height: 150.w,
+                      child: ListView(
+                        physics: const BouncingScrollPhysics(),
+                        scrollDirection: Axis.horizontal,
+                        children: [
+                          12.getW(),
+                          GenerateImage(state: state),
+                          GenerateBlame(state: state),
+                          12.getW(),
+                        ],
+                      ),
+                    ),
+                    2.getH(),
+                    Align(
+                      alignment: AlignmentDirectional.centerEnd,
+                      child: Padding(
+                        padding: EdgeInsets.only(right: 16.w),
+                        child: Text(
+                          "${state.images.length}/5",
+                          style: TextStyle(
+                              color: Colors.black,
+                              fontWeight: FontWeight.w500,
+                              fontSize: 14.sp),
+                        ),
+                      ),
+                    ),
+                    12.getH(),
+                    GlobalTextFiled(
+                      onChanged: (v) {
+                        setState(() {});
+                      },
+                      controller: nameCtrl,
+                      labelText: "work_name",
+                      maxLines: 1,
+                      maxLength: 100,
+                    ),
+                    GlobalTextFiled(
+                      onChanged: (v) {
+                        setState(() {});
+                      },
+                      controller: ownerCtrl,
+                      labelText: "your_name",
+                      maxLines: 1,
+                      maxLength: 50,
+                    ),
+                    GlobalTextFiled(
+                      onChanged: (v) {
+                        setState(() {});
+                      },
+                      controller: descriptionCtrl,
+                      labelText: "about_work",
+                      maxLength: 800,
+                    ),
+                    0.getH(),
+                    GlobalTextFiled(
+                      onChanged: (v) {
+                        setState(() {});
+                      },
+                      controller: numberCtrl,
+                      labelText: "phone_number",
+                      maxLines: 1,
+                      formatter: AppInputFormatters.phoneFormatter,
+                      isPhone: true,
+                    ),
+                    14.getH(),
+                    SalaryTextField(
+                      controller: money,
+                      valueChanged: (c) {
+                        setState(() {});
+                      },
+                    ),
+                    Container(
+                      width: double.infinity,
+                      height: 0.6,
+                      color: Colors.grey,
+                    ),
+                    StatefulBuilder(
+                      builder: (context, setState) {
+                        return ListTile(
+                          contentPadding:
+                              EdgeInsets.symmetric(horizontal: 16.w),
+                          onTap: () {
+                            show(
+                                context: context,
+                                cancelButton: () {
+                                  Navigator.pop(context);
+                                  setState(() {});
+                                },
+                                doneButton: () {
+                                  if (endWork !=
+                                          DateTime.now()
+                                              .millisecondsSinceEpoch &&
+                                      startWork < endWork &&
+                                      startWork != endWork) {
+                                    Navigator.pop(context);
+                                  }
+                                },
+                                onStartChange: (v) {
+                                  startWork = v.millisecondsSinceEpoch;
+                                  setState(() {});
+                                },
+                                onEndChange: (v) {
+                                  endWork = v.millisecondsSinceEpoch;
+                                  setState(
+                                    () {},
+                                  );
+                                },
+                                startTime: startWork,
+                                endTime: endWork);
+                          },
+                          title: Text(
+                            "Ish vaqt oralig'i",
+                            style: TextStyle(
+                                fontWeight: FontWeight.w500, fontSize: 16.sp),
+                          ),
+                        );
+                      },
+                    ),
+                    Container(
+                      width: double.infinity,
+                      height: 0.6,
+                      color: Colors.grey,
+                    ),
+                    SizedBox(
+                      height: 50.h,
+                      child: CupertinoPageScaffold(
+                        backgroundColor: Colors.transparent,
+                        navigationBar: CupertinoNavigationBar(
+                          middle: CupertinoSlidingSegmentedControl<Sky>(
+                            backgroundColor: CupertinoColors.systemGrey2,
+                            thumbColor: skyColors[_selectedSegment]!,
+                            groupValue: _selectedSegment,
+                            onValueChanged: (Sky? value) {
+                              if (value != null) {
+                                setState(() {
+                                  _selectedSegment = value;
+                                  activeCategory = _selectedSegment.index;
+                                });
+                              }
+                            },
+                            children: const {
+                              Sky.midnight: Padding(
+                                padding: EdgeInsets.symmetric(horizontal: 20),
+                                child: Text(
+                                  'Oson',
+                                  style: TextStyle(
+                                      color: CupertinoColors.white,
+                                      fontWeight: FontWeight.w500),
+                                ),
+                              ),
+                              Sky.viridian: Padding(
+                                padding: EdgeInsets.symmetric(horizontal: 20),
+                                child: Text(
+                                  "O'rtacha",
+                                  style: TextStyle(
+                                      color: CupertinoColors.white,
+                                      fontWeight: FontWeight.w500),
+                                ),
+                              ),
+                              Sky.cerulean: Padding(
+                                padding: EdgeInsets.symmetric(horizontal: 20),
+                                child: Text(
+                                  'Qiyin',
+                                  style: TextStyle(
+                                      color: CupertinoColors.white,
+                                      fontWeight: FontWeight.w500),
+                                ),
+                              ),
+                            },
+                          ),
+                        ),
+                        child: const SizedBox(),
+                      ),
+                    ),
+                    Container(
+                      width: double.infinity,
+                      height: 0.6,
+                      color: Colors.grey,
+                    ),
+                    const SizedBox(
+                      height: 200,
+                      width: 300,
+                      child: GoogleMap(
+                        mapType: MapType.hybrid,
+                        initialCameraPosition: CameraPosition(
+                          target: LatLng(12, 12),
+                        ),
+                      ),
+                    ),
                   ],
                 ),
               ),
-              2.getH(),
-              Align(
-                alignment: AlignmentDirectional.centerEnd,
-                child: Padding(
-                  padding: EdgeInsets.only(right: 16.w),
-                  child: Text(
-                    "${state.images.length}/5",
-                    style: TextStyle(
-                        color: Colors.black,
-                        fontWeight: FontWeight.w500,
-                        fontSize: 14.sp),
-                  ),
-                ),
-              ),
-              12.getH(),
-              GlobalTextFiled(
-                onChanged: (v) {
-                  setState(() {});
-                },
-                controller: nameCtrl,
-                labelText: "work_name",
-                maxLines: 1,
-                maxLength: 100,
-              ),
-              GlobalTextFiled(
-                onChanged: (v) {
-                  setState(() {});
-                },
-                controller: ownerCtrl,
-                labelText: "your_name",
-                maxLines: 1,
-                maxLength: 50,
-              ),
-              GlobalTextFiled(
-                onChanged: (v) {
-                  setState(() {});
-                },
-                controller: descriptionCtrl,
-                labelText: "about_work",
-                maxLength: 800,
-              ),
-              0.getH(),
-              GlobalTextFiled(
-                onChanged: (v) {
-                  setState(() {});
-                },
-                controller: numberCtrl,
-                labelText: "phone_number",
-                maxLines: 1,
-                formatter: AppInputFormatters.phoneFormatter,
-                isPhone: true,
-              ),
-              14.getH(),
-              SalaryTextField(
-                controller: money,
-                valueChanged: (c) {
-                  setState(() {});
-                },
-              ),
-              Container(
-                width: double.infinity,
-                height: 0.6,
-                color: Colors.grey,
-              ),
-              StatefulBuilder(
-                builder: (context, setState) {
-                  return ListTile(
-                    contentPadding: EdgeInsets.symmetric(horizontal: 16.w),
-                    onTap: () {
-                      show(
-                          context: context,
-                          cancelButton: () {
-                            Navigator.pop(context);
-                            setState(() {});
-                          },
-                          doneButton: () {
-                            if (endWork !=
-                                    DateTime.now().millisecondsSinceEpoch &&
-                                startWork < endWork &&
-                                startWork != endWork) {
-                              Navigator.pop(context);
-                            }
-                          },
-                          onStartChange: (v) {
-                            startWork = v.millisecondsSinceEpoch;
-                            setState(() {});
-                          },
-                          onEndChange: (v) {
-                            endWork = v.millisecondsSinceEpoch;
-                            setState(
-                              () {},
-                            );
-                          },
-                          startTime: startWork,
-                          endTime: endWork);
-                    },
-                    title: Text(
-                      "Ish vaqt oralig'i",
-                      style: TextStyle(
-                          fontWeight: FontWeight.w500, fontSize: 16.sp),
-                    ),
-                  );
-                },
-              ),
-              Container(
-                width: double.infinity,
-                height: 0.6,
-                color: Colors.grey,
-              ),
-              Padding(
-                padding: EdgeInsets.symmetric(horizontal: 14.w),
-                child: DropdownButton(
-                  underline: const SizedBox(),
-                  value: activeCategory,
-                  items: [
-                    DropdownMenuItem(
-                      value: 0,
-                      child: Text(
-                        " Oson",
-                        style: TextStyle(
-                          color: Colors.black,
-                          fontWeight: FontWeight.w500,
-                          fontSize: 14.sp,
-                        ),
-                      ),
-                    ),
-                    DropdownMenuItem(
-                      value: 1,
-                      child: Text(
-                        " O'rtacha",
-                        style: TextStyle(
-                          color: Colors.black,
-                          fontWeight: FontWeight.w500,
-                          fontSize: 14.sp,
-                        ),
-                      ),
-                    ),
-                    DropdownMenuItem(
-                      value: 2,
-                      child: Text(
-                        " Qiyin",
-                        style: TextStyle(
-                          color: Colors.black,
-                          fontWeight: FontWeight.w500,
-                          fontSize: 14.sp,
-                        ),
-                      ),
-                    ),
-                  ],
-                  onChanged: (v) {
-                    activeCategory = int.parse(v.toString());
-                    setState(() {});
-                  },
-                ),
-              ),
-              Container(
-                width: double.infinity,
-                height: 0.6,
-                color: Colors.grey,
-              ),
-              const SizedBox(
-                height: 200,
-                width: 300,
-                child: GoogleMap(
-                  mapType: MapType.hybrid,
-                  initialCameraPosition: CameraPosition(
-                    target: LatLng(12, 12),
-                  ),
-                ),
-              ),
-              Padding(
-                padding: EdgeInsets.all(16.w),
-                child: GlobalButton(
-                  title: "add".tr(),
-                  color: isValid() ? Colors.green : CupertinoColors.systemGrey,
-                  onTap: () async {
-                    if (hasVibrator ?? false) {
-                      Vibration.vibrate(
-                          pattern: [2, 5], intensities: [100, 2000]);
-                    }
-
-                    if (isValid()) {
-                      if (!context.mounted) return;
-                      hireModel = hireModel.copyWith(
-                        category: WorkCategory.values[activeCategory],
-                        ownerName: ownerCtrl.text,
-                        title: nameCtrl.text,
-                        timeInterval: "$startWork:$endWork",
-                        description: descriptionCtrl.text,
-                        image: context.read<ImageBloc>().state.images,
-                        money: money.text,
-                        number: numberCtrl.text,
-                        createdAt: DateTime.now().millisecondsSinceEpoch,
-                      );
-                      context
-                          .read<AnnouncementBloc>()
-                          .add(AnnouncementAddEvent(hireModel: hireModel));
-                      widget.voidCallback.call(() {
-                        t.showToast(child: toast);
-                        nameCtrl.clear();
-                        numberCtrl.clear();
-                        money.clear();
-                        ownerCtrl.clear();
-                        descriptionCtrl.clear();
-                        startWork = DateTime.now().millisecondsSinceEpoch;
-                        endWork = DateTime.now().millisecondsSinceEpoch;
-                      });
-                    }
-                  },
-                ),
-              )
             ],
           );
         },
+      ),
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
+      floatingActionButton: Padding(
+        padding: EdgeInsets.only(bottom: 5.h, left: 14.w, right: 14.w),
+        child: GlobalButton(
+          title: "add".tr(),
+          color: isValid() ? Colors.green : Colors.grey,
+          onTap: () async {
+            if (hasVibrator ?? false) {
+              Vibration.vibrate(pattern: [2, 5], intensities: [100, 2000]);
+            }
+
+            if (isValid()) {
+              if (!context.mounted) return;
+              hireModel = hireModel.copyWith(
+                category: WorkCategory.values[activeCategory],
+                ownerName: ownerCtrl.text,
+                title: nameCtrl.text,
+                timeInterval: "$startWork:$endWork",
+                description: descriptionCtrl.text,
+                image: context.read<ImageBloc>().state.images,
+                money: money.text,
+                number: numberCtrl.text,
+                createdAt: DateTime.now().millisecondsSinceEpoch,
+              );
+              context
+                  .read<AnnouncementBloc>()
+                  .add(AnnouncementAddEvent(hireModel: hireModel));
+              widget.voidCallback.call(() {
+                t.showToast(child: toast);
+                nameCtrl.clear();
+                numberCtrl.clear();
+                money.clear();
+                ownerCtrl.clear();
+                descriptionCtrl.clear();
+                startWork = DateTime.now().millisecondsSinceEpoch;
+                endWork = DateTime.now().millisecondsSinceEpoch;
+              });
+            }
+          },
+        ),
       ),
     );
   }
@@ -378,3 +392,11 @@ class _AddHireScreenState extends State<AddHireScreen> {
         endWork != DateTime.now().millisecondsSinceEpoch;
   }
 }
+
+enum Sky { midnight, viridian, cerulean }
+
+Map<Sky, Color> skyColors = <Sky, Color>{
+  Sky.midnight: CupertinoColors.activeOrange,
+  Sky.viridian: CupertinoColors.activeOrange,
+  Sky.cerulean: CupertinoColors.activeOrange,
+};

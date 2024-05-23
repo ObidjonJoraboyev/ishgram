@@ -1,3 +1,4 @@
+import 'dart:io';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/cupertino.dart';
@@ -6,6 +7,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:ish_top/data/models/announcement.dart';
 import 'package:ish_top/utils/size/size_utils.dart';
+import 'package:page_transition/page_transition.dart';
 import 'package:shimmer/shimmer.dart';
 import '../../../../blocs/announcement_bloc/hire_bloc.dart';
 import '../../../../blocs/announcement_bloc/hire_event.dart';
@@ -66,7 +68,7 @@ class _HiringItemState extends State<HiringItem> {
 
                   widget.voidCallback.call();
 
-                  Navigator.push(
+                 Platform.isIOS? Navigator.push(
                     context,
                     MaterialPageRoute(
                       builder: (context) => DetailScreen(
@@ -75,7 +77,24 @@ class _HiringItemState extends State<HiringItem> {
                         ),
                       ),
                     ),
-                  );
+                  ):  Navigator.push(
+                   context,
+                   PageTransition(
+                     type: PageTransitionType.rightToLeftJoined,
+                     alignment: Alignment.topRight,
+                     childCurrent:const SizedBox(),
+                     child: DetailScreen(
+                       hireModel: widget.hires[index1].copyWith(
+                         countView: widget.hires[index1].countView,
+                       ),
+                     ),
+                   ),
+                 );
+
+
+
+
+
                 },
                 child: Container(
                   margin: EdgeInsets.symmetric(vertical: 12.h),

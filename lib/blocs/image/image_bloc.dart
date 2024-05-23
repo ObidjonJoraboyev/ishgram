@@ -15,7 +15,7 @@ class ImageBloc extends Bloc<ImageEvent, ImageUploadState> {
     on<ImageCleanEvent>(cleanImages);
   }
 
-  cleanImages(ImageCleanEvent event, Emitter<ImageUploadState> emitter) async {
+  cleanImages(ImageCleanEvent event, Emitter<ImageUploadState> emit) async {
     emit(state.copyWith(images: [], formStatus: FormStatus.success));
   }
 

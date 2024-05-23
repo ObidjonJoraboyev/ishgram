@@ -36,7 +36,7 @@ class GlobalButton extends StatelessWidget {
             begin: Alignment.topCenter,
             end: Alignment.bottomCenter,
             colors: [
-              color.withOpacity(.76),
+              color.withOpacity(.86),
               color,
             ],
           ),

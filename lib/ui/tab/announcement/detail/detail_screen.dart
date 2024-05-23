@@ -57,6 +57,10 @@ class _DetailScreenState extends State<DetailScreen> {
                                 swipeDismissible: true,
                                 doubleTapZoomable: true,
                                 useSafeArea: false,
+                                immersive: true,
+                                infinitelyScrollable: false,
+                                backgroundColor: Colors.black,
+                                closeButtonTooltip: "",
                                 context,
                                 MultiImageProvider(
                                   [
@@ -138,6 +142,17 @@ class _DetailScreenState extends State<DetailScreen> {
                 ),
                 child: WidgetOfDetail(hireModel: widget.hireModel),
               ),
+              CupertinoPageTransition(
+                primaryRouteAnimation: kAlwaysCompleteAnimation,
+                secondaryRouteAnimation: kAlwaysDismissedAnimation,
+                linearTransition: false,
+                child: const Row(
+                  children: [
+                    Text("dscadds"),
+                    Text("dscadds"),
+                  ],
+                ),
+              )
             ],
           ),
         ],
