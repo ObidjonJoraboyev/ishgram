@@ -131,9 +131,12 @@ class _WidgetOfDetailState extends State<WidgetOfDetail>
                       }
                       if (!context.mounted) return;
 
-                      addAlarm(context1: context, hireModel: widget.hireModel,valueChanged: (v){
-                        setState(() {});
-                      });
+                      addAlarm(
+                          context1: context,
+                          hireModel: widget.hireModel,
+                          valueChanged: (v) {
+                            setState(() {});
+                          });
                       setState(() {});
                     },
                     icon: Icon(

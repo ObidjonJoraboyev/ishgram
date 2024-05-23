@@ -297,7 +297,7 @@ class _AddHireScreenState extends State<AddHireScreen> {
                     ),
                   ],
                   onChanged: (v) {
-                    activeCategory = v!;
+                    activeCategory = int.parse(v.toString());
                     setState(() {});
                   },
                 ),
@@ -312,7 +312,6 @@ class _AddHireScreenState extends State<AddHireScreen> {
                 width: 300,
                 child: GoogleMap(
                   mapType: MapType.hybrid,
-
                   initialCameraPosition: CameraPosition(
                     target: LatLng(12, 12),
                   ),

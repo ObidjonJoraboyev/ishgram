@@ -386,93 +386,90 @@ Widget toast = Container(
   ),
 );
 
-
-
-
-
-addAlarm({required BuildContext context1, required AnnouncementModel hireModel,required ValueChanged valueChanged}) {
+addAlarm(
+    {required BuildContext context1,
+    required AnnouncementModel hireModel,
+    required ValueChanged valueChanged}) {
   showCupertinoModalPopup(
     context: context1,
     builder: (context) {
-      return StatefulBuilder(builder: (context12, setState) {
-        var alarm = Alarm.getAlarm(42);
-        return CupertinoActionSheet(
-          cancelButton: CupertinoActionSheetAction(
-            onPressed: () {
-              Navigator.pop(context);
-            },
-            child: Text(
-              "cancel".tr(),
-              style: TextStyle(
-                  color: CupertinoColors.activeBlue,
-                  fontSize: 16.sp,
-                  fontWeight: FontWeight.w500),
-            ),
-          ),
-          actions: [
-            alarm == null
-                ? CupertinoActionSheetAction(
-              onPressed: () async {
-                await Alarm.set(
-                  alarmSettings: AlarmSettings(
-                    id: 42,
-                    dateTime: DateTime.now().add(
-                        const Duration(seconds: 5)),
-                    assetAudioPath: 'assets/audios/alarm.mp3',
-                    loopAudio: false,
-                    vibrate: true,
-                    volume: 0.2,
-                    fadeDuration: 9.0,
-                    notificationTitle: 'Ish Vaqti Yaqin ⌛️',
-                    notificationBody: hireModel.title,
-                    enableNotificationOnKill: true,
-                  ),
-                );
-                // Update the alarm state
-
-                  alarm = Alarm.getAlarm(42);
-                  valueChanged.call("");
-
-                if (!context.mounted) return;
+      return StatefulBuilder(
+        builder: (context12, setState) {
+          var alarm = Alarm.getAlarm(42);
+          return CupertinoActionSheet(
+            cancelButton: CupertinoActionSheetAction(
+              onPressed: () {
                 Navigator.pop(context);
               },
               child: Text(
-                "Eslatma qo'shish",
+                "cancel".tr(),
                 style: TextStyle(
                     color: CupertinoColors.activeBlue,
-                    fontWeight: FontWeight.w500,
-                    fontSize: 15.sp),
+                    fontSize: 16.sp,
+                    fontWeight: FontWeight.w500),
               ),
-            )
-                : const SizedBox(),
-            alarm != null
-                ? CupertinoActionSheetAction(
-              onPressed: () async {
-                await Alarm.stop(42);
+            ),
+            actions: [
+              alarm == null
+                  ? CupertinoActionSheetAction(
+                      onPressed: () async {
+                        await Alarm.set(
+                          alarmSettings: AlarmSettings(
+                            id: 42,
+                            dateTime:
+                                DateTime.now().add(const Duration(seconds: 5)),
+                            assetAudioPath: 'assets/audios/alarm.mp3',
+                            loopAudio: false,
+                            vibrate: true,
+                            volume: 0.2,
+                            fadeDuration: 9.0,
+                            notificationTitle: 'Ish Vaqti Yaqin ⌛️',
+                            notificationBody: hireModel.title,
+                            enableNotificationOnKill: true,
+                          ),
+                        );
+                        // Update the alarm state
 
-                  alarm = Alarm.getAlarm(42);
-                valueChanged.call("");
+                        alarm = Alarm.getAlarm(42);
+                        valueChanged.call("");
 
+                        if (!context.mounted) return;
+                        Navigator.pop(context);
+                      },
+                      child: Text(
+                        "Eslatma qo'shish",
+                        style: TextStyle(
+                            color: CupertinoColors.activeBlue,
+                            fontWeight: FontWeight.w500,
+                            fontSize: 15.sp),
+                      ),
+                    )
+                  : const SizedBox(),
+              alarm != null
+                  ? CupertinoActionSheetAction(
+                      onPressed: () async {
+                        await Alarm.stop(42);
 
-                if (!context.mounted) return;
-                Navigator.pop(context);
-              },
-              child: Text(
-                "Eslatmani o'chirish",
-                style: TextStyle(
-                  color: CupertinoColors.destructiveRed,
-                  fontWeight: FontWeight.w500,
-                  fontSize: 15.sp,
-                ),
-              ),
-            )
-                : const SizedBox(),
-          ],
-        );
-      });
+                        alarm = Alarm.getAlarm(42);
+                        valueChanged.call("");
+
+                        if (!context.mounted) return;
+                        Navigator.pop(context);
+                      },
+                      child: Text(
+                        "Eslatmani o'chirish",
+                        style: TextStyle(
+                          color: CupertinoColors.destructiveRed,
+                          fontWeight: FontWeight.w500,
+                          fontSize: 15.sp,
+                        ),
+                      ),
+                    )
+                  : const SizedBox(),
+            ],
+          );
+        },
+      );
     },
   );
 }
-
-
-

@@ -33,7 +33,7 @@ class _HireScreenState extends State<HireScreen>
 
   int activeIndex = 0;
 
-  bool check=false;
+  bool check = false;
   @override
   Widget build(BuildContext context) {
     width = MediaQuery.sizeOf(context).width;
@@ -91,10 +91,9 @@ class _HireScreenState extends State<HireScreen>
                     children: [
                       Expanded(
                         child: HiringItem(
-                          voidCallback: (){
-                         focus.unfocus();setState(() {
-
-                         });
+                          voidCallback: () {
+                            focus.unfocus();
+                            setState(() {});
                           },
                           hires: hires,
                           scrollController: scrollController,

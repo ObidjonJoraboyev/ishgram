@@ -64,8 +64,6 @@ class _HiringItemState extends State<HiringItem> {
                         ),
                       );
 
-
-
                   widget.voidCallback.call();
 
                   Navigator.push(

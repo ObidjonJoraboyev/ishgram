@@ -28,8 +28,7 @@ class MessageBloc extends Bloc<MessageEvent, List<MessageModel>> {
       await emit.onEach(streamController,
           onData: (List<MessageModel> messages) async {
         emit(messages);
-      }, onError: (c, d) {
-      });
+      }, onError: (c, d) {});
     } catch (error) {
       debugPrint("ERROR CATCH $error");
     }
