@@ -141,17 +141,6 @@ class _DetailScreenState extends State<DetailScreen> {
                   color: Colors.white,
                 ),
                 child: WidgetOfDetail(hireModel: widget.hireModel),
-              ),
-              CupertinoPageTransition(
-                primaryRouteAnimation: kAlwaysCompleteAnimation,
-                secondaryRouteAnimation: kAlwaysDismissedAnimation,
-                linearTransition: false,
-                child: const Row(
-                  children: [
-                    Text("dscadds"),
-                    Text("dscadds"),
-                  ],
-                ),
               )
             ],
           ),

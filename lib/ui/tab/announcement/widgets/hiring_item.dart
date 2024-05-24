@@ -68,33 +68,30 @@ class _HiringItemState extends State<HiringItem> {
 
                   widget.voidCallback.call();
 
-                 Platform.isIOS? Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => DetailScreen(
-                        hireModel: widget.hires[index1].copyWith(
-                          countView: widget.hires[index1].countView,
-                        ),
-                      ),
-                    ),
-                  ):  Navigator.push(
-                   context,
-                   PageTransition(
-                     type: PageTransitionType.rightToLeftJoined,
-                     alignment: Alignment.topRight,
-                     childCurrent:const SizedBox(),
-                     child: DetailScreen(
-                       hireModel: widget.hires[index1].copyWith(
-                         countView: widget.hires[index1].countView,
-                       ),
-                     ),
-                   ),
-                 );
-
-
-
-
-
+                  Platform.isIOS
+                      ? Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => DetailScreen(
+                              hireModel: widget.hires[index1].copyWith(
+                                countView: widget.hires[index1].countView,
+                              ),
+                            ),
+                          ),
+                        )
+                      : Navigator.push(
+                          context,
+                          PageTransition(
+                            type: PageTransitionType.rightToLeftJoined,
+                            alignment: Alignment.topRight,
+                            childCurrent: const SizedBox(),
+                            child: DetailScreen(
+                              hireModel: widget.hires[index1].copyWith(
+                                countView: widget.hires[index1].countView,
+                              ),
+                            ),
+                          ),
+                        );
                 },
                 child: Container(
                   margin: EdgeInsets.symmetric(vertical: 12.h),

@@ -36,7 +36,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     emit(state.copyWith(formStatus: FormStatus.loading));
 
     try {
-      emit.onEach(
+      await emit.onEach(
         response,
         onData: (List<UserModel> event) async {
           for (int i = 0; i < event.length; i++) {
@@ -45,7 +45,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
               emit(state.copyWith(formStatus: FormStatus.authenticated));
 
               await StorageRepository.setString(
-                  key: "userNumber", value: "+998${event[i].number}");
+                  key: "userNumber", value: event[i].number);
               break;
             } else {
               emit(
@@ -71,19 +71,26 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
   _registerUser(RegisterUserEvent event1, Emitter emit) async {
     emit(state.copyWith(formStatus: FormStatus.loading));
 
-    emit.onEach(
-      response,
-      onData: (List<UserModel> event) async {
-        for (int i = 0; i < event.length; i++) {
-          if (event[i].number == event1.userModel.number) {
-            emit(state.copyWith(formStatus: FormStatus.unauthenticated));
-            break;
-          } else {
-            emit(state.copyWith(formStatus: FormStatus.pure));
-          }
-        }
-      },
-    );
+    List<UserModel> users = [];
+
+    try {
+      QuerySnapshot querySnapshot =
+          await FirebaseFirestore.instance.collection('users').get();
+      users = querySnapshot.docs.map((doc) {
+        return UserModel.fromJson(doc.data() as Map<String, dynamic>);
+      }).toList();
+    } catch (e) {
+      debugPrint("Error fetching users: $e");
+    }
+
+    for (int i = 0; i < users.length; i++) {
+      if (users[i].number == event1.userModel.number) {
+        emit(state.copyWith(formStatus: FormStatus.unauthenticated));
+        break;
+      } else {
+        emit(state.copyWith(formStatus: FormStatus.pure));
+      }
+    }
 
     if (state.formStatus != FormStatus.unauthenticated) {
       try {
@@ -97,7 +104,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
             .update({"doc_id": docId.id});
 
         await StorageRepository.setString(
-            key: "userNumber", value: "+998${event1.userModel.number}");
+            key: "userNumber", value: event1.userModel.number);
         emit(
           state.copyWith(
             formStatus: FormStatus.authenticated,

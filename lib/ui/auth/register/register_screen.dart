@@ -3,23 +3,22 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_svg/flutter_svg.dart';
+import 'package:ish_top/blocs/auth/auth_bloc.dart';
+import 'package:ish_top/blocs/auth/auth_event.dart';
+import 'package:ish_top/blocs/auth/auth_state.dart';
+import 'package:ish_top/data/forms/form_status.dart';
 import 'package:ish_top/data/local/local_storage.dart';
+import 'package:ish_top/data/models/user_model.dart';
 import 'package:ish_top/ui/auth/auth_screen.dart';
-import '../../../blocs/auth/auth_bloc.dart';
-import '../../../blocs/auth/auth_event.dart';
-import '../../../blocs/auth/auth_state.dart';
-import '../../../data/forms/form_status.dart';
-import '../../../data/models/user_model.dart';
-import '../../../utils/colors/app_colors.dart';
-import '../../../utils/constants/app_constants.dart';
-import '../../../utils/images/app_images.dart';
-import '../../../utils/size/size_utils.dart';
-import '../../tab/tab/tab_screen.dart';
-import '../widgets/button.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import '../widgets/global_textfield.dart';
-import '../widgets/textfielad.dart';
+import 'package:ish_top/ui/auth/widgets/button.dart';
+import 'package:ish_top/ui/auth/widgets/textfielad.dart';
+import 'package:ish_top/ui/tab/announcement/add_announcement/widgets/text_field_widget.dart';
+import 'package:ish_top/ui/tab/tab/tab_screen.dart';
+import 'package:ish_top/utils/colors/app_colors.dart';
+import 'package:ish_top/utils/formatters/formatters.dart';
+import 'package:ish_top/utils/images/app_images.dart';
+import 'package:ish_top/utils/size/size_utils.dart';
 
 class RegisterScreen extends StatefulWidget {
   const RegisterScreen({super.key});
@@ -50,101 +49,77 @@ class _RegisterScreenState extends State<RegisterScreen> {
         builder: (context, state) {
           return SingleChildScrollView(
             child: Padding(
-              padding: EdgeInsets.symmetric(horizontal: 44.w),
+              padding: EdgeInsets.symmetric(horizontal: 14.w),
               child: Form(
                 key: formKey,
                 child: Column(
                   children: [
                     60.getH(),
-                    SvgPicture.asset(
+                    Image.asset(
                       AppImages.signUp,
                       height: 180.h,
                       width: 180.w,
                       fit: BoxFit.fill,
                     ),
-                    16.getH(),
                     Center(
                       child: Text(
                         "no_acc_register".tr(),
                         style: TextStyle(
-                          color: CupertinoColors.black.withOpacity(.6),
+                          color: CupertinoColors.black.withOpacity(.7),
                           fontSize: 22.w,
                           fontWeight: FontWeight.w600,
                         ),
                       ),
                     ),
-                    16.getH(),
-                    UniversalTextInput(
-                      onTap: (s) {
-                        setState(() {
-                          checkInput();
-                        });
-                      },
-                      controller: firstNameController,
-                      hintText: "name".tr(),
-                      type: TextInputType.text,
-                      regExp: AppConstants.textRegExp,
-                      errorTitle: "error_name".tr(),
-                      iconPath: const Icon(CupertinoIcons.star_fill),
-                    ),
-                    16.getH(),
-                    UniversalTextInput(
-                      onTap: (s) {
-                        setState(() {
-                          checkInput();
-                        });
-                      },
-                      controller: lastNameController,
-                      hintText: "last_name".tr(),
-                      type: TextInputType.text,
-                      regExp: AppConstants.textRegExp,
-                      errorTitle: "error_lastname".tr(),
-                      iconPath: const Icon(CupertinoIcons.star_lefthalf_fill),
-                    ),
-                    16.getH(),
-                    UniversalTextInput(
-                      onTap: (s) {
-                        setState(() {
-                          checkInput();
-                        });
-                      },
-                      controller: phoneController,
-                      hintText: "+998",
-                      type: TextInputType.number,
-                      regExp: AppConstants.phoneRegExp,
-                      errorTitle: "error_phone".tr(),
-                      iconPath: const Icon(CupertinoIcons.phone),
-                      isNumber: true,
-                    ),
-                    16.getH(),
-                    PasswordTextInput(
+                    32.getH(),
+                    GlobalTextFiled(
                       onChanged: (v) {
                         setState(() {
                           checkInput();
                         });
                       },
-                      controller: passwordController,
+                      controller: phoneController,
+                      labelText: "phone_number",
+                      maxLines: 1,
+                      formatter: AppInputFormatters.phoneFormatter,
+                      isPhone: true,
+                    ),
+                    16.getH(),
+                    Padding(
+                      padding: EdgeInsets.symmetric(horizontal: 16.w),
+                      child: PasswordTextInput(
+                        labelText: "code",
+                        onChanged: (v) {
+                          setState(() {
+                            checkInput();
+                          });
+                        },
+                        controller: passwordController,
+                      ),
                     ),
                     35.getH(),
-                    LoginButtonItems(
-                      title: "register".tr(),
-                      onTap: () async {
-                        context.read<AuthBloc>().add(
-                              RegisterUserEvent(
-                                userModel: UserModel.initial.copyWith(
-                                  lastName: lastNameController.text,
-                                  password: passwordController.text,
-                                  number: phoneController.text,
-                                  name: firstNameController.text,
+                    Padding(
+                      padding: EdgeInsets.symmetric(horizontal: 16.w),
+                      child: LoginButtonItems(
+                        title: "register".tr(),
+                        onTap: () async {
+                          context.read<AuthBloc>().add(
+                                RegisterUserEvent(
+                                  userModel: UserModel.initial.copyWith(
+                                    lastName: lastNameController.text,
+                                    password: passwordController.text,
+                                    number: phoneController.text,
+                                    name: firstNameController.text,
+                                  ),
                                 ),
-                              ),
-                            );
-                        await StorageRepository.setString(
-                            key: "userNumber",
-                            value: "+998${phoneController.text}");
-                      },
-                      isLoading: state.formStatus == FormStatus.loading,
-                      active: checkInput(),
+                              );
+                          await StorageRepository.setString(
+                              key: "userNumber",
+                              value: "+998${phoneController.text}");
+                        },
+                        isLoading: state.formStatus == FormStatus.loading,
+                        active: checkInput(),
+                      ),
                     ),
                     13.getH(),
                     19.getH(),
@@ -201,10 +176,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
   }
 
   bool checkInput() {
-    return AppConstants.textRegExp.hasMatch(firstNameController.text) &&
-        AppConstants.textRegExp.hasMatch(lastNameController.text) &&
-        AppConstants.passwordRegExp.hasMatch(passwordController.text) &&
-        AppConstants.phoneRegExp.hasMatch(phoneController.text);
+    return passwordController.text.length == 6 &&
+        phoneController.text.length == 19;
   }
 
   @override

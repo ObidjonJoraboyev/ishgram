@@ -16,6 +16,8 @@
   "name": "Ism",
   "login": "Hisobga kirish",
   "password": "Parol",
+  "code": "Kod",
+
   "no_account": "Akkountingiz yo'qmi?",
   "no_acc_register": "Ro'yxatdan o'tish",
   "login_button": "Kirish",

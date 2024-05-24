@@ -1,8 +1,11 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:ish_top/blocs/auth/auth_bloc.dart';
+import 'package:ish_top/blocs/auth/auth_event.dart';
 import 'package:ish_top/utils/utility_functions.dart';
 import '../../../data/models/user_model.dart';
 
@@ -207,6 +210,49 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       ),
                       title: const Text(
                         "Wallet",
+                        style: TextStyle(
+                          color: CupertinoColors.black,
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+                Padding(
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 18, vertical: 8),
+                  child: ClipRRect(
+                    borderRadius: BorderRadius.circular(12),
+                    child: CupertinoListTile(
+                      trailing: const Icon(
+                        CupertinoIcons.right_chevron,
+                        size: 22,
+                        color: Colors.grey,
+                      ),
+                      onTap: () {
+                        context
+                            .read<AuthBloc>()
+                            .add(LogOutEvent(context: context));
+                      },
+                      backgroundColorActivated: Colors.white,
+                      backgroundColor: Colors.white,
+                      leadingSize: 35,
+                      leading: Container(
+                        width: 32,
+                        height: 32,
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(8),
+                          color: CupertinoColors.destructiveRed,
+                        ),
+                        child: const Padding(
+                          padding: EdgeInsets.only(top: 2),
+                          child: Icon(
+                            Icons.logout_outlined,
+                            color: CupertinoColors.white,
+                          ),
+                        ),
+                      ),
+                      title: const Text(
+                        "Log out",
                         style: TextStyle(
                           color: CupertinoColors.black,
                         ),

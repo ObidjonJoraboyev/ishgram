@@ -475,6 +475,7 @@ addAlarm(
                           textColor: Colors.white,
                           fontSize: 16.0,
                         );
+                        if (!context.mounted) return;
                         Navigator.pop(context);
                       },
                       child: Text(

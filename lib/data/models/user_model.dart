@@ -144,8 +144,12 @@ class UserModel extends Equatable {
       bio: json["bio"] as String? ?? "",
       updatedAt: json["updatedAt"] as int? ?? 0,
       createdAt: json["createdAt"] as int? ?? 0,
-      allHiring: json["announcements"] as List<String>? ?? [],
-      likedHiring: json["likedHiring"] as List<String>? ?? [],
+      allHiring: (json["announcements"] as List? ?? [])
+          .map((e) => e.toString())
+          .toList(),
+      likedHiring: (json["likedHiring"] as List? ?? [])
+          .map((e) => e.toString())
+          .toList(),
     );
   }
 

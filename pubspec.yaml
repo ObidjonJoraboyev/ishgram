@@ -53,6 +53,7 @@ dependencies:
   google_maps_flutter: ^2.6.1
   alarm: ^3.1.4
   page_transition: ^2.1.0
+  video_player: ^2.8.6
 
 
 dev_dependencies:
@@ -70,3 +71,4 @@ flutter:
     - assets/icons/
     - assets/audios/
     - assets/translations/
+    - assets/videos/

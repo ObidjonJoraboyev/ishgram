@@ -396,7 +396,7 @@ class _AddHireScreenState extends State<AddHireScreen> {
 enum Sky { midnight, viridian, cerulean }
 
 Map<Sky, Color> skyColors = <Sky, Color>{
-  Sky.midnight: CupertinoColors.activeOrange,
-  Sky.viridian: CupertinoColors.activeOrange,
-  Sky.cerulean: CupertinoColors.activeOrange,
+  Sky.midnight: CupertinoColors.activeBlue,
+  Sky.viridian: CupertinoColors.activeBlue,
+  Sky.cerulean: CupertinoColors.activeBlue,
 };

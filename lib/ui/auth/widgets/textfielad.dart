@@ -1,17 +1,23 @@
 import 'package:easy_localization/easy_localization.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:ish_top/utils/constants/app_constants.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../../../utils/colors/app_colors.dart';
 
 class PasswordTextInput extends StatefulWidget {
   const PasswordTextInput(
-      {super.key, required this.controller, required this.onChanged});
+      {super.key,
+      required this.controller,
+      required this.onChanged,
+      required this.labelText});
 
   final TextEditingController controller;
 
   final ValueChanged onChanged;
+  final String labelText;
+
   @override
   State<PasswordTextInput> createState() => _PasswordTextInputState();
 }
@@ -24,37 +30,42 @@ class _PasswordTextInputState extends State<PasswordTextInput> {
     return Form(
       autovalidateMode: AutovalidateMode.onUserInteraction,
       child: TextFormField(
+        cursorColor: CupertinoColors.activeBlue,
         onChanged: widget.onChanged,
+        keyboardType: TextInputType.phone,
+        inputFormatters: [FilteringTextInputFormatter.digitsOnly],
         style: TextStyle(
-          color: AppColors.black,
-          fontSize: 13.w,
-          fontWeight: FontWeight.w400,
+          color: Colors.white,
+          shadows: [
+            Shadow(color: Colors.black.withOpacity(.4), blurRadius: 10)
+          ],
         ),
         controller: widget.controller,
         obscureText: passwordVisibility,
         validator: (String? value) {
-          if (value == null ||
-              value.isEmpty ||
-              value.length < 3 ||
-              !AppConstants.passwordRegExp.hasMatch(value)) {
+          if (value?.length != 6) {
             return "error_password".tr();
           }
           return null;
         },
         autovalidateMode: AutovalidateMode.onUserInteraction,
         decoration: InputDecoration(
-          fillColor: Colors.white,
+          labelStyle: TextStyle(
+            color: Colors.black.withOpacity(.8),
+            fontWeight: FontWeight.w500,
+            shadows: [
+              BoxShadow(
+                  color: Colors.white.withOpacity(.1),
+                  blurRadius: 10,
+                  spreadRadius: 0)
+            ],
+            fontSize: 15.sp,
+          ),
+          fillColor: Colors.grey.withOpacity(.7),
           border: OutlineInputBorder(borderRadius: BorderRadius.circular(8)),
           filled: true,
-          prefixIcon: Padding(
-            padding: const EdgeInsets.all(12.0),
-            child: Icon(
-              Icons.lock,
-              color: Colors.black.withOpacity(.7),
-            ),
-          ),
           contentPadding: const EdgeInsets.all(16),
-          hintText: "password".tr(),
+          labelText: widget.labelText.tr(),
           suffixIcon: IconButton(
             onPressed: () {
               passwordVisibility = !passwordVisibility;
@@ -64,30 +75,25 @@ class _PasswordTextInputState extends State<PasswordTextInput> {
                 ? const Icon(Icons.visibility_off)
                 : const Icon(Icons.visibility),
           ),
-          labelStyle: TextStyle(
-            color: AppColors.white.withOpacity(.8),
-            fontSize: 13.w,
-            fontWeight: FontWeight.w400,
-          ),
           enabledBorder: OutlineInputBorder(
             borderSide: const BorderSide(color: AppColors.transparent),
-            borderRadius: BorderRadius.circular(16),
+            borderRadius: BorderRadius.circular(16.r),
           ),
           disabledBorder: OutlineInputBorder(
             borderSide: const BorderSide(color: AppColors.transparent),
-            borderRadius: BorderRadius.circular(16),
+            borderRadius: BorderRadius.circular(16.r),
           ),
           errorBorder: OutlineInputBorder(
             borderSide: const BorderSide(color: AppColors.transparent),
-            borderRadius: BorderRadius.circular(16),
+            borderRadius: BorderRadius.circular(16.r),
           ),
           focusedErrorBorder: OutlineInputBorder(
             borderSide: const BorderSide(color: AppColors.transparent),
-            borderRadius: BorderRadius.circular(16),
+            borderRadius: BorderRadius.circular(16.r),
           ),
           focusedBorder: OutlineInputBorder(
             borderSide: const BorderSide(color: AppColors.transparent),
-            borderRadius: BorderRadius.circular(16),
+            borderRadius: BorderRadius.circular(16.r),
           ),
         ),
         textInputAction: TextInputAction.next,

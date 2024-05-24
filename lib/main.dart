@@ -23,7 +23,11 @@ void main() async {
         Locale("uz", "UZ"),
       ],
       path: "assets/translations",
-      fallbackLocale: const Locale("uz", "UZ"),
+      fallbackLocale:
+          (Platform.localeName.split("_").first.toLowerCase() == "uz" ||
+                  Platform.localeName.split("_").last.toLowerCase() == "uz")
+              ? const Locale("uz", "UZ")
+              : const Locale("ru", "RU"),
       child: const App(),
     ),
   );

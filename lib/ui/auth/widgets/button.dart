@@ -23,14 +23,14 @@ class LoginButtonItems extends StatelessWidget {
     return TextButton(
       style: TextButton.styleFrom(
         padding: EdgeInsets.symmetric(
-          vertical: 18.h,
+          vertical: 14.h,
           horizontal: 0.w,
         ),
         backgroundColor: active
             ? CupertinoColors.activeBlue
             : AppColors.c_262626.withOpacity(.5),
         shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(30),
+          borderRadius: BorderRadius.circular(18.r),
         ),
       ),
       onPressed: active ? onTap : null,
