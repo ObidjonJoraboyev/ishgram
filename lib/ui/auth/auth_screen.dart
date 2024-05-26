@@ -5,17 +5,14 @@ import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:ish_top/ui/auth/register/register_screen.dart';
+import 'package:ish_top/ui/auth/register/register_control.dart';
 import 'package:ish_top/ui/auth/widgets/button.dart';
 import 'package:ish_top/ui/auth/widgets/textfielad.dart';
 import 'package:ish_top/utils/size/size_utils.dart';
-
 import '../../blocs/auth/auth_bloc.dart';
 import '../../blocs/auth/auth_event.dart';
 import '../../blocs/auth/auth_state.dart';
 import '../../data/forms/form_status.dart';
-import '../../data/local/local_storage.dart';
-import '../../utils/constants/app_constants.dart';
 import '../../utils/formatters/formatters.dart';
 import '../../utils/images/app_images.dart';
 import '../tab/announcement/add_announcement/widgets/text_field_widget.dart';
@@ -89,6 +86,7 @@ class _AuthScreenState extends State<AuthScreen> {
                         maxLines: 1,
                         formatter: AppInputFormatters.phoneFormatter,
                         isPhone: true,
+                        formStatus: state.formStatus,
                       ),
                     ),
                     16.getH(),
@@ -118,9 +116,6 @@ class _AuthScreenState extends State<AuthScreen> {
                                   number: numberController.text.trim(),
                                 ),
                               );
-                          StorageRepository.setString(
-                              key: "userNumber",
-                              value: "+998${numberController.text}");
                         },
                         isLoading: state.formStatus == FormStatus.loading,
                         active: checkInput(),
@@ -139,23 +134,26 @@ class _AuthScreenState extends State<AuthScreen> {
                         Text(
                           "no_account".tr(),
                           style: const TextStyle(
-                              color: Colors.black,
-                              fontSize: 16,
-                              letterSpacing: 0),
+                            color: Colors.black,
+                            fontSize: 16,
+                            letterSpacing: 0,
+                          ),
                         ),
                         TextButton(
                           onPressed: () async {
                             await Navigator.pushReplacement(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) =>
-                                        const RegisterScreen()));
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => const RegisterControl(),
+                              ),
+                            );
                           },
                           child: Text(
                             "no_acc_register".tr(),
                             style: const TextStyle(
-                                color: CupertinoColors.activeBlue,
-                                fontSize: 17),
+                              color: CupertinoColors.activeBlue,
+                              fontSize: 17,
+                            ),
                           ),
                         ),
                       ],
@@ -180,7 +178,7 @@ class _AuthScreenState extends State<AuthScreen> {
   }
 
   bool checkInput() {
-    return AppConstants.phoneRegExp.hasMatch(numberController.text) &&
-        AppConstants.passwordRegExp.hasMatch(passwordController.text);
+    return numberController.text.length == 19 &&
+        passwordController.text.length == 6;
   }
 }

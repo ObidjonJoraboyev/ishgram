@@ -1,27 +1,30 @@
 import 'dart:io';
 import 'package:firebase_storage/firebase_storage.dart';
-import 'package:flutter/material.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:ish_top/blocs/image/formstatus.dart';
-import 'package:ish_top/blocs/image/image_state.dart';
-import 'package:ish_top/data/models/announcement.dart';
-import 'image_event.dart';
+import 'package:ish_top/blocs/user_image/user_image_event.dart';
+import 'package:ish_top/blocs/user_image/user_image_state.dart';
+import '../../data/models/announcement.dart';
+import '../image/formstatus.dart';
 
-class ImageBloc extends Bloc<ImageEvent, ImageUploadState> {
-  ImageBloc() : super(ImageUploadState.imageUploadState) {
-    on<ImageSetEvent>(setImage);
-    on<ImageRemoveEvent>(removeImage);
-    on<ImageCleanEvent>(cleanImages);
+class UserImageBloc extends Bloc<UserImageEvent, UserImageUploadState> {
+  UserImageBloc() : super(UserImageUploadState.imageUploadState) {
+    on<UserImageSetEvent>(setImage);
+    on<UserImageRemoveEvent>(removeImage);
+    on<UserImageCleanEvent>(cleanImages);
   }
 
-  cleanImages(ImageCleanEvent event, Emitter<ImageUploadState> emit) async {
-    emit(state.copyWith(images: [], formStatus: FormStatusImage.success));
+  cleanImages(
+      UserImageCleanEvent event, Emitter<UserImageUploadState> emit) async {
+    emit(state.copyWith(
+        images: ImageModel(imageUrl: "", imageDocId: ''),
+        formStatus: FormStatusImage.success));
   }
 
-  setImage(ImageSetEvent event, Emitter<ImageUploadState> emit) async {
+  setImage(UserImageSetEvent event, Emitter<UserImageUploadState> emit) async {
     emit(state.copyWith(formStatus: FormStatusImage.uploading));
-    List<ImageModel> images = [];
+    ImageModel image = ImageModel(imageUrl: "", imageDocId: "");
 
     try {
       for (XFile pickedFile in event.pickedFile) {
@@ -41,35 +44,27 @@ class ImageBloc extends Bloc<ImageEvent, ImageUploadState> {
 
         String downloadUrl = await taskSnapshot.ref.getDownloadURL();
 
-        images.add(
-          ImageModel(
-            imageUrl: downloadUrl,
-            imageDocId: "files/images/${pickedFile.name}",
-          ),
+        image = ImageModel(
+          imageUrl: downloadUrl,
+          imageDocId: "files/images/${pickedFile.name}",
         );
       }
 
-      List<ImageModel> temp = [...event.images, ...images];
-      emit(state.copyWith(images: temp, formStatus: FormStatusImage.success));
+      emit(state.copyWith(images: image, formStatus: FormStatusImage.success));
     } on FirebaseException catch (error) {
       debugPrint(error.message);
       emit(state.copyWith(formStatus: FormStatusImage.error));
     }
   }
 
-  removeImage(ImageRemoveEvent event, Emitter<ImageUploadState> emit) async {
+  removeImage(
+      UserImageRemoveEvent event, Emitter<UserImageUploadState> emit) async {
     emit(state.copyWith(formStatus: FormStatusImage.uploading));
 
     try {
       await FirebaseStorage.instance.ref(event.docId).delete();
-
-      List<ImageModel> filteredImages = state.images
-          .where((image) => image.imageDocId != event.docId)
-          .toList();
-
       emit(
         state.copyWith(
-          images: filteredImages,
           formStatus: FormStatusImage.success,
         ),
       );

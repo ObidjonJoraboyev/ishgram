@@ -11,12 +11,14 @@ class PasswordTextInput extends StatefulWidget {
       {super.key,
       required this.controller,
       required this.onChanged,
-      required this.labelText});
+      required this.labelText,
+      this.newPass});
 
   final TextEditingController controller;
 
   final ValueChanged onChanged;
   final String labelText;
+  final bool? newPass;
 
   @override
   State<PasswordTextInput> createState() => _PasswordTextInputState();
@@ -50,6 +52,7 @@ class _PasswordTextInputState extends State<PasswordTextInput> {
         },
         autovalidateMode: AutovalidateMode.onUserInteraction,
         decoration: InputDecoration(
+          helperText: widget.newPass == true ? "new_password".tr() : null,
           labelStyle: TextStyle(
             color: Colors.black.withOpacity(.8),
             fontWeight: FontWeight.w500,

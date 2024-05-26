@@ -1,34 +1,39 @@
 import 'package:equatable/equatable.dart';
 import 'package:ish_top/data/models/announcement.dart';
-import 'formstatus.dart';
 
-class ImageUploadState extends Equatable {
+import '../image/formstatus.dart';
+
+class UserImageUploadState extends Equatable {
   final String downloadImage;
 
   final double progress;
-  final List<ImageModel> images;
+  final ImageModel images;
   final FormStatusImage formStatus;
 
-  const ImageUploadState({
+  const UserImageUploadState({
     required this.images,
     required this.downloadImage,
     required this.formStatus,
     required this.progress,
   });
 
-  static ImageUploadState imageUploadState = const ImageUploadState(
-      progress: 0,
-      downloadImage: "",
-      formStatus: FormStatusImage.pure,
-      images: []);
+  static UserImageUploadState imageUploadState = UserImageUploadState(
+    progress: 0,
+    downloadImage: "",
+    formStatus: FormStatusImage.pure,
+    images: ImageModel(
+      imageUrl: '',
+      imageDocId: '',
+    ),
+  );
 
-  ImageUploadState copyWith({
+  UserImageUploadState copyWith({
     String? downloadImage,
     FormStatusImage? formStatus,
-    List<ImageModel>? images,
+    ImageModel? images,
     double? progress,
   }) {
-    return ImageUploadState(
+    return UserImageUploadState(
       progress: progress ?? this.progress,
       downloadImage: downloadImage ?? this.downloadImage,
       formStatus: formStatus ?? this.formStatus,

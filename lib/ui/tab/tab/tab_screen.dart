@@ -36,7 +36,9 @@ class _TabScreenState extends State<TabScreen> {
         },
       ),
       FeedbackScreen(userModel: UserModel.initial),
-      const ProfileScreen(),
+      ProfileScreen(
+        context: context,
+      ),
     ];
     return MaterialApp(
       localizationsDelegates: context.localizationDelegates,

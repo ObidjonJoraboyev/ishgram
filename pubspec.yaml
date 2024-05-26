@@ -54,6 +54,7 @@ dependencies:
   alarm: ^3.1.4
   page_transition: ^2.1.0
   video_player: ^2.8.6
+  pinput: ^4.0.0
 
 
 dev_dependencies:

@@ -5,4 +5,6 @@ enum FormStatus {
   loading,
   unauthenticated,
   authenticated,
+  firstAuth,
+  exist
 }

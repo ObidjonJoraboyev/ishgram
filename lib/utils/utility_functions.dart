@@ -8,15 +8,20 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:ish_top/blocs/user_image/user_image_bloc.dart';
 import 'package:ish_top/utils/size/size_utils.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:zoom_tap_animation/zoom_tap_animation.dart';
 import '../blocs/image/image_bloc.dart';
 import '../blocs/image/image_event.dart';
+import '../blocs/user_image/user_image_event.dart';
 import '../data/models/announcement.dart';
 
 Future<void> _getImageFromGallery(BuildContext context,
-    {required int limit, required List<ImageModel> images}) async {
+    {required int limit,
+    required List<ImageModel> images,
+    bool? isProfile,
+    ImageModel? imageModel}) async {
   final ImagePicker picker = ImagePicker();
 
   if (limit != 1) {
@@ -28,9 +33,13 @@ Future<void> _getImageFromGallery(BuildContext context,
     if (!context.mounted) return;
     Navigator.pop(context);
 
-    context
-        .read<ImageBloc>()
-        .add(ImageSetEvent(pickedFile: image, images: images));
+    isProfile != true
+        ? context
+            .read<ImageBloc>()
+            .add(ImageSetEvent(pickedFile: image, images: images))
+        : context
+            .read<UserImageBloc>()
+            .add(UserImageSetEvent(pickedFile: image, images: imageModel!));
   } else {
     XFile? image = await picker.pickImage(
       maxHeight: 1024,
@@ -41,14 +50,20 @@ Future<void> _getImageFromGallery(BuildContext context,
 
     Navigator.pop(context);
 
-    context
-        .read<ImageBloc>()
-        .add(ImageSetEvent(pickedFile: [image!], images: images));
+    isProfile != true
+        ? context
+            .read<ImageBloc>()
+            .add(ImageSetEvent(pickedFile: [image!], images: images))
+        : context
+            .read<UserImageBloc>()
+            .add(UserImageSetEvent(pickedFile: [image!], images: imageModel!));
   }
 }
 
 Future<void> _getImageFromCamera(BuildContext context,
-    {required List<ImageModel> images}) async {
+    {required List<ImageModel> images,
+    bool? isProfile,
+    ImageModel? imageModel}) async {
   final ImagePicker picker = ImagePicker();
 
   XFile? image = await picker.pickImage(
@@ -59,15 +74,21 @@ Future<void> _getImageFromCamera(BuildContext context,
   if (!context.mounted) return;
   Navigator.pop(context);
 
-  context
-      .read<ImageBloc>()
-      .add(ImageSetEvent(pickedFile: [image!], images: images));
+  isProfile != true
+      ? context
+          .read<ImageBloc>()
+          .add(ImageSetEvent(pickedFile: [image!], images: images))
+      : context
+          .read<UserImageBloc>()
+          .add(UserImageSetEvent(pickedFile: [image!], images: imageModel!));
 }
 
 void takeAnImage(
   BuildContext context, {
   required int limit,
   required List<ImageModel> images,
+  bool? isProfile,
+  ImageModel? imageModel,
 }) {
   showCupertinoModalPopup(
     context: context,
@@ -86,7 +107,8 @@ void takeAnImage(
         actions: [
           CupertinoActionSheetAction(
             onPressed: () async {
-              await _getImageFromCamera(context, images: images);
+              await _getImageFromCamera(context,
+                  images: images, isProfile: isProfile);
             },
             child: Text(
               "takeCamera".tr(),
@@ -97,7 +119,8 @@ void takeAnImage(
           ),
           CupertinoActionSheetAction(
             onPressed: () async {
-              await _getImageFromGallery(context, images: images, limit: limit);
+              await _getImageFromGallery(context,
+                  images: images, limit: limit, isProfile: isProfile);
             },
             child: Text(
               "takeGallery".tr(),

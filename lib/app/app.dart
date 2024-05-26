@@ -12,6 +12,7 @@ import 'package:ish_top/ui/splash/splash_screen.dart';
 import '../blocs/announcement_bloc/hire_bloc.dart';
 import '../blocs/announcement_bloc/hire_event.dart';
 import '../blocs/connectivity/connectivity_event.dart';
+import '../blocs/user_image/user_image_bloc.dart';
 
 class App extends StatelessWidget {
   const App({super.key});
@@ -34,6 +35,9 @@ class App extends StatelessWidget {
         ),
         BlocProvider(
           create: (context) => ImageBloc(),
+        ),
+        BlocProvider(
+          create: (context) => UserImageBloc(),
         ),
         BlocProvider(
           create: (_) => ConnectBloc()..add(CheckConnect()),

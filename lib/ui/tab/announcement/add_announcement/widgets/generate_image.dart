@@ -3,6 +3,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import '../../../../../blocs/image/formstatus.dart';
 import '../../../../../blocs/image/image_bloc.dart';
 import '../../../../../blocs/image/image_event.dart';
 import '../../../../../blocs/image/image_state.dart';
@@ -61,7 +62,7 @@ class _GenerateImageState extends State<GenerateImage> {
                             width: 150.w,
                             color: CupertinoColors.systemGrey2,
                             child: (widget.state.formStatus ==
-                                        FormStatus.uploading) &&
+                                        FormStatusImage.uploading) &&
                                     (index == 0)
                                 ? const Center(
                                     child: CircularProgressIndicator())

@@ -24,10 +24,27 @@ class LoginUserEvent extends AuthEvent {
 }
 
 class RegisterUserEvent extends AuthEvent {
-  RegisterUserEvent({required this.userModel});
+  RegisterUserEvent({
+    required this.userModel,
+    required this.password,
+  });
 
+  final int password;
   final UserModel userModel;
 
+  @override
+  List<Object?> get props => [userModel];
+}
+
+class GetCurrentUser extends AuthEvent {}
+
+class RegisterUpdateEvent extends AuthEvent {
+  RegisterUpdateEvent({
+    required this.userModel,
+    required this.docId,
+  });
+  final UserModel userModel;
+  final String docId;
   @override
   List<Object?> get props => [userModel];
 }

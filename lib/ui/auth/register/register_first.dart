@@ -1,3 +1,4 @@
+import 'dart:math';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -11,17 +12,18 @@ import 'package:ish_top/data/local/local_storage.dart';
 import 'package:ish_top/data/models/user_model.dart';
 import 'package:ish_top/ui/auth/auth_screen.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:ish_top/ui/auth/register/widgets/pinput_item.dart';
 import 'package:ish_top/ui/auth/widgets/button.dart';
-import 'package:ish_top/ui/auth/widgets/textfielad.dart';
 import 'package:ish_top/ui/tab/announcement/add_announcement/widgets/text_field_widget.dart';
-import 'package:ish_top/ui/tab/tab/tab_screen.dart';
 import 'package:ish_top/utils/colors/app_colors.dart';
 import 'package:ish_top/utils/formatters/formatters.dart';
 import 'package:ish_top/utils/images/app_images.dart';
 import 'package:ish_top/utils/size/size_utils.dart';
 
 class RegisterScreen extends StatefulWidget {
-  const RegisterScreen({super.key});
+  const RegisterScreen({
+    super.key,
+  });
 
   @override
   State<RegisterScreen> createState() => _RegisterScreenState();
@@ -35,6 +37,33 @@ class _RegisterScreenState extends State<RegisterScreen> {
   final TextEditingController passwordController = TextEditingController();
   final TextEditingController lastNameController = TextEditingController();
   final TextEditingController phoneController = TextEditingController();
+  Random random = Random();
+  final pinController = TextEditingController();
+  final focusNode = FocusNode();
+  final formKey1 = GlobalKey<FormState>();
+
+  int password = 0;
+
+  loginTap() async {
+    userModel = userModel.copyWith(
+      lastName: lastNameController.text,
+      password:
+          passwordController.text.isNotEmpty ? passwordController.text : "-1",
+      number: phoneController.text,
+      name: firstNameController.text,
+    );
+    context.read<AuthBloc>().add(
+          RegisterUserEvent(password: password, userModel: userModel),
+        );
+    await StorageRepository.setString(
+        key: "userNumber", value: "+998${phoneController.text}");
+  }
+
+  init() {
+    password = 100000 + random.nextInt(999999 - 100000 + 1);
+  }
+
+  UserModel userModel = UserModel.initial;
 
   @override
   Widget build(BuildContext context) {
@@ -54,7 +83,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                 key: formKey,
                 child: Column(
                   children: [
-                    60.getH(),
+                    20.getH(),
                     Image.asset(
                       AppImages.signUp,
                       height: 180.h,
@@ -77,45 +106,52 @@ class _RegisterScreenState extends State<RegisterScreen> {
                         setState(() {
                           checkInput();
                         });
+                        if (v.length == 19 &&
+                            passwordController.text.length == password) {
+                          loginTap();
+                          setState(() {});
+                        }
                       },
                       controller: phoneController,
                       labelText: "phone_number",
                       maxLines: 1,
                       formatter: AppInputFormatters.phoneFormatter,
                       isPhone: true,
+                      formStatus: state.formStatus,
                     ),
                     16.getH(),
                     Padding(
                       padding: EdgeInsets.symmetric(horizontal: 16.w),
-                      child: PasswordTextInput(
-                        labelText: "code",
-                        onChanged: (v) {
-                          setState(() {
+                      child: PinPutItem(
+                          controller: passwordController,
+                          focusNode: focusNode,
+                          password: password,
+                          valueChanged: (v) {
+                            checkInput() ? loginTap() : null;
                             checkInput();
-                          });
-                        },
-                        controller: passwordController,
-                      ),
+                            setState(() {});
+                          }),
                     ),
-                    35.getH(),
+                    TextButton(
+                        onPressed: () async {
+                          init();
+                          setState(() {});
+
+                          //  final Uri uri = Uri.parse("https://t.me/ustalar_vaqtiuzbot");
+                          //  if (await canLaunchUrl(uri)) {
+                          //    await launchUrl(uri);
+                          //  } else {
+                          //    throw 'Could not launch ';
+                          //  }
+                        },
+                        child: Text("Get password $password")),
+                    20.getH(),
                     Padding(
                       padding: EdgeInsets.symmetric(horizontal: 16.w),
                       child: LoginButtonItems(
                         title: "register".tr(),
                         onTap: () async {
-                          context.read<AuthBloc>().add(
-                                RegisterUserEvent(
-                                  userModel: UserModel.initial.copyWith(
-                                    lastName: lastNameController.text,
-                                    password: passwordController.text,
-                                    number: phoneController.text,
-                                    name: firstNameController.text,
-                                  ),
-                                ),
-                              );
-                          await StorageRepository.setString(
-                              key: "userNumber",
-                              value: "+998${phoneController.text}");
+                          loginTap();
                         },
                         isLoading: state.formStatus == FormStatus.loading,
                         active: checkInput(),
@@ -163,13 +199,16 @@ class _RegisterScreenState extends State<RegisterScreen> {
           );
         },
         listener: (BuildContext context, AuthState state) async {
-          if (state.formStatus == FormStatus.authenticated) {
-            if (!context.mounted) return;
-            Navigator.pushAndRemoveUntil(
-                context,
-                MaterialPageRoute(builder: (context) => const TabScreen()),
-                (route) => false);
-          }
+          //     if (state.formStatus == FormStatus.firstAuth) {
+          //             if (!context.mounted) return;
+          //
+          //             Navigator.pushAndRemoveUntil(
+          //                 context,
+          //                 MaterialPageRoute(
+          //                   builder: (context) => RegisterSecond(userModel: userModel),
+          //                 ),
+          //                 (v) => false);
+          //           }
         },
       ),
     );

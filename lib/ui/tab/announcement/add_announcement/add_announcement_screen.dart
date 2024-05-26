@@ -8,6 +8,7 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:ish_top/blocs/announcement_bloc/hire_bloc.dart';
 import 'package:ish_top/blocs/announcement_bloc/hire_event.dart';
+import 'package:ish_top/blocs/auth/auth_bloc.dart';
 import 'package:ish_top/blocs/image/image_bloc.dart';
 import 'package:ish_top/blocs/image/image_event.dart';
 import 'package:ish_top/blocs/image/image_state.dart';
@@ -174,6 +175,7 @@ class _AddHireScreenState extends State<AddHireScreen> {
                       labelText: "work_name",
                       maxLines: 1,
                       maxLength: 100,
+                      formStatus: context.read<AuthBloc>().state.formStatus,
                     ),
                     GlobalTextFiled(
                       onChanged: (v) {
@@ -183,6 +185,7 @@ class _AddHireScreenState extends State<AddHireScreen> {
                       labelText: "your_name",
                       maxLines: 1,
                       maxLength: 50,
+                      formStatus: context.read<AuthBloc>().state.formStatus,
                     ),
                     GlobalTextFiled(
                       onChanged: (v) {
@@ -191,6 +194,7 @@ class _AddHireScreenState extends State<AddHireScreen> {
                       controller: descriptionCtrl,
                       labelText: "about_work",
                       maxLength: 800,
+                      formStatus: context.read<AuthBloc>().state.formStatus,
                     ),
                     0.getH(),
                     GlobalTextFiled(
@@ -202,6 +206,7 @@ class _AddHireScreenState extends State<AddHireScreen> {
                       maxLines: 1,
                       formatter: AppInputFormatters.phoneFormatter,
                       isPhone: true,
+                      formStatus: context.read<AuthBloc>().state.formStatus,
                     ),
                     14.getH(),
                     SalaryTextField(

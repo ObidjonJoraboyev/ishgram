@@ -17,7 +17,10 @@
   "login": "Hisobga kirish",
   "password": "Parol",
   "code": "Kod",
+  "new_password": "Yangi parol yarating",
 
+  "already_registered": "Raqam allaqachon ro'yxatdan o'tgan",
+  "minimum_error": "Kamida 3 ta belgi kerak",
   "no_account": "Akkountingiz yo'qmi?",
   "no_acc_register": "Ro'yxatdan o'tish",
   "login_button": "Kirish",

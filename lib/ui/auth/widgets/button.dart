@@ -36,7 +36,7 @@ class LoginButtonItems extends StatelessWidget {
       onPressed: active ? onTap : null,
       child: Center(
         child: isLoading
-            ? const CircularProgressIndicator.adaptive()
+            ? const CupertinoActivityIndicator(color: Colors.white)
             : Text(
                 title.isEmpty ? "REGISTER" : title,
                 style: TextStyle(
