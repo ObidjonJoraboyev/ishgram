@@ -46,7 +46,7 @@ class _TabScreenState extends State<TabScreen> {
       locale: context.locale,
       debugShowCheckedModeBanner: false,
       home: Scaffold(
-        body: IndexedStack(index: activeIndex, children: screens),
+        body: screens[activeIndex],
         bottomNavigationBar: BottomNavigationBar(
           backgroundColor: CupertinoColors.systemGrey6,
           selectedItemColor: CupertinoColors.activeBlue,

@@ -7,6 +7,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:ish_top/blocs/auth/auth_bloc.dart';
 import 'package:ish_top/blocs/auth/auth_event.dart';
+import 'package:ish_top/blocs/user_image/user_image_event.dart';
 import 'package:ish_top/blocs/user_image/user_image_state.dart';
 import 'package:ish_top/utils/size/size_utils.dart';
 import 'package:ish_top/utils/utility_functions.dart';
@@ -31,13 +32,13 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
   Future<void> init() async {
     setState(() {});
-    if (!context.mounted) return;
   }
 
   @override
   void initState() {
-    init();
     context.read<AuthBloc>().add(GetCurrentUser());
+    init();
+
     super.initState();
   }
 
@@ -86,7 +87,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                               width: 90.w,
                               child: GestureDetector(
                                 onTap: () async {
-                                  state1.userModel.image.length < 25
+                                  state1.userModel.image.isEmpty
                                       ? takeAnImage(
                                           context,
                                           limit: 1,
@@ -101,7 +102,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                         );
                                   setState(() {});
                                 },
-                                child: state1.userModel.image.length < 25
+                                child: state1.userModel.image.isEmpty
                                     ? Container(
                                         width: 90.w,
                                         height: 90.w,
@@ -109,10 +110,10 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                           shape: BoxShape.circle,
                                           color: Color(
                                             int.tryParse(state1
-                                                        .userModel.image) !=
+                                                        .userModel.color) !=
                                                     null
                                                 ? int.parse(
-                                                    state1.userModel.image)
+                                                    state1.userModel.color)
                                                 : 0xff448591,
                                           ),
                                         ),
@@ -161,7 +162,10 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                 fontWeight: FontWeight.w500,
                                 fontSize: 18),
                           ),
-                          onPressed: () {},
+                          onPressed: () {
+                            context.read<AuthBloc>().add(GetCurrentUser());
+                            setState(() {});
+                          },
                         )
                       ],
                     ),
@@ -186,7 +190,72 @@ class _ProfileScreenState extends State<ProfileScreen> {
                           borderRadius: BorderRadius.circular(12),
                           child: CupertinoListTile(
                               leadingSize: 35,
-                              onTap: () {},
+                              onTap: () {
+                                showCupertinoModalPopup(
+                                  context: context,
+                                  builder: (context) {
+                                    return CupertinoActionSheet(
+                                      cancelButton: CupertinoActionSheetAction(
+                                        onPressed: () {
+                                          Navigator.of(context).pop();
+                                        },
+                                        child: const Text(
+                                          "Cancel",
+                                          style: TextStyle(
+                                              fontWeight: FontWeight.w600,
+                                              color:
+                                                  CupertinoColors.activeBlue),
+                                        ),
+                                      ),
+                                      actions: [
+                                        CupertinoActionSheetAction(
+                                          onPressed: () {
+                                            Navigator.pop(context);
+                                            takeAnImage(context,
+                                                limit: 1, images: []);
+                                          },
+                                          child: const Text(
+                                            "Set new image",
+                                            style: TextStyle(
+                                                color:
+                                                    CupertinoColors.activeBlue,
+                                                fontWeight: FontWeight.w500),
+                                          ),
+                                        ),
+                                        state1.userModel.image.length > 20
+                                            ? CupertinoActionSheetAction(
+                                                onPressed: () async {
+                                                  Navigator.pop(context);
+                                                  context
+                                                      .read<UserImageBloc>()
+                                                      .add(UserImageRemoveEvent(
+                                                          context,
+                                                          docId: state.images
+                                                              .imageDocId));
+                                                  context.read<AuthBloc>().add(
+                                                        RegisterUpdateEvent(
+                                                            userModel: state1
+                                                                .userModel
+                                                                .copyWith(
+                                                                    image: ""),
+                                                            docId: ""),
+                                                      );
+                                                },
+                                                child: const Text(
+                                                  "Delete",
+                                                  style: TextStyle(
+                                                    color: CupertinoColors
+                                                        .destructiveRed,
+                                                    fontWeight: FontWeight.w500,
+                                                  ),
+                                                ),
+                                              )
+                                            : const SizedBox(),
+                                      ],
+                                    );
+                                  },
+                                );
+                              },
                               backgroundColorActivated:
                                   CupertinoColors.systemGrey6,
                               backgroundColor: Colors.grey.shade50,

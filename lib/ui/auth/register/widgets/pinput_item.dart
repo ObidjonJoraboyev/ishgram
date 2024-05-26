@@ -66,7 +66,7 @@ class PinPutItem extends StatelessWidget {
       },
       isCursorAnimationEnabled: true,
       onChanged: valueChanged,
-      autofocus: true,
+      autofocus: false,
       enabled: true,
       cursor: Column(
         mainAxisAlignment: MainAxisAlignment.end,

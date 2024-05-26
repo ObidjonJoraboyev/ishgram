@@ -148,13 +148,16 @@ class _RegisterScreenState extends State<RegisterScreen> {
                     20.getH(),
                     Padding(
                       padding: EdgeInsets.symmetric(horizontal: 16.w),
-                      child: LoginButtonItems(
-                        title: "register".tr(),
-                        onTap: () async {
-                          loginTap();
-                        },
-                        isLoading: state.formStatus == FormStatus.loading,
-                        active: checkInput(),
+                      child: SizedBox(
+                        height: 50.h,
+                        child: LoginButtonItems(
+                          title: "register".tr(),
+                          onTap: () async {
+                            loginTap();
+                          },
+                          isLoading: state.formStatus == FormStatus.loading,
+                          active: checkInput(),
+                        ),
                       ),
                     ),
                     13.getH(),

@@ -1,14 +1,15 @@
 import 'dart:io';
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:ish_top/data/local/local_storage.dart';
 import 'package:ish_top/data/models/announcement.dart';
 import 'package:ish_top/utils/size/size_utils.dart';
 import 'package:page_transition/page_transition.dart';
 import 'package:shimmer/shimmer.dart';
+import 'package:timeago/timeago.dart' as timeago;
 import '../../../../blocs/announcement_bloc/hire_bloc.dart';
 import '../../../../blocs/announcement_bloc/hire_event.dart';
 import '../detail/detail_screen.dart';
@@ -57,14 +58,20 @@ class _HiringItemState extends State<HiringItem> {
             itemBuilder: (context, index1) {
               return GestureDetector(
                 onTap: () async {
-                  context.read<AnnouncementBloc>().add(
-                        AnnouncementUpdateEvent(
-                          hireModel: widget.hires[index1].copyWith(
-                            countView:
-                                widget.hires[index1].countView + ["salom"],
-                          ),
-                        ),
-                      );
+                  !widget.hires[index1].countView.contains(
+                          StorageRepository.getString(key: "userNumber"))
+                      ? context.read<AnnouncementBloc>().add(
+                            AnnouncementUpdateEvent(
+                              hireModel: widget.hires[index1].copyWith(
+                                countView: widget.hires[index1].countView +
+                                    [
+                                      StorageRepository.getString(
+                                          key: "userNumber")
+                                    ],
+                              ),
+                            ),
+                          )
+                      : null;
 
                   widget.voidCallback.call();
 
@@ -245,11 +252,6 @@ class _HiringItemState extends State<HiringItem> {
                       Row(
                         mainAxisAlignment: MainAxisAlignment.end,
                         children: [
-                          Icon(
-                            CupertinoIcons.eye_solid,
-                            color: CupertinoColors.black.withOpacity(.6),
-                          ),
-                          3.getW(),
                           Text(
                             widget.hires[index1].countView.length.toString(),
                             style: TextStyle(
@@ -257,14 +259,19 @@ class _HiringItemState extends State<HiringItem> {
                               color: CupertinoColors.black.withOpacity(.6),
                             ),
                           ),
-                          6.getW(),
+                          5.getW(),
+                          Icon(
+                            CupertinoIcons.eye_solid,
+                            color: CupertinoColors.black.withOpacity(.6),
+                          ),
+                          12.getW(),
                           Text(
-                            DateFormat("HH:mm").format(
-                              DateTime.fromMillisecondsSinceEpoch(
-                                int.parse(
-                                    widget.hires[index1].createdAt.toString()),
-                              ),
-                            ),
+                            timeago.format(
+                                DateTime.fromMillisecondsSinceEpoch(
+                                  int.parse(widget.hires[index1].createdAt
+                                      .toString()),
+                                ),
+                                locale: "uz"),
                             style: TextStyle(
                                 color: CupertinoColors.black.withOpacity(.6),
                                 fontWeight: FontWeight.w500),

@@ -158,7 +158,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
             .doc(docId.id)
             .update({
           "doc_id": docId.id,
-          "image": colors[Random().nextInt(7)].value.toString()
+          "color": colors[Random().nextInt(7)].value.toString()
         });
 
         StorageRepository.setString(

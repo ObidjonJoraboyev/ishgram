@@ -75,6 +75,7 @@ class _RegisterControlState extends State<RegisterControl> {
               ),
               Expanded(
                 child: PageView(
+                  physics: const NeverScrollableScrollPhysics(),
                   onPageChanged: (v) {
                     activeIndex = v;
                     setState(() {});

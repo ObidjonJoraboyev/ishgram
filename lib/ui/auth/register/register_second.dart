@@ -14,6 +14,7 @@ import 'package:ish_top/ui/auth/widgets/button.dart';
 import 'package:ish_top/utils/colors/app_colors.dart';
 import 'package:ish_top/utils/images/app_images.dart';
 import 'package:ish_top/utils/size/size_utils.dart';
+import 'package:pinput/pinput.dart';
 import '../../../utils/constants/app_constants.dart';
 import '../widgets/global_textfield.dart';
 import '../widgets/textfielad.dart';
@@ -116,21 +117,25 @@ class _RegisterSecondState extends State<RegisterSecond> {
                     24.getH(),
                     Padding(
                       padding: EdgeInsets.symmetric(horizontal: 16.w),
-                      child: LoginButtonItems(
-                        title: "register".tr(),
-                        onTap: () async {
-                          context.read<AuthBloc>().add(
-                                RegisterUpdateEvent(
-                                  userModel: state.userModel.copyWith(
+                      child: SizedBox(
+                        height: 50.h,
+                        child: LoginButtonItems(
+                          title: "register".tr(),
+                          onTap: () async {
+                            context.read<AuthBloc>().add(
+                                  RegisterUpdateEvent(
+                                    userModel: state.userModel.copyWith(
                                       lastName: lastNameController.text,
                                       name: firstNameController.text,
-                                      password: passwordController.text),
-                                  docId: state.userModel.docId,
-                                ),
-                              );
-                        },
-                        isLoading: state.formStatus == FormStatus.loading,
-                        active: checkInput(),
+                                      password: passwordController.text,
+                                    ),
+                                    docId: state.userModel.docId,
+                                  ),
+                                );
+                          },
+                          isLoading: state.formStatus == FormStatus.loading,
+                          active: checkInput(),
+                        ),
                       ),
                     ),
                     19.getH(),
@@ -190,7 +195,8 @@ class _RegisterSecondState extends State<RegisterSecond> {
     return lastNameController.text.length >= 3 &&
         lastNameController.text.length <= 20 &&
         firstNameController.text.length <= 20 &&
-        firstNameController.text.length >= 3;
+        firstNameController.text.length >= 3 &&
+        passwordController.length == 6;
   }
 
   @override

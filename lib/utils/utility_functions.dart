@@ -16,6 +16,7 @@ import '../blocs/image/image_bloc.dart';
 import '../blocs/image/image_event.dart';
 import '../blocs/user_image/user_image_event.dart';
 import '../data/models/announcement.dart';
+import 'package:timeago/timeago.dart' as timeago;
 
 Future<void> _getImageFromGallery(
   BuildContext context, {
@@ -518,4 +519,54 @@ addAlarm(
       );
     },
   );
+}
+
+class UzbekMessages implements timeago.LookupMessages {
+  @override
+  String prefixAgo() => '';
+
+  @override
+  String prefixFromNow() => '';
+
+  @override
+  String suffixAgo() => 'oldin';
+
+  @override
+  String suffixFromNow() => 'keyin';
+
+  @override
+  String lessThanOneMinute(int seconds) => 'Bir necha soniya';
+
+  @override
+  String aboutAMinute(int minutes) => 'Bir daqiqa';
+
+  @override
+  String minutes(int minutes) => '$minutes daqiqa';
+
+  @override
+  String aboutAnHour(int minutes) => 'Taxminan bir soat';
+
+  @override
+  String hours(int hours) => '$hours soat';
+
+  @override
+  String aDay(int hours) => 'bir kun';
+
+  @override
+  String days(int days) => '$days kun';
+
+  @override
+  String aboutAMonth(int days) => 'Taxminan bir oy';
+
+  @override
+  String months(int months) => '$months oy';
+
+  @override
+  String aboutAYear(int year) => 'Taxminan bir yil';
+
+  @override
+  String years(int years) => '$years yil';
+
+  @override
+  String wordSeparator() => ' ';
 }

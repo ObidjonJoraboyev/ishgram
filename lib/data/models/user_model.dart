@@ -12,6 +12,7 @@ class UserModel extends Equatable {
   final String number;
   final String docId;
   final String image;
+  final String color;
   final String location;
   final String region;
   final String fcm;
@@ -23,6 +24,7 @@ class UserModel extends Equatable {
   const UserModel({
     required this.location,
     required this.age,
+    required this.color,
     required this.docId,
     required this.name,
     required this.number,
@@ -45,6 +47,7 @@ class UserModel extends Equatable {
     String? name,
     String? lastName,
     String? number,
+    String? color,
     String? docId,
     String? image,
     String? userId,
@@ -82,6 +85,7 @@ class UserModel extends Equatable {
       createdAt: createdAt ?? this.createdAt,
       allHiring: allHiring ?? this.allHiring,
       likedHiring: likedHiring ?? this.likedHiring,
+      color: color ?? this.color,
     );
   }
 
@@ -103,7 +107,8 @@ class UserModel extends Equatable {
         "updatedAt": updatedAt,
         "createdAt": createdAt,
         "announcements": allHiring,
-        "likedHiring": likedHiring
+        "likedHiring": likedHiring,
+        "color": color
       };
 
   Map<String, dynamic> toJsonForUpdate() => {
@@ -124,6 +129,7 @@ class UserModel extends Equatable {
         "createdAt": createdAt,
         "announcements": allHiring,
         "likedHiring": likedHiring,
+        "color": color
       };
 
   factory UserModel.fromJson(Map<String, dynamic> json) {
@@ -150,6 +156,7 @@ class UserModel extends Equatable {
       likedHiring: (json["likedHiring"] as List? ?? [])
           .map((e) => e.toString())
           .toList(),
+      color: json["color"] as String? ?? "",
     );
   }
 
@@ -172,6 +179,7 @@ class UserModel extends Equatable {
     createdAt: 0,
     allHiring: [],
     likedHiring: [],
+    color: "",
   );
 
   @override
@@ -193,6 +201,7 @@ class UserModel extends Equatable {
         updatedAt,
         createdAt,
         allHiring,
-        likedHiring
+        likedHiring,
+        color
       ];
 }
