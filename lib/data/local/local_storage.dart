@@ -34,6 +34,7 @@ class StorageRepository {
     required String key,
     required String value,
   }) async {
+    print("saving String $value $key");
     if (_preference != null) {
       _preference!.setString(key, value);
     }

@@ -72,14 +72,14 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     }
   }
 
-  _getCurrentUser(GetCurrentUser event, Emitter<AuthState> emit) {
+  _getCurrentUser(GetCurrentUser event, Emitter<AuthState> emit)async {
     emit(state.copyWith(formStatus: FormStatus.loading));
     try {
-      FirebaseFirestore.instance
+     await FirebaseFirestore.instance
           .collection("users")
           .doc(StorageRepository.getString(key: "userDoc"))
           .get()
-          .then((doc) {
+          .then((doc) async{
         emit(state.copyWith(
           formStatus: FormStatus.authenticated,
           userModel: UserModel.fromJson(doc.data()!),
@@ -164,7 +164,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
         StorageRepository.setString(
             key: "userNumber", value: event1.userModel.number);
         StorageRepository.setString(
-            key: "userDoc", value: event1.userModel.docId);
+            key: "userDoc", value: docId.id);
 
         DocumentSnapshot documentSnapshot = await FirebaseFirestore.instance
             .collection("users")
