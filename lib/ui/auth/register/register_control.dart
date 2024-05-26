@@ -24,7 +24,7 @@ class _RegisterControlState extends State<RegisterControl> {
   int activeIndex = 0;
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context1) {
     return Scaffold(
       body: BlocConsumer<AuthBloc, AuthState>(
         listener: (context, state) {
@@ -36,9 +36,9 @@ class _RegisterControlState extends State<RegisterControl> {
           if (state.formStatus == FormStatus.authenticated) {
             if (!context.mounted) return;
             Navigator.pushAndRemoveUntil(
-                context,
+                context1,
                 MaterialPageRoute(builder: (context) => const TabScreen()),
-                (route) => true);
+                (route) => false);
           }
         },
         builder: (context, state) {

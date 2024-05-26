@@ -41,9 +41,7 @@ class _GlobalTextFiledState extends State<GlobalTextFiled> {
   @override
   Widget build(BuildContext context) {
     return Form(
-      autovalidateMode: widget.formStatus != FormStatus.exist
-          ? AutovalidateMode.always
-          : AutovalidateMode.always,
+      autovalidateMode: AutovalidateMode.onUserInteraction,
       child: Padding(
         padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 10.h),
         child: BlocConsumer<AuthBloc, AuthState>(

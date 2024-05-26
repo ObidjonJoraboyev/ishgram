@@ -17,11 +17,12 @@ import '../blocs/image/image_event.dart';
 import '../blocs/user_image/user_image_event.dart';
 import '../data/models/announcement.dart';
 
-Future<void> _getImageFromGallery(BuildContext context,
-    {required int limit,
-    required List<ImageModel> images,
-    bool? isProfile,
-    ImageModel? imageModel}) async {
+Future<void> _getImageFromGallery(
+  BuildContext context, {
+  required int limit,
+  required List<ImageModel> images,
+  bool? isProfile,
+}) async {
   final ImagePicker picker = ImagePicker();
 
   if (limit != 1) {
@@ -39,7 +40,7 @@ Future<void> _getImageFromGallery(BuildContext context,
             .add(ImageSetEvent(pickedFile: image, images: images))
         : context
             .read<UserImageBloc>()
-            .add(UserImageSetEvent(pickedFile: image, images: imageModel!));
+            .add(UserImageSetEvent(pickedFile: image));
   } else {
     XFile? image = await picker.pickImage(
       maxHeight: 1024,
@@ -54,16 +55,14 @@ Future<void> _getImageFromGallery(BuildContext context,
         ? context
             .read<ImageBloc>()
             .add(ImageSetEvent(pickedFile: [image!], images: images))
-        : context
-            .read<UserImageBloc>()
-            .add(UserImageSetEvent(pickedFile: [image!], images: imageModel!));
+        : context.read<UserImageBloc>().add(UserImageSetEvent(
+              pickedFile: [image!],
+            ));
   }
 }
 
 Future<void> _getImageFromCamera(BuildContext context,
-    {required List<ImageModel> images,
-    bool? isProfile,
-    ImageModel? imageModel}) async {
+    {required List<ImageModel> images, bool? isProfile}) async {
   final ImagePicker picker = ImagePicker();
 
   XFile? image = await picker.pickImage(
@@ -78,9 +77,9 @@ Future<void> _getImageFromCamera(BuildContext context,
       ? context
           .read<ImageBloc>()
           .add(ImageSetEvent(pickedFile: [image!], images: images))
-      : context
-          .read<UserImageBloc>()
-          .add(UserImageSetEvent(pickedFile: [image!], images: imageModel!));
+      : context.read<UserImageBloc>().add(UserImageSetEvent(
+            pickedFile: [image!],
+          ));
 }
 
 void takeAnImage(
@@ -91,6 +90,7 @@ void takeAnImage(
   ImageModel? imageModel,
 }) {
   showCupertinoModalPopup(
+    barrierDismissible: false,
     context: context,
     builder: (context) {
       return CupertinoActionSheet(
@@ -415,6 +415,7 @@ addAlarm(
     required AnnouncementModel hireModel,
     required ValueChanged valueChanged}) {
   showCupertinoModalPopup(
+    barrierDismissible: false,
     context: context1,
     builder: (context) {
       return StatefulBuilder(

@@ -1,3 +1,4 @@
+import 'package:easy_image_viewer/easy_image_viewer.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -7,12 +8,11 @@ import 'package:image_picker/image_picker.dart';
 import 'package:ish_top/blocs/auth/auth_bloc.dart';
 import 'package:ish_top/blocs/auth/auth_event.dart';
 import 'package:ish_top/blocs/user_image/user_image_state.dart';
-import 'package:ish_top/data/local/local_storage.dart';
+import 'package:ish_top/utils/size/size_utils.dart';
 import 'package:ish_top/utils/utility_functions.dart';
 import '../../../blocs/auth/auth_state.dart';
 import '../../../blocs/image/formstatus.dart';
 import '../../../blocs/user_image/user_image_bloc.dart';
-import '../../../data/models/user_model.dart';
 
 class ProfileScreen extends StatefulWidget {
   const ProfileScreen({super.key, required this.context});
@@ -28,8 +28,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
   String imageUrl = "";
   String storagePath = "";
   String fcm = "";
-
-  UserModel thisUser = UserModel.initial;
 
   Future<void> init() async {
     setState(() {});
@@ -54,330 +52,368 @@ class _ProfileScreenState extends State<ProfileScreen> {
         listener: (context, state1) {},
         builder: (context, state1) {
           return BlocConsumer<UserImageBloc, UserImageUploadState>(
-            listener: (context, state) {},
+            listener: (context, state) {
+              if (state.formStatus == FormStatusImage.success) {
+                context.read<AuthBloc>().add(RegisterUpdateEvent(
+                    userModel:
+                        state1.userModel.copyWith(image: state.images.imageUrl),
+                    docId: ""));
+              }
+            },
             builder: (context, state) {
               return Scaffold(
-                backgroundColor: Colors.grey.withOpacity(.06),
-                appBar: AppBar(
-                  backgroundColor: Colors.grey.withOpacity(.02),
-                  leading: IconButton(
-                    style: IconButton.styleFrom(foregroundColor: Colors.white),
-                    onPressed: () {},
-                    icon: const Icon(
-                      CupertinoIcons.qrcode,
-                      color: CupertinoColors.activeBlue,
-                      size: 28,
-                    ),
-                  ),
-                  actions: [
-                    TextButton(
-                      style:
-                          TextButton.styleFrom(foregroundColor: Colors.white),
-                      child: const Text(
-                        "Edit",
-                        style: TextStyle(
-                            color: CupertinoColors.activeBlue,
-                            fontWeight: FontWeight.w500,
-                            fontSize: 18),
-                      ),
-                      onPressed: () {},
-                    )
-                  ],
-                  bottom: PreferredSize(
-                    preferredSize: const Size(100, 70),
-                    child: GestureDetector(
-                      onTap: () async {
-                        takeAnImage(context,
-                            limit: 1, images: [], isProfile: true);
-                        setState(() {});
-                      },
-                      child: Container(
-                        width: 90,
-                        height: 90,
-                        decoration: const BoxDecoration(
-                          shape: BoxShape.circle,
-                          color: Colors.red,
-                        ),
-                        child: Center(
-                          child: Text(
-                            state1.userModel.name.toUpperCase(),
-                            style: const TextStyle(
-                              fontSize: 12,
-                              color: Colors.black,
-                              fontWeight: FontWeight.w600,
-                            ),
-                          ),
-                        ),
-                      ),
-                    ),
-                  ),
-                ),
-                body: Column(
-                  children: [
-                    Text(
-                      state1.userModel.name.toUpperCase(),
-                      style: const TextStyle(
-                        fontSize: 12,
-                        color: Colors.black,
-                        fontWeight: FontWeight.w600,
-                      ),
-                    ),
-                    Column(
-                      children: [
-                        const SizedBox(
-                          height: 15,
-                        ),
-                        Text(
-                          thisUser.name,
+                backgroundColor: CupertinoColors.systemGrey5,
+                body: CustomScrollView(
+                  slivers: [
+                    SliverAppBar(
+                      primary: true,
+                      pinned: true,
+                      snap: true,
+                      stretch: true,
+                      expandedHeight: 150.h,
+                      flexibleSpace: FlexibleSpaceBar(
+                        centerTitle: true,
+                        title: Text(
+                          state1.userModel.name,
                           style: const TextStyle(
                               fontWeight: FontWeight.w700, fontSize: 24),
                         ),
-                        Text(
-                          thisUser.number,
+                        background: Column(
+                          children: [
+                            50.getH(),
+                            SizedBox(
+                              height: 90.w,
+                              width: 90.w,
+                              child: GestureDetector(
+                                onTap: () async {
+                                  state1.userModel.image.length < 25
+                                      ? takeAnImage(
+                                          context,
+                                          limit: 1,
+                                          images: [],
+                                          isProfile: true,
+                                        )
+                                      : showImageViewer(
+                                          doubleTapZoomable: true,
+                                          swipeDismissible: true,
+                                          context,
+                                          NetworkImage(state1.userModel.image),
+                                        );
+                                  setState(() {});
+                                },
+                                child: state1.userModel.image.length < 25
+                                    ? Container(
+                                        width: 90.w,
+                                        height: 90.w,
+                                        decoration: BoxDecoration(
+                                          shape: BoxShape.circle,
+                                          color: Color(
+                                            int.tryParse(state1
+                                                        .userModel.image) !=
+                                                    null
+                                                ? int.parse(
+                                                    state1.userModel.image)
+                                                : 0xff448591,
+                                          ),
+                                        ),
+                                      )
+                                    : Padding(
+                                        padding: EdgeInsets.zero,
+                                        child: ClipRRect(
+                                          borderRadius:
+                                              BorderRadius.circular(100),
+                                          child: Image.network(
+                                            state1.userModel.image,
+                                            height: 80.w,
+                                            fit: BoxFit.cover,
+                                          ),
+                                        ),
+                                      ),
+                              ),
+                            ),
+                            const SizedBox(
+                              height: 15,
+                            ),
+                          ],
+                        ),
+                      ),
+                      scrolledUnderElevation: 0,
+                      floating: true,
+                      leading: IconButton(
+                        style:
+                            IconButton.styleFrom(foregroundColor: Colors.white),
+                        onPressed: () {},
+                        icon: const Icon(
+                          CupertinoIcons.qrcode,
+                          color: CupertinoColors.activeBlue,
+                          size: 28,
+                        ),
+                      ),
+                      backgroundColor: CupertinoColors.systemGrey5,
+                      actions: [
+                        TextButton(
+                          style: TextButton.styleFrom(
+                              foregroundColor: Colors.white),
+                          child: const Text(
+                            "Edit",
+                            style: TextStyle(
+                                color: CupertinoColors.activeBlue,
+                                fontWeight: FontWeight.w500,
+                                fontSize: 18),
+                          ),
+                          onPressed: () {},
+                        )
+                      ],
+                    ),
+                    SliverList.list(children: [
+                      Center(
+                        child: Text(
+                          state1.userModel.number,
                           style: TextStyle(
                             fontWeight: FontWeight.w400,
                             fontSize: 18,
                             color: Colors.black.withOpacity(.4),
                           ),
                         ),
-                        const SizedBox(
-                          height: 20,
+                      ),
+                      const SizedBox(
+                        height: 20,
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 18, vertical: 5),
+                        child: ClipRRect(
+                          borderRadius: BorderRadius.circular(12),
+                          child: CupertinoListTile(
+                              leadingSize: 35,
+                              onTap: () {},
+                              backgroundColorActivated:
+                                  CupertinoColors.systemGrey6,
+                              backgroundColor: Colors.grey.shade50,
+                              leading: const Icon(
+                                CupertinoIcons.camera,
+                                color: CupertinoColors.activeBlue,
+                              ),
+                              title: const Text(
+                                "Change Profile Photo",
+                                style: TextStyle(
+                                    color: CupertinoColors.activeBlue),
+                              )),
                         ),
-                        Padding(
-                          padding: const EdgeInsets.symmetric(
-                              horizontal: 18, vertical: 5),
-                          child: ClipRRect(
-                            borderRadius: BorderRadius.circular(12),
-                            child: CupertinoListTile(
-                                leadingSize: 35,
-                                onTap: () {},
-                                backgroundColorActivated: Colors.white,
-                                backgroundColor: Colors.white,
-                                leading: const Icon(
-                                  CupertinoIcons.camera,
-                                  color: CupertinoColors.activeBlue,
-                                ),
-                                title: const Text(
-                                  "Change Profile Photo",
-                                  style: TextStyle(
-                                      color: CupertinoColors.activeBlue),
-                                )),
-                          ),
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.symmetric(
-                              horizontal: 18, vertical: 15),
-                          child: ClipRRect(
-                            borderRadius: BorderRadius.circular(12),
-                            child: CupertinoListTile(
-                                trailing: const Icon(
-                                  CupertinoIcons.right_chevron,
-                                  size: 22,
-                                  color: Colors.grey,
-                                ),
-                                onTap: () {},
-                                backgroundColorActivated: Colors.white,
-                                backgroundColor: Colors.white,
-                                leadingSize: 35,
-                                leading: Container(
-                                  width: 32,
-                                  height: 32,
-                                  decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(8),
-                                    color: Colors.red,
-                                  ),
-                                  child: const Padding(
-                                    padding: EdgeInsets.only(top: 2),
-                                    child: Icon(
-                                      CupertinoIcons.person_circle_fill,
-                                      color: CupertinoColors.white,
-                                    ),
-                                  ),
-                                ),
-                                title: const Text(
-                                  "My Profile",
-                                  style:
-                                      TextStyle(color: CupertinoColors.black),
-                                )),
-                          ),
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.symmetric(
-                              horizontal: 18, vertical: 8),
-                          child: ClipRRect(
-                            borderRadius: BorderRadius.circular(12),
-                            child: CupertinoListTile(
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 18, vertical: 15),
+                        child: ClipRRect(
+                          borderRadius: BorderRadius.circular(12),
+                          child: CupertinoListTile(
                               trailing: const Icon(
                                 CupertinoIcons.right_chevron,
                                 size: 22,
                                 color: Colors.grey,
                               ),
                               onTap: () {},
-                              backgroundColorActivated: Colors.white,
-                              backgroundColor: Colors.white,
+                              backgroundColorActivated:
+                                  CupertinoColors.systemGrey6,
+                              backgroundColor: Colors.grey.shade50,
                               leadingSize: 35,
                               leading: Container(
                                 width: 32,
                                 height: 32,
                                 decoration: BoxDecoration(
                                   borderRadius: BorderRadius.circular(8),
-                                  color: CupertinoColors.activeBlue,
+                                  color: Colors.red,
                                 ),
                                 child: const Padding(
                                   padding: EdgeInsets.only(top: 2),
                                   child: Icon(
-                                    CupertinoIcons.creditcard_fill,
+                                    CupertinoIcons.person_circle_fill,
                                     color: CupertinoColors.white,
                                   ),
                                 ),
                               ),
                               title: const Text(
-                                "Wallet",
-                                style: TextStyle(
-                                  color: CupertinoColors.black,
+                                "My Profile",
+                                style: TextStyle(color: CupertinoColors.black),
+                              )),
+                        ),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 18, vertical: 8),
+                        child: ClipRRect(
+                          borderRadius: BorderRadius.circular(12),
+                          child: CupertinoListTile(
+                            trailing: const Icon(
+                              CupertinoIcons.right_chevron,
+                              size: 22,
+                              color: Colors.grey,
+                            ),
+                            onTap: () {},
+                            backgroundColorActivated:
+                                CupertinoColors.systemGrey6,
+                            backgroundColor: Colors.grey.shade50,
+                            leadingSize: 35,
+                            leading: Container(
+                              width: 32,
+                              height: 32,
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(8),
+                                color: CupertinoColors.activeBlue,
+                              ),
+                              child: const Padding(
+                                padding: EdgeInsets.only(top: 2),
+                                child: Icon(
+                                  CupertinoIcons.creditcard_fill,
+                                  color: CupertinoColors.white,
                                 ),
+                              ),
+                            ),
+                            title: const Text(
+                              "Wallet",
+                              style: TextStyle(
+                                color: CupertinoColors.black,
                               ),
                             ),
                           ),
                         ),
-                        Padding(
-                          padding: const EdgeInsets.symmetric(
-                              horizontal: 18, vertical: 8),
-                          child: ClipRRect(
-                            borderRadius: BorderRadius.circular(12),
-                            child: CupertinoListTile(
-                              trailing: const Icon(
-                                CupertinoIcons.right_chevron,
-                                size: 22,
-                                color: Colors.grey,
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 18, vertical: 8),
+                        child: ClipRRect(
+                          borderRadius: BorderRadius.circular(12),
+                          child: CupertinoListTile(
+                            trailing: const Icon(
+                              CupertinoIcons.right_chevron,
+                              size: 22,
+                              color: Colors.grey,
+                            ),
+                            onTap: () {
+                              context
+                                  .read<AuthBloc>()
+                                  .add(LogOutEvent(context: widget.context));
+                            },
+                            backgroundColorActivated:
+                                CupertinoColors.systemGrey6,
+                            backgroundColor: Colors.grey.shade50,
+                            leadingSize: 35,
+                            leading: Container(
+                              width: 32,
+                              height: 32,
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(8),
+                                color: CupertinoColors.destructiveRed,
                               ),
-                              onTap: () {
-                                context
-                                    .read<AuthBloc>()
-                                    .add(LogOutEvent(context: widget.context));
-                              },
-                              backgroundColorActivated: Colors.white,
-                              backgroundColor: Colors.white,
-                              leadingSize: 35,
-                              leading: Container(
-                                width: 32,
-                                height: 32,
-                                decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(8),
-                                  color: CupertinoColors.destructiveRed,
-                                ),
-                                child: const Padding(
-                                  padding: EdgeInsets.only(top: 2),
-                                  child: Icon(
-                                    Icons.logout_outlined,
-                                    color: CupertinoColors.white,
-                                  ),
+                              child: const Padding(
+                                padding: EdgeInsets.only(top: 2),
+                                child: Icon(
+                                  Icons.logout_outlined,
+                                  color: CupertinoColors.white,
                                 ),
                               ),
-                              title: const Text(
-                                "Log out",
-                                style: TextStyle(
-                                  color: CupertinoColors.black,
-                                ),
+                            ),
+                            title: const Text(
+                              "Log out",
+                              style: TextStyle(
+                                color: CupertinoColors.black,
                               ),
                             ),
                           ),
                         ),
-                        Padding(
-                          padding: const EdgeInsets.symmetric(
-                              horizontal: 18, vertical: 8),
-                          child: ClipRRect(
-                            borderRadius: BorderRadius.circular(12),
-                            child: CupertinoListTile(
-                              trailing: const Icon(
-                                CupertinoIcons.right_chevron,
-                                size: 22,
-                                color: Colors.grey,
-                              ),
-                              onTap: () {
-                                showCupertinoModalPopup(
-                                  context: context,
-                                  builder: (context) {
-                                    return CupertinoActionSheet(
-                                      cancelButton: CupertinoActionSheetAction(
-                                        onPressed: () {
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 18, vertical: 8),
+                        child: ClipRRect(
+                          borderRadius: BorderRadius.circular(12),
+                          child: CupertinoListTile(
+                            trailing: const Icon(
+                              CupertinoIcons.right_chevron,
+                              size: 22,
+                              color: Colors.grey,
+                            ),
+                            onTap: () {
+                              showCupertinoModalPopup(
+                                context: context,
+                                builder: (context) {
+                                  return CupertinoActionSheet(
+                                    cancelButton: CupertinoActionSheetAction(
+                                      onPressed: () {
+                                        Navigator.pop(context);
+                                      },
+                                      child: Text(
+                                        "cancel".tr(),
+                                        style: TextStyle(
+                                            color: CupertinoColors.activeBlue,
+                                            fontSize: 16.sp,
+                                            fontWeight: FontWeight.w500),
+                                      ),
+                                    ),
+                                    actions: [
+                                      CupertinoActionSheetAction(
+                                        onPressed: () async {
+                                          await context.setLocale(
+                                              const Locale("uz", "UZ"));
+                                          if (!context.mounted) return;
                                           Navigator.pop(context);
                                         },
                                         child: Text(
-                                          "cancel".tr(),
+                                          "uz".tr(),
                                           style: TextStyle(
                                               color: CupertinoColors.activeBlue,
-                                              fontSize: 16.sp,
-                                              fontWeight: FontWeight.w500),
+                                              fontWeight: FontWeight.w500,
+                                              fontSize: 15.sp),
                                         ),
                                       ),
-                                      actions: [
-                                        CupertinoActionSheetAction(
-                                          onPressed: () async {
-                                            await context.setLocale(
-                                                const Locale("uz", "UZ"));
-                                            if (!context.mounted) return;
-                                            Navigator.pop(context);
-                                          },
-                                          child: Text(
-                                            "uz".tr(),
-                                            style: TextStyle(
-                                                color:
-                                                    CupertinoColors.activeBlue,
-                                                fontWeight: FontWeight.w500,
-                                                fontSize: 15.sp),
-                                          ),
+                                      CupertinoActionSheetAction(
+                                        onPressed: () async {
+                                          await context.setLocale(
+                                              const Locale("ru", "RU"));
+                                          if (!context.mounted) return;
+                                          Navigator.pop(context);
+                                        },
+                                        child: Text(
+                                          "ru".tr(),
+                                          style: TextStyle(
+                                              color: CupertinoColors.activeBlue,
+                                              fontWeight: FontWeight.w500,
+                                              fontSize: 15.sp),
                                         ),
-                                        CupertinoActionSheetAction(
-                                          onPressed: () async {
-                                            await context.setLocale(
-                                                const Locale("ru", "RU"));
-                                            if (!context.mounted) return;
-                                            Navigator.pop(context);
-                                          },
-                                          child: Text(
-                                            "ru".tr(),
-                                            style: TextStyle(
-                                                color:
-                                                    CupertinoColors.activeBlue,
-                                                fontWeight: FontWeight.w500,
-                                                fontSize: 15.sp),
-                                          ),
-                                        ),
-                                      ],
-                                    );
-                                  },
-                                );
-                              },
-                              backgroundColorActivated: Colors.white,
-                              backgroundColor: Colors.white,
-                              leadingSize: 35,
-                              leading: Container(
-                                width: 32,
-                                height: 32,
-                                decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(8),
-                                  color: CupertinoColors.activeBlue,
-                                ),
-                                child: const Padding(
-                                  padding: EdgeInsets.only(top: 2),
-                                  child: Icon(
-                                    Icons.language,
-                                    color: CupertinoColors.white,
-                                  ),
+                                      ),
+                                    ],
+                                  );
+                                },
+                              );
+                            },
+                            backgroundColorActivated: Colors.white,
+                            backgroundColor: Colors.white,
+                            leadingSize: 35,
+                            leading: Container(
+                              width: 32,
+                              height: 32,
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(8),
+                                color: CupertinoColors.activeBlue,
+                              ),
+                              child: const Padding(
+                                padding: EdgeInsets.only(top: 2),
+                                child: Icon(
+                                  Icons.language,
+                                  color: CupertinoColors.white,
                                 ),
                               ),
-                              title: Text(
-                                "language".tr(),
-                                style: const TextStyle(
-                                  color: CupertinoColors.black,
-                                ),
+                            ),
+                            title: Text(
+                              "language".tr(),
+                              style: const TextStyle(
+                                color: CupertinoColors.black,
                               ),
                             ),
                           ),
                         ),
-                      ],
-                    ),
+                      ),
+                    ]),
                   ],
                 ),
               );
