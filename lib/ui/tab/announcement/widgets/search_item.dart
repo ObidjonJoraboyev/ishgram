@@ -83,11 +83,11 @@ class _SearchItemState extends State<SearchItem>
               child: CupertinoTextField(
                 controller: widget.controller,
                 onChanged: widget.valueChanged,
-                prefix: Padding(
-                  padding: const EdgeInsets.only(left: 6),
+                prefix: const Padding(
+                  padding: EdgeInsets.only(left: 6),
                   child: Icon(
-                    Icons.search,
-                    color: Colors.black.withOpacity(.4),
+                    CupertinoIcons.search,
+                    color: CupertinoColors.systemGrey6,
                   ),
                 ),
                 onTap: () {
@@ -102,9 +102,14 @@ class _SearchItemState extends State<SearchItem>
                 focusNode: widget.focus,
                 clearButtonMode: OverlayVisibilityMode.editing,
                 placeholder: "search".tr(),
+                placeholderStyle: TextStyle(
+                    color: CupertinoColors.systemGrey6,
+                    shadows: [
+                      Shadow(blurRadius: 2, color: Colors.black.withAlpha(20))
+                    ]),
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(12),
-                  color: CupertinoColors.systemGrey6,
+                  color: CupertinoColors.systemGrey3,
                 ),
               ),
             ),

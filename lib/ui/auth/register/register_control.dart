@@ -56,7 +56,9 @@ class _RegisterControlState extends State<RegisterControl> {
                         color: activeIndex == 0
                             ? CupertinoColors.activeBlue
                             : CupertinoColors.systemGrey,
-                        borderRadius: BorderRadius.circular(100),
+                        borderRadius: const BorderRadius.only(
+                            topLeft: Radius.circular(120),
+                            topRight: Radius.circular(120)),
                       ),
                     ),
                     4.getW(),
@@ -67,7 +69,9 @@ class _RegisterControlState extends State<RegisterControl> {
                         color: activeIndex == 1
                             ? CupertinoColors.activeBlue
                             : CupertinoColors.systemGrey,
-                        borderRadius: BorderRadius.circular(100),
+                        borderRadius: const BorderRadius.only(
+                            topLeft: Radius.circular(120),
+                            topRight: Radius.circular(120)),
                       ),
                     ),
                   ],

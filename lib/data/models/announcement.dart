@@ -40,6 +40,7 @@ class AnnouncementModel extends Equatable {
   final String updatedAt;
   final String location;
   final List<String> countView;
+  final List<String> likedUsers;
   final StatusAnnouncement status;
 
   const AnnouncementModel({
@@ -59,6 +60,7 @@ class AnnouncementModel extends Equatable {
     required this.location,
     required this.countView,
     required this.status,
+    required this.likedUsers,
   });
 
   AnnouncementModel copyWith({
@@ -78,6 +80,8 @@ class AnnouncementModel extends Equatable {
     String? updatedAt,
     List<String>? countView,
     WorkCategory? category,
+    StatusAnnouncement? status,
+    List<String>? likedUsers,
   }) {
     return AnnouncementModel(
       ownerName: ownerName ?? this.ownerName,
@@ -95,7 +99,8 @@ class AnnouncementModel extends Equatable {
       updatedAt: updatedAt ?? this.updatedAt,
       location: location ?? this.location,
       countView: countView ?? this.countView,
-      status: status,
+      status: status ?? this.status,
+      likedUsers: likedUsers ?? this.likedUsers,
     );
   }
 
@@ -116,7 +121,8 @@ class AnnouncementModel extends Equatable {
       "location": location,
       "createdAt": createdAt,
       "updatedAt": updatedAt,
-      "status": status.name
+      "status": status.name,
+      "likedUsers": likedUsers
     };
   }
 
@@ -136,7 +142,8 @@ class AnnouncementModel extends Equatable {
       "location": location,
       "createdAt": createdAt,
       "updatedAt": updatedAt,
-      "status": status.name
+      "status": status.name,
+      "likedUsers": likedUsers
     };
   }
 
@@ -166,6 +173,8 @@ class AnnouncementModel extends Equatable {
       status: enumFromString2(
         json["status"] as String? ?? "",
       ),
+      likedUsers:
+          (json["likedUsers"] as List? ?? []).map((e) => e.toString()).toList(),
     );
   }
 
@@ -196,6 +205,7 @@ class AnnouncementModel extends Equatable {
     location: '',
     countView: [],
     status: StatusAnnouncement.pure,
+    likedUsers: [],
   );
 
   @override
@@ -214,6 +224,7 @@ class AnnouncementModel extends Equatable {
         location,
         countView,
         status,
+        likedUsers,
       ];
 }
 

@@ -4,9 +4,14 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:ish_top/blocs/announcement_bloc/hire_bloc.dart';
+import 'package:ish_top/blocs/announcement_bloc/hire_event.dart';
+import 'package:ish_top/data/local/local_storage.dart';
 import 'package:ish_top/data/models/announcement.dart';
 import 'package:ish_top/ui/tab/announcement/detail/widgets/widget_detail.dart';
+import 'package:ish_top/utils/utility_functions.dart';
 import 'package:shimmer/shimmer.dart';
 
 class DetailScreen extends StatefulWidget {
@@ -19,6 +24,30 @@ class DetailScreen extends StatefulWidget {
 }
 
 class _DetailScreenState extends State<DetailScreen> {
+  bool _isFirstIcon = false;
+
+  void _toggleIcon() {
+    String userNumber = StorageRepository.getString(key: "userNumber");
+    if (userNumber.isNotEmpty) {
+      setState(() {
+        _isFirstIcon = !_isFirstIcon;
+        _isFirstIcon
+            ? context.read<AnnouncementBloc>().add(
+                  AnnouncementUpdateEvent(
+                    hireModel: widget.hireModel.copyWith(
+                      likedUsers: widget.hireModel.likedUsers +
+                          [StorageRepository.getString(key: "userNumber")],
+                    ),
+                  ),
+                )
+            : null;
+      });
+    } else {
+      showAskLogin(
+          context: context, title: "Yoqtirish uchun login qilmagansiz.");
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -29,6 +58,26 @@ class _DetailScreenState extends State<DetailScreen> {
         ),
         backgroundColor: CupertinoColors.systemGrey5,
         elevation: 0,
+        actions: [
+          AnimatedSwitcher(
+            duration: const Duration(milliseconds: 150),
+            transitionBuilder: (Widget child, Animation<double> animation) {
+              return FadeTransition(opacity: animation, child: child);
+            },
+            child: Padding(
+              key: ValueKey<bool>(_isFirstIcon),
+              padding: const EdgeInsets.all(8.0),
+              child: GestureDetector(
+                onTap: _toggleIcon,
+                child: Icon(
+                  _isFirstIcon ? Icons.favorite : Icons.favorite_border,
+                  size: 30,
+                  color: _isFirstIcon ? Colors.red : Colors.grey,
+                ),
+              ),
+            ),
+          ),
+        ],
         scrolledUnderElevation: 0,
         title: Text(
           "about_work".tr(),
