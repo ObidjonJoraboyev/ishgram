@@ -34,7 +34,7 @@ class GenerateBlame extends StatelessWidget {
                 borderRadius: BorderRadius.circular(16.r),
                 child: Container(
                   decoration: const BoxDecoration(
-                    color: CupertinoColors.systemGrey2,
+                    color: CupertinoColors.white,
                     boxShadow: [
                       BoxShadow(
                           spreadRadius: 0, blurRadius: 10, color: Colors.black)
@@ -44,8 +44,8 @@ class GenerateBlame extends StatelessWidget {
                   child: (state.formStatus == FormStatusImage.uploading) &&
                           (index == 0)
                       ? Shimmer.fromColors(
-                          baseColor: CupertinoColors.systemGrey2,
-                          highlightColor: CupertinoColors.systemGrey,
+                          baseColor: CupertinoColors.white,
+                          highlightColor: CupertinoColors.systemGrey4,
                           child: Container(
                             height: 150.h,
                             width: 150.h,
@@ -62,12 +62,12 @@ class GenerateBlame extends StatelessWidget {
                             style: TextStyle(
                               fontSize: 15.sp,
                               fontWeight: FontWeight.w600,
-                              color: Colors.white,
+                              color: Colors.black,
                               shadows: [
                                 BoxShadow(
                                   spreadRadius: 0,
                                   blurRadius: 10,
-                                  color: Colors.black.withOpacity(.6),
+                                  color: Colors.white.withOpacity(.6),
                                 )
                               ],
                             ),

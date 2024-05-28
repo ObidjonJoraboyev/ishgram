@@ -45,22 +45,22 @@ class SalaryTextField extends StatelessWidget {
             ],
             fontSize: 15.sp,
           ),
-          contentPadding: EdgeInsets.all(12.sp),
-          fillColor: Colors.grey.withOpacity(.7),
+          contentPadding: EdgeInsets.all(10.sp),
+          fillColor: Colors.white,
           filled: true,
           focusedBorder: OutlineInputBorder(
-            borderSide: const BorderSide(width: 0, color: Colors.grey),
+            borderSide: const BorderSide(width: 0, color: Colors.white),
             borderRadius: BorderRadius.circular(16.r),
           ),
           enabledBorder: OutlineInputBorder(
-            borderSide: const BorderSide(width: 0, color: Colors.grey),
+            borderSide: const BorderSide(width: 0, color: Colors.white),
             borderRadius: BorderRadius.circular(16.r),
           ),
         ),
         style: TextStyle(
-          color: Colors.white,
+          color: Colors.black,
           shadows: [
-            Shadow(color: Colors.black.withOpacity(.4), blurRadius: 10)
+            Shadow(color: Colors.white.withOpacity(.4), blurRadius: 10)
           ],
         ),
       ),

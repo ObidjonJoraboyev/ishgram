@@ -1,5 +1,4 @@
 import 'dart:ui';
-
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -14,8 +13,8 @@ import 'package:ish_top/utils/size/size_utils.dart';
 import '../../../blocs/announcement_bloc/hire_bloc.dart';
 
 class HireScreen extends StatefulWidget {
-  const HireScreen({super.key});
-
+  const HireScreen({super.key, required this.context});
+  final BuildContext context;
   @override
   State<HireScreen> createState() => _HireScreenState();
 }
@@ -88,7 +87,7 @@ class _HireScreenState extends State<HireScreen> with TickerProviderStateMixin {
             ),
           ),
           scrolledUnderElevation: 0,
-          backgroundColor: CupertinoColors.white.withOpacity(.8),
+          backgroundColor: CupertinoColors.white.withOpacity(.9),
           title: Text(
             "hires".tr(),
             style: TextStyle(
@@ -108,11 +107,14 @@ class _HireScreenState extends State<HireScreen> with TickerProviderStateMixin {
               },
               child: IconButton(
                   key: ValueKey<bool>(_isSearching),
-                  icon: Icon(_isSearching ? Icons.close : Icons.search),
+                  icon:
+                      Icon(_isSearching ? Icons.close : CupertinoIcons.search),
                   onPressed: _toggleAppBar),
             ),
+            IconButton(onPressed: () {}, icon: const Icon(Icons.more_vert))
           ],
-          toolbarHeight: 50 + _animation.value,
+          toolbarHeight:
+              56.h - (_animation.value.h - _animation.value.h * 2.44),
           bottom: PreferredSize(
             preferredSize: Size(width, _animation.value),
             child: Column(
@@ -163,6 +165,7 @@ class _HireScreenState extends State<HireScreen> with TickerProviderStateMixin {
                     Padding(
                       padding: EdgeInsets.symmetric(horizontal: 14.w),
                       child: HiringItem(
+                        context1: widget.context,
                         voidCallback: () {
                           focus.unfocus();
                           setState(() {});

@@ -19,12 +19,14 @@ class HiringItem extends StatefulWidget {
     super.key,
     required this.hires,
     required this.voidCallback,
-    required this.scrollController,
+    required this.scrollController, required this.context1,
+
   });
 
   final List<AnnouncementModel> hires;
   final ScrollController scrollController;
   final VoidCallback voidCallback;
+  final BuildContext context1;
 
   @override
   State<HiringItem> createState() => _HiringItemState();
@@ -72,7 +74,7 @@ class _HiringItemState extends State<HiringItem> {
 
                     Platform.isIOS
                         ? Navigator.push(
-                            context,
+                            widget.context1,
                             MaterialPageRoute(
                               builder: (context) => DetailScreen(
                                 hireModel: widget.hires[index1].copyWith(
@@ -82,7 +84,7 @@ class _HiringItemState extends State<HiringItem> {
                             ),
                           )
                         : Navigator.push(
-                            context,
+                            widget.context1,
                             PageTransition(
                               type: PageTransitionType.rightToLeftJoined,
                               alignment: Alignment.topRight,
@@ -176,7 +178,13 @@ class _HiringItemState extends State<HiringItem> {
                                         ),
                                       ],
                                     )
-                                  : const Text("No Image"),
+                                  : Center(
+                                      child: Text(
+                                      "No Image",
+                                      style: TextStyle(
+                                          fontSize: 30.sp,
+                                          fontWeight: FontWeight.w700),
+                                    )),
                             ),
                             widget.hires[index1].image.length > 1
                                 ? Positioned(

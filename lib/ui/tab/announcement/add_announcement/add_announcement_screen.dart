@@ -86,6 +86,7 @@ class _AddHireScreenState extends State<AddHireScreen> {
     return Scaffold(
       backgroundColor: CupertinoColors.systemGrey5,
       appBar: AppBar(
+        scrolledUnderElevation: 0,
         backgroundColor: Colors.transparent,
         title: Text("add_hire".tr()),
         actions: [
@@ -133,6 +134,7 @@ class _AddHireScreenState extends State<AddHireScreen> {
         listener: (context, state) {},
         builder: (context, state) {
           return Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               Expanded(
                 child: ListView(
@@ -181,22 +183,21 @@ class _AddHireScreenState extends State<AddHireScreen> {
                       onChanged: (v) {
                         setState(() {});
                       },
-                      controller: ownerCtrl,
-                      labelText: "your_name",
-                      maxLines: 1,
-                      maxLength: 50,
+                      controller: descriptionCtrl,
+                      labelText: "about_work",
+                      maxLength: 800,
                       formStatus: context.read<AuthBloc>().state.formStatus,
                     ),
                     GlobalTextFiled(
                       onChanged: (v) {
                         setState(() {});
                       },
-                      controller: descriptionCtrl,
-                      labelText: "about_work",
-                      maxLength: 800,
+                      controller: ownerCtrl,
+                      labelText: "your_name",
+                      maxLines: 1,
+                      maxLength: 50,
                       formStatus: context.read<AuthBloc>().state.formStatus,
                     ),
-                    0.getH(),
                     GlobalTextFiled(
                       onChanged: (v) {
                         setState(() {});

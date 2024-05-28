@@ -24,23 +24,15 @@ class GlobalButton extends StatelessWidget {
           vertical: 10.h,
         ),
         decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(12.r),
-          boxShadow: [
-            BoxShadow(
-              blurRadius: 10,
-              color: Colors.black.withOpacity(.1),
-              spreadRadius: 1,
-            )
-          ],
-          gradient: LinearGradient(
-            begin: Alignment.topCenter,
-            end: Alignment.bottomCenter,
-            colors: [
-              color.withOpacity(.86),
-              color,
+            borderRadius: BorderRadius.circular(12.r),
+            boxShadow: [
+              BoxShadow(
+                blurRadius: 10,
+                color: Colors.black.withOpacity(.1),
+                spreadRadius: 1,
+              )
             ],
-          ),
-        ),
+            color: color),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [

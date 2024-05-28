@@ -60,7 +60,7 @@ class _GenerateImageState extends State<GenerateImage> {
                           borderRadius: BorderRadius.circular(16),
                           child: Container(
                             width: 150.w,
-                            color: CupertinoColors.systemGrey2,
+                            color: CupertinoColors.white,
                             child: (widget.state.formStatus ==
                                         FormStatusImage.uploading) &&
                                     (index == 0)

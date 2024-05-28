@@ -27,7 +27,9 @@ class _TabScreenState extends State<TabScreen> {
   @override
   Widget build(BuildContext context) {
     List<Widget> screens = [
-      const HireScreen(),
+      HireScreen(
+        context: context,
+      ),
       AddHireScreen(
         voidCallback: (v) {
           activeIndex = 0;
