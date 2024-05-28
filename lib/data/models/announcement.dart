@@ -40,7 +40,7 @@ class AnnouncementModel extends Equatable {
   final String updatedAt;
   final String location;
   final List<String> countView;
-  final List<String> likedUsers;
+  final Set<String> likedUsers;
   final StatusAnnouncement status;
   final List<String> comments;
 
@@ -83,7 +83,7 @@ class AnnouncementModel extends Equatable {
     List<String>? countView,
     WorkCategory? category,
     StatusAnnouncement? status,
-    List<String>? likedUsers,
+    Set<String>? likedUsers,
     List<String>? comments,
   }) {
     return AnnouncementModel(
@@ -126,8 +126,8 @@ class AnnouncementModel extends Equatable {
       "createdAt": createdAt,
       "updatedAt": updatedAt,
       "status": status.name,
-      "likedUsers": likedUsers,
-      "comments": comments
+      "likedUsers": likedUsers.map((e) => e.toString()).toList(),
+      "comments": comments.map((e) => e.toString()).toList(),
     };
   }
 
@@ -138,18 +138,18 @@ class AnnouncementModel extends Equatable {
       "description": description,
       "money": money,
       "timeInterval": timeInterval,
-      "image": image,
+      "image": image.map((img) => img.toJson()).toList(),
       "lat": lat,
       "long": long,
       "number": number,
       "category": category.name,
-      "countView": countView,
+      "countView": countView.map((e) => e.toString()).toList(),
       "location": location,
       "createdAt": createdAt,
       "updatedAt": updatedAt,
       "status": status.name,
       "likedUsers": likedUsers,
-      "comments": comments
+      "comments": comments,
     };
   }
 
@@ -180,7 +180,7 @@ class AnnouncementModel extends Equatable {
         json["status"] as String? ?? "",
       ),
       likedUsers:
-          (json["likedUsers"] as List? ?? []).map((e) => e.toString()).toList(),
+          (json["likedUsers"] as List? ?? []).map((e) => e.toString()).toSet(),
       comments:
           (json["comments"] as List? ?? []).map((e) => e.toString()).toList(),
     );
@@ -213,7 +213,7 @@ class AnnouncementModel extends Equatable {
     location: '',
     countView: [],
     status: StatusAnnouncement.pure,
-    likedUsers: [],
+    likedUsers: {},
     comments: [],
   );
 

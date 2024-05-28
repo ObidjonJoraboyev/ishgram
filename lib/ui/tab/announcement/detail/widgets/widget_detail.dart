@@ -260,8 +260,6 @@ class _WidgetOfDetailState extends State<WidgetOfDetail>
             10.getW()
           ],
         ),
-        Text(DateTime.fromMillisecondsSinceEpoch(widget.hireModel.createdAt)
-            .toString()),
         10.getH(),
       ],
     );

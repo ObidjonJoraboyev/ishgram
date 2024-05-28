@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:ish_top/blocs/announcement_bloc/hire_bloc.dart';
 import 'package:ish_top/blocs/announcement_bloc/hire_event.dart';
 import 'package:ish_top/data/local/local_storage.dart';
@@ -24,28 +25,51 @@ class DetailScreen extends StatefulWidget {
 }
 
 class _DetailScreenState extends State<DetailScreen> {
-  bool _isFirstIcon = false;
+  bool isFirstIcon = false;
+
+  String userNum = StorageRepository.getString(key: "userNumber");
+
+  Set<String> ls = {};
 
   void _toggleIcon() {
-    String userNumber = StorageRepository.getString(key: "userNumber");
-    if (userNumber.isNotEmpty) {
+    if (userNum.isNotEmpty) {
       setState(() {
-        _isFirstIcon = !_isFirstIcon;
-        _isFirstIcon
-            ? context.read<AnnouncementBloc>().add(
-                  AnnouncementUpdateEvent(
-                    hireModel: widget.hireModel.copyWith(
-                      likedUsers: widget.hireModel.likedUsers +
-                          [StorageRepository.getString(key: "userNumber")],
-                    ),
+        isFirstIcon = !isFirstIcon;
+        if (isFirstIcon) {
+          ls.add(userNum);
+          context.read<AnnouncementBloc>().add(
+                AnnouncementUpdateEvent(
+                  hireModel: widget.hireModel.copyWith(
+                    likedUsers: ls,
                   ),
-                )
-            : null;
+                ),
+              );
+          setState(() {});
+        }
+        if (!isFirstIcon && widget.hireModel.likedUsers.contains(userNum)) {
+          context.read<AnnouncementBloc>().add(
+                AnnouncementUpdateEvent(
+                  hireModel: widget.hireModel.copyWith(
+                    likedUsers: widget.hireModel.likedUsers
+                        .where((element) => element != userNum)
+                        .toSet(),
+                  ),
+                ),
+              );
+          setState(() {});
+        }
       });
     } else {
       showAskLogin(
           context: context, title: "Yoqtirish uchun login qilmagansiz.");
     }
+  }
+
+  @override
+  void initState() {
+    ls = widget.hireModel.likedUsers;
+    isFirstIcon = widget.hireModel.likedUsers.contains(userNum);
+    super.initState();
   }
 
   @override
@@ -65,14 +89,20 @@ class _DetailScreenState extends State<DetailScreen> {
               return FadeTransition(opacity: animation, child: child);
             },
             child: Padding(
-              key: ValueKey<bool>(_isFirstIcon),
+              key: ValueKey<bool>(isFirstIcon),
               padding: const EdgeInsets.all(8.0),
               child: GestureDetector(
                 onTap: _toggleIcon,
-                child: Icon(
-                  _isFirstIcon ? Icons.favorite : Icons.favorite_border,
-                  size: 30,
-                  color: _isFirstIcon ? Colors.red : Colors.grey,
+                child: Padding(
+                  padding: EdgeInsets.only(top: 3.h),
+                  child: SvgPicture.asset(
+                    !isFirstIcon
+                        ? "assets/icons/save.svg"
+                        : "assets/icons/save_fill.svg",
+                    width: 30.w,
+                    height: 34.h,
+                    fit: BoxFit.cover,
+                  ),
                 ),
               ),
             ),
@@ -137,44 +167,47 @@ class _DetailScreenState extends State<DetailScreen> {
                                 ],
                                 borderRadius: BorderRadius.circular(17.r),
                               ),
-                              child: ClipRRect(
-                                borderRadius: BorderRadius.only(
-                                    topRight: Radius.circular(16.r),
-                                    topLeft: Radius.circular(16.r)),
-                                child: CachedNetworkImage(
-                                  placeholder: (v, w) {
-                                    return Shimmer.fromColors(
-                                      baseColor: Colors.white,
-                                      highlightColor: Colors.grey,
-                                      child: Container(
-                                        height: 80.h,
-                                        decoration: BoxDecoration(
-                                          color: Colors.white,
-                                          borderRadius:
-                                              BorderRadius.circular(16.r),
+                              child: Hero(
+                                tag: "image",
+                                child: ClipRRect(
+                                  borderRadius: BorderRadius.only(
+                                      topRight: Radius.circular(16.r),
+                                      topLeft: Radius.circular(16.r)),
+                                  child: CachedNetworkImage(
+                                    placeholder: (v, w) {
+                                      return Shimmer.fromColors(
+                                        baseColor: Colors.white,
+                                        highlightColor: Colors.grey,
+                                        child: Container(
+                                          height: 80.h,
+                                          decoration: BoxDecoration(
+                                            color: Colors.white,
+                                            borderRadius:
+                                                BorderRadius.circular(16.r),
+                                          ),
                                         ),
-                                      ),
-                                    );
-                                  },
-                                  errorWidget: (v, w, d) {
-                                    return Shimmer.fromColors(
-                                      baseColor: Colors.white,
-                                      highlightColor: Colors.grey,
-                                      child: Container(
-                                        height: 80.h,
-                                        decoration: BoxDecoration(
-                                          color: Colors.white,
-                                          borderRadius:
-                                              BorderRadius.circular(16.r),
+                                      );
+                                    },
+                                    errorWidget: (v, w, d) {
+                                      return Shimmer.fromColors(
+                                        baseColor: Colors.white,
+                                        highlightColor: Colors.grey,
+                                        child: Container(
+                                          height: 80.h,
+                                          decoration: BoxDecoration(
+                                            color: Colors.white,
+                                            borderRadius:
+                                                BorderRadius.circular(16.r),
+                                          ),
                                         ),
-                                      ),
-                                    );
-                                  },
-                                  imageUrl:
-                                      widget.hireModel.image[index].imageUrl,
-                                  width: MediaQuery.sizeOf(context).width,
-                                  fit: BoxFit.cover,
-                                  height: 340.h,
+                                      );
+                                    },
+                                    imageUrl:
+                                        widget.hireModel.image[index].imageUrl,
+                                    width: MediaQuery.sizeOf(context).width,
+                                    fit: BoxFit.cover,
+                                    height: 340.h,
+                                  ),
                                 ),
                               ),
                             ),

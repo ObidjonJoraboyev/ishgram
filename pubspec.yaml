@@ -69,4 +69,7 @@ flutter:
     - assets/icons/
     - assets/audios/
     - assets/translations/
-    - assets/videos/
+  fonts:
+      - family: My
+        fonts:
+         - asset: assets/fonts/My.ttf
