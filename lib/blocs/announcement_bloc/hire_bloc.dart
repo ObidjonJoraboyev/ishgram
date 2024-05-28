@@ -2,7 +2,7 @@ import 'dart:async';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:ish_top/data/models/announcement.dart';
+import 'package:ish_top/data/models/announcement_model.dart';
 import 'hire_event.dart';
 
 import 'package:bloc_concurrency/bloc_concurrency.dart' as bloc;

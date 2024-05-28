@@ -5,7 +5,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:ish_top/blocs/user_image/user_image_event.dart';
 import 'package:ish_top/blocs/user_image/user_image_state.dart';
-import '../../data/models/announcement.dart';
+import 'package:ish_top/data/models/image_model.dart';
 import '../image/formstatus.dart';
 
 class UserImageBloc extends Bloc<UserImageEvent, UserImageUploadState> {

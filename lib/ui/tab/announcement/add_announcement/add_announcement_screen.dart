@@ -12,7 +12,7 @@ import 'package:ish_top/blocs/auth/auth_bloc.dart';
 import 'package:ish_top/blocs/image/image_bloc.dart';
 import 'package:ish_top/blocs/image/image_event.dart';
 import 'package:ish_top/blocs/image/image_state.dart';
-import 'package:ish_top/data/models/announcement.dart';
+import 'package:ish_top/data/models/announcement_model.dart';
 import 'package:ish_top/ui/tab/announcement/add_announcement/widgets/generate_blame.dart';
 import 'package:ish_top/ui/tab/announcement/add_announcement/widgets/generate_image.dart';
 import 'package:ish_top/ui/tab/announcement/add_announcement/widgets/global_button.dart';

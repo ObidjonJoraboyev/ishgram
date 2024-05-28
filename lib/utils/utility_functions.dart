@@ -16,8 +16,10 @@ import 'package:zoom_tap_animation/zoom_tap_animation.dart';
 import '../blocs/image/image_bloc.dart';
 import '../blocs/image/image_event.dart';
 import '../blocs/user_image/user_image_event.dart';
-import '../data/models/announcement.dart';
+import '../data/models/announcement_model.dart';
 import 'package:timeago/timeago.dart' as timeago;
+
+import '../data/models/image_model.dart';
 
 Future<void> _getImageFromGallery(
   BuildContext context, {

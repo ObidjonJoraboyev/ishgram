@@ -6,7 +6,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:ish_top/blocs/connectivity/connectivity_bloc.dart';
 import 'package:ish_top/blocs/connectivity/connectivity_state.dart';
-import 'package:ish_top/data/models/announcement.dart';
+import 'package:ish_top/data/models/announcement_model.dart';
 import 'package:ish_top/ui/tab/announcement/widgets/hiring_item.dart';
 import 'package:ish_top/ui/tab/announcement/widgets/search_item.dart';
 import 'package:ish_top/utils/size/size_utils.dart';

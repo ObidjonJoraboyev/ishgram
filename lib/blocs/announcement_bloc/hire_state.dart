@@ -1,4 +1,4 @@
-import '../../data/models/announcement.dart';
+import '../../data/models/announcement_model.dart';
 
 abstract class AnnouncementState {}
 

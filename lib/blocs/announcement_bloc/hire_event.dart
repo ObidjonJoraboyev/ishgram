@@ -1,4 +1,4 @@
-import 'package:ish_top/data/models/announcement.dart';
+import 'package:ish_top/data/models/announcement_model.dart';
 
 abstract class HireEvent {}
 

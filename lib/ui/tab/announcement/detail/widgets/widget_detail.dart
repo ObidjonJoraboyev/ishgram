@@ -6,7 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:ish_top/data/models/announcement.dart';
+import 'package:ish_top/data/models/announcement_model.dart';
 import 'package:ish_top/utils/size/size_utils.dart';
 import 'package:permission_handler/permission_handler.dart';
 import '../../../../../utils/utility_functions.dart';

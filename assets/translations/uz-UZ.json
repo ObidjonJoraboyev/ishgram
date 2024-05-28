@@ -18,7 +18,6 @@
   "password": "Parol",
   "code": "Kod",
   "new_password": "Yangi parol yarating",
-
   "already_registered": "Raqam allaqachon ro'yxatdan o'tgan",
   "minimum_error": "Kamida 3 ta belgi kerak",
   "no_account": "Akkountingiz yo'qmi?",
@@ -50,11 +49,6 @@
   "support": "Qo'llab quvvatlash",
   "add_note": "Eslatma qo'shildi",
   "remove_note": "Eslaatma o'chirildi",
-  "comment": "Izoh",
-  "comments": "Izohlar"
-
-
-
-
-
+  "comment": "ta fikr",
+  "comments": "Fikrlar"
 }

@@ -6,7 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:ish_top/data/local/local_storage.dart';
-import 'package:ish_top/data/models/announcement.dart';
+import 'package:ish_top/data/models/announcement_model.dart';
 import 'package:ish_top/ui/tab/announcement/comment_screen/comment_screen.dart';
 import 'package:ish_top/ui/tab/announcement/widgets/zoom_tap.dart';
 import 'package:ish_top/utils/size/size_utils.dart';
@@ -395,7 +395,7 @@ class _HiringItemState extends State<HiringItem> {
                                         "${widget.hires[index1].comments.length}  ${widget.hires[index1].comments.isNotEmpty ? "comments".tr() : "comment".tr()}",
                                         style: TextStyle(
                                             color: CupertinoColors.activeBlue,
-                                            fontWeight: FontWeight.w500,
+                                            fontWeight: FontWeight.w400,
                                             fontSize: 18.sp),
                                       ),
                                     ),

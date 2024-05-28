@@ -1,7 +1,7 @@
 import 'package:equatable/equatable.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:ish_top/data/models/announcement.dart';
+import 'package:ish_top/data/models/image_model.dart';
 
 abstract class ImageEvent extends Equatable {}
 

@@ -1,5 +1,5 @@
 import 'package:equatable/equatable.dart';
-import 'package:ish_top/data/models/announcement.dart';
+import 'package:ish_top/data/models/image_model.dart';
 import 'formstatus.dart';
 
 class ImageUploadState extends Equatable {

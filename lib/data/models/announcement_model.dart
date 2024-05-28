@@ -1,30 +1,10 @@
 import 'package:equatable/equatable.dart';
 
-class ImageModel {
-  final String imageUrl;
-  final String imageDocId;
-
-  factory ImageModel.fromJson(
-    Map<String, dynamic> json,
-  ) {
-    return ImageModel(
-      imageUrl: json['imageUrl'],
-      imageDocId: json['imageDocId'],
-    );
-  }
-
-  Map<String, dynamic> toJson() => {
-        "imageUrl": imageUrl,
-        "imageDocId": imageDocId,
-      };
-
-  ImageModel({
-    required this.imageUrl,
-    required this.imageDocId,
-  });
-}
+import 'image_model.dart';
 
 class AnnouncementModel extends Equatable {
+  final String docId;
+  final String userId;
   final String title;
   final String description;
   final String money;
@@ -34,7 +14,6 @@ class AnnouncementModel extends Equatable {
   final double long;
   final String number;
   final WorkCategory category;
-  final String docId;
   final String ownerName;
   final int createdAt;
   final String updatedAt;
@@ -45,12 +24,13 @@ class AnnouncementModel extends Equatable {
   final List<String> comments;
 
   const AnnouncementModel({
-    required this.createdAt,
-    required this.ownerName,
-    required this.title,
     required this.docId,
+    required this.userId,
+    required this.title,
     required this.description,
     required this.money,
+    required this.createdAt,
+    required this.ownerName,
     required this.timeInterval,
     required this.image,
     required this.lat,
@@ -85,6 +65,8 @@ class AnnouncementModel extends Equatable {
     StatusAnnouncement? status,
     Set<String>? likedUsers,
     List<String>? comments,
+    List<String>? viewedUsers,
+    String? userId,
   }) {
     return AnnouncementModel(
       ownerName: ownerName ?? this.ownerName,
@@ -101,10 +83,11 @@ class AnnouncementModel extends Equatable {
       createdAt: createdAt ?? this.createdAt,
       updatedAt: updatedAt ?? this.updatedAt,
       location: location ?? this.location,
-      viewedUsers: countView ?? this.viewedUsers,
+      viewedUsers: viewedUsers ?? this.viewedUsers,
       status: status ?? this.status,
       likedUsers: likedUsers ?? this.likedUsers,
       comments: comments ?? this.comments,
+      userId: userId ?? this.userId,
     );
   }
 
@@ -128,6 +111,7 @@ class AnnouncementModel extends Equatable {
       "status": status.name,
       "likedUsers": likedUsers.map((e) => e.toString()).toList(),
       "comments": comments.map((e) => e.toString()).toList(),
+      "userId": userId,
     };
   }
 
@@ -150,6 +134,7 @@ class AnnouncementModel extends Equatable {
       "status": status.name,
       "likedUsers": likedUsers,
       "comments": comments,
+      "userId": userId,
     };
   }
 
@@ -183,6 +168,7 @@ class AnnouncementModel extends Equatable {
           (json["likedUsers"] as List? ?? []).map((e) => e.toString()).toSet(),
       comments:
           (json["comments"] as List? ?? []).map((e) => e.toString()).toList(),
+      userId: json["userId"] as String? ?? "",
     );
   }
 
@@ -215,6 +201,7 @@ class AnnouncementModel extends Equatable {
     status: StatusAnnouncement.pure,
     likedUsers: {},
     comments: [],
+    userId: '',
   );
 
   @override
@@ -234,7 +221,8 @@ class AnnouncementModel extends Equatable {
         viewedUsers,
         status,
         likedUsers,
-        comments
+        comments,
+        userId,
       ];
 }
 

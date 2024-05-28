@@ -10,7 +10,7 @@ import 'package:flutter_svg/svg.dart';
 import 'package:ish_top/blocs/announcement_bloc/hire_bloc.dart';
 import 'package:ish_top/blocs/announcement_bloc/hire_event.dart';
 import 'package:ish_top/data/local/local_storage.dart';
-import 'package:ish_top/data/models/announcement.dart';
+import 'package:ish_top/data/models/announcement_model.dart';
 import 'package:ish_top/ui/tab/announcement/detail/widgets/widget_detail.dart';
 import 'package:ish_top/utils/utility_functions.dart';
 import 'package:shimmer/shimmer.dart';
