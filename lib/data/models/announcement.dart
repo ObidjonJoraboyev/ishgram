@@ -42,6 +42,7 @@ class AnnouncementModel extends Equatable {
   final List<String> countView;
   final List<String> likedUsers;
   final StatusAnnouncement status;
+  final List<String> comments;
 
   const AnnouncementModel({
     required this.createdAt,
@@ -61,6 +62,7 @@ class AnnouncementModel extends Equatable {
     required this.countView,
     required this.status,
     required this.likedUsers,
+    required this.comments,
   });
 
   AnnouncementModel copyWith({
@@ -82,6 +84,7 @@ class AnnouncementModel extends Equatable {
     WorkCategory? category,
     StatusAnnouncement? status,
     List<String>? likedUsers,
+    List<String>? comments,
   }) {
     return AnnouncementModel(
       ownerName: ownerName ?? this.ownerName,
@@ -101,6 +104,7 @@ class AnnouncementModel extends Equatable {
       countView: countView ?? this.countView,
       status: status ?? this.status,
       likedUsers: likedUsers ?? this.likedUsers,
+      comments: comments ?? this.comments,
     );
   }
 
@@ -122,7 +126,8 @@ class AnnouncementModel extends Equatable {
       "createdAt": createdAt,
       "updatedAt": updatedAt,
       "status": status.name,
-      "likedUsers": likedUsers
+      "likedUsers": likedUsers,
+      "comments": comments
     };
   }
 
@@ -143,7 +148,8 @@ class AnnouncementModel extends Equatable {
       "createdAt": createdAt,
       "updatedAt": updatedAt,
       "status": status.name,
-      "likedUsers": likedUsers
+      "likedUsers": likedUsers,
+      "comments": comments
     };
   }
 
@@ -175,6 +181,8 @@ class AnnouncementModel extends Equatable {
       ),
       likedUsers:
           (json["likedUsers"] as List? ?? []).map((e) => e.toString()).toList(),
+      comments:
+          (json["comments"] as List? ?? []).map((e) => e.toString()).toList(),
     );
   }
 
@@ -206,6 +214,7 @@ class AnnouncementModel extends Equatable {
     countView: [],
     status: StatusAnnouncement.pure,
     likedUsers: [],
+    comments: [],
   );
 
   @override
@@ -225,6 +234,7 @@ class AnnouncementModel extends Equatable {
         countView,
         status,
         likedUsers,
+        comments
       ];
 }
 

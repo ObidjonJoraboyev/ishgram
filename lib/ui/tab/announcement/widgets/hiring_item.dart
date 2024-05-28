@@ -10,6 +10,7 @@ import 'package:ish_top/utils/size/size_utils.dart';
 import 'package:page_transition/page_transition.dart';
 import 'package:shimmer/shimmer.dart';
 import 'package:timeago/timeago.dart' as timeago;
+import 'package:zoom_tap_animation/zoom_tap_animation.dart';
 import '../../../../blocs/announcement_bloc/hire_bloc.dart';
 import '../../../../blocs/announcement_bloc/hire_event.dart';
 import '../detail/detail_screen.dart';
@@ -19,8 +20,8 @@ class HiringItem extends StatefulWidget {
     super.key,
     required this.hires,
     required this.voidCallback,
-    required this.scrollController, required this.context1,
-
+    required this.scrollController,
+    required this.context1,
   });
 
   final List<AnnouncementModel> hires;
@@ -55,244 +56,330 @@ class _HiringItemState extends State<HiringItem> {
             controller: widget.scrollController,
             scrollDirection: Axis.vertical,
             children: [
-              ...List.generate(widget.hires.length, (index1) {
-                return GestureDetector(
-                  onTap: () async {
-                    (!widget.hires[index1].countView.contains(userNum)) &&
-                            (userNum.isNotEmpty)
-                        ? context.read<AnnouncementBloc>().add(
-                              AnnouncementUpdateEvent(
-                                hireModel: widget.hires[index1].copyWith(
-                                  countView: widget.hires[index1].countView +
-                                      [userNum],
-                                ),
-                              ),
-                            )
-                        : null;
-
-                    widget.voidCallback.call();
-
-                    Platform.isIOS
-                        ? Navigator.push(
-                            widget.context1,
-                            MaterialPageRoute(
-                              builder: (context) => DetailScreen(
-                                hireModel: widget.hires[index1].copyWith(
-                                  countView: widget.hires[index1].countView,
-                                ),
-                              ),
-                            ),
-                          )
-                        : Navigator.push(
-                            widget.context1,
-                            PageTransition(
-                              type: PageTransitionType.rightToLeftJoined,
-                              alignment: Alignment.topRight,
-                              childCurrent: const SizedBox(),
-                              child: DetailScreen(
-                                hireModel: widget.hires[index1].copyWith(
-                                  countView: widget.hires[index1].countView,
-                                ),
-                              ),
-                            ),
-                          );
-                  },
-                  child: Container(
-                    margin: EdgeInsets.symmetric(vertical: 12.h),
-                    padding: EdgeInsets.all(7.sp),
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(24),
-                      boxShadow: [
-                        BoxShadow(
-                          spreadRadius: 2,
-                          blurRadius: 10,
-                          color: CupertinoColors.systemGrey.withOpacity(.1),
-                        )
-                      ],
-                      color: CupertinoColors.white.withOpacity(.9),
-                    ),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Stack(
-                          children: [
-                            SizedBox(
-                              height: 300.h,
-                              child: widget.hires[index1].image.isNotEmpty
-                                  ? PageView(
-                                      onPageChanged: (index) {
-                                        setState(() {
-                                          activeIndexes[index1] = index;
-                                        });
-                                      },
-                                      scrollDirection: Axis.horizontal,
-                                      children: [
-                                        ...List.generate(
-                                          widget.hires[index1].image.length,
-                                          (index) => Padding(
-                                            padding: const EdgeInsets.all(8.0),
-                                            child: ClipRRect(
-                                              borderRadius:
-                                                  BorderRadius.circular(16),
-                                              child: CachedNetworkImage(
-                                                placeholder: (context, st) {
-                                                  return Shimmer.fromColors(
-                                                    baseColor: Colors.white,
-                                                    highlightColor: Colors.grey,
-                                                    child: Container(
-                                                      height: 80.h,
-                                                      decoration: BoxDecoration(
-                                                        color: Colors.white,
-                                                        borderRadius:
-                                                            BorderRadius
-                                                                .circular(16),
-                                                      ),
-                                                    ),
-                                                  );
-                                                },
-                                                errorWidget:
-                                                    (BuildContext context,
-                                                        String st, a) {
-                                                  return Shimmer.fromColors(
-                                                    baseColor: Colors.white,
-                                                    highlightColor: Colors.grey,
-                                                    child: Container(
-                                                      height: 80.h,
-                                                      decoration: BoxDecoration(
-                                                        color: Colors.white,
-                                                        borderRadius:
-                                                            BorderRadius
-                                                                .circular(16),
-                                                      ),
-                                                    ),
-                                                  );
-                                                },
-                                                imageUrl: widget.hires[index1]
-                                                    .image[index].imageUrl,
-                                                fit: BoxFit.cover,
-                                                width: double.infinity,
-                                                height: 300.h,
-                                              ),
-                                            ),
-                                          ),
-                                        ),
-                                      ],
-                                    )
-                                  : Center(
-                                      child: Text(
-                                      "No Image",
-                                      style: TextStyle(
-                                          fontSize: 30.sp,
-                                          fontWeight: FontWeight.w700),
-                                    )),
-                            ),
-                            widget.hires[index1].image.length > 1
-                                ? Positioned(
-                                    bottom: 15.w,
-                                    right: 15.w,
-                                    child: Container(
-                                      padding: EdgeInsets.symmetric(
-                                          horizontal: 2.w, vertical: 2.w),
-                                      decoration: BoxDecoration(
-                                        borderRadius:
-                                            BorderRadius.circular(100),
-                                        color: CupertinoColors.systemGrey6,
-                                      ),
-                                      child: Row(
-                                        children: [
-                                          ...List.generate(
-                                            widget.hires[index1].image.length,
-                                            (index) {
-                                              return AnimatedContainer(
-                                                curve: Curves.linear,
-                                                duration: const Duration(
-                                                    milliseconds: 200),
-                                                margin: EdgeInsets.all(1.sp),
-                                                width: activeIndexes[index1] !=
-                                                        index
-                                                    ? 6.sp
-                                                    : 7.sp,
-                                                height: activeIndexes[index1] !=
-                                                        index
-                                                    ? 6.sp
-                                                    : 7.sp,
-                                                decoration: BoxDecoration(
-                                                    shape: BoxShape.circle,
-                                                    color:
-                                                        activeIndexes[index1] !=
-                                                                index
-                                                            ? Colors.grey
-                                                            : CupertinoColors
-                                                                .activeBlue),
-                                              );
-                                            },
-                                          )
-                                        ],
+              ...List.generate(
+                widget.hires.length,
+                (index1) {
+                  return Column(
+                    children: [
+                      GestureDetector(
+                        onTap: () async {
+                          (!widget.hires[index1].countView.contains(userNum)) &&
+                                  (userNum.isNotEmpty)
+                              ? context.read<AnnouncementBloc>().add(
+                                    AnnouncementUpdateEvent(
+                                      hireModel: widget.hires[index1].copyWith(
+                                        countView:
+                                            widget.hires[index1].countView +
+                                                [userNum],
                                       ),
                                     ),
                                   )
-                                : const SizedBox()
-                          ],
-                        ),
-                        Padding(
-                          padding: EdgeInsets.only(left: 8.w),
-                          child: Text(
-                            widget.hires[index1].title,
-                            style: TextStyle(
-                              fontSize: 18.sp,
-                              fontWeight: FontWeight.w500,
-                            ),
-                            maxLines: 1,
-                            overflow: TextOverflow.ellipsis,
-                          ),
-                        ),
-                        Padding(
-                          padding: EdgeInsets.only(left: 8.w, top: 3.h),
-                          child: Text(
-                            widget.hires[index1].money,
-                            style: TextStyle(
-                              fontSize: 19.sp,
-                              fontWeight: FontWeight.w600,
-                            ),
-                            maxLines: 1,
-                            overflow: TextOverflow.ellipsis,
-                          ),
-                        ),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.end,
-                          children: [
-                            Text(
-                              widget.hires[index1].countView.length.toString(),
-                              style: TextStyle(
-                                fontWeight: FontWeight.w500,
-                                color: CupertinoColors.black.withOpacity(.6),
-                              ),
-                            ),
-                            5.getW(),
-                            Icon(
-                              CupertinoIcons.eye_solid,
-                              color: CupertinoColors.black.withOpacity(.6),
-                            ),
-                            12.getW(),
-                            Text(
-                              timeago.format(
-                                  DateTime.fromMillisecondsSinceEpoch(
-                                    int.parse(widget.hires[index1].createdAt
-                                        .toString()),
+                              : null;
+
+                          widget.voidCallback.call();
+
+                          Platform.isIOS
+                              ? Navigator.push(
+                                  widget.context1,
+                                  MaterialPageRoute(
+                                    builder: (context) => DetailScreen(
+                                      hireModel: widget.hires[index1].copyWith(
+                                        countView:
+                                            widget.hires[index1].countView,
+                                      ),
+                                    ),
                                   ),
-                                  locale: "uz"),
-                              style: TextStyle(
-                                  color: CupertinoColors.black.withOpacity(.6),
-                                  fontWeight: FontWeight.w500),
-                            ),
-                            8.getW()
-                          ],
+                                )
+                              : Navigator.push(
+                                  widget.context1,
+                                  PageTransition(
+                                    type: PageTransitionType.rightToLeftJoined,
+                                    alignment: Alignment.topRight,
+                                    childCurrent: const SizedBox(),
+                                    child: DetailScreen(
+                                      hireModel: widget.hires[index1].copyWith(
+                                        countView:
+                                            widget.hires[index1].countView,
+                                      ),
+                                    ),
+                                  ),
+                                );
+                        },
+                        child: Container(
+                          margin: EdgeInsets.only(top: 20.h),
+                          padding: EdgeInsets.all(7.sp),
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.only(
+                                topRight: Radius.circular(16.r),
+                                topLeft: Radius.circular(16.r)),
+                            boxShadow: [
+                              BoxShadow(
+                                offset: const Offset(0, -12),
+                                spreadRadius: 2,
+                                blurRadius: 10,
+                                color:
+                                    CupertinoColors.systemGrey.withOpacity(.1),
+                              )
+                            ],
+                            color: CupertinoColors.white.withOpacity(.9),
+                          ),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Stack(
+                                children: [
+                                  SizedBox(
+                                    height: 300.h,
+                                    child: widget.hires[index1].image.isNotEmpty
+                                        ? PageView(
+                                            onPageChanged: (index) {
+                                              setState(() {
+                                                activeIndexes[index1] = index;
+                                              });
+                                            },
+                                            scrollDirection: Axis.horizontal,
+                                            children: [
+                                              ...List.generate(
+                                                widget
+                                                    .hires[index1].image.length,
+                                                (index) => Padding(
+                                                  padding:
+                                                      const EdgeInsets.all(8.0),
+                                                  child: ClipRRect(
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                            16),
+                                                    child: CachedNetworkImage(
+                                                      placeholder:
+                                                          (context, st) {
+                                                        return Shimmer
+                                                            .fromColors(
+                                                          baseColor:
+                                                              Colors.white,
+                                                          highlightColor:
+                                                              Colors.grey,
+                                                          child: Container(
+                                                            height: 80.h,
+                                                            decoration:
+                                                                BoxDecoration(
+                                                              color:
+                                                                  Colors.white,
+                                                              borderRadius:
+                                                                  BorderRadius
+                                                                      .circular(
+                                                                          16),
+                                                            ),
+                                                          ),
+                                                        );
+                                                      },
+                                                      errorWidget:
+                                                          (BuildContext context,
+                                                              String st, a) {
+                                                        return Shimmer
+                                                            .fromColors(
+                                                          baseColor:
+                                                              Colors.white,
+                                                          highlightColor:
+                                                              Colors.grey,
+                                                          child: Container(
+                                                            height: 80.h,
+                                                            decoration:
+                                                                BoxDecoration(
+                                                              color:
+                                                                  Colors.white,
+                                                              borderRadius:
+                                                                  BorderRadius
+                                                                      .circular(
+                                                                          16),
+                                                            ),
+                                                          ),
+                                                        );
+                                                      },
+                                                      imageUrl: widget
+                                                          .hires[index1]
+                                                          .image[index]
+                                                          .imageUrl,
+                                                      fit: BoxFit.cover,
+                                                      width: double.infinity,
+                                                      height: 300.h,
+                                                    ),
+                                                  ),
+                                                ),
+                                              ),
+                                            ],
+                                          )
+                                        : Center(
+                                            child: Text(
+                                            "No Image",
+                                            style: TextStyle(
+                                                fontSize: 30.sp,
+                                                fontWeight: FontWeight.w700),
+                                          )),
+                                  ),
+                                  widget.hires[index1].image.length > 1
+                                      ? Positioned(
+                                          bottom: 15.w,
+                                          right: 15.w,
+                                          child: Container(
+                                            padding: EdgeInsets.symmetric(
+                                                horizontal: 2.w, vertical: 2.w),
+                                            decoration: BoxDecoration(
+                                              borderRadius:
+                                                  BorderRadius.circular(100),
+                                              color:
+                                                  CupertinoColors.systemGrey6,
+                                            ),
+                                            child: Row(
+                                              children: [
+                                                ...List.generate(
+                                                  widget.hires[index1].image
+                                                      .length,
+                                                  (index) {
+                                                    return AnimatedContainer(
+                                                      curve: Curves.linear,
+                                                      duration: const Duration(
+                                                          milliseconds: 200),
+                                                      margin:
+                                                          EdgeInsets.all(1.sp),
+                                                      width: activeIndexes[
+                                                                  index1] !=
+                                                              index
+                                                          ? 6.sp
+                                                          : 7.sp,
+                                                      height: activeIndexes[
+                                                                  index1] !=
+                                                              index
+                                                          ? 6.sp
+                                                          : 7.sp,
+                                                      decoration: BoxDecoration(
+                                                          shape:
+                                                              BoxShape.circle,
+                                                          color: activeIndexes[
+                                                                      index1] !=
+                                                                  index
+                                                              ? Colors.grey
+                                                              : CupertinoColors
+                                                                  .activeBlue),
+                                                    );
+                                                  },
+                                                )
+                                              ],
+                                            ),
+                                          ),
+                                        )
+                                      : const SizedBox()
+                                ],
+                              ),
+                              Padding(
+                                padding: EdgeInsets.only(left: 8.w),
+                                child: Text(
+                                  widget.hires[index1].title,
+                                  style: TextStyle(
+                                    fontSize: 18.sp,
+                                    fontWeight: FontWeight.w500,
+                                  ),
+                                  maxLines: 1,
+                                  overflow: TextOverflow.ellipsis,
+                                ),
+                              ),
+                              Padding(
+                                padding: EdgeInsets.only(left: 8.w, top: 3.h),
+                                child: Text(
+                                  widget.hires[index1].money,
+                                  style: TextStyle(
+                                    fontSize: 19.sp,
+                                    fontWeight: FontWeight.w600,
+                                  ),
+                                  maxLines: 1,
+                                  overflow: TextOverflow.ellipsis,
+                                ),
+                              ),
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.end,
+                                children: [
+                                  Text(
+                                    widget.hires[index1].countView.length
+                                        .toString(),
+                                    style: TextStyle(
+                                      fontWeight: FontWeight.w500,
+                                      color:
+                                          CupertinoColors.black.withOpacity(.6),
+                                    ),
+                                  ),
+                                  5.getW(),
+                                  Icon(
+                                    CupertinoIcons.eye_solid,
+                                    color:
+                                        CupertinoColors.black.withOpacity(.6),
+                                  ),
+                                  12.getW(),
+                                  Text(
+                                    timeago.format(
+                                        DateTime.fromMillisecondsSinceEpoch(
+                                          int.parse(widget
+                                              .hires[index1].createdAt
+                                              .toString()),
+                                        ),
+                                        locale: "uz"),
+                                    style: TextStyle(
+                                        color: CupertinoColors.black
+                                            .withOpacity(.6),
+                                        fontWeight: FontWeight.w500),
+                                  ),
+                                  8.getW()
+                                ],
+                              ),
+                            ],
+                          ),
                         ),
-                      ],
-                    ),
-                  ),
-                );
-              }),
+                      ),
+                      Container(
+                        width: double.infinity,
+                        height: 0.4,
+                        color: Colors.grey,
+                      ),
+                      Container(
+                        margin: EdgeInsets.symmetric(vertical: 0.h),
+                        padding: EdgeInsets.symmetric(
+                            horizontal: 12.w, vertical: 8.h),
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.only(
+                              bottomLeft: Radius.circular(16.r),
+                              bottomRight: Radius.circular(16.r)),
+                          boxShadow: [
+                            BoxShadow(
+                              offset: const Offset(0, 12),
+                              spreadRadius: 2,
+                              blurRadius: 10,
+                              color: CupertinoColors.systemGrey.withOpacity(.1),
+                            )
+                          ],
+                          color: CupertinoColors.white.withOpacity(.9),
+                        ),
+                        child: ZoomTapAnimation(
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Text(
+                                "${widget.hires[index1].comments.length}  Comments",
+                                style: TextStyle(
+                                    color: CupertinoColors.activeBlue,
+                                    fontWeight: FontWeight.w500,
+                                    fontSize: 18.sp),
+                              ),
+                              const Icon(
+                                Icons.arrow_forward_ios_rounded,
+                                color: CupertinoColors.activeBlue,
+                                weight: 1,
+                              )
+                            ],
+                          ),
+                        ),
+                      )
+                    ],
+                  );
+                },
+              ),
             ],
           )
         : FutureBuilder(
