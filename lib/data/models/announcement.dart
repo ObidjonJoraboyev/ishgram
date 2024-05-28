@@ -39,7 +39,7 @@ class AnnouncementModel extends Equatable {
   final int createdAt;
   final String updatedAt;
   final String location;
-  final List<String> countView;
+  final List<String> viewedUsers;
   final Set<String> likedUsers;
   final StatusAnnouncement status;
   final List<String> comments;
@@ -59,7 +59,7 @@ class AnnouncementModel extends Equatable {
     required this.category,
     required this.updatedAt,
     required this.location,
-    required this.countView,
+    required this.viewedUsers,
     required this.status,
     required this.likedUsers,
     required this.comments,
@@ -101,7 +101,7 @@ class AnnouncementModel extends Equatable {
       createdAt: createdAt ?? this.createdAt,
       updatedAt: updatedAt ?? this.updatedAt,
       location: location ?? this.location,
-      countView: countView ?? this.countView,
+      viewedUsers: countView ?? this.viewedUsers,
       status: status ?? this.status,
       likedUsers: likedUsers ?? this.likedUsers,
       comments: comments ?? this.comments,
@@ -121,7 +121,7 @@ class AnnouncementModel extends Equatable {
       "long": long,
       "number": number,
       "category": category.name,
-      "countView": countView.map((e) => e.toString()).toList(),
+      "countView": viewedUsers.map((e) => e.toString()).toList(),
       "location": location,
       "createdAt": createdAt,
       "updatedAt": updatedAt,
@@ -143,7 +143,7 @@ class AnnouncementModel extends Equatable {
       "long": long,
       "number": number,
       "category": category.name,
-      "countView": countView.map((e) => e.toString()).toList(),
+      "countView": viewedUsers.map((e) => e.toString()).toList(),
       "location": location,
       "createdAt": createdAt,
       "updatedAt": updatedAt,
@@ -171,7 +171,7 @@ class AnnouncementModel extends Equatable {
       location: json["location"] as String? ?? "",
       createdAt: json["createdAt"] as int? ?? 0,
       updatedAt: json["updatedAt"] as String? ?? "",
-      countView:
+      viewedUsers:
           (json["countView"] as List? ?? []).map((e) => e.toString()).toList(),
       category: enumFromString(
         json["category"] as String? ?? "",
@@ -211,7 +211,7 @@ class AnnouncementModel extends Equatable {
     createdAt: 0,
     updatedAt: '',
     location: '',
-    countView: [],
+    viewedUsers: [],
     status: StatusAnnouncement.pure,
     likedUsers: {},
     comments: [],
@@ -231,7 +231,7 @@ class AnnouncementModel extends Equatable {
         createdAt,
         updatedAt,
         location,
-        countView,
+        viewedUsers,
         status,
         likedUsers,
         comments

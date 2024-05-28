@@ -84,9 +84,15 @@ class _WidgetOfDetailState extends State<WidgetOfDetail>
         20.getH(),
         Padding(
           padding: EdgeInsets.symmetric(horizontal: 10.w),
-          child: Text(
-            widget.hireModel.title,
-            style: TextStyle(fontSize: 16.sp, fontWeight: FontWeight.w600),
+          child: Hero(
+            tag: "detail",
+            child: Material(
+              color: Colors.transparent,
+              child: Text(
+                widget.hireModel.title,
+                style: TextStyle(fontSize: 16.sp, fontWeight: FontWeight.w600),
+              ),
+            ),
           ),
         ),
         10.getH(),
@@ -97,9 +103,16 @@ class _WidgetOfDetailState extends State<WidgetOfDetail>
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text(
-                widget.hireModel.description,
-                style: TextStyle(fontWeight: FontWeight.w400, fontSize: 14.sp),
+              Hero(
+                tag: "description",
+                child: Material(
+                  color: Colors.transparent,
+                  child: Text(
+                    widget.hireModel.description,
+                    style:
+                        TextStyle(fontWeight: FontWeight.w400, fontSize: 14.sp),
+                  ),
+                ),
               ),
               15.getH(),
               Row(
@@ -250,7 +263,7 @@ class _WidgetOfDetailState extends State<WidgetOfDetail>
               color: CupertinoColors.systemGrey,
             ),
             Text(
-              " ${widget.hireModel.countView.length}",
+              " ${widget.hireModel.viewedUsers.length}",
               style: TextStyle(
                 fontSize: 14.sp,
                 fontWeight: FontWeight.w500,

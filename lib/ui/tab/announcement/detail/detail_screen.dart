@@ -80,7 +80,7 @@ class _DetailScreenState extends State<DetailScreen> {
           statusBarColor: Colors.transparent,
           statusBarIconBrightness: Brightness.dark,
         ),
-        backgroundColor: CupertinoColors.systemGrey5,
+        backgroundColor: CupertinoColors.systemGrey6,
         elevation: 0,
         actions: [
           AnimatedSwitcher(
@@ -111,9 +111,16 @@ class _DetailScreenState extends State<DetailScreen> {
         scrolledUnderElevation: 0,
         title: Text(
           "about_work".tr(),
-          style: const TextStyle(color: Colors.black, shadows: [
-            Shadow(color: Colors.white, blurRadius: 10),
-          ]),
+          style: TextStyle(
+              color: Colors.black,
+              fontWeight: FontWeight.w500,
+              fontSize: 20.sp),
+        ),
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back_ios_new),
+          onPressed: () {
+            Navigator.of(context).pop();
+          },
         ),
       ),
       backgroundColor: CupertinoColors.systemGrey5,
@@ -168,7 +175,7 @@ class _DetailScreenState extends State<DetailScreen> {
                                 borderRadius: BorderRadius.circular(17.r),
                               ),
                               child: Hero(
-                                tag: "image",
+                                tag: "image$index",
                                 child: ClipRRect(
                                   borderRadius: BorderRadius.only(
                                       topRight: Radius.circular(16.r),

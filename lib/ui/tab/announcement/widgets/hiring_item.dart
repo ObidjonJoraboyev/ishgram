@@ -70,13 +70,14 @@ class _HiringItemState extends State<HiringItem> {
                         children: [
                           GestureDetector(
                             onTap: () async {
-                              (!state[index1].countView.contains(userNum)) &&
+                              (!state[index1].viewedUsers.contains(userNum)) &&
                                       (userNum.isNotEmpty)
                                   ? context.read<AnnouncementBloc>().add(
                                         AnnouncementUpdateEvent(
                                           hireModel: state[index1].copyWith(
-                                            countView: state[index1].countView +
-                                                [userNum],
+                                            countView:
+                                                state[index1].viewedUsers +
+                                                    [userNum],
                                           ),
                                         ),
                                       )
@@ -147,72 +148,67 @@ class _HiringItemState extends State<HiringItem> {
                                                       padding:
                                                           const EdgeInsets.all(
                                                               8.0),
-                                                      child: Hero(
-                                                        tag: "image",
-                                                        child: ClipRRect(
-                                                          borderRadius:
-                                                              BorderRadius
-                                                                  .circular(16),
-                                                          child:
-                                                              CachedNetworkImage(
-                                                            placeholder:
-                                                                (context, st) {
-                                                              return Shimmer
-                                                                  .fromColors(
-                                                                baseColor:
-                                                                    Colors
-                                                                        .white,
-                                                                highlightColor:
-                                                                    Colors.grey,
-                                                                child:
-                                                                    Container(
-                                                                  height: 80.h,
-                                                                  decoration:
-                                                                      BoxDecoration(
-                                                                    color: Colors
-                                                                        .white,
-                                                                    borderRadius:
-                                                                        BorderRadius.circular(
-                                                                            16),
-                                                                  ),
+                                                      child: ClipRRect(
+                                                        borderRadius:
+                                                            BorderRadius
+                                                                .circular(16),
+                                                        child:
+                                                            CachedNetworkImage(
+                                                          placeholder:
+                                                              (context, st) {
+                                                            return Shimmer
+                                                                .fromColors(
+                                                              baseColor:
+                                                                  Colors.white,
+                                                              highlightColor:
+                                                                  Colors.grey,
+                                                              child: Container(
+                                                                height: 80.h,
+                                                                decoration:
+                                                                    BoxDecoration(
+                                                                  color: Colors
+                                                                      .white,
+                                                                  borderRadius:
+                                                                      BorderRadius
+                                                                          .circular(
+                                                                              16),
                                                                 ),
-                                                              );
-                                                            },
-                                                            errorWidget:
-                                                                (BuildContext
-                                                                        context,
-                                                                    String st,
-                                                                    a) {
-                                                              return Shimmer
-                                                                  .fromColors(
-                                                                baseColor:
-                                                                    Colors
-                                                                        .white,
-                                                                highlightColor:
-                                                                    Colors.grey,
-                                                                child:
-                                                                    Container(
-                                                                  height: 80.h,
-                                                                  decoration:
-                                                                      BoxDecoration(
-                                                                    color: Colors
-                                                                        .white,
-                                                                    borderRadius:
-                                                                        BorderRadius.circular(
-                                                                            16),
-                                                                  ),
+                                                              ),
+                                                            );
+                                                          },
+                                                          errorWidget:
+                                                              (BuildContext
+                                                                      context,
+                                                                  String st,
+                                                                  a) {
+                                                            return Shimmer
+                                                                .fromColors(
+                                                              baseColor:
+                                                                  Colors.white,
+                                                              highlightColor:
+                                                                  Colors.grey,
+                                                              child: Container(
+                                                                height: 80.h,
+                                                                decoration:
+                                                                    BoxDecoration(
+                                                                  color: Colors
+                                                                      .white,
+                                                                  borderRadius:
+                                                                      BorderRadius
+                                                                          .circular(
+                                                                              16),
                                                                 ),
-                                                              );
-                                                            },
-                                                            imageUrl: widget
-                                                                .hires[index1]
-                                                                .image[index]
-                                                                .imageUrl,
-                                                            fit: BoxFit.cover,
-                                                            width:
-                                                                double.infinity,
-                                                            height: 300.h,
-                                                          ),
+                                                              ),
+                                                            );
+                                                          },
+                                                          imageUrl: widget
+                                                              .hires[index1]
+                                                              .image[index]
+                                                              .imageUrl,
+                                                          fit: BoxFit.cover,
+                                                          width:
+                                                              double.infinity,
+                                                          height: 300.h,
                                                         ),
                                                       ),
                                                     ),
@@ -316,7 +312,7 @@ class _HiringItemState extends State<HiringItem> {
                                     mainAxisAlignment: MainAxisAlignment.end,
                                     children: [
                                       Text(
-                                        widget.hires[index1].countView.length
+                                        widget.hires[index1].viewedUsers.length
                                             .toString(),
                                         style: TextStyle(
                                           fontWeight: FontWeight.w500,
@@ -378,7 +374,7 @@ class _HiringItemState extends State<HiringItem> {
                             child: ScaleOnPress(
                               onTap: () {
                                 Navigator.push(
-                                  context,
+                                  widget.context1,
                                   CupertinoPageRoute(
                                     builder: (context) => CommentScreen(
                                       announcementModel: widget.hires[index1],
@@ -392,7 +388,7 @@ class _HiringItemState extends State<HiringItem> {
                                     MainAxisAlignment.spaceBetween,
                                 children: [
                                   Hero(
-                                    tag: "salomlar",
+                                    tag: Key("salomlar_$index1"),
                                     child: Material(
                                       color: Colors.transparent,
                                       child: Text(
