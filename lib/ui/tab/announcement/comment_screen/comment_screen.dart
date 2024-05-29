@@ -183,54 +183,66 @@ class _CommentScreenState extends State<CommentScreen> {
                             ? MainAxisAlignment.start
                             : MainAxisAlignment.end,
                         children: [
-                          Container(
-                            margin: const EdgeInsets.symmetric(
-                                vertical: 8, horizontal: 12),
+                          Padding(
                             padding: const EdgeInsets.symmetric(
-                                vertical: 4, horizontal: 12),
-                            decoration: BoxDecoration(
-                                boxShadow: [
-                                  BoxShadow(
-                                      spreadRadius: 0,
-                                      color: Colors.black.withOpacity(.1),
-                                      blurRadius: 10)
-                                ],
-                                borderRadius: BorderRadius.only(
-                                    topLeft: const Radius.circular(10),
-                                    topRight: const Radius.circular(10),
-                                    bottomRight: messages[index].idTo ==
-                                            widget.announcementModel.docId
-                                        ? const Radius.circular(0)
-                                        : const Radius.circular(10),
-                                    bottomLeft: messages[index].idTo ==
-                                            widget.announcementModel.docId
-                                        ? const Radius.circular(10)
-                                        : const Radius.circular(0)),
-                                color: const Color(0xff30A3E6)),
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.end,
-                              children: [
-                                Text(
-                                  messages[index].messageText,
-                                  style: const TextStyle(
-                                    color: Colors.white,
-                                    fontWeight: FontWeight.w400,
-                                    fontSize: 16,
-                                    letterSpacing: 1,
-                                  ),
-                                  maxLines: 10,
+                                vertical: 8, horizontal: 12),
+                            child: CupertinoContextMenu(
+                              actions: [
+                                CupertinoContextMenuAction(
+                                  child: const Icon(Icons.delete),
+                                  onPressed: () {},
                                 ),
-                                Text(
-                                  "${DateTime.fromMillisecondsSinceEpoch(int.parse(messages[index].createdTime)).hour}:${DateTime.fromMillisecondsSinceEpoch(int.parse(messages[index].createdTime)).minute}",
-                                  style: TextStyle(
-                                      color: Colors.white.withOpacity(.6),
-                                      fontWeight: FontWeight.w400,
-                                      fontSize: 14,
-                                      letterSpacing: 1,
-                                      overflow: TextOverflow.ellipsis),
-                                  maxLines: 10,
+                                CupertinoContextMenuAction(
+                                  child: const Icon(Icons.edit),
+                                  onPressed: () {},
                                 ),
                               ],
+                              child: Material(
+                                borderRadius: BorderRadius.circular(100),
+                                color: Colors.transparent,
+                                child: Container(
+                                  padding: const EdgeInsets.symmetric(
+                                      vertical: 4, horizontal: 12),
+                                  decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.only(
+                                          topLeft: const Radius.circular(10),
+                                          topRight: const Radius.circular(10),
+                                          bottomRight: messages[index].idTo ==
+                                                  widget.announcementModel.docId
+                                              ? const Radius.circular(0)
+                                              : const Radius.circular(10),
+                                          bottomLeft: messages[index].idTo ==
+                                                  widget.announcementModel.docId
+                                              ? const Radius.circular(10)
+                                              : const Radius.circular(0)),
+                                      color: const Color(0xff30A3E6)),
+                                  child: Column(
+                                    crossAxisAlignment: CrossAxisAlignment.end,
+                                    children: [
+                                      Text(
+                                        messages[index].messageText,
+                                        style: const TextStyle(
+                                          color: Colors.white,
+                                          fontWeight: FontWeight.w400,
+                                          fontSize: 16,
+                                          letterSpacing: 1,
+                                        ),
+                                        maxLines: 10,
+                                      ),
+                                      Text(
+                                        "${DateTime.fromMillisecondsSinceEpoch(int.parse(messages[index].createdTime)).hour}:${DateTime.fromMillisecondsSinceEpoch(int.parse(messages[index].createdTime)).minute}",
+                                        style: TextStyle(
+                                            color: Colors.white.withOpacity(.6),
+                                            fontWeight: FontWeight.w400,
+                                            fontSize: 14,
+                                            letterSpacing: 1,
+                                            overflow: TextOverflow.ellipsis),
+                                        maxLines: 10,
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ),
                             ),
                           ),
                         ],

@@ -5,6 +5,7 @@ import 'package:flutter/rendering.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:ish_top/blocs/announcement_bloc/hire_bloc.dart';
 import 'package:ish_top/blocs/announcement_bloc/hire_event.dart';
@@ -13,11 +14,13 @@ import 'package:ish_top/blocs/image/image_bloc.dart';
 import 'package:ish_top/blocs/image/image_event.dart';
 import 'package:ish_top/blocs/image/image_state.dart';
 import 'package:ish_top/data/models/announcement_model.dart';
+import 'package:ish_top/data/network/api_provider_location.dart';
 import 'package:ish_top/ui/tab/announcement/add_announcement/widgets/generate_blame.dart';
 import 'package:ish_top/ui/tab/announcement/add_announcement/widgets/generate_image.dart';
 import 'package:ish_top/ui/tab/announcement/add_announcement/widgets/global_button.dart';
 import 'package:ish_top/ui/tab/announcement/add_announcement/widgets/salary_textfield.dart';
 import 'package:ish_top/ui/tab/announcement/add_announcement/widgets/text_field_widget.dart';
+import 'package:ish_top/ui/tab/announcement/widgets/zoom_tap.dart';
 import 'package:ish_top/utils/formatters/formatters.dart';
 import 'package:ish_top/utils/size/size_utils.dart';
 import 'package:ish_top/utils/utility_functions.dart';
@@ -81,6 +84,7 @@ class _AddHireScreenState extends State<AddHireScreen> {
   int activeCategory = 1;
   Sky _selectedSegment = Sky.midnight;
 
+  String location="";
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -269,10 +273,10 @@ class _AddHireScreenState extends State<AddHireScreen> {
                       color: Colors.grey,
                     ),
                     SizedBox(
-                      height: 50.h,
                       child: CupertinoPageScaffold(
                         backgroundColor: Colors.transparent,
                         navigationBar: CupertinoNavigationBar(
+                          backgroundColor: CupertinoColors.systemGrey5,
                           middle: CupertinoSlidingSegmentedControl<Sky>(
                             backgroundColor: CupertinoColors.systemGrey2,
                             thumbColor: skyColors[_selectedSegment]!,
@@ -324,16 +328,79 @@ class _AddHireScreenState extends State<AddHireScreen> {
                       height: 0.6,
                       color: Colors.grey,
                     ),
-                    const SizedBox(
-                      height: 200,
-                      width: 300,
-                      child: GoogleMap(
-                        mapType: MapType.hybrid,
-                        initialCameraPosition: CameraPosition(
-                          target: LatLng(12, 12),
+                    ScaleOnPress(
+                      scaleValue: 0.98,
+                      onTap: ()async{
+
+                        Position position=await ApiProvider.getGeoLocationPosition();
+                       location= await ApiProvider.getPlaceNameByLocation(LatLng(position.latitude, position.longitude));
+                       setState(() {
+
+                       });
+                      },
+                      child: Container(
+                        padding: EdgeInsets.all(16.0.w),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Expanded(
+                              child: Padding(
+                                padding: EdgeInsets.only(top: 4.h),
+                                child: SizedBox(
+                                  height: MediaQuery.sizeOf(context).width / 2,
+                                  child: Text(
+                                    location,
+                                    style: TextStyle(
+                                        color: Colors.black,
+                                        fontWeight: FontWeight.w500,
+                                        fontSize: 14.2.sp),
+                                    maxLines: 10,
+                                    overflow: TextOverflow.ellipsis,
+                                  ),
+                                ),
+                              ),
+                            ),
+                            SizedBox(width: 16.w),
+                            SizedBox(
+                              height: MediaQuery.sizeOf(context).width / 2,
+                              width: MediaQuery.sizeOf(context).width / 2,
+                              child: ClipRRect(
+                                borderRadius: BorderRadius.circular(16.r),
+                                child: GoogleMap(
+                                  markers: {
+                                    Marker(
+
+                                      onTap: () async{
+
+                                      },
+                                      icon: BitmapDescriptor.defaultMarker,
+                                      position: const LatLng(12, 12),
+                                      markerId: const MarkerId("dscasd"),
+                                    ),
+                                  },
+                                  zoomControlsEnabled: false,
+                                  myLocationButtonEnabled: false,
+                                  onTap: (v) {},
+                                  mapType: MapType.normal,
+                                  initialCameraPosition: const CameraPosition(
+                                    target: LatLng(12, 12),
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ],
                         ),
                       ),
                     ),
+                    Container(
+                      width: double.infinity,
+                      height: 0.6,
+                      color: Colors.grey,
+                    ),
+                    const SizedBox(
+                      height: 100,
+                    )
                   ],
                 ),
               ),
