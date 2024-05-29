@@ -14,7 +14,7 @@ class ConnectBloc extends Bloc<ConnectEvent, ConnectState> {
     on<CheckConnect>(_checkConnect);
   }
 
-  final Connectivity _connectivity = Connectivity();
+  Connectivity get _connectivity => Connectivity();
 
   _checkConnect(CheckConnect event, Emitter emit) async {
     List<ConnectivityResult> results = await _connectivity.checkConnectivity();

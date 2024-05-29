@@ -213,7 +213,7 @@ class _FeedbackScreenState extends State<FeedbackScreen> {
                           (index) {
                             return ZoomTapAnimation(
                               onTap: () {
-                                if (!list[index].status &&
+                                if (!list[index].isSupport &&
                                     selectMessages.isEmpty) {
                                   showDialog(
                                     barrierColor: Colors.black,
@@ -266,7 +266,7 @@ class _FeedbackScreenState extends State<FeedbackScreen> {
                                         ? MainAxisAlignment.end
                                         : MainAxisAlignment.start,
                                 children: [
-                                  list[index].status
+                                  list[index].isSupport
                                       ? Container(
                                           margin: const EdgeInsets.symmetric(
                                               vertical: 8, horizontal: 12),
@@ -319,7 +319,7 @@ class _FeedbackScreenState extends State<FeedbackScreen> {
                                                 maxLines: 1,
                                               ),
                                               Text(
-                                                "${DateTime.fromMillisecondsSinceEpoch(int.parse(list[index].createdTime)).hour}:${DateTime.fromMillisecondsSinceEpoch(int.parse(list[index].createdTime)).minute}",
+                                                "${DateTime.fromMillisecondsSinceEpoch(int.parse(list[index].updatedTime)).hour}:${DateTime.fromMillisecondsSinceEpoch(int.parse(list[index].updatedTime)).minute}",
                                                 style: TextStyle(
                                                   color: Colors.white
                                                       .withOpacity(.6),
@@ -350,7 +350,7 @@ class _FeedbackScreenState extends State<FeedbackScreen> {
                                                   bottomRight: list[index]
                                                               .idTo !=
                                                           widget
-                                                              .userModel.number
+                                                              .userModel.phone
                                                       ? const Radius.circular(
                                                           12)
                                                       : const Radius.circular(
@@ -358,7 +358,7 @@ class _FeedbackScreenState extends State<FeedbackScreen> {
                                                   bottomLeft: list[index]
                                                               .idTo ==
                                                           widget
-                                                              .userModel.number
+                                                              .userModel.phone
                                                       ? const Radius.circular(
                                                           12)
                                                       : const Radius.circular(
@@ -373,7 +373,7 @@ class _FeedbackScreenState extends State<FeedbackScreen> {
                                                   bottomRight: list[index]
                                                               .idTo !=
                                                           widget
-                                                              .userModel.number
+                                                              .userModel.phone
                                                       ? const Radius.circular(
                                                           10)
                                                       : const Radius.circular(
@@ -381,7 +381,7 @@ class _FeedbackScreenState extends State<FeedbackScreen> {
                                                   bottomLeft: list[index]
                                                               .idTo ==
                                                           widget
-                                                              .userModel.number
+                                                              .userModel.phone
                                                       ? const Radius.circular(
                                                           10)
                                                       : const Radius.circular(
@@ -466,12 +466,12 @@ class _FeedbackScreenState extends State<FeedbackScreen> {
                                     controller.clear();
 
                                     messageModel = messageModel.copyWith(
+                                      isSupport: true,
                                       createdTime: DateTime.now()
                                           .millisecondsSinceEpoch
                                           .toString(),
                                       messageText: controllerTemp,
                                       messageId: "",
-                                      status: true,
                                       idFrom: StorageRepository.getString(
                                           key: "userNumber"),
                                       idTo: "ibodulla@gmail.com",

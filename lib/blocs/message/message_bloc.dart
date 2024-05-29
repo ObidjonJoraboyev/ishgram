@@ -13,6 +13,7 @@ class MessageBloc extends Bloc<MessageEvent, List<MessageModel>> {
   }
 
   getAllMessages(MessageGetEvent event, Emitter emit) async {
+
     Stream<List<MessageModel>> streamController = FirebaseFirestore.instance
         .collection("messages")
         .orderBy("created_time", descending: true)
@@ -35,6 +36,7 @@ class MessageBloc extends Bloc<MessageEvent, List<MessageModel>> {
   }
 
   addMessage(MessageAddEvent event, Emitter emit) async {
+
     try {
       var docId = await FirebaseFirestore.instance
           .collection("messages")

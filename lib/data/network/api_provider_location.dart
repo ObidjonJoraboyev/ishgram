@@ -114,7 +114,6 @@ class ApiProvider {
 
     if (response.statusCode == HttpStatus.ok) {
       var data = jsonDecode(response.body);
-      print(data);
       var list =
       data["response"]["GeoObjectCollection"]["featureMember"] as List?;
       if (list != null && list.isNotEmpty) {

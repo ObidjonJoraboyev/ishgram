@@ -1,25 +1,25 @@
 import 'package:equatable/equatable.dart';
 
 class UserModel extends Equatable {
-  final String name;
-  final String password;
-  final String lastName;
-  final List<String> allHiring;
-  final List<String> likedHiring;
-  final int age;
-  final int updatedAt;
-  final int createdAt;
-  final String number;
   final String docId;
+  final String name;
+  final String lastName;
+  final int age;
+  final String phone;
+  final String password;
   final String image;
   final String color;
+  final double rating;
+  final String bio;
   final String location;
   final String region;
-  final String fcm;
-  final String bio;
   final double lat;
   final double long;
-  final double rating;
+  final int createdAt;
+  final int updatedAt;
+  final List<String> allHiring;
+  final List<String> savedHiring;
+  final String fcm;
 
   const UserModel({
     required this.location,
@@ -27,7 +27,7 @@ class UserModel extends Equatable {
     required this.color,
     required this.docId,
     required this.name,
-    required this.number,
+    required this.phone,
     required this.lastName,
     required this.image,
     required this.fcm,
@@ -40,13 +40,13 @@ class UserModel extends Equatable {
     required this.updatedAt,
     required this.createdAt,
     required this.allHiring,
-    required this.likedHiring,
+    required this.savedHiring,
   });
 
   UserModel copyWith({
     String? name,
     String? lastName,
-    String? number,
+    String? phone,
     String? color,
     String? docId,
     String? image,
@@ -63,7 +63,7 @@ class UserModel extends Equatable {
     int? createdAt,
     String? location,
     List<String>? announcements,
-    List<String>? likedHiring,
+    List<String>? savedHiring,
     List<String>? allHiring,
   }) {
     return UserModel(
@@ -75,7 +75,7 @@ class UserModel extends Equatable {
       age: age ?? this.age,
       docId: docId ?? this.docId,
       name: name ?? this.name,
-      number: number ?? this.number,
+      phone: phone ?? this.phone,
       lastName: lastName ?? this.lastName,
       image: image ?? this.image,
       region: region ?? this.region,
@@ -84,7 +84,7 @@ class UserModel extends Equatable {
       updatedAt: updatedAt ?? this.updatedAt,
       createdAt: createdAt ?? this.createdAt,
       allHiring: allHiring ?? this.allHiring,
-      likedHiring: likedHiring ?? this.likedHiring,
+      savedHiring: savedHiring ?? this.savedHiring,
       color: color ?? this.color,
     );
   }
@@ -96,7 +96,7 @@ class UserModel extends Equatable {
         "doc_id": docId,
         "fcm": fcm,
         "name": name,
-        "number": number,
+        "number": phone,
         "last_name": lastName,
         "image": image,
         "lat": lat,
@@ -107,7 +107,7 @@ class UserModel extends Equatable {
         "updatedAt": updatedAt,
         "createdAt": createdAt,
         "announcements": allHiring,
-        "likedHiring": likedHiring,
+        "likedHiring": savedHiring,
         "color": color
       };
 
@@ -118,7 +118,7 @@ class UserModel extends Equatable {
         "doc_id": docId,
         "fcm": fcm,
         "name": name,
-        "number": number,
+        "number": phone,
         "last_name": lastName,
         "image": image,
         "lat": lat,
@@ -128,7 +128,7 @@ class UserModel extends Equatable {
         "updatedAt": updatedAt,
         "createdAt": createdAt,
         "announcements": allHiring,
-        "likedHiring": likedHiring,
+        "likedHiring": savedHiring,
         "color": color
       };
 
@@ -139,7 +139,7 @@ class UserModel extends Equatable {
       age: json["age"] as int? ?? 0,
       image: json["image"] as String? ?? "",
       docId: json["doc_id"] as String? ?? "",
-      number: json["number"] as String? ?? "",
+      phone: json["number"] as String? ?? "",
       lastName: json["last_name"] as String? ?? "",
       name: json["name"] as String? ?? "",
       fcm: json["fcm"] as String? ?? "",
@@ -153,7 +153,7 @@ class UserModel extends Equatable {
       allHiring: (json["announcements"] as List? ?? [])
           .map((e) => e.toString())
           .toList(),
-      likedHiring: (json["likedHiring"] as List? ?? [])
+      savedHiring: (json["likedHiring"] as List? ?? [])
           .map((e) => e.toString())
           .toList(),
       color: json["color"] as String? ?? "",
@@ -167,7 +167,7 @@ class UserModel extends Equatable {
     fcm: "",
     docId: "",
     name: "",
-    number: "",
+    phone: "",
     lastName: "",
     image: "",
     lat: 0,
@@ -178,7 +178,7 @@ class UserModel extends Equatable {
     updatedAt: 0,
     createdAt: 0,
     allHiring: [],
-    likedHiring: [],
+    savedHiring: [],
     color: "",
   );
 
@@ -187,7 +187,7 @@ class UserModel extends Equatable {
         password,
         fcm,
         name,
-        number,
+        phone,
         lastName,
         image,
         docId,
@@ -201,7 +201,7 @@ class UserModel extends Equatable {
         updatedAt,
         createdAt,
         allHiring,
-        likedHiring,
+        savedHiring,
         color
       ];
 }

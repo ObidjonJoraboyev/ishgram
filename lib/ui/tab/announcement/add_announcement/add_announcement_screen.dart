@@ -5,7 +5,6 @@ import 'package:flutter/rendering.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:ish_top/blocs/announcement_bloc/hire_bloc.dart';
 import 'package:ish_top/blocs/announcement_bloc/hire_event.dart';
@@ -14,7 +13,7 @@ import 'package:ish_top/blocs/image/image_bloc.dart';
 import 'package:ish_top/blocs/image/image_event.dart';
 import 'package:ish_top/blocs/image/image_state.dart';
 import 'package:ish_top/data/models/announcement_model.dart';
-import 'package:ish_top/data/network/api_provider_location.dart';
+import 'package:ish_top/ui/tab/announcement/add_announcement/google_maps/google_maps_screen.dart';
 import 'package:ish_top/ui/tab/announcement/add_announcement/widgets/generate_blame.dart';
 import 'package:ish_top/ui/tab/announcement/add_announcement/widgets/generate_image.dart';
 import 'package:ish_top/ui/tab/announcement/add_announcement/widgets/global_button.dart';
@@ -84,7 +83,8 @@ class _AddHireScreenState extends State<AddHireScreen> {
   int activeCategory = 1;
   Sky _selectedSegment = Sky.midnight;
 
-  String location="";
+  String location = "";
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -330,13 +330,23 @@ class _AddHireScreenState extends State<AddHireScreen> {
                     ),
                     ScaleOnPress(
                       scaleValue: 0.98,
-                      onTap: ()async{
-
-                        Position position=await ApiProvider.getGeoLocationPosition();
-                       location= await ApiProvider.getPlaceNameByLocation(LatLng(position.latitude, position.longitude));
-                       setState(() {
-
-                       });
+                      onTap: () async {
+                        //  Position position = await ApiProvider
+                        //      .getGeoLocationPosition();
+                        //  location =
+                        //  await ApiProvider.getPlaceNameByLocation(LatLng(
+                        //      position.latitude, position.longitude));
+                        //  setState(() {
+                        //
+                        //  });
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (c) {
+                              return const GoogleMapsScreen();
+                            },
+                          ),
+                        );
                       },
                       child: Container(
                         padding: EdgeInsets.all(16.0.w),
@@ -370,10 +380,7 @@ class _AddHireScreenState extends State<AddHireScreen> {
                                 child: GoogleMap(
                                   markers: {
                                     Marker(
-
-                                      onTap: () async{
-
-                                      },
+                                      onTap: () async {},
                                       icon: BitmapDescriptor.defaultMarker,
                                       position: const LatLng(12, 12),
                                       markerId: const MarkerId("dscasd"),

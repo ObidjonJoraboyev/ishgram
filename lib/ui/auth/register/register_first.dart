@@ -49,7 +49,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
       lastName: lastNameController.text,
       password:
           passwordController.text.isNotEmpty ? passwordController.text : "-1",
-      number: phoneController.text,
+      phone: phoneController.text,
       name: firstNameController.text,
     );
     context.read<AuthBloc>().add(

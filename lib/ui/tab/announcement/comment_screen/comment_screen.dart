@@ -230,7 +230,7 @@ class _CommentScreenState extends State<CommentScreen> {
                                         maxLines: 10,
                                       ),
                                       Text(
-                                        "${DateTime.fromMillisecondsSinceEpoch(int.parse(messages[index].createdTime)).hour}:${DateTime.fromMillisecondsSinceEpoch(int.parse(messages[index].createdTime)).minute}",
+                                        "${DateTime.fromMillisecondsSinceEpoch(int.parse(messages[index].updatedTime)).hour}:${DateTime.fromMillisecondsSinceEpoch(int.parse(messages[index].updatedTime)).minute}",
                                         style: TextStyle(
                                             color: Colors.white.withOpacity(.6),
                                             fontWeight: FontWeight.w400,
@@ -277,7 +277,7 @@ class _CommentScreenState extends State<CommentScreen> {
                           createdTime:
                               DateTime.now().millisecondsSinceEpoch.toString(),
                           messageText: controllerTemp,
-                          status: true,
+                          isSupport: false,
                           idFrom: currentDoc,
                           idTo: widget.announcementModel.docId,
                         );

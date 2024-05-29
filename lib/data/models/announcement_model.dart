@@ -5,22 +5,22 @@ import 'image_model.dart';
 class AnnouncementModel extends Equatable {
   final String docId;
   final String userId;
-  final String title;
-  final String description;
-  final String money;
-  final String timeInterval;
   final List<ImageModel> image;
+  final String title;
+  final String ownerName;
+  final String number;
+  final String description;
+  final WorkCategory category;
+  final String money;
+  final String location;
   final double lat;
   final double long;
-  final String number;
-  final WorkCategory category;
-  final String ownerName;
+  final String timeInterval;
+  final StatusAnnouncement status;
   final int createdAt;
-  final String updatedAt;
-  final String location;
+  final int updatedAt;
   final List<String> viewedUsers;
   final Set<String> likedUsers;
-  final StatusAnnouncement status;
   final List<String> comments;
 
   const AnnouncementModel({
@@ -59,7 +59,7 @@ class AnnouncementModel extends Equatable {
     String? number,
     String? location,
     int? createdAt,
-    String? updatedAt,
+    int? updatedAt,
     List<String>? countView,
     WorkCategory? category,
     StatusAnnouncement? status,
@@ -155,7 +155,7 @@ class AnnouncementModel extends Equatable {
       number: json["number"] as String? ?? "",
       location: json["location"] as String? ?? "",
       createdAt: json["createdAt"] as int? ?? 0,
-      updatedAt: json["updatedAt"] as String? ?? "",
+      updatedAt: json["updatedAt"] as int? ?? 0,
       viewedUsers:
           (json["countView"] as List? ?? []).map((e) => e.toString()).toList(),
       category: enumFromString(
@@ -195,7 +195,7 @@ class AnnouncementModel extends Equatable {
     category: WorkCategory.easy,
     docId: '',
     createdAt: 0,
-    updatedAt: '',
+    updatedAt: 0,
     location: '',
     viewedUsers: [],
     status: StatusAnnouncement.pure,

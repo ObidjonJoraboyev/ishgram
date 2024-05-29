@@ -42,12 +42,12 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
         response,
         onData: (List<UserModel> event) async {
           for (int i = 0; i < event.length; i++) {
-            if (event[i].number == event1.number &&
+            if (event[i].phone == event1.number &&
                 event[i].password == event1.password) {
               emit(state.copyWith(formStatus: FormStatus.authenticated));
 
               StorageRepository.setString(
-                  key: "userNumber", value: event[i].number);
+                  key: "userNumber", value: event[i].phone);
               StorageRepository.setString(
                   key: "userDoc", value: event[i].docId);
               break;
@@ -138,7 +138,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     }
 
     for (int i = 0; i < users.length; i++) {
-      if (users[i].number == event1.userModel.number) {
+      if (users[i].phone == event1.userModel.phone) {
         emit(state.copyWith(formStatus: FormStatus.exist));
         break;
       } else {
@@ -162,7 +162,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
         });
 
         StorageRepository.setString(
-            key: "userNumber", value: event1.userModel.number);
+            key: "userNumber", value: event1.userModel.phone);
         StorageRepository.setString(key: "userDoc", value: docId.id);
 
         DocumentSnapshot documentSnapshot = await FirebaseFirestore.instance

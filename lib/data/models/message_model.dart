@@ -2,19 +2,26 @@ import 'package:equatable/equatable.dart';
 
 class MessageModel extends Equatable {
   final String messageId;
+
   final String messageText;
+
+  final String updatedTime;
   final String createdTime;
-  final bool status;
+  final bool isSupport;
+  final List<String> images;
   final String idFrom;
+
   final String idTo;
 
   const MessageModel({
     required this.idFrom,
     required this.idTo,
-    required this.createdTime,
+    required this.updatedTime,
     required this.messageText,
     required this.messageId,
-    required this.status,
+    required this.isSupport,
+    required this.createdTime,
+    required this.images,
   });
 
   Map<String, dynamic> toJson() => {
@@ -23,7 +30,8 @@ class MessageModel extends Equatable {
         "doc_id": messageId,
         "message_text": messageText,
         "created_time": createdTime,
-        "status": status,
+        "updated_time": updatedTime,
+        "status": isSupport,
       };
 
   Map<String, dynamic> toJsonForUpdate() => {
@@ -31,43 +39,53 @@ class MessageModel extends Equatable {
         "id_to": idTo,
         "message_text": messageText,
         "created_time": createdTime,
-        "status": status,
+        "updated_time": updatedTime,
+        "status": isSupport,
       };
 
   factory MessageModel.fromJson(Map<String, dynamic> json) {
     return MessageModel(
       idFrom: json["id_from"] as String? ?? "",
       idTo: json["id_to"] as String? ?? "",
-      createdTime: json["created_time"] as String? ?? "",
+      updatedTime: json["created_time"] as String? ?? "",
       messageText: json["message_text"] as String? ?? "",
       messageId: json["doc_id"] as String? ?? "",
-      status: json["status"] as bool? ?? false,
+      isSupport: json["status"] as bool? ?? false,
+      createdTime: json["updated_time"] as String? ?? "",
+      images: json["images"] as List<String> ? ?? [],
     );
   }
 
   static MessageModel initialValue = const MessageModel(
-      idFrom: "",
-      idTo: "",
-      createdTime: "",
-      messageText: "",
-      messageId: "",
-      status: true);
+    idFrom: "",
+    idTo: "",
+    updatedTime: "",
+    messageText: "",
+    messageId: "",
+    isSupport: false,
+    createdTime: "", images: [],
+  );
 
   MessageModel copyWith({
     String? messageId,
     String? messageText,
     String? createdTime,
+    String? updatedTime,
     String? idFrom,
     String? idTo,
-    bool? status,
+    bool? isSupport,
+    List<String>? images,
   }) {
     return MessageModel(
-      idFrom: idFrom ?? this.idFrom,
-      idTo: idTo ?? this.idTo,
-      createdTime: createdTime ?? this.createdTime,
-      messageText: messageText ?? this.messageText,
-      messageId: messageId ?? this.messageId,
-      status: status ?? this.status,
+        idFrom: idFrom ?? this.idFrom,
+        idTo: idTo ?? this.idTo,
+        updatedTime: updatedTime ?? this.updatedTime,
+        messageText: messageText ?? this.messageText,
+        messageId: messageId ?? this.messageId,
+        isSupport: isSupport ?? this.isSupport,
+        createdTime: createdTime ?? this.createdTime,images:
+
+        images?? this.images
     );
   }
 
@@ -77,7 +95,9 @@ class MessageModel extends Equatable {
         messageText,
         idTo,
         idFrom,
-        status,
+        isSupport,
+        updatedTime,
         createdTime,
+    images
       ];
 }

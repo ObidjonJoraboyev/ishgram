@@ -219,7 +219,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       children: [
                         Center(
                           child: Text(
-                            state1.userModel.number,
+                            state1.userModel.phone,
                             style: TextStyle(
                               fontWeight: FontWeight.w400,
                               fontSize: 18,
