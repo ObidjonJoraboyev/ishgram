@@ -20,6 +20,7 @@ class UserModel extends Equatable {
   final List<String> allHiring;
   final List<String> savedHiring;
   final String fcm;
+  final bool isPrivate;
 
   const UserModel({
     required this.location,
@@ -41,6 +42,7 @@ class UserModel extends Equatable {
     required this.createdAt,
     required this.allHiring,
     required this.savedHiring,
+    required this.isPrivate,
   });
 
   UserModel copyWith({
@@ -65,6 +67,7 @@ class UserModel extends Equatable {
     List<String>? announcements,
     List<String>? savedHiring,
     List<String>? allHiring,
+    bool? isPrivate,
   }) {
     return UserModel(
       password: password ?? this.password,
@@ -86,6 +89,7 @@ class UserModel extends Equatable {
       allHiring: allHiring ?? this.allHiring,
       savedHiring: savedHiring ?? this.savedHiring,
       color: color ?? this.color,
+      isPrivate: isPrivate ?? this.isPrivate,
     );
   }
 
@@ -108,7 +112,8 @@ class UserModel extends Equatable {
         "createdAt": createdAt,
         "announcements": allHiring,
         "likedHiring": savedHiring,
-        "color": color
+        "color": color,
+        "isPrivate": isPrivate
       };
 
   Map<String, dynamic> toJsonForUpdate() => {
@@ -129,7 +134,8 @@ class UserModel extends Equatable {
         "createdAt": createdAt,
         "announcements": allHiring,
         "likedHiring": savedHiring,
-        "color": color
+        "color": color,
+        "isPrivate": isPrivate
       };
 
   factory UserModel.fromJson(Map<String, dynamic> json) {
@@ -157,6 +163,7 @@ class UserModel extends Equatable {
           .map((e) => e.toString())
           .toList(),
       color: json["color"] as String? ?? "",
+      isPrivate: json["isPrivate"] as bool? ?? false,
     );
   }
 
@@ -180,6 +187,7 @@ class UserModel extends Equatable {
     allHiring: [],
     savedHiring: [],
     color: "",
+    isPrivate: false,
   );
 
   @override
@@ -202,6 +210,7 @@ class UserModel extends Equatable {
         createdAt,
         allHiring,
         savedHiring,
-        color
+        color,
+        isPrivate
       ];
 }
