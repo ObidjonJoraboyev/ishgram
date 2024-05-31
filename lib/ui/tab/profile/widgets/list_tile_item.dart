@@ -48,7 +48,6 @@ class _ListTileItemState extends State<ListTileItem> {
                   child: CupertinoSwitch(
                       value: check,
                       onChanged: (v) {
-                        print(context.read<AuthBloc>().state.userModel.phone);
                         check = v;
                         setState(() {});
                         if (check) {
