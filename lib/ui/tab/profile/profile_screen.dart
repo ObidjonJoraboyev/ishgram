@@ -292,7 +292,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                             );
                           },
                           title: "Change Profile Photo",
-                          icon: Icon(
+                          icon: const Icon(
                             CupertinoIcons.camera,
                             color: CupertinoColors.activeBlue,
                           ),
@@ -300,11 +300,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                           isPhoto: true,
                         ),
                         ListTileItem(
-                            voidCallback: () {
-                              context
-                                  .read<AuthBloc>()
-                                  .add(LogOutEvent(context: widget.context));
-                            },
+                            voidCallback: () {},
                             title: "My Profile",
                             icon: const Icon(
                               CupertinoIcons.profile_circled,
