@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:zoom_tap_animation/zoom_tap_animation.dart';
+import 'package:ish_top/ui/tab/announcement/widgets/zoom_tap.dart';
 
 class GlobalButton extends StatelessWidget {
   const GlobalButton({
@@ -16,7 +16,8 @@ class GlobalButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ZoomTapAnimation(
+    return ScaleOnPress(
+      scaleValue: 0.98,
       onTap: onTap,
       child: Container(
         padding: EdgeInsets.symmetric(

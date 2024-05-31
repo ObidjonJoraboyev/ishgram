@@ -349,16 +349,14 @@ class _FeedbackScreenState extends State<FeedbackScreen> {
                                                       const Radius.circular(12),
                                                   bottomRight: list[index]
                                                               .idTo !=
-                                                          widget
-                                                              .userModel.phone
+                                                          widget.userModel.phone
                                                       ? const Radius.circular(
                                                           12)
                                                       : const Radius.circular(
                                                           0),
                                                   bottomLeft: list[index]
                                                               .idTo ==
-                                                          widget
-                                                              .userModel.phone
+                                                          widget.userModel.phone
                                                       ? const Radius.circular(
                                                           12)
                                                       : const Radius.circular(
@@ -372,16 +370,14 @@ class _FeedbackScreenState extends State<FeedbackScreen> {
                                                       const Radius.circular(10),
                                                   bottomRight: list[index]
                                                               .idTo !=
-                                                          widget
-                                                              .userModel.phone
+                                                          widget.userModel.phone
                                                       ? const Radius.circular(
                                                           10)
                                                       : const Radius.circular(
                                                           0),
                                                   bottomLeft: list[index]
                                                               .idTo ==
-                                                          widget
-                                                              .userModel.phone
+                                                          widget.userModel.phone
                                                       ? const Radius.circular(
                                                           10)
                                                       : const Radius.circular(

@@ -23,7 +23,9 @@ class ChangeMapTypeEvent extends MapEvent {
 class ChangeCurrentCameraPositionEvent extends MapEvent {
   final CameraPosition cameraPosition;
 
-  ChangeCurrentCameraPositionEvent(this.cameraPosition);
+  final GoogleMapController controller;
+  ChangeCurrentCameraPositionEvent(
+      {required this.cameraPosition, required this.controller});
 
   @override
   List<Object?> get props => [cameraPosition];
@@ -33,9 +35,10 @@ class GetUserLocation extends MapEvent {
   @override
   List<Object?> get props => [];
 }
+
 class ChangePlaceName extends MapEvent {
- final  CameraPosition cameraPosition;
- ChangePlaceName({required this.cameraPosition});
+  final CameraPosition cameraPosition;
+  ChangePlaceName({required this.cameraPosition});
   @override
   List<Object?> get props => [];
 }

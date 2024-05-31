@@ -12,7 +12,6 @@ import 'package:ish_top/blocs/announcement_bloc/hire_event.dart';
 import 'package:ish_top/data/local/local_storage.dart';
 import 'package:ish_top/data/models/announcement_model.dart';
 import 'package:ish_top/ui/tab/announcement/detail/widgets/widget_detail.dart';
-import 'package:ish_top/utils/utility_functions.dart';
 import 'package:shimmer/shimmer.dart';
 
 class DetailScreen extends StatefulWidget {
@@ -59,10 +58,7 @@ class _DetailScreenState extends State<DetailScreen> {
           setState(() {});
         }
       });
-    } else {
-      showAskLogin(
-          context: context, title: "Yoqtirish uchun login qilmagansiz.");
-    }
+    } else {}
   }
 
   @override

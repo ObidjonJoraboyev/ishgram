@@ -5,6 +5,7 @@ import 'package:flutter/rendering.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:ish_top/blocs/announcement_bloc/hire_bloc.dart';
 import 'package:ish_top/blocs/announcement_bloc/hire_event.dart';
@@ -25,6 +26,8 @@ import 'package:ish_top/utils/size/size_utils.dart';
 import 'package:ish_top/utils/utility_functions.dart';
 import 'package:vibration/vibration.dart';
 import 'package:zoom_tap_animation/zoom_tap_animation.dart';
+
+import '../../../../data/network/api_provider_location.dart';
 
 class AddHireScreen extends StatefulWidget {
   const AddHireScreen({super.key, required this.voidCallback});
@@ -331,19 +334,22 @@ class _AddHireScreenState extends State<AddHireScreen> {
                     ScaleOnPress(
                       scaleValue: 0.98,
                       onTap: () async {
-                        //  Position position = await ApiProvider
-                        //      .getGeoLocationPosition();
-                        //  location =
-                        //  await ApiProvider.getPlaceNameByLocation(LatLng(
-                        //      position.latitude, position.longitude));
-                        //  setState(() {
-                        //
-                        //  });
+                        Position position =
+                            await ApiProvider().getGeoLocationPosition();
+                        location = await ApiProvider.getPlaceNameByLocation(
+                            LatLng(position.latitude, position.longitude));
+                        setState(() {});
+                        if (!context.mounted) return;
                         Navigator.push(
                           context,
                           MaterialPageRoute(
                             builder: (c) {
-                              return const GoogleMapsScreen();
+                              return GoogleMapsScreen(
+                                cameraPosition: CameraPosition(
+                                    target: LatLng(
+                                        position.latitude, position.longitude),
+                                    zoom: 15),
+                              );
                             },
                           ),
                         );
@@ -383,7 +389,7 @@ class _AddHireScreenState extends State<AddHireScreen> {
                                       onTap: () async {},
                                       icon: BitmapDescriptor.defaultMarker,
                                       position: const LatLng(12, 12),
-                                      markerId: const MarkerId("dscasd"),
+                                      markerId: const MarkerId(""),
                                     ),
                                   },
                                   zoomControlsEnabled: false,

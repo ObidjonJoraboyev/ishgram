@@ -37,7 +37,7 @@ class MapTypeItem extends StatelessWidget {
                     onTap: () {
                       context
                           .read<MapBloc>()
-                      .add(ChangeMapTypeEvent(newMapType: MapType.normal));
+                          .add(ChangeMapTypeEvent(newMapType: MapType.normal));
                     },
                   ),
                   PopupMenuItem(
@@ -51,10 +51,8 @@ class MapTypeItem extends StatelessWidget {
                   PopupMenuItem(
                     child: const Text("Satellite"),
                     onTap: () {
-                      context
-                          .read<MapBloc>()
-                          .add(ChangeMapTypeEvent(newMapType: MapType.satellite));
-
+                      context.read<MapBloc>().add(
+                          ChangeMapTypeEvent(newMapType: MapType.satellite));
                     },
                   ),
                 ];

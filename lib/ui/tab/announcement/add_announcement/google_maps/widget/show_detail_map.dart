@@ -1,19 +1,17 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:ish_top/blocs/map/map_bloc.dart';
 import '../../../../../../data/models/place_model.dart';
 
 addressDetailDialog(
     {required BuildContext context,
-      required ValueChanged<PlaceModel> placeModel,
-      required String defaultName}) {
+    required ValueChanged<PlaceModel> placeModel,
+    required String defaultName}) {
   TextEditingController nameController = TextEditingController();
   TextEditingController flatNumber = TextEditingController();
   TextEditingController orient = TextEditingController();
   TextEditingController entrance = TextEditingController();
   TextEditingController stage = TextEditingController();
 
-  int incrementId =0;
+  int incrementId = 0;
 
   nameController.text = defaultName;
   showModalBottomSheet(
@@ -22,7 +20,7 @@ addressDetailDialog(
       builder: (context) {
         return Padding(
           padding:
-          EdgeInsets.only(bottom: MediaQuery.of(context).viewInsets.bottom),
+              EdgeInsets.only(bottom: MediaQuery.of(context).viewInsets.bottom),
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
@@ -68,7 +66,7 @@ addressDetailDialog(
                         cursorColor: Colors.black,
                         decoration: InputDecoration(
                           labelStyle:
-                          TextStyle(color: Colors.black.withOpacity(.4)),
+                              TextStyle(color: Colors.black.withOpacity(.4)),
                           labelText: "Entrance",
                           enabledBorder: OutlineInputBorder(
                               borderRadius: BorderRadius.circular(16),
@@ -94,7 +92,7 @@ addressDetailDialog(
                         cursorColor: Colors.black,
                         decoration: InputDecoration(
                           labelStyle:
-                          TextStyle(color: Colors.black.withOpacity(.4)),
+                              TextStyle(color: Colors.black.withOpacity(.4)),
                           labelText: "Stage",
                           enabledBorder: OutlineInputBorder(
                               borderRadius: BorderRadius.circular(16),
@@ -120,7 +118,7 @@ addressDetailDialog(
                         cursorColor: Colors.black,
                         decoration: InputDecoration(
                           labelStyle:
-                          TextStyle(color: Colors.black.withOpacity(.4)),
+                              TextStyle(color: Colors.black.withOpacity(.4)),
                           labelText: "Apartment",
                           enabledBorder: OutlineInputBorder(
                               borderRadius: BorderRadius.circular(16),
@@ -176,17 +174,10 @@ addressDetailDialog(
                         lat: 0,
                         long: 0,
                         placeName: nameController.text,
-                        stage: stage.text, id: incrementId,
+                        stage: stage.text,
+                        id: incrementId,
                       ),
                     );
-
-
-                    double lat=  context.read<MapBloc>().state.currentCameraPosition.target.latitude;
-                    double lon=  context.read<MapBloc>().state.currentCameraPosition.target.latitude;
-
-
-
-
                   },
                   child: const Text(
                     "Save",

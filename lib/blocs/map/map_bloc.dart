@@ -1,9 +1,8 @@
 import 'dart:async';
-
+import 'package:bloc_concurrency/bloc_concurrency.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:location/location.dart';
-
 import '../../data/network/api_provider_location.dart';
 import 'map_event.dart';
 import 'map_state.dart';
@@ -11,41 +10,49 @@ import 'map_state.dart';
 class MapBloc extends Bloc<MapEvent, MapState> {
   MapBloc()
       : super(MapState(
-            currentPlaceName: "",
-            controller: Completer<GoogleMapController>(),
-            mapType: MapType.none,
-            initialCameraPosition: const CameraPosition(target: LatLng(0, 0), zoom: 12),
-            currentCameraPosition: const CameraPosition(target: LatLng(0, 0), zoom:  12),
-            markers: const {})) {
+          isOk: false,
+          currentPlaceName: "",
+          controller: Completer<GoogleMapController>(),
+          mapType: MapType.hybrid,
+          initialCameraPosition:
+              const CameraPosition(target: LatLng(0, 0), zoom: 18),
+          currentCameraPosition:
+              const CameraPosition(target: LatLng(0, 0), zoom: 18),
+          markers: const {},
+          userPosition: const CameraPosition(target: LatLng(0, 0), zoom: 18),
+        )) {
     on<ChangeMapTypeEvent>(changeMapType);
     on<ChangePlaceName>(changeCurrentLocation);
-    on<ChangeCurrentCameraPositionEvent>(changeCurrentCameraPosition);
+    on<ChangeCurrentCameraPositionEvent>(changeCurrentCameraPosition,
+        transformer: droppable());
+    on<GetUserLocation>(getUserLocation, transformer: droppable());
   }
 
-  changeMapType(ChangeMapTypeEvent event, Emitter emit) {
+  changeMapType(ChangeMapTypeEvent event, Emitter<MapState> emit) {
     emit(state.copyWith(mapType: event.newMapType));
   }
 
-  changeCurrentCameraPosition(ChangeCurrentCameraPositionEvent event, Emitter emit) async {
+  changeCurrentCameraPosition(
+      ChangeCurrentCameraPositionEvent event, Emitter<MapState> emit) async {
     final GoogleMapController mapController = await state.controller.future;
     await mapController
         .animateCamera(CameraUpdate.newCameraPosition(event.cameraPosition));
-  }
-
-  changeCurrentLocation(ChangePlaceName event, Emitter emit) async {
-
     emit(state.copyWith(currentCameraPosition: event.cameraPosition));
-    String a = await ApiProvider.getPlaceNameByLocation(event.cameraPosition.target);
-    emit(state.copyWith(currentPlaceName: a));
   }
 
-  getUserLocation(ChangePlaceName event, Emitter emit) async {
-    Location location =
-        Location();
-    bool serviceEnabled = false;
-    late PermissionStatus permissionGranted;
-    late LocationData locationData;
+  changeCurrentLocation(ChangePlaceName event, Emitter<MapState> emit) async {
+    emit(state.copyWith(isOk: false));
+    emit(state.copyWith(currentCameraPosition: event.cameraPosition));
+    String placeName =
+        await ApiProvider.getPlaceNameByLocation(event.cameraPosition.target);
+    emit(state.copyWith(currentPlaceName: placeName, isOk: true));
+  }
 
+  getUserLocation(GetUserLocation event, Emitter<MapState> emit) async {
+    Location location = Location();
+    bool serviceEnabled;
+
+    PermissionStatus permissionGranted;
     serviceEnabled = await location.serviceEnabled();
     if (!serviceEnabled) {
       serviceEnabled = await location.requestService();
@@ -57,15 +64,19 @@ class MapBloc extends Bloc<MapEvent, MapState> {
     permissionGranted = await location.hasPermission();
     if (permissionGranted == PermissionStatus.denied) {
       permissionGranted = await location.requestPermission();
+
       if (permissionGranted != PermissionStatus.granted) {
         return;
       }
     }
-
-    locationData = await location.getLocation();
-
-    emit(state.copyWith(
-        currentCameraPosition: CameraPosition(
-            target: LatLng(locationData.latitude!, locationData.longitude!))));
+    var locationUser = await ApiProvider().getGeoLocationPosition();
+    emit(
+      state.copyWith(
+        userPosition: CameraPosition(
+          target: LatLng(locationUser.latitude, locationUser.longitude),
+          zoom: 16,
+        ),
+      ),
+    );
   }
 }

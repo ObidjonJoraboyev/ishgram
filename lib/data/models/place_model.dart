@@ -1,4 +1,3 @@
-
 class PlaceModel {
   PlaceModel({
     required this.placeName,
@@ -21,15 +20,15 @@ class PlaceModel {
   final String orientAddress;
 
   Map<String, dynamic> toJson() => {
-    "place_id": id,
-    "lat": lat.toString(),
-    "long": long.toString(),
-    "place_name": placeName.toString(),
-    "place_entrance": entrance.toString(),
-    "place_flatNumber": flatNumber.toString(),
-    "place_orientAddress": orientAddress.toString(),
-    "place_stage": stage.toString()
-  };
+        "place_id": id,
+        "lat": lat.toString(),
+        "long": long.toString(),
+        "place_name": placeName.toString(),
+        "place_entrance": entrance.toString(),
+        "place_flatNumber": flatNumber.toString(),
+        "place_orientAddress": orientAddress.toString(),
+        "place_stage": stage.toString()
+      };
 
   factory PlaceModel.fromJson(Map<String, dynamic> json) {
     return PlaceModel(
@@ -64,5 +63,3 @@ class PlaceModel {
         orientAddress: orientAddress ?? this.orientAddress,
       );
 }
-
-

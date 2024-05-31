@@ -9,7 +9,6 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:ish_top/blocs/user_image/user_image_bloc.dart';
-import 'package:ish_top/ui/auth/auth_screen.dart';
 import 'package:ish_top/utils/size/size_utils.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:zoom_tap_animation/zoom_tap_animation.dart';
@@ -572,49 +571,4 @@ class UzbekMessages implements timeago.LookupMessages {
 
   @override
   String wordSeparator() => ' ';
-}
-
-showAskLogin({required BuildContext context, required String title}) {
-  showDialog(
-    context: context,
-    builder: (context) {
-      return CupertinoAlertDialog(
-        content: Text(
-          title,
-          style: TextStyle(
-            color: CupertinoColors.black,
-            fontSize: 16.sp,
-          ),
-        ),
-        actions: [
-          CupertinoDialogAction(
-            child: Text(
-              "cancel".tr(),
-              style: TextStyle(
-                  color: CupertinoColors.activeBlue,
-                  fontSize: 16.sp,
-                  fontWeight: FontWeight.w400),
-            ),
-            onPressed: () {
-              Navigator.pop(context);
-            },
-          ),
-          CupertinoDialogAction(
-              child: Text(
-                "login_button".tr(),
-                style: TextStyle(
-                    color: CupertinoColors.activeBlue,
-                    fontSize: 16.sp,
-                    fontWeight: FontWeight.w500),
-              ),
-              onPressed: () {
-                Navigator.pushAndRemoveUntil(context,
-                    MaterialPageRoute(builder: (context) {
-                  return const AuthScreen();
-                }), (r) => false);
-              })
-        ],
-      );
-    },
-  );
 }

@@ -1,19 +1,25 @@
+import 'dart:ui';
+
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:ish_top/blocs/map/map_bloc.dart';
 import 'package:ish_top/blocs/map/map_event.dart';
 import 'package:ish_top/blocs/map/map_state.dart';
 import 'package:ish_top/ui/tab/announcement/add_announcement/google_maps/widget/map_type_item.dart';
-import 'package:ish_top/ui/tab/announcement/add_announcement/google_maps/widget/show_detail_map.dart';
-import '../../../../../data/models/place_model.dart';
-import '../../../../../utils/styles/app_text_style.dart';
+import 'package:ish_top/ui/tab/announcement/add_announcement/widgets/global_button.dart';
+import 'package:ish_top/utils/size/size_utils.dart';
 
 class GoogleMapsScreen extends StatefulWidget {
   const GoogleMapsScreen({
     super.key,
+    required this.cameraPosition,
   });
+
+  final CameraPosition cameraPosition;
 
   @override
   State<GoogleMapsScreen> createState() => _GoogleMapsScreenState();
@@ -22,268 +28,164 @@ class GoogleMapsScreen extends StatefulWidget {
 class _GoogleMapsScreenState extends State<GoogleMapsScreen> {
   int activeIndex = 1;
   CameraPosition? cameraPosition;
+  GoogleMapController? mapController;
+
+  bool open = false;
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      extendBodyBehindAppBar: true,
+      appBar: AppBar(
+        title: const Text(
+          "Manzilni kiritish",
+          style: TextStyle(
+              color: Colors.black,
+              shadows: [Shadow(blurRadius: 14, color: Colors.white38)]),
+        ),
+        leading: IconButton(
+            onPressed: () {
+              Navigator.pop(context);
+            },
+            icon: const Icon(Icons.arrow_back_ios_new)),
+        backgroundColor: Colors.white.withOpacity(.5),
+        flexibleSpace: ClipRect(
+          child: BackdropFilter(
+            filter: ImageFilter.blur(sigmaX: 10.0, sigmaY: 10.0),
+            child: Container(
+              color: Colors.transparent,
+            ),
+          ),
+        ),
+      ),
       body: BlocConsumer<MapBloc, MapState>(
-        builder: (context, viewModel) {
+        builder: (context, state) {
           return Stack(
             children: [
               GoogleMap(
-
-                markers: viewModel.markers,
-
-                onCameraIdle: () {
+                markers: state.markers,
+                onCameraIdle: () async {
+                  setState(() {});
                   if (cameraPosition != null) {
                     context
                         .read<MapBloc>()
-                        .add(ChangeCurrentCameraPositionEvent(cameraPosition!));
+                        .add(ChangePlaceName(cameraPosition: cameraPosition!));
+
+                    context.read<MapBloc>().add(
+                          ChangeCurrentCameraPositionEvent(
+                              cameraPosition: cameraPosition!,
+                              controller: mapController!),
+                        );
                   }
+
+                  state.isOk ? open = true : open = false;
                 },
                 onCameraMove: (CameraPosition currentCameraPosition) {
                   cameraPosition = currentCameraPosition;
+                  open = false;
+
+                  setState(() {});
                 },
                 myLocationEnabled: true,
                 myLocationButtonEnabled: false,
-                mapType: viewModel.mapType,
-                initialCameraPosition: viewModel.initialCameraPosition,
-                onMapCreated: (GoogleMapController createdController) {
-                  viewModel.controller.complete(createdController);
+                zoomGesturesEnabled: true,
+                zoomControlsEnabled: true,
+                compassEnabled: true,
+                mapType: state.mapType,
+                initialCameraPosition: widget.cameraPosition,
+                onMapCreated: (createdController) {
+                  mapController = createdController;
+                  context
+                      .read<MapBloc>()
+                      .state
+                      .controller
+                      .complete(createdController);
+                  context.read<MapBloc>().add(GetUserLocation());
+                  setState(() {});
                 },
               ),
               Align(
                 alignment: Alignment.center,
-                child: SvgPicture.asset(
-                  "assets/icons/location.svg",
-                  width: 50,
-                  height: 50,
+                child: Padding(
+                  padding: const EdgeInsets.only(bottom: 40),
+                  child: SvgPicture.asset(
+                    "assets/icons/location.svg",
+                    width: 50,
+                    height: 50,
+                    fit: BoxFit.cover,
+                  ),
                 ),
               ),
               Positioned(
-                top: 40,
-                right: 0,
-                left: 0,
-                child: Column(
-                  children: [
-                    Text(
-                      viewModel.currentPlaceName,
-                      textAlign: TextAlign.center,
-                      style: AppTextStyle.interSemiBold.copyWith(
-                          fontSize: 24,
-                          color: Colors.white,
-                          shadows: [
-                            const Shadow(color: Colors.black, blurRadius: 40)
-                          ]),
-                    ),
-                    Text(
-                      "${viewModel.currentCameraPosition.target.latitude}",
-                      style: const TextStyle(
-                          color: Colors.white,
-                          fontSize: 22,
-                          fontWeight: FontWeight.w600),
-                    )
-                  ],
-                ),
-              ),
-              Positioned(
-                bottom: 30,
-                right: 0,
-                left: 0,
-                child: Column(
-                  children: [
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                      children: [
-                        Container(
-                          padding: const EdgeInsets.symmetric(
-                              horizontal: 22, vertical: 13),
-                          decoration: BoxDecoration(
-                            boxShadow: [
-                              BoxShadow(
-                                  spreadRadius: 2,
-                                  blurRadius: 10,
-                                  offset: const Offset(0, 7),
-                                  color: Colors.black.withOpacity(.24))
-                            ],
-                            borderRadius: BorderRadius.circular(16),
-                            color: activeIndex == 1
-                                ? Colors.orangeAccent
-                                : Colors.white,
-                          ),
-                          child: InkWell(
-                            onTap: () {
-                              activeIndex = 1;
-                              setState(() {});
-                            },
-                            child: Row(
-                              children: [
-                                Icon(
-                                  Icons.home,
-                                  color: activeIndex != 1
-                                      ? Colors.black
-                                      : Colors.white,
-                                ),
-                                Text(
-                                  "Home",
+                bottom: 0,
+                child: ClipRect(
+                  child: BackdropFilter(
+                    filter: ImageFilter.blur(sigmaX: 10.0, sigmaY: 10.0),
+                    child: Container(
+                      color: Colors.transparent,
+                      child: AnimatedContainer(
+                        decoration: BoxDecoration(
+                            color: Colors.white.withOpacity(.5),
+                            borderRadius: BorderRadius.only(
+                                topRight: Radius.circular(16.r),
+                                topLeft: Radius.circular(16.r))),
+                        duration: const Duration(milliseconds: 200),
+                        curve: Curves.linear,
+                        height: open ? 180.h : 0,
+                        width: MediaQuery.sizeOf(context).width,
+                        child: SingleChildScrollView(
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              10.getH(),
+                              Padding(
+                                padding: EdgeInsets.symmetric(
+                                    horizontal: 24.w, vertical: 12.h),
+                                child: Text(
+                                  state.currentPlaceName,
                                   style: TextStyle(
-                                      fontSize: 18,
-                                      fontWeight: FontWeight.w600,
-                                      color: activeIndex != 1
-                                          ? Colors.black
-                                          : Colors.white),
-                                )
-                              ],
-                            ),
-                          ),
-                        ),
-                        Container(
-                          padding: const EdgeInsets.symmetric(
-                              horizontal: 22, vertical: 13),
-                          decoration: BoxDecoration(
-                            boxShadow: [
-                              BoxShadow(
-                                  spreadRadius: 2,
-                                  blurRadius: 10,
-                                  offset: const Offset(0, 7),
-                                  color: Colors.black.withOpacity(.24))
-                            ],
-                            borderRadius: BorderRadius.circular(16),
-                            color: activeIndex == 2
-                                ? Colors.orangeAccent
-                                : Colors.white,
-                          ),
-                          child: InkWell(
-                            onTap: () {
-                              activeIndex = 2;
-                              setState(() {});
-                            },
-                            child: Row(
-                              children: [
-                                Icon(
-                                  Icons.work,
-                                  color: activeIndex != 2
-                                      ? Colors.black
-                                      : Colors.white,
+                                    fontWeight: FontWeight.w500,
+                                    fontSize: 16.sp,
+                                  ),
                                 ),
-                                Text(
-                                  "Work",
-                                  style: TextStyle(
-                                      fontSize: 18,
-                                      fontWeight: FontWeight.w600,
-                                      color: activeIndex != 2
-                                          ? Colors.black
-                                          : Colors.white),
-                                )
-                              ],
-                            ),
-                          ),
-                        ),
-                        Container(
-                          padding: const EdgeInsets.symmetric(
-                              horizontal: 22, vertical: 13),
-                          decoration: BoxDecoration(
-                            boxShadow: [
-                              BoxShadow(
-                                  spreadRadius: 2,
-                                  blurRadius: 10,
-                                  offset: const Offset(0, 7),
-                                  color: Colors.black.withOpacity(.24))
+                              ),
+                              Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: GlobalButton(
+                                    title: "Tanlash",
+                                    color: CupertinoColors.activeBlue,
+                                    onTap: () {}),
+                              )
                             ],
-                            borderRadius: BorderRadius.circular(16),
-                            color: activeIndex == 3
-                                ? Colors.orangeAccent
-                                : Colors.white,
                           ),
-                          child: InkWell(
-                            onTap: () {
-                              activeIndex = 3;
-                              setState(() {});
-                            },
-                            child: Row(
-                              children: [
-                                Icon(
-                                  Icons.edit_location_alt,
-                                  color: activeIndex != 3
-                                      ? Colors.black
-                                      : Colors.white,
-                                ),
-                                Text(
-                                  "Other",
-                                  style: TextStyle(
-                                      fontSize: 18,
-                                      fontWeight: FontWeight.w600,
-                                      color: activeIndex != 3
-                                          ? Colors.black
-                                          : Colors.white),
-                                )
-                              ],
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                    Container(
-                      margin: const EdgeInsets.only(top: 15),
-                      padding: const EdgeInsets.symmetric(
-                          horizontal: 50, vertical: 13),
-                      decoration: BoxDecoration(
-                        boxShadow: [
-                          BoxShadow(
-                              spreadRadius: 2,
-                              blurRadius: 10,
-                              offset: const Offset(0, 7),
-                              color: Colors.black.withOpacity(.24))
-                        ],
-                        borderRadius: BorderRadius.circular(16),
-                        color: Colors.orangeAccent,
-                      ),
-                      child: InkWell(
-                        onTap: () {
-                          addressDetailDialog(
-                            context: context,
-                            placeModel: (newAddressDetails) {
-                              PlaceModel place = newAddressDetails;
-                              place.lat = cameraPosition?.target.latitude ?? 12;
-                              place.long =
-                                  cameraPosition?.target.longitude ?? 12;
-                            },
-                            defaultName: viewModel.currentPlaceName,
-                          );
-                        },
-                        child: Text(
-                          "Add as ${activeIndex == 1 ? "Home" : activeIndex == 2 ? "Work" : "Other"}",
-                          style: const TextStyle(
-                              fontSize: 18,
-                              fontWeight: FontWeight.w600,
-                              color: Colors.white),
                         ),
                       ),
                     ),
-                  ],
+                  ),
                 ),
               ),
               Positioned(
                 top: 340,
                 right: 10,
                 child: Column(
-                  mainAxisSize: MainAxisSize.min,
                   children: [
-                    FloatingActionButton(
-                      onPressed: () {
-                        context.read<MapBloc>().add(
-                              ChangeCurrentCameraPositionEvent(
-                                const CameraPosition(
-                                  target: LatLng(0, 0),
-                                ),
-                              ),
-                            );
-                      },
-                      child: const Icon(Icons.gps_fixed),
-                    ),
-                    const SizedBox(height: 10),
-                    const SizedBox(height: 10),
                     const MapTypeItem(),
+                    SizedBox(
+                      height: 56,
+                      width: 56,
+                      child: IconButton(
+                        style:
+                            IconButton.styleFrom(backgroundColor: Colors.white),
+                        onPressed: () async {
+                          context.read<MapBloc>().add(
+                                ChangeCurrentCameraPositionEvent(
+                                    cameraPosition: state.userPosition,
+                                    controller: mapController!),
+                              );
+                        },
+                        icon: const Icon(Icons.my_location),
+                      ),
+                    )
                   ],
                 ),
               )

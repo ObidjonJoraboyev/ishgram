@@ -6,6 +6,7 @@ import 'package:ish_top/blocs/auth/auth_bloc.dart';
 import 'package:ish_top/blocs/connectivity/connectivity_bloc.dart';
 import 'package:ish_top/blocs/image/image_bloc.dart';
 import 'package:ish_top/blocs/map/map_bloc.dart';
+import 'package:ish_top/blocs/map/map_event.dart';
 import 'package:ish_top/blocs/message/message_bloc.dart';
 import 'package:ish_top/blocs/message/message_event.dart';
 import 'package:ish_top/ui/splash/splash_screen.dart';
@@ -39,8 +40,9 @@ class App extends StatelessWidget {
         ),
         BlocProvider(
           create: (context) => UserImageBloc(),
-        ), BlocProvider(
-          create: (context) => MapBloc(),
+        ),
+        BlocProvider(
+          create: (context) => MapBloc()..add(GetUserLocation()),
         ),
         BlocProvider(
           create: (_) => ConnectBloc()..add(CheckConnect()),

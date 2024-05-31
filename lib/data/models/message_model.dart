@@ -52,7 +52,7 @@ class MessageModel extends Equatable {
       messageId: json["doc_id"] as String? ?? "",
       isSupport: json["status"] as bool? ?? false,
       createdTime: json["updated_time"] as String? ?? "",
-      images: json["images"] as List<String> ? ?? [],
+      images: json["images"] as List<String>? ?? [],
     );
   }
 
@@ -63,7 +63,8 @@ class MessageModel extends Equatable {
     messageText: "",
     messageId: "",
     isSupport: false,
-    createdTime: "", images: [],
+    createdTime: "",
+    images: [],
   );
 
   MessageModel copyWith({
@@ -83,10 +84,8 @@ class MessageModel extends Equatable {
         messageText: messageText ?? this.messageText,
         messageId: messageId ?? this.messageId,
         isSupport: isSupport ?? this.isSupport,
-        createdTime: createdTime ?? this.createdTime,images:
-
-        images?? this.images
-    );
+        createdTime: createdTime ?? this.createdTime,
+        images: images ?? this.images);
   }
 
   @override
@@ -98,6 +97,6 @@ class MessageModel extends Equatable {
         isSupport,
         updatedTime,
         createdTime,
-    images
+        images
       ];
 }
