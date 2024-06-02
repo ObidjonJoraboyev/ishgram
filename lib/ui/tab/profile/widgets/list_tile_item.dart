@@ -4,8 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:ish_top/blocs/auth/auth_bloc.dart';
 import 'package:ish_top/blocs/auth/auth_event.dart';
-
-import '../../../../blocs/auth/auth_state.dart';
+import 'package:ish_top/blocs/auth/auth_state.dart';
 
 class ListTileItem extends StatefulWidget {
   const ListTileItem({

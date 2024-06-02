@@ -3,10 +3,10 @@ import 'dart:math';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:ish_top/data/forms/form_status.dart';
 import 'package:ish_top/data/local/local_storage.dart';
+import 'package:ish_top/data/models/user_model.dart';
 import 'package:ish_top/ui/auth/auth_screen.dart';
-import '../../data/forms/form_status.dart';
-import '../../data/models/user_model.dart';
 import 'auth_event.dart';
 import 'auth_state.dart';
 

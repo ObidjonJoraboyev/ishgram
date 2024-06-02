@@ -14,7 +14,7 @@ import 'package:ish_top/ui/auth/auth_screen.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:ish_top/ui/auth/register/widgets/pinput_item.dart';
 import 'package:ish_top/ui/auth/widgets/button.dart';
-import 'package:ish_top/ui/tab/announcement/add_announcement/widgets/text_field_widget.dart';
+import 'package:ish_top/ui/tab/announ/add_announ/widgets/text_field_widget.dart';
 import 'package:ish_top/utils/colors/app_colors.dart';
 import 'package:ish_top/utils/formatters/formatters.dart';
 import 'package:ish_top/utils/images/app_images.dart';
@@ -132,6 +132,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                             setState(() {});
                           }),
                     ),
+                    5.getH(),
                     TextButton(
                         onPressed: () async {
                           init();
@@ -144,7 +145,13 @@ class _RegisterScreenState extends State<RegisterScreen> {
                           //    throw 'Could not launch ';
                           //  }
                         },
-                        child: Text("Get password $password")),
+                        child: Text(
+                          "Generate password - $password",
+                          style: TextStyle(
+                              color: CupertinoColors.activeBlue,
+                              fontWeight: FontWeight.w400,
+                              fontSize: 14.sp),
+                        )),
                     20.getH(),
                     Padding(
                       padding: EdgeInsets.symmetric(horizontal: 16.w),

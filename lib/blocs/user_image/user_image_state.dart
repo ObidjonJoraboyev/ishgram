@@ -1,7 +1,6 @@
 import 'package:equatable/equatable.dart';
+import 'package:ish_top/blocs/image/formstatus.dart';
 import 'package:ish_top/data/models/image_model.dart';
-
-import '../image/formstatus.dart';
 
 class UserImageUploadState extends Equatable {
   final String downloadImage;

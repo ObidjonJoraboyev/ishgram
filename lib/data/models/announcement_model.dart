@@ -1,8 +1,7 @@
 import 'package:equatable/equatable.dart';
-
 import 'image_model.dart';
 
-class AnnouncementModel extends Equatable {
+class AnnounModel extends Equatable {
   final String docId;
   final String userId;
   final List<ImageModel> image;
@@ -16,14 +15,14 @@ class AnnouncementModel extends Equatable {
   final double lat;
   final double long;
   final String timeInterval;
-  final StatusAnnouncement status;
+  final StatusAnnoun status;
   final int createdAt;
   final int updatedAt;
   final List<String> viewedUsers;
   final List<String> likedUsers;
   final List<String> comments;
 
-  const AnnouncementModel({
+  const AnnounModel({
     required this.docId,
     required this.userId,
     required this.title,
@@ -45,7 +44,7 @@ class AnnouncementModel extends Equatable {
     required this.comments,
   });
 
-  AnnouncementModel copyWith({
+  AnnounModel copyWith({
     String? title,
     String? ownerName,
     String? docId,
@@ -62,13 +61,13 @@ class AnnouncementModel extends Equatable {
     int? updatedAt,
     List<String>? countView,
     WorkCategory? category,
-    StatusAnnouncement? status,
+    StatusAnnoun? status,
     List<String>? likedUsers,
     List<String>? comments,
     List<String>? viewedUsers,
     String? userId,
   }) {
-    return AnnouncementModel(
+    return AnnounModel(
       ownerName: ownerName ?? this.ownerName,
       docId: docId ?? this.docId,
       title: title ?? this.title,
@@ -138,8 +137,8 @@ class AnnouncementModel extends Equatable {
     };
   }
 
-  factory AnnouncementModel.fromJson(Map<String, dynamic> json) {
-    return AnnouncementModel(
+  factory AnnounModel.fromJson(Map<String, dynamic> json) {
+    return AnnounModel(
       ownerName: json["owner_name"] as String? ?? "",
       docId: json["doc_id"] as String? ?? "",
       title: json["title"] as String? ?? "",
@@ -177,12 +176,12 @@ class AnnouncementModel extends Equatable {
         .firstWhere((type) => type.toString() == 'WorkCategory.$value');
   }
 
-  static StatusAnnouncement enumFromString2(String value) {
-    return StatusAnnouncement.values
+  static StatusAnnoun enumFromString2(String value) {
+    return StatusAnnoun.values
         .firstWhere((type) => type.toString() == 'StatusAnnouncement.$value');
   }
 
-  static const AnnouncementModel initial = AnnouncementModel(
+  static const AnnounModel initial = AnnounModel(
     ownerName: "",
     title: '',
     description: '',
@@ -198,7 +197,7 @@ class AnnouncementModel extends Equatable {
     updatedAt: 0,
     location: '',
     viewedUsers: [],
-    status: StatusAnnouncement.pure,
+    status: StatusAnnoun.pure,
     likedUsers: [],
     comments: [],
     userId: '',
@@ -228,4 +227,4 @@ class AnnouncementModel extends Equatable {
 
 enum WorkCategory { easy, medium, hard }
 
-enum StatusAnnouncement { active, done, returned, pure, deleted }
+enum StatusAnnoun { active, done, returned, pure, deleted }

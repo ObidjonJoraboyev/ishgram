@@ -21,6 +21,7 @@ class UserModel extends Equatable {
   final List<String> savedHiring;
   final String fcm;
   final bool isPrivate;
+  final int who;
 
   const UserModel({
     required this.location,
@@ -43,6 +44,7 @@ class UserModel extends Equatable {
     required this.allHiring,
     required this.savedHiring,
     required this.isPrivate,
+    required this.who,
   });
 
   UserModel copyWith({
@@ -68,6 +70,7 @@ class UserModel extends Equatable {
     List<String>? savedHiring,
     List<String>? allHiring,
     bool? isPrivate,
+    int? who,
   }) {
     return UserModel(
       password: password ?? this.password,
@@ -90,6 +93,7 @@ class UserModel extends Equatable {
       savedHiring: savedHiring ?? this.savedHiring,
       color: color ?? this.color,
       isPrivate: isPrivate ?? this.isPrivate,
+      who: who ?? this.who,
     );
   }
 
@@ -113,7 +117,8 @@ class UserModel extends Equatable {
         "announcements": allHiring.map((e) => e.toString()).toList(),
         "likedHiring": savedHiring.map((e) => e.toString()).toList(),
         "color": color,
-        "isPrivate": isPrivate
+        "isPrivate": isPrivate,
+        "who": who
       };
 
   Map<String, dynamic> toJsonForUpdate() => {
@@ -135,7 +140,8 @@ class UserModel extends Equatable {
         "announcements": allHiring.map((e) => e.toString()).toList(),
         "likedHiring": savedHiring.map((e) => e.toString()).toList(),
         "color": color,
-        "isPrivate": isPrivate
+        "isPrivate": isPrivate,
+        "who": who
       };
 
   factory UserModel.fromJson(Map<String, dynamic> json) {
@@ -164,31 +170,32 @@ class UserModel extends Equatable {
           .toList(),
       color: json["color"] as String? ?? "",
       isPrivate: json["isPrivate"] as bool? ?? false,
+      who: json["who"] as int? ?? 0,
     );
   }
 
   static UserModel initial = const UserModel(
-    password: "",
-    age: 0,
-    location: "",
-    fcm: "",
-    docId: "",
-    name: "",
-    phone: "",
-    lastName: "",
-    image: "",
-    lat: 0,
-    long: 0,
-    region: "",
-    rating: 0,
-    bio: "",
-    updatedAt: 0,
-    createdAt: 0,
-    allHiring: [],
-    savedHiring: [],
-    color: "",
-    isPrivate: false,
-  );
+      password: "",
+      age: 0,
+      location: "",
+      fcm: "",
+      docId: "",
+      name: "",
+      phone: "",
+      lastName: "",
+      image: "",
+      lat: 0,
+      long: 0,
+      region: "",
+      rating: 0,
+      bio: "",
+      updatedAt: 0,
+      createdAt: 0,
+      allHiring: [],
+      savedHiring: [],
+      color: "",
+      isPrivate: false,
+      who: 0);
 
   @override
   List<Object?> get props => [
@@ -211,6 +218,7 @@ class UserModel extends Equatable {
         allHiring,
         savedHiring,
         color,
-        isPrivate
+        isPrivate,
+        who
       ];
 }

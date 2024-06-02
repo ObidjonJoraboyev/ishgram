@@ -2,8 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-
-import '../../../utils/colors/app_colors.dart';
+import 'package:ish_top/utils/colors/app_colors.dart';
 
 class UniversalTextInput extends StatelessWidget {
   const UniversalTextInput(

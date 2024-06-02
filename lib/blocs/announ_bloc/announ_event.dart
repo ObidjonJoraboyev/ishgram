@@ -1,0 +1,38 @@
+import 'package:flutter/material.dart';
+import 'package:ish_top/data/models/announcement_model.dart';
+import 'package:ish_top/data/models/user_model.dart';
+
+abstract class AnnounEvent {}
+
+class AnnounAddEvent extends AnnounEvent {
+  final AnnounModel hireModel;
+  final BuildContext context;
+  final UserModel userModel;
+
+  AnnounAddEvent(
+      {required this.hireModel,
+      required this.context,
+      required this.userModel});
+}
+
+class AnnounUpdateEvent extends AnnounEvent {
+  final AnnounModel hireModel;
+
+  AnnounUpdateEvent({required this.hireModel});
+}
+
+class AnnounRemoveEvent extends AnnounEvent {
+  final String docId;
+
+  AnnounRemoveEvent({required this.docId});
+}
+
+class AnnounGetEvent extends AnnounEvent {}
+
+class AnnounInitialEvent extends AnnounEvent {}
+
+class AnnounListGetEvent extends AnnounEvent {
+  final List<String> announcementDocs;
+
+  AnnounListGetEvent({required this.announcementDocs});
+}

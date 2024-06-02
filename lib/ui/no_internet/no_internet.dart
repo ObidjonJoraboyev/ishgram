@@ -2,8 +2,8 @@ import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import '../../blocs/connectivity/connectivity_bloc.dart';
-import '../../blocs/connectivity/connectivity_state.dart';
+import 'package:ish_top/blocs/connectivity/connectivity_bloc.dart';
+import 'package:ish_top/blocs/connectivity/connectivity_state.dart';
 
 class InternetScreen extends StatefulWidget {
   const InternetScreen({super.key, required this.onInternetComeBack});

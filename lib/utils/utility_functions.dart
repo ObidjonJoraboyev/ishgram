@@ -415,7 +415,7 @@ Widget toast = Container(
 
 addAlarm(
     {required BuildContext context1,
-    required AnnouncementModel hireModel,
+    required AnnounModel hireModel,
     required ValueChanged valueChanged}) {
   showCupertinoModalPopup(
     barrierDismissible: false,

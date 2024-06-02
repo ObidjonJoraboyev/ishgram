@@ -62,11 +62,7 @@
   "easy": "Oson",
   "medium": "O'rtacha",
   "hard": "Qiyin",
-  "global": "Asosiy"
-
-
-
-
-
-
+  "global": "Asosiy",
+  "worker": "Ishchi",
+  "employer": "Ish beruvchi"
 }

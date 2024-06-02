@@ -1,6 +1,5 @@
 import 'package:equatable/equatable.dart';
-
-import '../../data/models/message_model.dart';
+import 'package:ish_top/data/models/message_model.dart';
 
 class MessageEvent extends Equatable {
   const MessageEvent();

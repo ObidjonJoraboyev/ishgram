@@ -11,13 +11,13 @@ import 'package:ish_top/data/models/user_model.dart';
 import 'package:ish_top/ui/auth/auth_screen.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:ish_top/ui/auth/widgets/button.dart';
+import 'package:ish_top/ui/auth/widgets/global_textfield.dart';
+import 'package:ish_top/ui/auth/widgets/textfielad.dart';
 import 'package:ish_top/utils/colors/app_colors.dart';
+import 'package:ish_top/utils/constants/app_constants.dart';
 import 'package:ish_top/utils/images/app_images.dart';
 import 'package:ish_top/utils/size/size_utils.dart';
 import 'package:pinput/pinput.dart';
-import '../../../utils/constants/app_constants.dart';
-import '../widgets/global_textfield.dart';
-import '../widgets/textfielad.dart';
 
 class RegisterSecond extends StatefulWidget {
   const RegisterSecond({super.key, required this.userModel});
@@ -35,6 +35,8 @@ class _RegisterSecondState extends State<RegisterSecond> {
   final TextEditingController firstNameController = TextEditingController();
   final TextEditingController lastNameController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
+
+  int activeSlider = 4;
 
   @override
   Widget build(BuildContext context) {
@@ -114,7 +116,28 @@ class _RegisterSecondState extends State<RegisterSecond> {
                         controller: passwordController,
                       ),
                     ),
-                    24.getH(),
+                    15.getH(),
+                    Padding(
+                      padding: EdgeInsets.symmetric(horizontal: 12.0.sp),
+                      child: Row(
+                        children: [
+                          Expanded(
+                            child: CupertinoSlidingSegmentedControl(
+                                groupValue: activeSlider,
+                                children: {
+                                  4: Text("worker".tr()),
+                                  5: Text("employer".tr()),
+                                },
+                                onValueChanged: (dynamic f) {
+                                  setState(() {
+                                    activeSlider = f;
+                                  });
+                                }),
+                          ),
+                        ],
+                      ),
+                    ),
+                    30.getH(),
                     Padding(
                       padding: EdgeInsets.symmetric(horizontal: 16.w),
                       child: SizedBox(
@@ -125,10 +148,10 @@ class _RegisterSecondState extends State<RegisterSecond> {
                             context.read<AuthBloc>().add(
                                   RegisterUpdateEvent(
                                     userModel: state.userModel.copyWith(
-                                      lastName: lastNameController.text,
-                                      name: firstNameController.text,
-                                      password: passwordController.text,
-                                    ),
+                                        lastName: lastNameController.text,
+                                        name: firstNameController.text,
+                                        password: passwordController.text,
+                                        who: activeSlider),
                                     docId: state.userModel.docId,
                                   ),
                                 );

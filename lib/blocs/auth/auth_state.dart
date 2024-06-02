@@ -1,7 +1,6 @@
 import 'package:equatable/equatable.dart';
-
-import '../../data/forms/form_status.dart';
-import '../../data/models/user_model.dart';
+import 'package:ish_top/data/forms/form_status.dart';
+import 'package:ish_top/data/models/user_model.dart';
 
 class AuthState extends Equatable {
   const AuthState(

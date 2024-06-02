@@ -1,5 +1,4 @@
 import 'dart:ui';
-
 import 'package:easy_image_viewer/easy_image_viewer.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/cupertino.dart';
@@ -9,16 +8,16 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:ish_top/blocs/auth/auth_bloc.dart';
 import 'package:ish_top/blocs/auth/auth_event.dart';
+import 'package:ish_top/blocs/auth/auth_state.dart';
+import 'package:ish_top/blocs/image/formstatus.dart';
+import 'package:ish_top/blocs/user_image/user_image_bloc.dart';
 import 'package:ish_top/blocs/user_image/user_image_event.dart';
 import 'package:ish_top/blocs/user_image/user_image_state.dart';
-import 'package:ish_top/ui/tab/profile/my_announcements/my_announcements.dart';
+import 'package:ish_top/ui/tab/profile/my_announs/my_announcements.dart';
 import 'package:ish_top/ui/tab/profile/my_profile/my_profile_screen.dart';
 import 'package:ish_top/ui/tab/profile/widgets/list_tile_item.dart';
 import 'package:ish_top/utils/size/size_utils.dart';
 import 'package:ish_top/utils/utility_functions.dart';
-import '../../../blocs/auth/auth_state.dart';
-import '../../../blocs/image/formstatus.dart';
-import '../../../blocs/user_image/user_image_bloc.dart';
 
 class ProfileScreen extends StatefulWidget {
   const ProfileScreen({super.key, required this.context});

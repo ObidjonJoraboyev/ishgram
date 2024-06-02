@@ -2,13 +2,13 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:ish_top/blocs/image/image_bloc.dart';
 import 'package:ish_top/blocs/image/image_event.dart';
 import 'package:ish_top/data/models/user_model.dart';
-import 'package:ish_top/ui/tab/announcement/pages/page_control.dart';
-import '../../../blocs/image/image_bloc.dart';
-import '../announcement/add_announcement/add_announcement_screen.dart';
-import '../feedback/feedback_screen.dart';
-import '../profile/profile_screen.dart';
+import 'package:ish_top/ui/tab/announ/add_announ/add_announ_screen.dart';
+import 'package:ish_top/ui/tab/announ/pages/page_control.dart';
+import 'package:ish_top/ui/tab/feedback/feedback_screen.dart';
+import 'package:ish_top/ui/tab/profile/profile_screen.dart';
 
 class TabScreen extends StatefulWidget {
   const TabScreen({super.key, this.index = 0});

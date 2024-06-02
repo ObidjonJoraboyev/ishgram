@@ -1,7 +1,6 @@
 import 'package:equatable/equatable.dart';
 import 'package:flutter/cupertino.dart';
-
-import '../../data/models/user_model.dart';
+import 'package:ish_top/data/models/user_model.dart';
 
 abstract class AuthEvent extends Equatable {
   @override

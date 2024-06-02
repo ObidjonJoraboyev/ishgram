@@ -2,8 +2,8 @@ import 'dart:async';
 import 'package:bloc_concurrency/bloc_concurrency.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:ish_top/data/network/api_provider_location.dart';
 import 'package:location/location.dart';
-import '../../data/network/api_provider_location.dart';
 import 'map_event.dart';
 import 'map_state.dart';
 

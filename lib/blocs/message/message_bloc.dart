@@ -2,7 +2,6 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:ish_top/data/models/message_model.dart';
-
 import 'message_event.dart';
 
 class MessageBloc extends Bloc<MessageEvent, List<MessageModel>> {

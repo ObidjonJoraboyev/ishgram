@@ -2,14 +2,13 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:ish_top/blocs/auth/auth_bloc.dart';
+import 'package:ish_top/blocs/auth/auth_state.dart';
+import 'package:ish_top/data/forms/form_status.dart';
 import 'package:ish_top/ui/auth/register/register_first.dart';
 import 'package:ish_top/ui/auth/register/register_second.dart';
+import 'package:ish_top/ui/tab/tab/tab_screen.dart';
 import 'package:ish_top/utils/size/size_utils.dart';
-
-import '../../../blocs/auth/auth_bloc.dart';
-import '../../../blocs/auth/auth_state.dart';
-import '../../../data/forms/form_status.dart';
-import '../../tab/tab/tab_screen.dart';
 
 class RegisterControl extends StatefulWidget {
   const RegisterControl({super.key});

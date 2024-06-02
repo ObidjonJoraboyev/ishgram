@@ -5,18 +5,18 @@ import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:ish_top/blocs/auth/auth_bloc.dart';
+import 'package:ish_top/blocs/auth/auth_event.dart';
+import 'package:ish_top/blocs/auth/auth_state.dart';
+import 'package:ish_top/data/forms/form_status.dart';
 import 'package:ish_top/ui/auth/register/register_control.dart';
 import 'package:ish_top/ui/auth/widgets/button.dart';
 import 'package:ish_top/ui/auth/widgets/textfielad.dart';
+import 'package:ish_top/ui/tab/announ/add_announ/widgets/text_field_widget.dart';
+import 'package:ish_top/ui/tab/tab/tab_screen.dart';
+import 'package:ish_top/utils/formatters/formatters.dart';
+import 'package:ish_top/utils/images/app_images.dart';
 import 'package:ish_top/utils/size/size_utils.dart';
-import '../../blocs/auth/auth_bloc.dart';
-import '../../blocs/auth/auth_event.dart';
-import '../../blocs/auth/auth_state.dart';
-import '../../data/forms/form_status.dart';
-import '../../utils/formatters/formatters.dart';
-import '../../utils/images/app_images.dart';
-import '../tab/announcement/add_announcement/widgets/text_field_widget.dart';
-import '../tab/tab/tab_screen.dart';
 
 class AuthScreen extends StatefulWidget {
   const AuthScreen({super.key});

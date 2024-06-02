@@ -1,8 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import '../../../utils/colors/app_colors.dart';
-
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:ish_top/utils/colors/app_colors.dart';
 
 class LoginButtonItems extends StatelessWidget {
   const LoginButtonItems({
@@ -40,7 +39,7 @@ class LoginButtonItems extends StatelessWidget {
             : Text(
                 title.isEmpty ? "REGISTER" : title,
                 style: TextStyle(
-                  color: AppColors.white,
+                  color: Colors.white,
                   fontSize: 16.w,
                   fontWeight: FontWeight.w600,
                 ),
