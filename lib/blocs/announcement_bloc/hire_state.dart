@@ -1,13 +1,18 @@
 import '../../data/models/announcement_model.dart';
 
-abstract class AnnouncementState {}
+class AnnounState {
+  final List<AnnouncementModel> allHires;
+  final List<AnnouncementModel> myHires;
 
-class AnnouncementInitial extends AnnouncementState {}
+  AnnounState({required this.allHires, required this.myHires});
 
-class AnnouncementGetState extends AnnouncementState {
-  final List<AnnouncementModel> hires;
-
-  AnnouncementGetState({required this.hires});
+  AnnounState copyWith({
+    List<AnnouncementModel>? allHires,
+    List<AnnouncementModel>? myHires,
+  }) {
+    return AnnounState(
+      allHires: allHires ?? this.allHires,
+      myHires: myHires ?? this.myHires,
+    );
+  }
 }
-
-class AnnouncementLoadingState extends AnnouncementState {}

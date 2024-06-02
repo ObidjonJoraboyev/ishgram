@@ -14,17 +14,18 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
   AuthBloc()
       : super(
           AuthState(
-            errorMessage: "",
-            statusMessage: "",
-            formStatus: FormStatus.pure,
-            userModel: UserModel.initial,
-          ),
+              errorMessage: "",
+              statusMessage: "",
+              formStatus: FormStatus.pure,
+              userModel: UserModel.initial,
+              users: const []),
         ) {
     on<LoginUserEvent>(_loginUser);
     on<LogOutEvent>(_logOutUser);
     on<RegisterUserEvent>(_registerUser);
     on<RegisterUpdateEvent>(_registerUpdateUser);
     on<GetCurrentUser>(_getCurrentUser);
+    on<GetAllUsers>(getAllUsers);
   }
 
   Stream<List<UserModel>> response = FirebaseFirestore.instance
@@ -102,7 +103,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       await FirebaseFirestore.instance
           .collection("users")
           .doc(event.userModel.docId)
-          .update(event.userModel.toJson());
+          .update(event.userModel.toJsonForUpdate());
       emit(state.copyWith(formStatus: FormStatus.authenticated));
     } catch (e) {
       emit(
@@ -202,5 +203,13 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     );
 
     emit(state.copyWith(formStatus: FormStatus.success));
+  }
+
+  getAllUsers(GetAllUsers event, Emitter<AuthState> emit) async {
+    emit(state.copyWith(formStatus: FormStatus.loading));
+
+    await emit.onEach(response, onData: (List<UserModel> users) {
+      emit(state.copyWith(users: users, formStatus: FormStatus.success));
+    });
   }
 }

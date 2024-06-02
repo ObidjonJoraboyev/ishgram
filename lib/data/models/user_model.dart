@@ -110,8 +110,8 @@ class UserModel extends Equatable {
         "bio": bio,
         "updatedAt": updatedAt,
         "createdAt": createdAt,
-        "announcements": allHiring,
-        "likedHiring": savedHiring,
+        "announcements": allHiring.map((e) => e.toString()).toList(),
+        "likedHiring": savedHiring.map((e) => e.toString()).toList(),
         "color": color,
         "isPrivate": isPrivate
       };
@@ -132,8 +132,8 @@ class UserModel extends Equatable {
         "bio": bio,
         "updatedAt": updatedAt,
         "createdAt": createdAt,
-        "announcements": allHiring,
-        "likedHiring": savedHiring,
+        "announcements": allHiring.map((e) => e.toString()).toList(),
+        "likedHiring": savedHiring.map((e) => e.toString()).toList(),
         "color": color,
         "isPrivate": isPrivate
       };

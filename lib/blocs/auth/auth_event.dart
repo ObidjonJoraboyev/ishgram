@@ -38,6 +38,8 @@ class RegisterUserEvent extends AuthEvent {
 
 class GetCurrentUser extends AuthEvent {}
 
+class GetAllUsers extends AuthEvent {}
+
 class RegisterUpdateEvent extends AuthEvent {
   RegisterUpdateEvent({
     required this.userModel,

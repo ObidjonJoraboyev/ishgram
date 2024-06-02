@@ -11,6 +11,8 @@ import 'package:ish_top/blocs/auth/auth_bloc.dart';
 import 'package:ish_top/blocs/auth/auth_event.dart';
 import 'package:ish_top/blocs/user_image/user_image_event.dart';
 import 'package:ish_top/blocs/user_image/user_image_state.dart';
+import 'package:ish_top/ui/tab/profile/my_announcements/my_announcements.dart';
+import 'package:ish_top/ui/tab/profile/my_profile/my_profile_screen.dart';
 import 'package:ish_top/ui/tab/profile/widgets/list_tile_item.dart';
 import 'package:ish_top/utils/size/size_utils.dart';
 import 'package:ish_top/utils/utility_functions.dart';
@@ -300,7 +302,13 @@ class _ProfileScreenState extends State<ProfileScreen> {
                           isPhoto: true,
                         ),
                         ListTileItem(
-                            voidCallback: () {},
+                            voidCallback: () {
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) =>
+                                          const MyProfileScreen()));
+                            },
                             title: "My Profile",
                             icon: const Icon(
                               CupertinoIcons.profile_circled,
@@ -308,26 +316,29 @@ class _ProfileScreenState extends State<ProfileScreen> {
                             ),
                             color: CupertinoColors.destructiveRed),
                         ListTileItem(
-                            voidCallback: () {
-                              context
-                                  .read<AuthBloc>()
-                                  .add(LogOutEvent(context: widget.context));
-                            },
-                            title: "Log Out",
-                            icon: const Icon(
-                              Icons.logout,
-                              color: Colors.white,
-                            ),
-                            color: CupertinoColors.destructiveRed),
-                        ListTileItem(
                           isSwitch: true,
                           voidCallback: () {},
-                          title: "Boshqalarga sizni ko'rsatish",
+                          title: "hidden_acc".tr(),
                           icon: const Icon(
                             Icons.visibility,
                             color: Colors.white,
                           ),
-                          color: Colors.red,
+                          color: CupertinoColors.systemOrange,
+                        ),
+                        ListTileItem(
+                          voidCallback: () {
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) =>
+                                        const MyAnnouncements()));
+                          },
+                          title: "my_announcements".tr(),
+                          icon: const Icon(
+                            CupertinoIcons.list_bullet_indent,
+                            color: Colors.white,
+                          ),
+                          color: CupertinoColors.systemOrange,
                         ),
                         ListTileItem(
                             voidCallback: () {
@@ -389,6 +400,18 @@ class _ProfileScreenState extends State<ProfileScreen> {
                               color: CupertinoColors.white,
                             ),
                             color: CupertinoColors.activeBlue),
+                        ListTileItem(
+                            voidCallback: () {
+                              context
+                                  .read<AuthBloc>()
+                                  .add(LogOutEvent(context: widget.context));
+                            },
+                            title: "Log Out",
+                            icon: const Icon(
+                              Icons.logout,
+                              color: Colors.white,
+                            ),
+                            color: CupertinoColors.destructiveRed),
                       ],
                     ),
                   ],

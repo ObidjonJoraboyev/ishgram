@@ -81,6 +81,7 @@ class _GlobalTextFiledState extends State<GlobalTextFiled> {
                   ],
                   fontSize: 15.sp,
                 ),
+                counterText: widget.maxLength == 50 ? "" : null,
                 contentPadding: EdgeInsets.all(10.sp),
                 fillColor: Colors.white,
                 filled: true,

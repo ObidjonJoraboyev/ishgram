@@ -4,7 +4,10 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:ish_top/blocs/announcement_bloc/hire_event.dart';
 import 'package:ish_top/blocs/announcement_bloc/hire_state.dart';
+import 'package:ish_top/blocs/auth/auth_bloc.dart';
+import 'package:ish_top/blocs/auth/auth_event.dart';
 import 'package:ish_top/data/local/local_storage.dart';
 import 'package:ish_top/data/models/announcement_model.dart';
 import 'package:ish_top/ui/tab/announcement/comment_screen/comment_screen.dart';
@@ -14,10 +17,10 @@ import 'package:page_transition/page_transition.dart';
 import 'package:shimmer/shimmer.dart';
 import 'package:timeago/timeago.dart' as timeago;
 import '../../../../../blocs/announcement_bloc/hire_bloc.dart';
-import '../detail/detail_screen.dart';
+import '../../../announcement/detail/detail_screen.dart';
 
-class HiringItem extends StatefulWidget {
-  const HiringItem({
+class MyAnnounItem extends StatefulWidget {
+  const MyAnnounItem({
     super.key,
     required this.hires,
     required this.voidCallback,
@@ -31,10 +34,10 @@ class HiringItem extends StatefulWidget {
   final BuildContext context1;
 
   @override
-  State<HiringItem> createState() => _HiringItemState();
+  State<MyAnnounItem> createState() => _MyAnnounItemState();
 }
 
-class _HiringItemState extends State<HiringItem> {
+class _MyAnnounItemState extends State<MyAnnounItem> {
   String userNum = StorageRepository.getString(key: "userNumber");
 
   int activeIndex = 0;
@@ -79,7 +82,7 @@ class _HiringItemState extends State<HiringItem> {
                       topLeft: Radius.circular(16.r)),
                   boxShadow: [
                     BoxShadow(
-                      offset: const Offset(0, 8),
+                      offset: const Offset(0, -8),
                       spreadRadius: 1,
                       blurRadius: 10,
                       color: CupertinoColors.systemGrey.withOpacity(.01),
@@ -90,10 +93,157 @@ class _HiringItemState extends State<HiringItem> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
+                    0.getH(),
+                    Padding(
+                      padding: EdgeInsets.only(
+                        left: 8.w,
+                      ),
+                      child: Row(
+                        children: [
+                          Text(
+                            getTime(
+                              time: widget.hires.timeInterval,
+                            ),
+                            style: TextStyle(
+                                color: Colors.black,
+                                fontWeight: FontWeight.w500,
+                                fontSize: 15.sp),
+                          ),
+                          const Spacer(),
+                          PopupMenuButton(
+                            padding: EdgeInsets.zero,
+                            onSelected: (v) {},
+                            splashRadius: 500,
+                            color: Colors.white,
+                            icon: const Icon(Icons.more_vert,
+                                color: Colors.black),
+                            itemBuilder: (context) {
+                              return [
+                                PopupMenuItem(
+                                  child: Row(
+                                    children: [
+                                      const Icon(
+                                        CupertinoIcons.pen,
+                                        color: Colors.black,
+                                      ),
+                                      10.getW(),
+                                      Text(
+                                        "Update",
+                                        style: TextStyle(
+                                            color: Colors.black,
+                                            fontWeight: FontWeight.w500,
+                                            fontSize: 14.sp),
+                                      ),
+                                    ],
+                                  ),
+                                  onTap: () {},
+                                ),
+                                PopupMenuItem(
+                                  child: Row(
+                                    children: [
+                                      const Icon(
+                                        CupertinoIcons.delete,
+                                        color: Colors.red,
+                                      ),
+                                      10.getW(),
+                                      Text(
+                                        "Delete",
+                                        style: TextStyle(
+                                          color: Colors.red,
+                                          fontWeight: FontWeight.w500,
+                                          fontSize: 14.sp,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                  onTap: () {
+                                    showDialog(
+                                        context: context,
+                                        builder: (con) {
+                                          return CupertinoAlertDialog(
+                                            title: Text(
+                                              "Delete",
+                                              style: TextStyle(
+                                                  fontSize: 16.sp,
+                                                  fontWeight: FontWeight.w600,
+                                                  color: Colors.black),
+                                            ),
+                                            content: Text(
+                                              "remove_announ".tr(),
+                                              style: TextStyle(
+                                                  fontWeight: FontWeight.w400,
+                                                  fontSize: 12.sp),
+                                            ),
+                                            actions: [
+                                              CupertinoButton(
+                                                  child: Text(
+                                                    "Cancel",
+                                                    style: TextStyle(
+                                                        fontSize: 14.sp,
+                                                        fontWeight:
+                                                            FontWeight.w400,
+                                                        color: CupertinoColors
+                                                            .activeBlue),
+                                                  ),
+                                                  onPressed: () {
+                                                    Navigator.pop(con);
+                                                  }),
+                                              CupertinoButton(
+                                                  child: Text(
+                                                    "Delete",
+                                                    style: TextStyle(
+                                                        fontSize: 14.sp,
+                                                        fontWeight:
+                                                            FontWeight.w500,
+                                                        color: CupertinoColors
+                                                            .destructiveRed),
+                                                  ),
+                                                  onPressed: () {
+                                                    context
+                                                        .read<
+                                                            AnnouncementBloc>()
+                                                        .add(AnnounRemoveEvent(
+                                                            docId: widget
+                                                                .hires.docId));
+                                                    context.read<AuthBloc>().add(
+                                                        RegisterUpdateEvent(
+                                                            userModel: context
+                                                                .read<
+                                                                    AuthBloc>()
+                                                                .state
+                                                                .userModel
+                                                                .copyWith(
+                                                                    allHiring: context
+                                                                        .read<
+                                                                            AuthBloc>()
+                                                                        .state
+                                                                        .userModel
+                                                                        .allHiring
+                                                                        .where((v) =>
+                                                                            v !=
+                                                                            widget.hires.docId)
+                                                                        .toList()),
+                                                            docId: ""
+                                                                ""));
+
+                                                    setState(() {});
+                                                    Navigator.pop(con);
+                                                  }),
+                                            ],
+                                          );
+                                        });
+                                  },
+                                ),
+                              ];
+                            },
+                          ),
+                        ],
+                      ),
+                    ),
                     Stack(
                       children: [
                         SizedBox(
-                          height: 300.h,
+                          height: 200.h,
                           child: widget.hires.image.isNotEmpty
                               ? PageView(
                                   onPageChanged: (index) {
@@ -106,7 +256,8 @@ class _HiringItemState extends State<HiringItem> {
                                     ...List.generate(
                                       widget.hires.image.length,
                                       (index) => Padding(
-                                        padding: EdgeInsets.all(8.sp),
+                                        padding: EdgeInsets.symmetric(
+                                            horizontal: 8.w),
                                         child: ClipRRect(
                                           borderRadius:
                                               BorderRadius.circular(16),
@@ -174,8 +325,8 @@ class _HiringItemState extends State<HiringItem> {
                         ),
                         widget.hires.image.length > 1
                             ? Positioned(
-                                bottom: 15.h,
-                                right: 15.w,
+                                bottom: 10.h,
+                                right: 18.w,
                                 child: Container(
                                   padding: EdgeInsets.symmetric(
                                       horizontal: 2.w, vertical: 2.w),

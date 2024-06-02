@@ -20,7 +20,7 @@ class AnnouncementModel extends Equatable {
   final int createdAt;
   final int updatedAt;
   final List<String> viewedUsers;
-  final Set<String> likedUsers;
+  final List<String> likedUsers;
   final List<String> comments;
 
   const AnnouncementModel({
@@ -63,7 +63,7 @@ class AnnouncementModel extends Equatable {
     List<String>? countView,
     WorkCategory? category,
     StatusAnnouncement? status,
-    Set<String>? likedUsers,
+    List<String>? likedUsers,
     List<String>? comments,
     List<String>? viewedUsers,
     String? userId,
@@ -132,8 +132,8 @@ class AnnouncementModel extends Equatable {
       "createdAt": createdAt,
       "updatedAt": updatedAt,
       "status": status.name,
-      "likedUsers": likedUsers,
-      "comments": comments,
+      "likedUsers": likedUsers.map((e) => e.toString()).toList(),
+      "comments": comments.map((e) => e.toString()).toList(),
       "userId": userId,
     };
   }
@@ -165,7 +165,7 @@ class AnnouncementModel extends Equatable {
         json["status"] as String? ?? "",
       ),
       likedUsers:
-          (json["likedUsers"] as List? ?? []).map((e) => e.toString()).toSet(),
+          (json["likedUsers"] as List? ?? []).map((e) => e.toString()).toList(),
       comments:
           (json["comments"] as List? ?? []).map((e) => e.toString()).toList(),
       userId: json["userId"] as String? ?? "",
@@ -199,7 +199,7 @@ class AnnouncementModel extends Equatable {
     location: '',
     viewedUsers: [],
     status: StatusAnnouncement.pure,
-    likedUsers: {},
+    likedUsers: [],
     comments: [],
     userId: '',
   );
@@ -228,4 +228,4 @@ class AnnouncementModel extends Equatable {
 
 enum WorkCategory { easy, medium, hard }
 
-enum StatusAnnouncement { active, done, canceled, pure }
+enum StatusAnnouncement { active, done, returned, pure, deleted }

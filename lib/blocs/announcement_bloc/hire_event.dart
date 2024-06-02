@@ -1,25 +1,39 @@
+import 'package:flutter/material.dart';
 import 'package:ish_top/data/models/announcement_model.dart';
+
+import '../../data/models/user_model.dart';
 
 abstract class HireEvent {}
 
-class AnnouncementAddEvent extends HireEvent {
+class AnnounAddEvent extends HireEvent {
   final AnnouncementModel hireModel;
+  final BuildContext context;
+  final UserModel userModel;
 
-  AnnouncementAddEvent({required this.hireModel});
+  AnnounAddEvent(
+      {required this.hireModel,
+      required this.context,
+      required this.userModel});
 }
 
-class AnnouncementUpdateEvent extends HireEvent {
+class AnnounUpdateEvent extends HireEvent {
   final AnnouncementModel hireModel;
 
-  AnnouncementUpdateEvent({required this.hireModel});
+  AnnounUpdateEvent({required this.hireModel});
 }
 
-class AnnouncementRemoveEvent extends HireEvent {
+class AnnounRemoveEvent extends HireEvent {
   final String docId;
 
-  AnnouncementRemoveEvent({required this.docId});
+  AnnounRemoveEvent({required this.docId});
 }
 
-class AnnouncementGetEvent extends HireEvent {}
+class AnnounGetEvent extends HireEvent {}
 
-class AnnouncementInitialEvent extends HireEvent {}
+class AnnounInitialEvent extends HireEvent {}
+
+class AnnounListGetEvent extends HireEvent {
+  final List<String> announcementDocs;
+
+  AnnounListGetEvent({required this.announcementDocs});
+}

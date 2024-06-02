@@ -33,7 +33,7 @@ class App extends StatelessWidget {
             ),
         ),
         BlocProvider(
-          create: (context) => AnnouncementBloc()..add(AnnouncementGetEvent()),
+          create: (context) => AnnouncementBloc()..add(AnnounGetEvent()),
         ),
         BlocProvider(
           create: (context) => ImageBloc(),

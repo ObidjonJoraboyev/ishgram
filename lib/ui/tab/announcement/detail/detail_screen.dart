@@ -9,6 +9,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:ish_top/blocs/announcement_bloc/hire_bloc.dart';
 import 'package:ish_top/blocs/announcement_bloc/hire_event.dart';
+import 'package:ish_top/blocs/auth/auth_bloc.dart';
 import 'package:ish_top/data/local/local_storage.dart';
 import 'package:ish_top/data/models/announcement_model.dart';
 import 'package:ish_top/ui/tab/announcement/detail/widgets/widget_detail.dart';
@@ -24,34 +25,28 @@ class DetailScreen extends StatefulWidget {
 }
 
 class _DetailScreenState extends State<DetailScreen> {
-  bool isFirstIcon = false;
-
   String userNum = StorageRepository.getString(key: "userNumber");
-
-  Set<String> ls = {};
+  String userDoc = StorageRepository.getString(key: "userDoc");
 
   void _toggleIcon() {
-    if (userNum.isNotEmpty) {
+    if (userDoc.isNotEmpty) {
       setState(() {
-        isFirstIcon = !isFirstIcon;
-        if (isFirstIcon) {
-          ls.add(userNum);
+        if (!widget.hireModel.likedUsers.contains(userDoc)) {
           context.read<AnnouncementBloc>().add(
-                AnnouncementUpdateEvent(
+                AnnounUpdateEvent(
                   hireModel: widget.hireModel.copyWith(
-                    likedUsers: ls,
-                  ),
+                      likedUsers: widget.hireModel.likedUsers + [userDoc]),
                 ),
               );
           setState(() {});
         }
-        if (!isFirstIcon && widget.hireModel.likedUsers.contains(userNum)) {
+        if (widget.hireModel.likedUsers.contains(userNum)) {
           context.read<AnnouncementBloc>().add(
-                AnnouncementUpdateEvent(
+                AnnounUpdateEvent(
                   hireModel: widget.hireModel.copyWith(
                     likedUsers: widget.hireModel.likedUsers
                         .where((element) => element != userNum)
-                        .toSet(),
+                        .toList(),
                   ),
                 ),
               );
@@ -63,8 +58,6 @@ class _DetailScreenState extends State<DetailScreen> {
 
   @override
   void initState() {
-    ls = widget.hireModel.likedUsers;
-    isFirstIcon = widget.hireModel.likedUsers.contains(userNum);
     super.initState();
   }
 
@@ -85,14 +78,18 @@ class _DetailScreenState extends State<DetailScreen> {
               return FadeTransition(opacity: animation, child: child);
             },
             child: Padding(
-              key: ValueKey<bool>(isFirstIcon),
               padding: const EdgeInsets.all(8.0),
               child: GestureDetector(
                 onTap: _toggleIcon,
                 child: Padding(
                   padding: EdgeInsets.only(top: 3.h),
                   child: SvgPicture.asset(
-                    !isFirstIcon
+                    context
+                            .read<AuthBloc>()
+                            .state
+                            .userModel
+                            .savedHiring
+                            .contains(widget.hireModel.docId)
                         ? "assets/icons/save.svg"
                         : "assets/icons/save_fill.svg",
                     width: 30.w,

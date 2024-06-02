@@ -4,9 +4,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:ish_top/blocs/image/image_event.dart';
 import 'package:ish_top/data/models/user_model.dart';
+import 'package:ish_top/ui/tab/announcement/pages/page_control.dart';
 import '../../../blocs/image/image_bloc.dart';
 import '../announcement/add_announcement/add_announcement_screen.dart';
-import '../announcement/announcement_screen.dart';
 import '../feedback/feedback_screen.dart';
 import '../profile/profile_screen.dart';
 
@@ -27,10 +27,9 @@ class _TabScreenState extends State<TabScreen> {
   @override
   Widget build(BuildContext context) {
     List<Widget> screens = [
-      HireScreen(
-        context: context,
-      ),
+      const PageControl(),
       AddHireScreen(
+        context: context,
         voidCallback: (v) {
           activeIndex = 0;
           context.read<ImageBloc>().add(ImageCleanEvent());

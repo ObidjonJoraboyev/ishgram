@@ -51,6 +51,22 @@
   "remove_note": "Eslaatma o'chirildi",
   "comment": "ta fikr",
   "comments": "Fikrlar",
-  "russia_request": "uz"
+  "russia_request": "uz",
+  "hidden_acc": "Yashirin hisob",
+  "my_announcements": "E'lonlarim",
+  "workers": "Ishchilar",
+  "remove_announ": "O'chirilgan e'lonni qayta tiklab bo'lmaydi",
+  "time_interval": "Ish vaqti oralig'i",
+  "my_number": "Mening raqamim",
+  "my_name": "Mening ismim",
+  "easy": "Oson",
+  "medium": "O'rtacha",
+  "hard": "Qiyin",
+  "global": "Asosiy"
+
+
+
+
+
 
 }

@@ -5,6 +5,8 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:ish_top/blocs/auth/auth_bloc.dart';
 import 'package:ish_top/blocs/auth/auth_event.dart';
 
+import '../../../../blocs/auth/auth_state.dart';
+
 class ListTileItem extends StatefulWidget {
   const ListTileItem({
     super.key,
@@ -43,36 +45,31 @@ class _ListTileItemState extends State<ListTileItem> {
                   size: 22.sp,
                   color: Colors.grey,
                 )
-              : SizedBox(
-                  width: 30.w,
-                  child: CupertinoSwitch(
-                      value: check,
-                      onChanged: (v) {
-                        check = v;
-                        setState(() {});
-                        if (check) {
-                          context.read<AuthBloc>().add(RegisterUpdateEvent(
-                              userModel: context
-                                  .read<AuthBloc>()
-                                  .state
-                                  .userModel
-                                  .copyWith(isPrivate: true),
-                              docId: ""));
-                        } else {
-                          context.read<AuthBloc>().add(RegisterUpdateEvent(
-                              userModel: context
-                                  .read<AuthBloc>()
-                                  .state
-                                  .userModel
-                                  .copyWith(isPrivate: false),
-                              docId: ""));
-                        }
-                      }),
+              : BlocConsumer<AuthBloc, AuthState>(
+                  listener: (context, state) {},
+                  builder: (context, state) {
+                    return SizedBox(
+                      width: 30.w,
+                      child: CupertinoSwitch(
+                        value: state.userModel.isPrivate,
+                        onChanged: (v) {
+                          check = v;
+                          context.read<AuthBloc>().add(
+                                RegisterUpdateEvent(
+                                    userModel:
+                                        state.userModel.copyWith(isPrivate: v),
+                                    docId: ""),
+                              );
+
+                          context.read<AuthBloc>().add(GetCurrentUser());
+                        },
+                      ),
+                    );
+                  },
                 ),
           onTap: () {
             widget.voidCallback.call();
             widget.isSwitch != null ? check = !check : null;
-
             if (widget.isSwitch != null) {
               if (check) {
                 context.read<AuthBloc>().add(RegisterUpdateEvent(
@@ -83,14 +80,17 @@ class _ListTileItemState extends State<ListTileItem> {
                         .copyWith(isPrivate: true),
                     docId: ""));
               } else {
-                context.read<AuthBloc>().add(RegisterUpdateEvent(
-                    userModel: context
-                        .read<AuthBloc>()
-                        .state
-                        .userModel
-                        .copyWith(isPrivate: false),
-                    docId: ""));
+                context.read<AuthBloc>().add(
+                      RegisterUpdateEvent(
+                          userModel: context
+                              .read<AuthBloc>()
+                              .state
+                              .userModel
+                              .copyWith(isPrivate: false),
+                          docId: ""),
+                    );
               }
+              context.read<AuthBloc>().add(GetCurrentUser());
             }
             setState(() {});
           },
@@ -108,8 +108,10 @@ class _ListTileItemState extends State<ListTileItem> {
           ),
           title: Text(
             widget.title,
-            style:  TextStyle(
-              color:widget.isPhoto==null? CupertinoColors.black:CupertinoColors.activeBlue,
+            style: TextStyle(
+              color: widget.isPhoto == null
+                  ? CupertinoColors.black
+                  : CupertinoColors.activeBlue,
             ),
           ),
         ),

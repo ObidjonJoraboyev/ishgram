@@ -51,5 +51,17 @@
   "remove_note": "Примечание удалено",
   "comments": "Комментарии",
   "comment": "комментария",
-  "russia_request": "ru"
+  "russia_request": "ru",
+  "hidden_acc": "Скрытый аккаунт",
+  "my_announcements": "Мои объявления",
+  "workers": "Рабочие",
+  "remove_announ": "Удаленное объявление невозможно восстановить",
+  "time_interval": "Интервал времени работы",
+  "my_number": "Мой номер",
+  "my_name": "Мое имя",
+  "easy": "Легкий",
+  "medium": "Средний",
+  "hard": "Тяжелый",
+  "global": "Главный"
+
 }

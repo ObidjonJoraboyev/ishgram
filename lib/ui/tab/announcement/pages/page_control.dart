@@ -4,40 +4,45 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:ish_top/blocs/connectivity/connectivity_bloc.dart';
-import 'package:ish_top/blocs/connectivity/connectivity_state.dart';
-import 'package:ish_top/data/models/announcement_model.dart';
-import 'package:ish_top/ui/tab/announcement/widgets/hiring_item.dart';
-import 'package:ish_top/ui/tab/announcement/widgets/search_item.dart';
-import 'package:ish_top/utils/size/size_utils.dart';
-import '../../../blocs/announcement_bloc/hire_bloc.dart';
+import 'package:ish_top/blocs/auth/auth_bloc.dart';
+import 'package:ish_top/blocs/auth/auth_event.dart';
+import 'package:ish_top/ui/tab/announcement/pages/page_first.dart';
+import 'package:ish_top/ui/tab/announcement/pages/page_second.dart';
+import '../../../../utils/size/size_utils.dart';
+import '../widgets/search_item.dart';
 
-class HireScreen extends StatefulWidget {
-  const HireScreen({super.key, required this.context});
-  final BuildContext context;
+class PageControl extends StatefulWidget {
+  const PageControl({super.key});
+
   @override
-  State<HireScreen> createState() => _HireScreenState();
+  State<PageControl> createState() => _PageControlState();
 }
 
-class _HireScreenState extends State<HireScreen> with TickerProviderStateMixin {
-  FocusNode focus = FocusNode();
+class _PageControlState extends State<PageControl>
+    with TickerProviderStateMixin {
+  final PageController pageController = PageController();
+  bool _isSearching = false;
   final TextEditingController controller = TextEditingController();
-  final ScrollController scrollController = ScrollController();
-
-  late AnimationController _controller;
+  FocusNode focus = FocusNode();
   late Animation<double> _animation;
+  late AnimationController _controller;
+
+  void _toggleAppBar() {
+    setState(() {
+      if (_isSearching) {
+        _controller.reverse();
+      } else {
+        _controller.forward();
+      }
+      _isSearching = !_isSearching;
+    });
+  }
 
   @override
   void dispose() {
-    scrollController.dispose();
     _controller.dispose();
     super.dispose();
   }
-
-  int activeIndex = 0;
-
-  bool check = false;
-  bool _isSearching = false;
 
   @override
   void initState() {
@@ -53,29 +58,14 @@ class _HireScreenState extends State<HireScreen> with TickerProviderStateMixin {
     super.initState();
   }
 
-  void _toggleAppBar() {
-    setState(() {
-      if (_isSearching) {
-        _controller.reverse();
-      } else {
-        _controller.forward();
-      }
-      _isSearching = !_isSearching;
-    });
-  }
-
   @override
   Widget build(BuildContext context) {
     width = MediaQuery.sizeOf(context).width;
     height = MediaQuery.sizeOf(context).height;
-    return MaterialApp(
-      localizationsDelegates: context.localizationDelegates,
-      supportedLocales: context.supportedLocales,
-      locale: context.locale,
-      debugShowCheckedModeBanner: false,
-      home: Scaffold(
-        extendBodyBehindAppBar: true,
-        backgroundColor: CupertinoColors.systemGrey5,
+    return DefaultTabController(
+      length: 2,
+      initialIndex: 0,
+      child: Scaffold(
         appBar: AppBar(
           elevation: 0,
           flexibleSpace: ClipRect(
@@ -89,13 +79,13 @@ class _HireScreenState extends State<HireScreen> with TickerProviderStateMixin {
           scrolledUnderElevation: 0,
           backgroundColor: CupertinoColors.white.withOpacity(.9),
           title: Text(
-            "hires".tr(),
+            "global".tr(),
             style: TextStyle(
                 color: Colors.black,
-                fontWeight: FontWeight.w500,
-                fontSize: 18.sp),
+                fontWeight: FontWeight.w400,
+                fontSize: 20.sp),
           ),
-          centerTitle: false,
+          centerTitle: true,
           actions: [
             AnimatedSwitcher(
               duration: const Duration(milliseconds: 250),
@@ -150,35 +140,65 @@ class _HireScreenState extends State<HireScreen> with TickerProviderStateMixin {
             ),
           ),
         ),
-        body: BlocConsumer<ConnectBloc, ConnectState>(
-          listener: (context, state) {},
-          builder: (context, state) {
-            return BlocBuilder<AnnouncementBloc, List<AnnouncementModel>>(
-              builder: (BuildContext context, List<AnnouncementModel> state) {
-                List<AnnouncementModel> hires = state
-                    .where((element) => element.title
-                        .toLowerCase()
-                        .contains(controller.text.toLowerCase()))
-                    .toList();
-                return ListView(
-                  children: [
-                    Padding(
-                      padding: EdgeInsets.symmetric(horizontal: 14.w),
-                      child: HiringItem(
-                        context1: widget.context,
-                        voidCallback: () {
-                          focus.unfocus();
-                          setState(() {});
-                        },
-                        hires: hires,
-                        scrollController: scrollController,
+        backgroundColor: CupertinoColors.systemGrey5,
+        body: Column(
+          children: [
+            10.getH(),
+            ClipRect(
+              child: BackdropFilter(
+                filter: ImageFilter.blur(sigmaX: 10.0, sigmaY: 10.0),
+                child: Container(
+                  color: Colors.transparent,
+                  child: TabBar(
+                    dividerColor: CupertinoColors.systemGrey5,
+                    onTap: (v) {
+                      if (v == 1) {
+                        context.read<AuthBloc>().add(GetAllUsers());
+                      }
+                    },
+                    indicatorSize: TabBarIndicatorSize.tab,
+                    indicatorColor: CupertinoColors.activeBlue,
+                    splashBorderRadius: BorderRadius.circular(160),
+                    physics: const BouncingScrollPhysics(),
+                    labelPadding: const EdgeInsets.only(bottom: 10),
+                    labelColor: Colors.white,
+                    indicatorWeight: 3.h,
+                    overlayColor: WidgetStateColor.transparent,
+                    tabs: [
+                      Text(
+                        "hires".tr(),
+                        style: TextStyle(
+                          color: Colors.black,
+                          fontWeight: FontWeight.w500,
+                          fontSize: 17.sp,
+                        ),
                       ),
-                    ),
-                  ],
-                );
-              },
-            );
-          },
+                      Text(
+                        "workers".tr(),
+                        style: TextStyle(
+                          color: Colors.black,
+                          fontWeight: FontWeight.w500,
+                          fontSize: 17.sp,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            ),
+            Expanded(
+              child: TabBarView(
+                children: [
+                  HireScreen(
+                    context: context,
+                    controller: controller,
+                    focus: focus,
+                  ),
+                  const PageSecond()
+                ],
+              ),
+            ),
+          ],
         ),
       ),
     );
