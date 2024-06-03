@@ -155,7 +155,9 @@ class _GoogleMapsScreenState extends State<GoogleMapsScreen> {
                                 child: GlobalButton(
                                     title: "Tanlash",
                                     color: CupertinoColors.activeBlue,
-                                    onTap: () {}),
+                                    onTap: () {
+                                      Navigator.pop(context);
+                                    }),
                               )
                             ],
                           ),

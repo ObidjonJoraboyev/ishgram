@@ -11,7 +11,7 @@ import 'package:ish_top/blocs/announ_bloc/announ_bloc.dart';
 import 'package:ish_top/blocs/announ_bloc/announ_event.dart';
 import 'package:ish_top/blocs/auth/auth_bloc.dart';
 import 'package:ish_top/data/local/local_storage.dart';
-import 'package:ish_top/data/models/announcement_model.dart';
+import 'package:ish_top/data/models/announ_model.dart';
 import 'package:shimmer/shimmer.dart';
 import 'widgets/widget_detail.dart';
 

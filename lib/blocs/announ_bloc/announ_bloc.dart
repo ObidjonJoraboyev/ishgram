@@ -4,7 +4,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:ish_top/blocs/auth/auth_bloc.dart';
 import 'package:ish_top/blocs/auth/auth_event.dart';
-import 'package:ish_top/data/models/announcement_model.dart';
+import 'package:ish_top/data/models/announ_model.dart';
 import 'announ_event.dart';
 
 import 'package:bloc_concurrency/bloc_concurrency.dart' as bloc;

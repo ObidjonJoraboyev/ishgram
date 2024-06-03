@@ -9,7 +9,7 @@ import 'package:ish_top/blocs/announ_bloc/announ_event.dart';
 import 'package:ish_top/blocs/announ_bloc/announ_state.dart';
 import 'package:ish_top/blocs/auth/auth_bloc.dart';
 import 'package:ish_top/blocs/auth/auth_state.dart';
-import 'package:ish_top/data/models/announcement_model.dart';
+import 'package:ish_top/data/models/announ_model.dart';
 import 'package:ish_top/ui/tab/profile/my_announs/widgets/my_announs_item.dart';
 import 'package:ish_top/utils/size/size_utils.dart';
 

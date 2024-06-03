@@ -7,7 +7,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:ish_top/blocs/announ_bloc/announ_bloc.dart';
 import 'package:ish_top/blocs/announ_bloc/announ_state.dart';
 import 'package:ish_top/data/local/local_storage.dart';
-import 'package:ish_top/data/models/announcement_model.dart';
+import 'package:ish_top/data/models/announ_model.dart';
 import 'package:ish_top/ui/tab/announ/comment_screen/comment_screen.dart';
 import 'package:ish_top/ui/tab/announ/detail/detail_screen.dart';
 import 'package:ish_top/utils/size/size_utils.dart';

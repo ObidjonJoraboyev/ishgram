@@ -1,4 +1,4 @@
-import 'package:ish_top/data/models/announcement_model.dart';
+import 'package:ish_top/data/models/announ_model.dart';
 
 class AnnounState {
   final List<AnnounModel> allHires;

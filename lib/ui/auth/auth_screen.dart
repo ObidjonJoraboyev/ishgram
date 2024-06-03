@@ -76,6 +76,7 @@ class _AuthScreenState extends State<AuthScreen> {
                     Padding(
                       padding: EdgeInsets.symmetric(horizontal: 0.w),
                       child: GlobalTextFiled(
+                        isLogin: true,
                         onChanged: (v) {
                           setState(() {
                             checkInput();

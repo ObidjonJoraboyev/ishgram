@@ -48,6 +48,15 @@ class _PageSecondState extends State<PageSecond> {
                               ],
                             ),
                           ),
+                          child: Center(
+                            child: Text(
+                              users[index].name[0].toUpperCase(),
+                              style: TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 16.sp,
+                                  fontWeight: FontWeight.w700),
+                            ),
+                          ),
                         ),
                   title: Text(users[index].name),
                   subtitle: Text(users[index].phone),

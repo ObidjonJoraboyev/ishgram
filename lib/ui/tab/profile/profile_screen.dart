@@ -308,7 +308,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                       builder: (context) =>
                                           const MyProfileScreen()));
                             },
-                            title: "My Profile",
+                            title: "my_profile".tr(),
                             icon: const Icon(
                               CupertinoIcons.profile_circled,
                               color: Colors.white,
@@ -405,7 +405,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                   .read<AuthBloc>()
                                   .add(LogOutEvent(context: widget.context));
                             },
-                            title: "Log Out",
+                            title: "log_out".tr(),
                             icon: const Icon(
                               Icons.logout,
                               color: Colors.white,

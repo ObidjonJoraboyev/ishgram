@@ -9,7 +9,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:ish_top/blocs/message/message_bloc.dart';
 import 'package:ish_top/blocs/message/message_event.dart';
 import 'package:ish_top/data/local/local_storage.dart';
-import 'package:ish_top/data/models/announcement_model.dart';
+import 'package:ish_top/data/models/announ_model.dart';
 import 'package:ish_top/data/models/message_model.dart';
 import 'package:ish_top/ui/tab/announ/detail/detail_screen.dart';
 import 'package:ish_top/ui/tab/announ/widgets/zoom_tap.dart';

@@ -19,6 +19,7 @@ class GlobalTextFiled extends StatefulWidget {
     this.isPhone,
     this.maxLines,
     this.maxLength,
+    this.isLogin,
     this.formatter,
     required this.formStatus,
   });
@@ -28,6 +29,7 @@ class GlobalTextFiled extends StatefulWidget {
   final int? maxLength;
   final int? maxLines;
   final bool? isPhone;
+  final bool? isLogin;
   final TextInputFormatter? formatter;
   final ValueChanged<String> onChanged;
 
@@ -83,7 +85,9 @@ class _GlobalTextFiledState extends State<GlobalTextFiled> {
                 ),
                 counterText: widget.maxLength == 50 ? "" : null,
                 contentPadding: EdgeInsets.all(10.sp),
-                fillColor: Colors.white,
+                fillColor: widget.isLogin == null
+                    ? Colors.white
+                    : Colors.grey.shade400,
                 filled: true,
                 focusedBorder: OutlineInputBorder(
                   borderSide: const BorderSide(width: 0, color: Colors.white),

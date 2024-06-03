@@ -1,5 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:ish_top/data/local/local_storage.dart';
+import 'package:ish_top/ui/auth/auth_screen.dart';
 import 'package:ish_top/ui/tab/tab/tab_screen.dart';
 import 'package:lottie/lottie.dart';
 
@@ -15,7 +17,12 @@ class _SplashScreenState extends State<SplashScreen> {
   void initState() {
     Future.delayed(const Duration(seconds: 1), () {
       Navigator.pushReplacement(
-          context, MaterialPageRoute(builder: (context) => const TabScreen()));
+          context,
+          MaterialPageRoute(
+              builder: (context) =>
+                  StorageRepository.getString(key: "userNumber").isEmpty
+                      ? const AuthScreen()
+                      : const TabScreen()));
     });
     super.initState();
   }

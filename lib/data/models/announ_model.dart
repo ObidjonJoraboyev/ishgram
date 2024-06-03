@@ -116,8 +116,8 @@ class AnnounModel extends Equatable {
 
   Map<String, dynamic> toJsonForUpdate() {
     return {
-      "title": title,
       "owner_name": ownerName,
+      "title": title,
       "description": description,
       "money": money,
       "timeInterval": timeInterval,
@@ -178,7 +178,7 @@ class AnnounModel extends Equatable {
 
   static StatusAnnoun enumFromString2(String value) {
     return StatusAnnoun.values
-        .firstWhere((type) => type.toString() == 'StatusAnnouncement.$value');
+        .firstWhere((type) => type.toString() == 'StatusAnnoun.$value');
   }
 
   static const AnnounModel initial = AnnounModel(

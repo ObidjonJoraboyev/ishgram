@@ -66,7 +66,7 @@ class _PasswordTextInputState extends State<PasswordTextInput> {
           fillColor: Colors.grey.withOpacity(.7),
           border: OutlineInputBorder(borderRadius: BorderRadius.circular(8)),
           filled: true,
-          contentPadding: const EdgeInsets.all(16),
+          contentPadding:  EdgeInsets.all(11.sp),
           labelText: widget.labelText.tr(),
           suffixIcon: IconButton(
             onPressed: () {

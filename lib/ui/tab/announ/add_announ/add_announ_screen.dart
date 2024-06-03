@@ -17,7 +17,7 @@ import 'package:ish_top/blocs/image/image_event.dart';
 import 'package:ish_top/blocs/image/image_state.dart';
 import 'package:ish_top/blocs/map/map_bloc.dart';
 import 'package:ish_top/data/local/local_storage.dart';
-import 'package:ish_top/data/models/announcement_model.dart';
+import 'package:ish_top/data/models/announ_model.dart';
 import 'package:ish_top/data/network/api_provider_location.dart';
 import 'package:ish_top/ui/tab/announ/add_announ/google_maps/google_maps_screen.dart';
 import 'package:ish_top/ui/tab/announ/widgets/zoom_tap.dart';

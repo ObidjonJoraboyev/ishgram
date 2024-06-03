@@ -4,6 +4,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:ish_top/blocs/announ_bloc/announ_bloc.dart';
+import 'package:ish_top/blocs/announ_bloc/announ_event.dart';
 import 'package:ish_top/blocs/auth/auth_bloc.dart';
 import 'package:ish_top/blocs/auth/auth_event.dart';
 import 'package:ish_top/ui/tab/announ/widgets/search_item.dart';
@@ -101,7 +103,14 @@ class _PageControlState extends State<PageControl>
                       Icon(_isSearching ? Icons.close : CupertinoIcons.search),
                   onPressed: _toggleAppBar),
             ),
-            IconButton(onPressed: () {}, icon: const Icon(Icons.more_vert))
+            IconButton(
+                onPressed: () {
+                  context.read<AnnounBloc>().add(AnnounGetEvent());
+                  setState(() {
+                    print(context.read<AnnounBloc>().state.allHires.length);
+                  });
+                },
+                icon: const Icon(Icons.more_vert))
           ],
           toolbarHeight:
               56.h - (_animation.value.h - _animation.value.h * 2.44),

@@ -7,7 +7,7 @@ import 'package:ish_top/blocs/announ_bloc/announ_bloc.dart';
 import 'package:ish_top/blocs/announ_bloc/announ_state.dart';
 import 'package:ish_top/blocs/connectivity/connectivity_bloc.dart';
 import 'package:ish_top/blocs/connectivity/connectivity_state.dart';
-import 'package:ish_top/data/models/announcement_model.dart';
+import 'package:ish_top/data/models/announ_model.dart';
 import 'package:ish_top/ui/tab/announ/widgets/announ_item.dart';
 import 'package:ish_top/utils/size/size_utils.dart';
 
