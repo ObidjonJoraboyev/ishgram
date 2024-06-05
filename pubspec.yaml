@@ -27,7 +27,6 @@ dependencies:
   easy_localization: ^3.0.0
   image_picker: ^1.0.7
   firebase_storage: ^11.7.4
-  zoom_tap_animation: ^1.1.0
   flutter_screenutil: ^5.9.0
   mask_text_input_formatter: ^2.9.0
   easy_image_viewer: ^1.5.0
@@ -45,6 +44,7 @@ dependencies:
   social_media_recorder: ^1.1.13
   google_maps_flutter: ^2.6.1
   alarm: ^3.1.4
+  rive: ^0.13.5
   page_transition: ^2.1.0
   video_player: ^2.8.6
   pinput: ^4.0.0

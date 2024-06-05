@@ -1,7 +1,7 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:zoom_tap_animation/zoom_tap_animation.dart';
+import 'package:ish_top/ui/tab/announ/widgets/zoom_tap.dart';
 
 class SearchItem extends StatefulWidget {
   const SearchItem({
@@ -115,7 +115,7 @@ class _SearchItemState extends State<SearchItem>
             ),
           ),
         ),
-        ZoomTapAnimation(
+        ScaleOnPress(
           onTap: () {
             widget.controller.clear();
             widget.valueChanged("");

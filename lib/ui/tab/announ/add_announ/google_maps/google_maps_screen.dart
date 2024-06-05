@@ -84,7 +84,6 @@ class _GoogleMapsScreenState extends State<GoogleMapsScreen> {
                 onCameraMove: (CameraPosition currentCameraPosition) {
                   cameraPosition = currentCameraPosition;
                   open = false;
-
                   setState(() {});
                 },
                 myLocationEnabled: true,

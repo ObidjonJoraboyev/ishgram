@@ -9,9 +9,9 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:ish_top/blocs/user_image/user_image_bloc.dart';
+import 'package:ish_top/ui/tab/announ/widgets/zoom_tap.dart';
 import 'package:ish_top/utils/size/size_utils.dart';
 import 'package:url_launcher/url_launcher.dart';
-import 'package:zoom_tap_animation/zoom_tap_animation.dart';
 import '../blocs/image/image_bloc.dart';
 import '../blocs/image/image_event.dart';
 import '../blocs/user_image/user_image_event.dart';
@@ -185,7 +185,7 @@ show({
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    ZoomTapAnimation(
+                    ScaleOnPress(
                       onTap: cancelButton,
                       child: Text(
                         "cancel".tr(),
@@ -195,7 +195,7 @@ show({
                             fontWeight: FontWeight.w400),
                       ),
                     ),
-                    ZoomTapAnimation(
+                    ScaleOnPress(
                       onTap: doneButton,
                       child: Text(
                         "done".tr(),
@@ -281,7 +281,7 @@ show({
                 ),
                 startTime != DateTime.now().millisecondsSinceEpoch
                     ? Center(
-                        child: ZoomTapAnimation(
+                        child: ScaleOnPress(
                           onTap: () {
                             controller.animateToPage(currentPage == 0 ? 1 : 0,
                                 duration: const Duration(milliseconds: 300),

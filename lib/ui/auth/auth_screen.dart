@@ -17,6 +17,7 @@ import 'package:ish_top/ui/tab/tab/tab_screen.dart';
 import 'package:ish_top/utils/formatters/formatters.dart';
 import 'package:ish_top/utils/images/app_images.dart';
 import 'package:ish_top/utils/size/size_utils.dart';
+import 'package:rive/rive.dart';
 
 class AuthScreen extends StatefulWidget {
   const AuthScreen({super.key});
@@ -37,6 +38,13 @@ class _AuthScreenState extends State<AuthScreen> {
     passwordController.dispose();
     super.dispose();
   }
+
+  StateMachineController? stateMachineController;
+  SMIInput<bool>? isChecking;
+  SMIInput<double>? numLook;
+  SMIInput<bool>? isHandsUp;
+  SMIInput<bool>? trigSuccess;
+  SMIInput<bool>? trigFail;
 
   @override
   Widget build(BuildContext context) {
@@ -89,6 +97,28 @@ class _AuthScreenState extends State<AuthScreen> {
                         isPhone: true,
                         formStatus: state.formStatus,
                       ),
+                    ),
+                    RiveAnimation.asset(
+                      "assets/rives/login_rive.riv",
+                      stateMachines: const ["Login machine"],
+                      onInit: (adBoard) {
+                        stateMachineController =
+                            StateMachineController.fromArtboard(
+                                adBoard, "Login Machine");
+
+                        if (stateMachineController == null) return;
+
+                        adBoard.addController(stateMachineController!);
+                        isChecking =
+                            stateMachineController?.findInput("isChecking");
+                        numLook = stateMachineController?.findInput("numLook");
+                        isHandsUp =
+                            stateMachineController?.findInput("isHandsUp");
+                        trigSuccess =
+                            stateMachineController?.findInput("trigSuccess");
+                        trigFail =
+                            stateMachineController?.findInput("trigFail");
+                      },
                     ),
                     16.getH(),
                     Padding(

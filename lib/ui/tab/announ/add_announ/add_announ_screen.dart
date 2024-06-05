@@ -25,7 +25,6 @@ import 'package:ish_top/utils/formatters/formatters.dart';
 import 'package:ish_top/utils/size/size_utils.dart';
 import 'package:ish_top/utils/utility_functions.dart';
 import 'package:vibration/vibration.dart';
-import 'package:zoom_tap_animation/zoom_tap_animation.dart';
 import 'widgets/generate_blame.dart';
 import 'widgets/generate_image.dart';
 import 'widgets/global_button.dart';
@@ -120,7 +119,7 @@ class _AddHireScreenState extends State<AddHireScreen> {
                         ownerCtrl.text.isNotEmpty ||
                         descriptionCtrl.text.isNotEmpty ||
                         state.images.isNotEmpty,
-                    child: ZoomTapAnimation(
+                    child: ScaleOnPress(
                       onTap: () {
                         nameCtrl.clear();
                         numberCtrl.clear();

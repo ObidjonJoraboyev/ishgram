@@ -12,7 +12,6 @@ import 'package:ish_top/blocs/message/message_event.dart';
 import 'package:ish_top/data/local/local_storage.dart';
 import 'package:ish_top/data/models/message_model.dart';
 import 'package:ish_top/data/models/user_model.dart';
-import 'package:zoom_tap_animation/zoom_tap_animation.dart';
 
 class FeedbackScreen extends StatefulWidget {
   const FeedbackScreen({super.key, required this.userModel});
@@ -211,7 +210,7 @@ class _FeedbackScreenState extends State<FeedbackScreen> {
                         ...List.generate(
                           list.length,
                           (index) {
-                            return ZoomTapAnimation(
+                            return GestureDetector(
                               onTap: () {
                                 if (!list[index].isSupport &&
                                     selectMessages.isEmpty) {
@@ -248,7 +247,7 @@ class _FeedbackScreenState extends State<FeedbackScreen> {
                                   }
                                 }
                               },
-                              onLongTap: () {
+                              onLongPress: () {
                                 setState(() {});
 
                                 if (!selectMessages.contains(list[index])) {

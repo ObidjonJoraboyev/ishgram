@@ -11,15 +11,16 @@ class MapState {
   final CameraPosition userPosition;
   final bool isOk;
 
-  MapState(
-      {required this.currentPlaceName,
-      required this.controller,
-      required this.mapType,
-      required this.initialCameraPosition,
-      required this.currentCameraPosition,
-      required this.markers,
-      required this.userPosition,
-      required this.isOk});
+  MapState({
+    required this.currentPlaceName,
+    required this.controller,
+    required this.mapType,
+    required this.initialCameraPosition,
+    required this.currentCameraPosition,
+    required this.markers,
+    required this.userPosition,
+    required this.isOk,
+  });
 
   MapState copyWith(
       {String? currentPlaceName,

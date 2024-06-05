@@ -4,9 +4,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:ish_top/blocs/image/formstatus.dart';
 import 'package:ish_top/blocs/image/image_state.dart';
+import 'package:ish_top/ui/tab/announ/widgets/zoom_tap.dart';
 import 'package:ish_top/utils/utility_functions.dart';
 import 'package:shimmer/shimmer.dart';
-import 'package:zoom_tap_animation/zoom_tap_animation.dart';
 
 class GenerateBlame extends StatelessWidget {
   const GenerateBlame({super.key, required this.state});
@@ -19,7 +19,7 @@ class GenerateBlame extends StatelessWidget {
       children: [
         ...List.generate(
           (5 - state.images.length),
-          (index) => ZoomTapAnimation(
+          (index) => ScaleOnPress(
             onTap: () async {
               takeAnImage(
                 context,

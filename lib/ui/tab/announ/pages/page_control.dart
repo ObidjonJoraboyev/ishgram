@@ -106,9 +106,7 @@ class _PageControlState extends State<PageControl>
             IconButton(
                 onPressed: () {
                   context.read<AnnounBloc>().add(AnnounGetEvent());
-                  setState(() {
-                    print(context.read<AnnounBloc>().state.allHires.length);
-                  });
+                  setState(() {});
                 },
                 icon: const Icon(Icons.more_vert))
           ],
