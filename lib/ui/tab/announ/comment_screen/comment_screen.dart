@@ -90,7 +90,9 @@ class _CommentScreenState extends State<CommentScreen> {
                       MaterialPageRoute(
                         builder: (context) {
                           return DetailScreen(
-                              hireModel: widget.announcementModel);
+                            hireModel: widget.announcementModel,
+                            defaultImageIndex: 0,
+                          );
                         },
                       ),
                     );
@@ -99,7 +101,7 @@ class _CommentScreenState extends State<CommentScreen> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Hero(
-                        tag: "image0",
+                        tag: Key(widget.announcementModel.image[0].imageUrl),
                         child: ClipRRect(
                           borderRadius: BorderRadius.circular(8.r),
                           child: widget.announcementModel.image.isNotEmpty

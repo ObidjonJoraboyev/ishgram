@@ -29,37 +29,46 @@ class _PageSecondState extends State<PageSecond> {
           return ListView(
             children: [
               ...List.generate(users.length, (index) {
-                return ListTile(
-                  onTap: () {},
-                  leading: users[index].image.isNotEmpty
-                      ? Image.network(users[index].image)
-                      : Container(
-                          width: 40.w,
-                          height: 40.w,
-                          decoration: BoxDecoration(
-                            shape: BoxShape.circle,
-                            gradient: LinearGradient(
-                              begin: Alignment.topCenter,
-                              end: Alignment.bottomCenter,
-                              colors: [
-                                Color(int.parse(users[index].color))
-                                    .withOpacity(.7),
-                                Color(int.parse(users[index].color)),
-                              ],
+                return Column(
+                  children: [
+                    ListTile(
+                      onTap: () {},
+                      leading: users[index].image.isNotEmpty
+                          ? Image.network(users[index].image)
+                          : Container(
+                              width: 40.w,
+                              height: 40.w,
+                              decoration: BoxDecoration(
+                                shape: BoxShape.circle,
+                                gradient: LinearGradient(
+                                  begin: Alignment.topCenter,
+                                  end: Alignment.bottomCenter,
+                                  colors: [
+                                    Color(int.parse(users[index].color))
+                                        .withOpacity(.7),
+                                    Color(int.parse(users[index].color)),
+                                  ],
+                                ),
+                              ),
+                              child: Center(
+                                child: Text(
+                                  users[index].name[0].toUpperCase(),
+                                  style: TextStyle(
+                                      color: Colors.white,
+                                      fontSize: 16.sp,
+                                      fontWeight: FontWeight.w700),
+                                ),
+                              ),
                             ),
-                          ),
-                          child: Center(
-                            child: Text(
-                              users[index].name[0].toUpperCase(),
-                              style: TextStyle(
-                                  color: Colors.white,
-                                  fontSize: 16.sp,
-                                  fontWeight: FontWeight.w700),
-                            ),
-                          ),
-                        ),
-                  title: Text(users[index].name),
-                  subtitle: Text(users[index].phone),
+                      title: Text(users[index].name),
+                      subtitle: Text(users[index].phone),
+                    ),
+                    Container(
+                      width: double.infinity,
+                      height: 0.2,
+                      color: Colors.black.withOpacity(.9),
+                    )
+                  ],
                 );
               })
             ],

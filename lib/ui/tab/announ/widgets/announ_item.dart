@@ -11,7 +11,6 @@ import 'package:ish_top/data/models/announ_model.dart';
 import 'package:ish_top/ui/tab/announ/comment_screen/comment_screen.dart';
 import 'package:ish_top/ui/tab/announ/detail/detail_screen.dart';
 import 'package:ish_top/utils/size/size_utils.dart';
-import 'package:page_transition/page_transition.dart';
 import 'package:shimmer/shimmer.dart';
 import 'package:timeago/timeago.dart' as timeago;
 import 'zoom_tap.dart';
@@ -51,6 +50,8 @@ class _HiringItemState extends State<HiringItem> {
     )}";
   }
 
+  PageController pageController = PageController();
+
   @override
   Widget build(BuildContext context) {
     return BlocConsumer<AnnounBloc, AnnounState>(
@@ -62,11 +63,11 @@ class _HiringItemState extends State<HiringItem> {
               onTap: () async {
                 Navigator.push(
                   widget.context1,
-                  PageTransition(
-                    type: PageTransitionType.rightToLeftJoined,
-                    alignment: Alignment.topRight,
-                    childCurrent: const SizedBox(),
-                    child: DetailScreen(hireModel: widget.hires),
+                  MaterialPageRoute(
+                    builder: (c) => DetailScreen(
+                      hireModel: widget.hires,
+                      defaultImageIndex: pageController.page!.round(),
+                    ),
                   ),
                 );
               },
@@ -96,6 +97,7 @@ class _HiringItemState extends State<HiringItem> {
                           height: 300.h,
                           child: widget.hires.image.isNotEmpty
                               ? PageView(
+                                  controller: pageController,
                                   onPageChanged: (index) {
                                     setState(() {
                                       activeIndex = index;
@@ -107,45 +109,50 @@ class _HiringItemState extends State<HiringItem> {
                                       widget.hires.image.length,
                                       (index) => Padding(
                                         padding: EdgeInsets.all(8.sp),
-                                        child: ClipRRect(
-                                          borderRadius:
-                                              BorderRadius.circular(16),
-                                          child: CachedNetworkImage(
-                                            placeholder: (context, st) {
-                                              return Shimmer.fromColors(
-                                                baseColor: Colors.white,
-                                                highlightColor: Colors.grey,
-                                                child: Container(
-                                                  height: 80.h,
-                                                  decoration: BoxDecoration(
-                                                    color: Colors.white,
-                                                    borderRadius:
-                                                        BorderRadius.circular(
-                                                            16),
+                                        child: Hero(
+                                          tag: Key(widget
+                                              .hires.image[index].imageUrl),
+                                          child: ClipRRect(
+                                            borderRadius:
+                                                BorderRadius.circular(16),
+                                            child: CachedNetworkImage(
+                                              placeholder: (context, st) {
+                                                return Shimmer.fromColors(
+                                                  baseColor: Colors.white,
+                                                  highlightColor: Colors.grey,
+                                                  child: Container(
+                                                    height: 80.h,
+                                                    decoration: BoxDecoration(
+                                                      color: Colors.white,
+                                                      borderRadius:
+                                                          BorderRadius.circular(
+                                                              16),
+                                                    ),
                                                   ),
-                                                ),
-                                              );
-                                            },
-                                            errorWidget: (BuildContext context,
-                                                String st, a) {
-                                              return Shimmer.fromColors(
-                                                baseColor: Colors.white,
-                                                highlightColor: Colors.grey,
-                                                child: Container(
-                                                  height: 80.h,
-                                                  decoration: BoxDecoration(
-                                                    color: Colors.white,
-                                                    borderRadius:
-                                                        BorderRadius.circular(
-                                                            16),
+                                                );
+                                              },
+                                              errorWidget:
+                                                  (BuildContext context,
+                                                      String st, a) {
+                                                return Shimmer.fromColors(
+                                                  baseColor: Colors.white,
+                                                  highlightColor: Colors.grey,
+                                                  child: Container(
+                                                    height: 80.h,
+                                                    decoration: BoxDecoration(
+                                                      color: Colors.white,
+                                                      borderRadius:
+                                                          BorderRadius.circular(
+                                                              16),
+                                                    ),
                                                   ),
-                                                ),
-                                              );
-                                            },
-                                            imageUrl: widget
-                                                .hires.image[index].imageUrl,
-                                            fit: BoxFit.cover,
-                                            width: double.infinity,
+                                                );
+                                              },
+                                              imageUrl: widget
+                                                  .hires.image[index].imageUrl,
+                                              fit: BoxFit.cover,
+                                              width: double.infinity,
+                                            ),
                                           ),
                                         ),
                                       ),

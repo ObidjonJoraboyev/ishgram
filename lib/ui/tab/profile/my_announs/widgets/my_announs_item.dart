@@ -69,7 +69,7 @@ class _MyAnnounItemState extends State<MyAnnounItem> {
                     type: PageTransitionType.rightToLeftJoined,
                     alignment: Alignment.topRight,
                     childCurrent: const SizedBox(),
-                    child: DetailScreen(hireModel: widget.hires),
+                    child: DetailScreen(hireModel: widget.hires,defaultImageIndex: 0,),
                   ),
                 );
               },
