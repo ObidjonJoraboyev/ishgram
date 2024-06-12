@@ -16,7 +16,8 @@ import 'package:shimmer/shimmer.dart';
 import 'widgets/widget_detail.dart';
 
 class DetailScreen extends StatefulWidget {
-  const DetailScreen({super.key, required this.hireModel, required this.defaultImageIndex});
+  const DetailScreen(
+      {super.key, required this.hireModel, required this.defaultImageIndex});
 
   final AnnounModel hireModel;
 
@@ -57,10 +58,10 @@ class _DetailScreenState extends State<DetailScreen> {
     } else {}
   }
 
-  PageController pageController=PageController();
+  PageController pageController = PageController();
   @override
   void initState() {
-    pageController=PageController(initialPage: widget.defaultImageIndex);
+    pageController = PageController(initialPage: widget.defaultImageIndex);
     super.initState();
   }
 
@@ -172,7 +173,8 @@ class _DetailScreenState extends State<DetailScreen> {
                                 borderRadius: BorderRadius.circular(17.r),
                               ),
                               child: Hero(
-                                tag: Key(widget.hireModel.image[index].imageUrl),
+                                tag:
+                                    Key(widget.hireModel.image[index].imageUrl),
                                 child: ClipRRect(
                                   borderRadius: BorderRadius.only(
                                       topRight: Radius.circular(16.r),

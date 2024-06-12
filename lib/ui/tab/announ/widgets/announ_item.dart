@@ -66,7 +66,9 @@ class _HiringItemState extends State<HiringItem> {
                   MaterialPageRoute(
                     builder: (c) => DetailScreen(
                       hireModel: widget.hires,
-                      defaultImageIndex: pageController.page!.round(),
+                      defaultImageIndex: pageController.positions.isNotEmpty
+                          ? pageController.page!.round()
+                          : 0,
                     ),
                   ),
                 );
@@ -110,8 +112,8 @@ class _HiringItemState extends State<HiringItem> {
                                       (index) => Padding(
                                         padding: EdgeInsets.all(8.sp),
                                         child: Hero(
-                                          tag: Key(widget
-                                              .hires.image[index].imageUrl),
+                                          tag: Key(
+                                              widget.hires.image[0].imageUrl),
                                           child: ClipRRect(
                                             borderRadius:
                                                 BorderRadius.circular(16),
@@ -165,6 +167,15 @@ class _HiringItemState extends State<HiringItem> {
                                   height: double.infinity,
                                   margin: EdgeInsets.all(8.sp),
                                   decoration: BoxDecoration(
+                                      gradient: const LinearGradient(
+                                        begin: Alignment.topRight,
+                                        end: Alignment.bottomLeft,
+                                        colors: [
+                                          CupertinoColors.activeOrange,
+                                          CupertinoColors.activeBlue,
+                                          CupertinoColors.activeGreen,
+                                        ],
+                                      ),
                                       color: CupertinoColors.activeBlue,
                                       borderRadius:
                                           BorderRadius.circular(12.r)),

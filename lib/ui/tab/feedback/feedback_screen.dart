@@ -1,6 +1,5 @@
 import 'dart:io';
 import 'dart:math';
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -12,6 +11,8 @@ import 'package:ish_top/blocs/message/message_event.dart';
 import 'package:ish_top/data/local/local_storage.dart';
 import 'package:ish_top/data/models/message_model.dart';
 import 'package:ish_top/data/models/user_model.dart';
+import 'package:ish_top/ui/tab/announ/widgets/zoom_tap.dart';
+import 'package:pull_down_button/pull_down_button.dart';
 
 class FeedbackScreen extends StatefulWidget {
   const FeedbackScreen({super.key, required this.userModel});
@@ -173,9 +174,10 @@ class _FeedbackScreenState extends State<FeedbackScreen> {
                 const Text(
                   "Online",
                   style: TextStyle(
-                      fontWeight: FontWeight.w400,
-                      fontSize: 16,
-                      color: CupertinoColors.activeBlue),
+                    fontWeight: FontWeight.w400,
+                    fontSize: 16,
+                    color: CupertinoColors.activeBlue,
+                  ),
                 )
               ],
             ),
@@ -188,7 +190,7 @@ class _FeedbackScreenState extends State<FeedbackScreen> {
               .where((e) =>
                   (e.idFrom ==
                       StorageRepository.getString(key: "userNumber")) &&
-                  e.idTo == "ibodulla@gmail.com")
+                  e.isSupport)
               .toList();
 
           if (list.isEmpty) {
@@ -201,215 +203,202 @@ class _FeedbackScreenState extends State<FeedbackScreen> {
             child: Column(
               children: [
                 Expanded(
-                  child: SingleChildScrollView(
+                  child: ListView(
                     controller: scrollController,
                     reverse: true,
                     physics: const AlwaysScrollableScrollPhysics(),
-                    child: Column(
-                      children: [
-                        ...List.generate(
-                          list.length,
-                          (index) {
-                            return GestureDetector(
-                              onTap: () {
-                                if (!list[index].isSupport &&
-                                    selectMessages.isEmpty) {
-                                  showDialog(
-                                    barrierColor: Colors.black,
-                                    context: context,
-                                    builder: (context) => AlertDialog(
-                                      shadowColor: Colors.black,
-                                      backgroundColor: Colors.black,
-                                      insetPadding: EdgeInsets.zero,
-                                      contentPadding: EdgeInsets.zero,
-                                      content: SizedBox(
-                                        width: MediaQuery.sizeOf(context).width,
-                                        child: CachedNetworkImage(
-                                          imageUrl: list[index].messageText,
-                                          width:
-                                              MediaQuery.sizeOf(context).width,
-                                          fit: BoxFit.cover,
-                                          height: 400,
-                                        ),
-                                      ),
+                    children: [
+                      ...List.generate(
+                        list.length,
+                        (index) {
+                          return PullDownButton(
+                              itemBuilder: (context) => [
+                                    PullDownMenuItem(
+                                      onTap: () {},
+                                      title: 'Pin',
+                                      icon: CupertinoIcons.pin,
                                     ),
-                                  );
-                                }
-
-                                setState(() {});
-                                if (check && selectMessages.isNotEmpty) {
-                                  if (!selectMessages.contains(list[index])) {
-                                    setState(() {});
-                                    selectMessages.add(list[index]);
-                                  } else {
-                                    setState(() {});
-                                    selectMessages.remove(list[index]);
-                                  }
-                                }
-                              },
-                              onLongPress: () {
-                                setState(() {});
-
-                                if (!selectMessages.contains(list[index])) {
-                                  setState(() {});
-                                  selectMessages.add(list[index]);
-                                }
-                                if (selectMessages.isNotEmpty) {
-                                  check = true;
-                                  setState(() {});
-                                }
-                              },
-                              child: Row(
-                                mainAxisAlignment:
-                                    list[index].idTo == "ibodulla@gmail.com"
-                                        ? MainAxisAlignment.end
-                                        : MainAxisAlignment.start,
-                                children: [
-                                  list[index].isSupport
-                                      ? Container(
-                                          margin: const EdgeInsets.symmetric(
-                                              vertical: 8, horizontal: 12),
-                                          padding: const EdgeInsets.symmetric(
-                                              vertical: 4, horizontal: 12),
-                                          decoration: BoxDecoration(
-                                              boxShadow: [
-                                                BoxShadow(
-                                                    spreadRadius: 4,
-                                                    color: Colors.black
-                                                        .withOpacity(.1),
-                                                    blurRadius: 10)
-                                              ],
-                                              borderRadius: BorderRadius.only(
-                                                  topLeft:
-                                                      const Radius.circular(10),
-                                                  topRight:
-                                                      const Radius.circular(10),
-                                                  bottomRight: list[index]
-                                                              .idTo ==
-                                                          "ibodulla@gmail.com"
-                                                      ? const Radius.circular(0)
-                                                      : const Radius.circular(
-                                                          10),
-                                                  bottomLeft: list[index]
-                                                              .idTo ==
-                                                          "ibodulla@gmail.com"
-                                                      ? const Radius.circular(
-                                                          10)
-                                                      : const Radius.circular(
-                                                          0)),
-                                              color: selectMessages
-                                                      .contains(list[index])
-                                                  ? Colors.grey
-                                                  : const Color(0xff30A3E6)),
-                                          child: Column(
-                                            crossAxisAlignment:
-                                                CrossAxisAlignment.end,
-                                            children: [
-                                              Text(
-                                                list[index].messageText,
-                                                style: const TextStyle(
-                                                  overflow:
-                                                      TextOverflow.ellipsis,
-                                                  color: Colors.white,
-                                                  fontWeight: FontWeight.w400,
-                                                  fontSize: 16,
-                                                  letterSpacing: 1,
+                                    PullDownMenuItem(
+                                      title: 'Forward',
+                                      subtitle: 'Share in different channel',
+                                      onTap: () {},
+                                      icon: CupertinoIcons
+                                          .arrowshape_turn_up_right,
+                                    ),
+                                    PullDownMenuItem(
+                                      onTap: () {},
+                                      title: 'Delete',
+                                      isDestructive: true,
+                                      icon: CupertinoIcons.delete,
+                                    ),
+                                  ],
+                              buttonBuilder: (context, showMenu) =>
+                                  ScaleOnPress(
+                                    scaleValue: 0.99,
+                                    onLongPressed: showMenu,
+                                    child: Row(
+                                      mainAxisAlignment: list[index].idTo ==
+                                              "ibodulla@gmail.com"
+                                          ? MainAxisAlignment.end
+                                          : MainAxisAlignment.start,
+                                      children: [
+                                        list[index].isSupport
+                                            ? Container(
+                                                margin:
+                                                    const EdgeInsets.symmetric(
+                                                        vertical: 8,
+                                                        horizontal: 12),
+                                                padding:
+                                                    const EdgeInsets.symmetric(
+                                                        vertical: 4,
+                                                        horizontal: 12),
+                                                decoration: BoxDecoration(
+                                                    boxShadow: [
+                                                      BoxShadow(
+                                                        spreadRadius: 0,
+                                                        color: Colors.black
+                                                            .withOpacity(.2),
+                                                        blurRadius: 10,
+                                                      )
+                                                    ],
+                                                    borderRadius: BorderRadius.only(
+                                                        topLeft: const Radius.circular(
+                                                            10),
+                                                        topRight: const Radius.circular(
+                                                            10),
+                                                        bottomRight: list[index].idTo ==
+                                                                "ibodulla@gmail.com"
+                                                            ? const Radius.circular(
+                                                                0)
+                                                            : const Radius.circular(
+                                                                10),
+                                                        bottomLeft: list[index].idTo ==
+                                                                "ibodulla@gmail.com"
+                                                            ? const Radius.circular(
+                                                                10)
+                                                            : const Radius.circular(
+                                                                0)),
+                                                    color: selectMessages.contains(list[index])
+                                                        ? Colors.grey
+                                                        : const Color(0xff30A3E6)),
+                                                child: Column(
+                                                  crossAxisAlignment:
+                                                      CrossAxisAlignment.end,
+                                                  children: [
+                                                    Text(
+                                                      list[index].messageText,
+                                                      style: const TextStyle(
+                                                        overflow: TextOverflow
+                                                            .ellipsis,
+                                                        color: Colors.white,
+                                                        fontWeight:
+                                                            FontWeight.w400,
+                                                        fontSize: 16,
+                                                        letterSpacing: 1,
+                                                      ),
+                                                      maxLines: 1,
+                                                    ),
+                                                    Text(
+                                                      "${DateTime.fromMillisecondsSinceEpoch(int.parse(list[index].updatedTime)).hour}:${DateTime.fromMillisecondsSinceEpoch(int.parse(list[index].updatedTime)).minute}",
+                                                      style: TextStyle(
+                                                        color: Colors.white
+                                                            .withOpacity(.6),
+                                                        fontWeight:
+                                                            FontWeight.w400,
+                                                        fontSize: 14,
+                                                        letterSpacing: 1,
+                                                      ),
+                                                    ),
+                                                  ],
                                                 ),
-                                                maxLines: 1,
-                                              ),
-                                              Text(
-                                                "${DateTime.fromMillisecondsSinceEpoch(int.parse(list[index].updatedTime)).hour}:${DateTime.fromMillisecondsSinceEpoch(int.parse(list[index].updatedTime)).minute}",
-                                                style: TextStyle(
-                                                  color: Colors.white
-                                                      .withOpacity(.6),
-                                                  fontWeight: FontWeight.w400,
-                                                  fontSize: 14,
-                                                  letterSpacing: 1,
-                                                ),
-                                              ),
-                                            ],
-                                          ),
-                                        )
-                                      : GestureDetector(
-                                          child: Container(
-                                            margin: const EdgeInsets.symmetric(
-                                                horizontal: 10, vertical: 8),
-                                            decoration: BoxDecoration(
-                                              border: Border.all(
-                                                  width: 2,
-                                                  color: selectMessages
-                                                          .contains(list[index])
-                                                      ? Colors.black
-                                                      : Colors.white),
-                                              borderRadius: BorderRadius.only(
-                                                  topLeft:
-                                                      const Radius.circular(12),
-                                                  topRight:
-                                                      const Radius.circular(12),
-                                                  bottomRight: list[index]
-                                                              .idTo !=
-                                                          widget.userModel.phone
-                                                      ? const Radius.circular(
-                                                          12)
-                                                      : const Radius.circular(
-                                                          0),
-                                                  bottomLeft: list[index]
-                                                              .idTo ==
-                                                          widget.userModel.phone
-                                                      ? const Radius.circular(
-                                                          12)
-                                                      : const Radius.circular(
-                                                          0)),
-                                            ),
-                                            child: ClipRRect(
-                                              borderRadius: BorderRadius.only(
-                                                  topLeft:
-                                                      const Radius.circular(10),
-                                                  topRight:
-                                                      const Radius.circular(10),
-                                                  bottomRight: list[index]
-                                                              .idTo !=
-                                                          widget.userModel.phone
-                                                      ? const Radius.circular(
-                                                          10)
-                                                      : const Radius.circular(
-                                                          0),
-                                                  bottomLeft: list[index]
-                                                              .idTo ==
-                                                          widget.userModel.phone
-                                                      ? const Radius.circular(
-                                                          10)
-                                                      : const Radius.circular(
-                                                          0)),
-                                              child: Stack(
-                                                children: [
-                                                  Image.network(
-                                                    list[index].messageText,
-                                                    width: 200,
-                                                    height: 200,
-                                                    fit: BoxFit.cover,
+                                              )
+                                            : GestureDetector(
+                                                child: Container(
+                                                  margin: const EdgeInsets
+                                                      .symmetric(
+                                                      horizontal: 10,
+                                                      vertical: 8),
+                                                  decoration: BoxDecoration(
+                                                    border: Border.all(
+                                                        width: 2,
+                                                        color: selectMessages
+                                                                .contains(
+                                                                    list[index])
+                                                            ? Colors.black
+                                                            : Colors.white),
+                                                    borderRadius: BorderRadius.only(
+                                                        topLeft: const Radius
+                                                            .circular(12),
+                                                        topRight:
+                                                            const Radius.circular(
+                                                                12),
+                                                        bottomRight: list[index]
+                                                                    .idTo !=
+                                                                widget.userModel
+                                                                    .phone
+                                                            ? const Radius.circular(
+                                                                12)
+                                                            : const Radius.circular(
+                                                                0),
+                                                        bottomLeft: list[index]
+                                                                    .idTo ==
+                                                                widget.userModel
+                                                                    .phone
+                                                            ? const Radius.circular(12)
+                                                            : const Radius.circular(0)),
                                                   ),
-                                                  selectMessages
-                                                          .contains(list[index])
-                                                      ? Container(
+                                                  child: ClipRRect(
+                                                    borderRadius: BorderRadius.only(
+                                                        topLeft: const Radius
+                                                            .circular(10),
+                                                        topRight:
+                                                            const Radius.circular(
+                                                                10),
+                                                        bottomRight: list[index]
+                                                                    .idTo !=
+                                                                widget.userModel
+                                                                    .phone
+                                                            ? const Radius.circular(
+                                                                10)
+                                                            : const Radius.circular(
+                                                                0),
+                                                        bottomLeft: list[index]
+                                                                    .idTo ==
+                                                                widget.userModel
+                                                                    .phone
+                                                            ? const Radius.circular(10)
+                                                            : const Radius.circular(0)),
+                                                    child: Stack(
+                                                      children: [
+                                                        Image.network(
+                                                          list[index]
+                                                              .messageText,
                                                           width: 200,
                                                           height: 200,
-                                                          color: Colors.black
-                                                              .withOpacity(.5),
-                                                        )
-                                                      : const SizedBox()
-                                                ],
+                                                          fit: BoxFit.cover,
+                                                        ),
+                                                        selectMessages.contains(
+                                                                list[index])
+                                                            ? Container(
+                                                                width: 200,
+                                                                height: 200,
+                                                                color: Colors
+                                                                    .black
+                                                                    .withOpacity(
+                                                                        .5),
+                                                              )
+                                                            : const SizedBox()
+                                                      ],
+                                                    ),
+                                                  ),
+                                                ),
                                               ),
-                                            ),
-                                          ),
-                                        ),
-                                ],
-                              ),
-                            );
-                          },
-                        )
-                      ],
-                    ),
+                                      ],
+                                    ),
+                                  ));
+                        },
+                      )
+                    ],
                   ),
                 ),
                 Container(
@@ -469,7 +458,7 @@ class _FeedbackScreenState extends State<FeedbackScreen> {
                                       messageId: "",
                                       idFrom: StorageRepository.getString(
                                           key: "userNumber"),
-                                      idTo: "ibodulla@gmail.com",
+                                      idTo: "toSupport",
                                     );
 
                                     context.read<MessageBloc>().add(

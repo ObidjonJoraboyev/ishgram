@@ -101,7 +101,9 @@ class _CommentScreenState extends State<CommentScreen> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Hero(
-                        tag: Key(widget.announcementModel.image[0].imageUrl),
+                        tag: widget.announcementModel.image.isNotEmpty
+                            ? Key(widget.announcementModel.image[0].imageUrl)
+                            : UniqueKey(),
                         child: ClipRRect(
                           borderRadius: BorderRadius.circular(8.r),
                           child: widget.announcementModel.image.isNotEmpty
