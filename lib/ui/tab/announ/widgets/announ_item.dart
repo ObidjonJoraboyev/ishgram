@@ -97,7 +97,7 @@ class _HiringItemState extends State<HiringItem> {
                       children: [
                         SizedBox(
                           height: 300.h,
-                          child: widget.hires.image.isNotEmpty
+                          child: (widget.hires.image.isNotEmpty)
                               ? PageView(
                                   controller: pageController,
                                   onPageChanged: (index) {
@@ -264,12 +264,14 @@ class _HiringItemState extends State<HiringItem> {
                           widget.hires.viewedUsers.length.toString(),
                           style: TextStyle(
                             fontWeight: FontWeight.w500,
+                            fontSize: 10.sp,
                             color: CupertinoColors.black.withOpacity(.6),
                           ),
                         ),
                         5.getW(),
                         Icon(
                           CupertinoIcons.eye_solid,
+                          size: 13.sp,
                           color: CupertinoColors.black.withOpacity(.6),
                         ),
                         12.getW(),
@@ -281,7 +283,8 @@ class _HiringItemState extends State<HiringItem> {
                               locale: "uz"),
                           style: TextStyle(
                               color: CupertinoColors.black.withOpacity(.6),
-                              fontWeight: FontWeight.w500),
+                              fontWeight: FontWeight.w500,
+                              fontSize: 10.sp),
                         ),
                         8.getW()
                       ],

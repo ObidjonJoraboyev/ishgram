@@ -108,7 +108,10 @@ class _AddHireScreenState extends State<AddHireScreen> {
           appBar: AppBar(
             scrolledUnderElevation: 0,
             backgroundColor: Colors.transparent,
-            title: Text("add_hire".tr()),
+            title: Text("add_hire".tr(),style: TextStyle(
+                color: Colors.black,
+                fontWeight: FontWeight.w400,
+                fontSize: 18.sp),),
             actions: [
               BlocBuilder<ImageBloc, ImageUploadState>(
                 builder: (context, state) {

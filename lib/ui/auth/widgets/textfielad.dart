@@ -36,10 +36,9 @@ class _PasswordTextInputState extends State<PasswordTextInput> {
         keyboardType: TextInputType.phone,
         inputFormatters: [FilteringTextInputFormatter.digitsOnly],
         style: TextStyle(
-          color: Colors.white,
-          shadows: [
-            Shadow(color: Colors.black.withOpacity(.4), blurRadius: 10)
-          ],
+          color: AppColors.black,
+          fontSize: 13.sp,
+          fontWeight: FontWeight.w400,
         ),
         controller: widget.controller,
         obscureText: passwordVisibility,
@@ -51,7 +50,9 @@ class _PasswordTextInputState extends State<PasswordTextInput> {
         },
         autovalidateMode: AutovalidateMode.onUserInteraction,
         decoration: InputDecoration(
+          errorStyle: TextStyle(fontSize: 9.sp),
           helperText: widget.newPass == true ? "new_password".tr() : null,
+          helperStyle: TextStyle(fontSize: 10.sp),
           labelStyle: TextStyle(
             color: Colors.black.withOpacity(.8),
             fontWeight: FontWeight.w500,
@@ -66,16 +67,25 @@ class _PasswordTextInputState extends State<PasswordTextInput> {
           fillColor: Colors.grey.withOpacity(.7),
           border: OutlineInputBorder(borderRadius: BorderRadius.circular(8)),
           filled: true,
-          contentPadding: EdgeInsets.all(11.sp),
+          contentPadding: EdgeInsets.all(9.sp),
           labelText: widget.labelText.tr(),
-          suffixIcon: IconButton(
-            onPressed: () {
-              passwordVisibility = !passwordVisibility;
-              setState(() {});
-            },
-            icon: passwordVisibility
-                ? const Icon(Icons.visibility_off)
-                : const Icon(Icons.visibility),
+          suffixIcon: Padding(
+            padding: EdgeInsets.only(right: 3.w),
+            child: IconButton(
+              onPressed: () {
+                passwordVisibility = !passwordVisibility;
+                setState(() {});
+              },
+              icon: passwordVisibility
+                  ? Icon(
+                      Icons.visibility_off,
+                      size: 20.sp,
+                    )
+                  : Icon(
+                      Icons.visibility,
+                      size: 20.sp,
+                    ),
+            ),
           ),
           enabledBorder: OutlineInputBorder(
             borderSide: const BorderSide(color: AppColors.transparent),

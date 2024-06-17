@@ -36,12 +36,12 @@ class _ListTileItemState extends State<ListTileItem> {
     return Padding(
       padding: EdgeInsets.symmetric(horizontal: 15.w, vertical: 8.h),
       child: ClipRRect(
-        borderRadius: BorderRadius.circular(12),
+        borderRadius: BorderRadius.circular(12.r),
         child: CupertinoListTile(
           trailing: widget.isSwitch == null
               ? Icon(
                   CupertinoIcons.right_chevron,
-                  size: 22.sp,
+                  size: 14.sp,
                   color: Colors.grey,
                 )
               : BlocConsumer<AuthBloc, AuthState>(
@@ -97,20 +97,24 @@ class _ListTileItemState extends State<ListTileItem> {
           backgroundColor: Colors.grey.shade50,
           leadingSize: 35,
           leading: Container(
-            width: 28.w,
-            height: 28.w,
+            width: 28.sp,
+            height: 28.sp,
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(8.r),
               color: widget.color,
             ),
             child: widget.icon,
           ),
-          title: Text(
-            widget.title,
-            style: TextStyle(
-              color: widget.isPhoto == null
-                  ? CupertinoColors.black
-                  : CupertinoColors.activeBlue,
+          title: Padding(
+            padding: EdgeInsets.symmetric(vertical: 10.h),
+            child: Text(
+              widget.title,
+              style: TextStyle(
+                fontSize: 12.sp,
+                color: widget.isPhoto == null
+                    ? CupertinoColors.black
+                    : CupertinoColors.activeBlue,
+              ),
             ),
           ),
         ),

@@ -57,19 +57,19 @@ class _RegisterSecondState extends State<RegisterSecond> {
                 key: formKey,
                 child: Column(
                   children: [
-                    60.getH(),
+                    20.getH(),
                     Image.asset(
                       AppImages.signUp,
-                      height: 180.h,
-                      width: 180.w,
-                      fit: BoxFit.fill,
+                      height: 160.w,
+                      width: 160.w,
+                      fit: BoxFit.cover,
                     ),
                     Center(
                       child: Text(
                         "no_acc_register".tr(),
                         style: TextStyle(
                           color: CupertinoColors.black.withOpacity(.7),
-                          fontSize: 22.w,
+                          fontSize: 20.sp,
                           fontWeight: FontWeight.w600,
                         ),
                       ),
@@ -88,7 +88,7 @@ class _RegisterSecondState extends State<RegisterSecond> {
                       errorTitle: "error_name".tr(),
                       iconPath: const Icon(CupertinoIcons.star_fill),
                     ),
-                    18.getH(),
+                    20.getH(),
                     UniversalTextInput(
                       onTap: (s) {
                         setState(() {
@@ -102,7 +102,7 @@ class _RegisterSecondState extends State<RegisterSecond> {
                       errorTitle: "error_lastname".tr(),
                       iconPath: const Icon(CupertinoIcons.star_lefthalf_fill),
                     ),
-                    18.getH(),
+                    20.getH(),
                     Padding(
                       padding: EdgeInsets.symmetric(horizontal: 16.w),
                       child: PasswordTextInput(
@@ -125,8 +125,14 @@ class _RegisterSecondState extends State<RegisterSecond> {
                             child: CupertinoSlidingSegmentedControl(
                                 groupValue: activeSlider,
                                 children: {
-                                  4: Text("worker".tr()),
-                                  5: Text("employer".tr()),
+                                  4: Text(
+                                    "worker".tr(),
+                                    style: TextStyle(fontSize: 13.sp),
+                                  ),
+                                  5: Text(
+                                    "employer".tr(),
+                                    style: TextStyle(fontSize: 13.sp),
+                                  ),
                                 },
                                 onValueChanged: (dynamic f) {
                                   setState(() {
@@ -141,7 +147,6 @@ class _RegisterSecondState extends State<RegisterSecond> {
                     Padding(
                       padding: EdgeInsets.symmetric(horizontal: 16.w),
                       child: SizedBox(
-                        height: 50.h,
                         child: LoginButtonItems(
                           title: "register".tr(),
                           onTap: () async {
@@ -170,7 +175,7 @@ class _RegisterSecondState extends State<RegisterSecond> {
                           style: TextStyle(
                             color: AppColors.black.withOpacity(.8),
                             letterSpacing: 0.7,
-                            fontSize: 16,
+                            fontSize: 14.sp,
                             fontWeight: FontWeight.w400,
                           ),
                         ),
@@ -187,10 +192,10 @@ class _RegisterSecondState extends State<RegisterSecond> {
                           },
                           child: Text(
                             "login_button".tr(),
-                            style: const TextStyle(
+                            style: TextStyle(
                                 color: CupertinoColors.activeBlue,
                                 fontWeight: FontWeight.w500,
-                                fontSize: 18),
+                                fontSize: 16.sp),
                           ),
                         ),
                       ],

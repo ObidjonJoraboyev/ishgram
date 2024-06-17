@@ -35,7 +35,7 @@ class UniversalTextInput extends StatelessWidget {
             isNumber == true ? [FilteringTextInputFormatter.digitsOnly] : null,
         style: TextStyle(
           color: AppColors.black,
-          fontSize: 13.w,
+          fontSize: 13.sp,
           fontWeight: FontWeight.w400,
         ),
         cursorColor: CupertinoColors.activeBlue,
@@ -66,7 +66,7 @@ class UniversalTextInput extends StatelessWidget {
             ],
             fontSize: 15.sp,
           ),
-          contentPadding: EdgeInsets.all(16.r),
+          contentPadding: EdgeInsets.all(9.sp),
           labelText: isNumber == null ? hintText : null,
           disabledBorder: OutlineInputBorder(
             borderSide: const BorderSide(color: AppColors.transparent),

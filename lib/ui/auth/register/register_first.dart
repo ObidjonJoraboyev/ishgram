@@ -133,30 +133,30 @@ class _RegisterScreenState extends State<RegisterScreen> {
                           }),
                     ),
                     5.getH(),
-                    TextButton(
-                        onPressed: () async {
-                          init();
-                          setState(() {});
+                    CupertinoButton(
+                      onPressed: () async {
+                        init();
+                        setState(() {});
 
-                          //  final Uri uri = Uri.parse("https://t.me/ustalar_vaqtiuzbot");
-                          //  if (await canLaunchUrl(uri)) {
-                          //    await launchUrl(uri);
-                          //  } else {
-                          //    throw 'Could not launch ';
-                          //  }
-                        },
-                        child: Text(
-                          "Generate password - $password",
-                          style: TextStyle(
-                              color: CupertinoColors.activeBlue,
-                              fontWeight: FontWeight.w400,
-                              fontSize: 14.sp),
-                        )),
+                        //  final Uri uri = Uri.parse("https://t.me/ustalar_vaqtiuzbot");
+                        //  if (await canLaunchUrl(uri)) {
+                        //    await launchUrl(uri);
+                        //  } else {
+                        //    throw 'Could not launch ';
+                        //  }
+                      },
+                      child: Text(
+                        "Generate password - $password",
+                        style: TextStyle(
+                            color: CupertinoColors.activeBlue,
+                            fontWeight: FontWeight.w400,
+                            fontSize: 12.sp),
+                      ),
+                    ),
                     20.getH(),
                     Padding(
                       padding: EdgeInsets.symmetric(horizontal: 16.w),
                       child: SizedBox(
-                        height: 50.h,
                         child: LoginButtonItems(
                           title: "register".tr(),
                           onTap: () async {
@@ -177,7 +177,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                           style: TextStyle(
                             color: AppColors.black.withOpacity(.8),
                             letterSpacing: 0.7,
-                            fontSize: 16,
+                            fontSize: 14.sp,
                             fontWeight: FontWeight.w400,
                           ),
                         ),
@@ -194,10 +194,10 @@ class _RegisterScreenState extends State<RegisterScreen> {
                           },
                           child: Text(
                             "login_button".tr(),
-                            style: const TextStyle(
+                            style: TextStyle(
                                 color: CupertinoColors.activeBlue,
                                 fontWeight: FontWeight.w500,
-                                fontSize: 18),
+                                fontSize: 15.sp),
                           ),
                         ),
                       ],

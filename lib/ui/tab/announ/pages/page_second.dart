@@ -55,12 +55,12 @@ class _PageSecondState extends State<PageSecond> {
                                   users[index].name[0].toUpperCase(),
                                   style: TextStyle(
                                       color: Colors.white,
-                                      fontSize: 16.sp,
+                                      fontSize: 14.sp,
                                       fontWeight: FontWeight.w700),
                                 ),
                               ),
                             ),
-                      title: Text(users[index].name),
+                      title: Text(users[index].name,style: TextStyle(fontSize: 12.sp),),
                       subtitle: Text(users[index].phone),
                     ),
                     Container(

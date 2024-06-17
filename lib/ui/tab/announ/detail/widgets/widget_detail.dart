@@ -114,14 +114,14 @@ class _WidgetOfDetailState extends State<WidgetOfDetail>
                   ),
                 ),
               ),
-              15.getH(),
+              32.getH(),
               Row(
                 children: [
                   Text(
                     time,
                     style: TextStyle(
-                        fontWeight: FontWeight.w600,
-                        fontSize: 14.sp,
+                        fontWeight: FontWeight.w500,
+                        fontSize: 13.sp,
                         color: Colors.black),
                   ),
                   const Spacer(),
@@ -131,9 +131,10 @@ class _WidgetOfDetailState extends State<WidgetOfDetail>
                         buildEvent(),
                       );
                     },
-                    icon: const Icon(
+                    icon: Icon(
                       CupertinoIcons.calendar_badge_plus,
                       color: CupertinoColors.activeOrange,
+                      size: 16.sp,
                     ),
                   ),
                   IconButton(
@@ -156,6 +157,7 @@ class _WidgetOfDetailState extends State<WidgetOfDetail>
                       Alarm.getAlarm(42) == null
                           ? Icons.alarm_add
                           : Icons.alarm_on_sharp,
+                      size: 16.sp,
                       color: Alarm.getAlarm(42) == null
                           ? CupertinoColors.activeOrange
                           : CupertinoColors.destructiveRed,
@@ -185,10 +187,11 @@ class _WidgetOfDetailState extends State<WidgetOfDetail>
               },
               title: Text(
                 widget.hireModel.number,
-                style: TextStyle(fontWeight: FontWeight.w500, fontSize: 18.sp),
+                style: TextStyle(fontWeight: FontWeight.w500, fontSize: 14.sp),
               ),
               trailing: Icon(
                 isCallOpen ? Icons.expand_less : Icons.expand_more,
+                size: 18.sp,
               ),
             ),
           ),
@@ -202,25 +205,28 @@ class _WidgetOfDetailState extends State<WidgetOfDetail>
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
                   IconButton(
-                      icon: const Icon(
+                      icon: Icon(
                         CupertinoIcons.phone_fill,
                         color: Colors.green,
-                        size: 30,
+                        size: 18.sp,
                       ),
                       onPressed: () {
                         launchCaller(widget.hireModel.number);
                       }),
                   IconButton(
-                      icon: const Icon(
+                      icon: Icon(
                         CupertinoIcons.chat_bubble_2_fill,
                         color: CupertinoColors.activeBlue,
-                        size: 30,
+                        size: 19.sp,
                       ),
                       onPressed: () {
                         launchSms(widget.hireModel.number);
                       }),
                   IconButton(
-                    icon: const Icon(Icons.copy),
+                    icon: Icon(
+                      Icons.copy,
+                      size: 16.sp,
+                    ),
                     onPressed: () async {
                       await Clipboard.setData(
                           ClipboardData(text: widget.hireModel.number));

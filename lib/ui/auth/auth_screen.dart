@@ -164,13 +164,13 @@ class _AuthScreenState extends State<AuthScreen> {
                       children: [
                         Text(
                           "no_account".tr(),
-                          style: const TextStyle(
+                          style: TextStyle(
                             color: Colors.black,
-                            fontSize: 16,
+                            fontSize: 14.sp,
                             letterSpacing: 0,
                           ),
                         ),
-                        TextButton(
+                        CupertinoButton(
                           onPressed: () async {
                             await Navigator.pushReplacement(
                               context,
@@ -181,9 +181,9 @@ class _AuthScreenState extends State<AuthScreen> {
                           },
                           child: Text(
                             "no_acc_register".tr(),
-                            style: const TextStyle(
+                            style: TextStyle(
                               color: CupertinoColors.activeBlue,
-                              fontSize: 17,
+                              fontSize: 15.sp,
                             ),
                           ),
                         ),

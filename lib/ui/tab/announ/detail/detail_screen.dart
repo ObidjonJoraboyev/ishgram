@@ -75,6 +75,7 @@ class _DetailScreenState extends State<DetailScreen> {
         ),
         backgroundColor: CupertinoColors.systemGrey6,
         elevation: 0,
+        toolbarHeight: 56.h,
         actions: [
           AnimatedSwitcher(
             duration: const Duration(milliseconds: 150),
@@ -111,10 +112,10 @@ class _DetailScreenState extends State<DetailScreen> {
           style: TextStyle(
               color: Colors.black,
               fontWeight: FontWeight.w500,
-              fontSize: 20.sp),
+              fontSize: 16.sp),
         ),
         leading: IconButton(
-          icon: const Icon(Icons.arrow_back_ios_new),
+          icon:  Icon(Icons.arrow_back_ios_new,size: 18.sp,),
           onPressed: () {
             Navigator.of(context).pop();
           },

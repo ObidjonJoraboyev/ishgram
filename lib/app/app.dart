@@ -5,6 +5,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:ish_top/blocs/announ_bloc/announ_bloc.dart';
 import 'package:ish_top/blocs/announ_bloc/announ_event.dart';
 import 'package:ish_top/blocs/auth/auth_bloc.dart';
+import 'package:ish_top/blocs/auth/auth_event.dart';
 import 'package:ish_top/blocs/connectivity/connectivity_bloc.dart';
 import 'package:ish_top/blocs/connectivity/connectivity_event.dart';
 import 'package:ish_top/blocs/image/image_bloc.dart';
@@ -23,7 +24,7 @@ class App extends StatelessWidget {
     return MultiBlocProvider(
       providers: [
         BlocProvider(
-          create: (context) => AuthBloc(),
+          create: (context) => AuthBloc()..add(GetCurrentUser()),
         ),
         BlocProvider(
           create: (context) => MessageBloc()

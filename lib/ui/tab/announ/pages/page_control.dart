@@ -85,7 +85,7 @@ class _PageControlState extends State<PageControl>
             style: TextStyle(
                 color: Colors.black,
                 fontWeight: FontWeight.w400,
-                fontSize: 20.sp),
+                fontSize: 18.sp),
           ),
           centerTitle: true,
           actions: [
@@ -99,8 +99,10 @@ class _PageControlState extends State<PageControl>
               },
               child: IconButton(
                   key: ValueKey<bool>(_isSearching),
-                  icon:
-                      Icon(_isSearching ? Icons.close : CupertinoIcons.search),
+                  icon: Icon(
+                    _isSearching ? Icons.close : CupertinoIcons.search,
+                    size: 16.sp,
+                  ),
                   onPressed: _toggleAppBar),
             ),
             IconButton(
@@ -108,7 +110,10 @@ class _PageControlState extends State<PageControl>
                   context.read<AnnounBloc>().add(AnnounGetEvent());
                   setState(() {});
                 },
-                icon: const Icon(Icons.more_vert))
+                icon: Icon(
+                  Icons.more_vert,
+                  size: 16.sp,
+                ))
           ],
           toolbarHeight:
               56.h - (_animation.value.h - _animation.value.h * 2.44),

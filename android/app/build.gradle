@@ -26,11 +26,12 @@ if (flutterVersionName == null) {
 }
 
 android {
-
     compileSdkVersion 33
     namespace "com.example.ish_top"
     compileSdk flutter.compileSdkVersion
-    ndkVersion flutter.ndkVersion
+
+    // Explicitly set the NDK version
+    ndkVersion "25.1.8937393"
 
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
@@ -52,7 +53,6 @@ android {
         versionCode flutterVersionCode.toInteger()
         versionName flutterVersionName
         multiDexEnabled true
-
     }
 
     buildTypes {
@@ -68,4 +68,14 @@ flutter {
 
 dependencies {
     implementation 'com.android.support:multidex:2.0.1'
+
+    implementation "org.jetbrains.kotlin:kotlin-stdlib:1.9.0"
+    implementation 'androidx.core:core-ktx:1.10.1'
+    implementation 'androidx.appcompat:appcompat:1.6.1'
+    implementation 'com.google.android.material:material:1.9.0'
+    implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
+    testImplementation 'junit:junit:4.13.2'
+    androidTestImplementation 'androidx.test.ext:junit:1.1.5'
+    androidTestImplementation 'androidx.test.espresso:espresso-core:3.5.1'
+
 }

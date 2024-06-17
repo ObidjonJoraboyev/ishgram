@@ -81,8 +81,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
                               centerTitle: true,
                               title: Text(
                                 state1.userModel.name,
-                                style: const TextStyle(
-                                    fontWeight: FontWeight.w700, fontSize: 24),
+                                style: TextStyle(
+                                    fontWeight: FontWeight.w700,
+                                    fontSize: 20.sp),
                               ),
                               background: Column(
                                 children: [
@@ -184,17 +185,17 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       pinned: true,
                       snap: true,
                       stretch: true,
-                      expandedHeight: 150.h,
+                      expandedHeight: 200.h,
                       scrolledUnderElevation: 0,
                       floating: true,
                       leading: IconButton(
                         style:
                             IconButton.styleFrom(foregroundColor: Colors.white),
                         onPressed: () {},
-                        icon: const Icon(
+                        icon: Icon(
                           CupertinoIcons.qrcode,
                           color: CupertinoColors.activeBlue,
-                          size: 28,
+                          size: 20.sp,
                         ),
                       ),
                       backgroundColor:
@@ -224,7 +225,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                             state1.userModel.phone,
                             style: TextStyle(
                               fontWeight: FontWeight.w400,
-                              fontSize: 18,
+                              fontSize: 12.sp,
                               color: Colors.black.withOpacity(.4),
                             ),
                           ),

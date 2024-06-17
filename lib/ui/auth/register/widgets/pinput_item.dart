@@ -17,14 +17,14 @@ class PinPutItem extends StatelessWidget {
   final int password;
   final ValueChanged<String> valueChanged;
   final defaultPinTheme = PinTheme(
-    width: 56,
-    height: 56,
-    textStyle: const TextStyle(
-      fontSize: 22,
-      color: Color.fromRGBO(30, 60, 87, 1),
+    width: 48.sp,
+    height: 48.sp,
+    textStyle:  TextStyle(
+      fontSize: 22.sp,
+      color:Colors.black,
     ),
     decoration: BoxDecoration(
-      borderRadius: BorderRadius.circular(19),
+      borderRadius: BorderRadius.circular(19.r),
       border: Border.all(color: Colors.black),
     ),
   );
@@ -39,11 +39,11 @@ class PinPutItem extends StatelessWidget {
       listenForMultipleSmsOnAndroid: true,
       animationCurve: Curves.linear,
       defaultPinTheme: PinTheme(
-        height: 48.w,
-        width: 48.w,
-        textStyle: const TextStyle(
-          fontSize: 22,
-          color: Color.fromRGBO(30, 60, 87, 1),
+        height: 48.sp,
+        width: 48.sp,
+        textStyle:  TextStyle(
+          fontSize: 22.sp,
+          color: Colors.black,
         ),
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(16.r),
@@ -80,7 +80,8 @@ class PinPutItem extends StatelessWidget {
         ],
       ),
       focusedPinTheme: defaultPinTheme.copyWith(
-        height: 48.w,
+        height: 48.sp,
+        width: 48.sp,
         decoration: defaultPinTheme.decoration!.copyWith(
           borderRadius: BorderRadius.circular(16.r),
           border: Border.all(color: CupertinoColors.activeBlue),
@@ -89,7 +90,7 @@ class PinPutItem extends StatelessWidget {
       closeKeyboardWhenCompleted: true,
       keyboardType: TextInputType.phone,
       submittedPinTheme: defaultPinTheme.copyWith(
-        height: 48.w,
+
         decoration: defaultPinTheme.decoration!.copyWith(
           color: Colors.transparent,
           borderRadius: BorderRadius.circular(16.r),
@@ -102,7 +103,6 @@ class PinPutItem extends StatelessWidget {
         ),
       ),
       errorPinTheme: defaultPinTheme.copyWith(
-        height: 48.w,
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(16.r),
           border: Border.all(color: Colors.redAccent),

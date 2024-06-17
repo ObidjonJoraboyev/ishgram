@@ -2,6 +2,7 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:ish_top/blocs/image/image_bloc.dart';
 import 'package:ish_top/blocs/image/image_event.dart';
 import 'package:ish_top/data/models/user_model.dart';
@@ -51,8 +52,9 @@ class _TabScreenState extends State<TabScreen> {
         bottomNavigationBar: BottomNavigationBar(
           backgroundColor: CupertinoColors.systemGrey6,
           selectedItemColor: CupertinoColors.activeBlue,
-          selectedFontSize: 14,
-          unselectedFontSize: 14,
+          selectedFontSize: 13.sp,
+          unselectedFontSize: 12.sp,
+
           currentIndex: activeIndex,
           type: BottomNavigationBarType.fixed,
           onTap: (v) {
@@ -62,19 +64,19 @@ class _TabScreenState extends State<TabScreen> {
           items: [
             BottomNavigationBarItem(
               label: "hires".tr(),
-              icon: const Icon(CupertinoIcons.house_fill),
+              icon:  Icon(CupertinoIcons.house_fill,size: 20.sp,),
             ),
             BottomNavigationBarItem(
               label: "add_hire".tr(),
-              icon: const Icon(CupertinoIcons.add_circled),
+              icon:  Icon(CupertinoIcons.add_circled,size:20.sp),
             ),
             BottomNavigationBarItem(
               label: "feedback".tr(),
-              icon: const Icon(CupertinoIcons.chat_bubble_2_fill),
+              icon:  Icon(CupertinoIcons.chat_bubble_2_fill,size: 20.sp,),
             ),
             BottomNavigationBarItem(
               label: "profile".tr(),
-              icon: const Icon(CupertinoIcons.profile_circled),
+              icon:  Icon(CupertinoIcons.profile_circled,size: 20.sp,),
             ),
           ],
         ),
