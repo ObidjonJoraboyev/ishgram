@@ -35,8 +35,6 @@ class PinPutItem extends StatelessWidget {
       controller: controller,
       focusNode: focusNode,
       length: 6,
-      androidSmsAutofillMethod: AndroidSmsAutofillMethod.smsUserConsentApi,
-      listenForMultipleSmsOnAndroid: true,
       animationCurve: Curves.linear,
       defaultPinTheme: PinTheme(
         height: 48.sp,
