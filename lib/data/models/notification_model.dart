@@ -42,6 +42,7 @@ class NotificationModel {
       'dateTime': dateTime,
     };
   }
+
   Map<String, dynamic> toJsonForUpdate() {
     return {
       'subtitle': subtitle,
@@ -51,6 +52,26 @@ class NotificationModel {
       'userToDoc': userToDoc,
       'dateTime': dateTime,
     };
+  }
+
+  NotificationModel copyWith({
+    String? subtitle,
+    String? title,
+    NotificationType? type,
+    String? docId,
+    bool? isRead,
+    String? userToDoc,
+    String? dateTime,
+  }) {
+    return NotificationModel(
+      subtitle: subtitle ?? this.subtitle,
+      title: title ?? this.title,
+      type: type ?? this.type,
+      docId: docId ?? this.docId,
+      isRead: isRead ?? this.isRead,
+      userToDoc: userToDoc ?? this.userToDoc,
+      dateTime: dateTime ?? this.dateTime,
+    );
   }
 }
 

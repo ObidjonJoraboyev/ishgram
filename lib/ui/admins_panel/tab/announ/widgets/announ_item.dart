@@ -149,8 +149,9 @@ class _AdminHiringItemState extends State<AdminHiringItem> {
                                                         notificationModel:
                                                             NotificationModel(
                                                           subtitle:
-                                                              controller.text,
-                                                          title: "",
+                                                              "${"hiring_not_published".tr()}\n${controller.text}",
+                                                          title:
+                                                              "your_hires".tr(),
                                                           type: NotificationType
                                                               .rejected,
                                                           docId: "",
@@ -185,7 +186,84 @@ class _AdminHiringItemState extends State<AdminHiringItem> {
                                 icon: CupertinoIcons.nosign,
                               ),
                               PullDownMenuItem(
-                                onTap: () {},
+                                onTap: () {
+                                  showDialog(
+                                      context: context,
+                                      builder: (context) =>
+                                          CupertinoAlertDialog(
+                                            title: const Text("Are you sure?"),
+                                            content: Column(
+                                              children: [
+                                                const Text(
+                                                    "Are you sure you want to accept this announcement?"),
+                                              ],
+                                            ),
+                                            actions: [
+                                              CupertinoDialogAction(
+                                                onPressed: () {
+                                                  Navigator.pop(context);
+                                                },
+                                                child: const Text(
+                                                  "Cancel",
+                                                  style: TextStyle(
+                                                      color: CupertinoColors
+                                                          .systemBlue),
+                                                ),
+                                              ),
+                                              CupertinoDialogAction(
+                                                onPressed: () {
+                                                  context
+                                                      .read<AnnounBloc>()
+                                                      .add(
+                                                        AnnounUpdateEvent(
+                                                          hireModel: widget
+                                                              .hires
+                                                              .copyWith(
+                                                                  status:
+                                                                      StatusAnnoun
+                                                                          .active),
+                                                        ),
+                                                      );
+                                                  context
+                                                      .read<NotificationBloc>()
+                                                      .add(
+                                                        NotificationAddEvent(
+                                                          notificationModel:
+                                                              NotificationModel(
+                                                            subtitle:
+                                                                "hiring_published"
+                                                                    .tr(),
+                                                            title: "your_hires"
+                                                                .tr(),
+                                                            type:
+                                                                NotificationType
+                                                                    .actived,
+                                                            docId: "",
+                                                            isRead: false,
+                                                            userToDoc: widget
+                                                                .hires.userId,
+                                                            dateTime: DateTime
+                                                                    .now()
+                                                                .millisecondsSinceEpoch
+                                                                .toString(),
+                                                          ),
+                                                        ),
+                                                      );
+
+                                                  Navigator.pop(context);
+                                                },
+                                                child: Text(
+                                                  "Accept",
+                                                  style: TextStyle(
+                                                      fontWeight:
+                                                          FontWeight.w500,
+                                                      color: CupertinoColors
+                                                          .activeBlue),
+                                                ),
+                                              )
+                                            ],
+                                          ));
+                                },
                                 title: "Active",
                                 iconColor: CupertinoColors.activeGreen,
                                 icon: CupertinoIcons.check_mark_circled,

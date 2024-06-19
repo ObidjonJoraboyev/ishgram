@@ -1,3 +1,5 @@
+import 'dart:ui';
+
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -104,10 +106,10 @@ class _AddHireScreenState extends State<AddHireScreen> {
       listener: (context, state) {},
       builder: (context, authState) {
         return Scaffold(
+          extendBodyBehindAppBar: true,
           backgroundColor: CupertinoColors.systemGrey5,
           appBar: AppBar(
             scrolledUnderElevation: 0,
-            backgroundColor: Colors.transparent,
             title: Text(
               "add_hire".tr(),
               style: TextStyle(
@@ -130,14 +132,15 @@ class _AddHireScreenState extends State<AddHireScreen> {
                         nameCtrl.clear();
                         numberCtrl.clear();
                         money.clear();
+                        checkBoxName = false;
+                        checkBoxNum = false;
                         ownerCtrl.clear();
                         descriptionCtrl.clear();
                         for (int i = 0; i < state.images.length; i++) {
-                          context.read<ImageBloc>().add(
-                                ImageRemoveEvent(
-                                    docId: state.images[i].imageDocId, context),
-                              );
+                          context.read<ImageBloc>().add(ImageRemoveEvent(
+                              docId: state.images[i].imageDocId, context));
                         }
+                        setState(() {});
                       },
                       child: Padding(
                         padding: EdgeInsets.only(right: 12.w),
@@ -155,6 +158,27 @@ class _AddHireScreenState extends State<AddHireScreen> {
                 },
               )
             ],
+            elevation: 0,
+            bottom: PreferredSize(
+              preferredSize: Size(
+                MediaQuery.sizeOf(context).width,
+                0.6.h,
+              ),
+              child: Container(
+                height: 0.6.h,
+                width: double.infinity,
+                color: CupertinoColors.systemGrey,
+              ),
+            ),
+            flexibleSpace: ClipRect(
+              child: BackdropFilter(
+                filter: ImageFilter.blur(sigmaX: 10.0, sigmaY: 10.0),
+                child: Container(
+                  color: Colors.transparent,
+                ),
+              ),
+            ),
+            backgroundColor: Colors.white.withOpacity(.8),
           ),
           body: BlocConsumer<ImageBloc, ImageUploadState>(
             listener: (context, state) {},
@@ -628,8 +652,6 @@ class _AddHireScreenState extends State<AddHireScreen> {
                     endWork = DateTime.now().millisecondsSinceEpoch;
                   });
                 }
-
-
               },
             ),
           ),

@@ -10,8 +10,10 @@ import 'package:ish_top/blocs/auth/auth_bloc.dart';
 import 'package:ish_top/blocs/notification/notification_bloc.dart';
 import 'package:ish_top/blocs/notification/notification_event.dart';
 import 'package:ish_top/blocs/notification/notification_state.dart';
+import 'package:ish_top/data/models/announ_model.dart';
 import 'package:ish_top/data/models/notification_model.dart';
 import 'package:ish_top/ui/admins_panel/tab/announ/widgets/zoom_tap.dart';
+import 'package:ish_top/ui/tab/announ/notification/notification_detail.dart';
 import 'package:ish_top/utils/size/size_utils.dart';
 import 'package:timeago/timeago.dart';
 
@@ -25,7 +27,9 @@ class NotificationScreen extends StatefulWidget {
 class _NotificationScreenState extends State<NotificationScreen> {
   @override
   void initState() {
-    context.read<NotificationBloc>().add(NotificationGetEvent(context: context));
+    context
+        .read<NotificationBloc>()
+        .add(NotificationGetEvent(context: context));
     super.initState();
   }
 
@@ -38,12 +42,21 @@ class _NotificationScreenState extends State<NotificationScreen> {
             .where((v) =>
                 v.userToDoc == context.read<AuthBloc>().state.userModel.docId)
             .toList();
+
+        notifs.sort(
+          (a, b) => b.dateTime.compareTo(a.dateTime),
+        );
         return Scaffold(
+          extendBodyBehindAppBar: true,
           backgroundColor: CupertinoColors.systemGrey5,
           appBar: AppBar(
             actions: [
               IconButton(
-                onPressed: () {},
+                onPressed: () {
+                  context
+                      .read<NotificationBloc>()
+                      .add(NotificationReadAllEvent(notifs: notifs));
+                },
                 icon: SvgPicture.asset(
                   "assets/icons/double_check.svg",
                   width: 20.w,
@@ -72,7 +85,7 @@ class _NotificationScreenState extends State<NotificationScreen> {
                 ),
               ),
             ),
-            backgroundColor: Colors.white.withOpacity(.9),
+            backgroundColor: Colors.white.withOpacity(.8),
             title: Text(
               "notifications".tr(),
             ),
@@ -83,12 +96,35 @@ class _NotificationScreenState extends State<NotificationScreen> {
                     ...List.generate(notifs.length, (index) {
                       return ScaleOnPress(
                         scaleValue: 0.99,
-                        onTap: (){
-
+                        onTap: () {
+                          if (notifs[index].type == NotificationType.actived &&
+                              notifs[index].isRead == false) {
+                            context.read<NotificationBloc>().add(
+                                  NotificationUpdateEvent(
+                                    notificationModel:
+                                        notifs[index].copyWith(isRead: true),
+                                  ),
+                                );
+                          }
+                          if (notifs[index].type == NotificationType.rejected) {
+                            context.read<NotificationBloc>().add(
+                                  NotificationUpdateEvent(
+                                    notificationModel:
+                                        notifs[index].copyWith(isRead: true),
+                                  ),
+                                );
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) =>
+                                     NotificationDetailScreen(notificationModel: notifs[index],),
+                              ),
+                            );
+                          }
                         },
                         child: Container(
                           padding: EdgeInsets.only(
-                              right: 8.w, top: 5.h, bottom: 5.h, left: 8.w),
+                              right: 14.w, top: 14.h, bottom: 14.h, left: 14.w),
                           margin: EdgeInsets.symmetric(
                               horizontal: 16.w, vertical: 8.h),
                           decoration: BoxDecoration(
@@ -103,16 +139,21 @@ class _NotificationScreenState extends State<NotificationScreen> {
                                   notifs[index].isRead
                                       ? const SizedBox()
                                       : Container(
-                                    margin: EdgeInsets.only(right: 5.w,),
-                                    width: 8.sp,
-                                    height: 8.sp,
-                                    decoration: const BoxDecoration(
-                                        color: CupertinoColors.activeBlue,
-                                        shape: BoxShape.circle),
-                                  ),
+                                          margin: EdgeInsets.only(
+                                            right: 5.w,
+                                          ),
+                                          width: 8.sp,
+                                          height: 8.sp,
+                                          decoration: const BoxDecoration(
+                                              color: CupertinoColors.activeBlue,
+                                              shape: BoxShape.circle),
+                                        ),
                                   Text(
                                     notifs[index].title,
-                                    style: TextStyle(fontSize: 16.sp,fontWeight: FontWeight.w600,color:Colors.black),
+                                    style: TextStyle(
+                                        fontSize: 16.sp,
+                                        fontWeight: FontWeight.w600,
+                                        color: Colors.black),
                                   ),
                                 ],
                               ),
@@ -121,8 +162,11 @@ class _NotificationScreenState extends State<NotificationScreen> {
                                 notifs[index].subtitle,
                                 maxLines: 1,
                                 overflow: TextOverflow.ellipsis,
-                                style: TextStyle(fontWeight: FontWeight.w400,fontSize: 12.sp),
+                                style: TextStyle(
+                                    fontWeight: FontWeight.w400,
+                                    fontSize: 12.sp),
                               ),
+                              10.getH(),
                               Text(
                                 format(
                                     DateTime.fromMillisecondsSinceEpoch(

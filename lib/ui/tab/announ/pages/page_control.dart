@@ -6,6 +6,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:ish_top/blocs/auth/auth_bloc.dart';
 import 'package:ish_top/blocs/auth/auth_event.dart';
+import 'package:ish_top/blocs/notification/notification_state.dart';
 import 'package:ish_top/ui/admins_panel/tab/announ/widgets/zoom_tap.dart';
 import 'package:ish_top/ui/tab/announ/notification/notification_screen.dart';
 import 'package:ish_top/ui/tab/announ/widgets/search_item.dart';
@@ -64,21 +65,18 @@ class _PageControlState extends State<PageControl>
 
   @override
   Widget build(BuildContext context) {
-    int countNotif = context
-        .read<NotificationBloc>()
-        .state
-        .notifications
-        .where((test) =>
-            test.userToDoc == context.read<AuthBloc>().state.userModel.docId &&
-            test.isRead == false)
-        .toList()
-        .length;
+
     width = MediaQuery.sizeOf(context).width;
     height = MediaQuery.sizeOf(context).height;
     return DefaultTabController(
       length: 2,
       initialIndex: 0,
-      child: Scaffold(
+      child: BlocConsumer<NotificationBloc, NotificationState>(
+  listener: (context, state) {
+  },
+  builder: (context2, state) {
+
+    return Scaffold(
         appBar: AppBar(
           elevation: 0,
           flexibleSpace: ClipRect(
@@ -129,7 +127,6 @@ class _PageControlState extends State<PageControl>
                   },
                   title: "notifications".tr(),
                   icon: Icons.notifications_active_outlined,
-                  subtitle: "There are $countNotif notifications",
                 ),
                 PullDownMenuItem(
                   onTap: () {},
@@ -139,7 +136,10 @@ class _PageControlState extends State<PageControl>
               ],
               buttonBuilder: (w, d) {
                 return ScaleOnPress(
-                  onTap: d,
+                  onTap: ()async{
+
+                    d();
+                  },
                   child: Padding(
                     padding: EdgeInsets.symmetric(horizontal: 3.w),
                     child: const Icon(Icons.more_vert),
@@ -245,7 +245,9 @@ class _PageControlState extends State<PageControl>
             ),
           ],
         ),
-      ),
+      );
+  },
+),
     );
   }
 }

@@ -1,3 +1,4 @@
+import 'package:bloc_concurrency/bloc_concurrency.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -9,13 +10,14 @@ import 'package:ish_top/data/models/notification_model.dart';
 class NotificationBloc extends Bloc<NotificationEvent, NotificationState> {
   NotificationBloc()
       : super(const NotificationState(
-            notifications: [],
-            status: StatusOfNotif.pure,
-            )) {
-    on<NotificationGetEvent>(notifGet);
-    on<NotificationUpdateEvent>(notifUpdate);
-    on<NotificationDeleteEvent>(notifDelete);
-    on<NotificationAddEvent>(notifAdd);
+          notifications: [],
+          status: StatusOfNotif.pure,
+        )) {
+    on<NotificationGetEvent>(notifGet, transformer: droppable());
+    on<NotificationUpdateEvent>(notifUpdate, transformer: droppable());
+    on<NotificationDeleteEvent>(notifDelete, transformer: droppable());
+    on<NotificationAddEvent>(notifAdd, transformer: droppable());
+    on<NotificationReadAllEvent>(notifRead, transformer: droppable());
   }
 
   notifGet(NotificationGetEvent event, emit) async {
@@ -30,15 +32,13 @@ class NotificationBloc extends Bloc<NotificationEvent, NotificationState> {
     print(StorageRepository.getString(key: "userDoc"));
     StorageRepository.setString(key: "userDoc", value: "O5gsAcT0COW5QKVEAmHN");
 
-
-
     try {
       await emit.onEach<List<NotificationModel>>(streamController,
           onData: (List<NotificationModel> messages) async {
         emit(state.copyWith(
-            notifications: messages,
-            status: StatusOfNotif.success,
-          ));
+          notifications: messages,
+          status: StatusOfNotif.success,
+        ));
       }, onError: (c, d) {});
     } catch (error) {
       debugPrint("ERROR CATCHd $error");
@@ -53,6 +53,20 @@ class NotificationBloc extends Bloc<NotificationEvent, NotificationState> {
           .update(event.notificationModel.toJson());
     } catch (error) {
       debugPrint("ERROR CATCH $error");
+    }
+  }
+
+  notifRead(NotificationReadAllEvent event, emit) async {
+    print("sdvsdfv");
+    for (int i = 0; i < event.notifs.length; i++) {
+      try {
+        await FirebaseFirestore.instance
+            .collection("notifications")
+            .doc(event.notifs[i].docId)
+            .update({"isRead": true});
+      } catch (error) {
+        debugPrint("ERROR CATCH $error");
+      }
     }
   }
 

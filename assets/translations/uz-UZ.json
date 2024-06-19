@@ -70,5 +70,9 @@
   "waiting": "Kutayotgan",
   "no_hire_yet": "Hozircha e'lonlar mavjud emas.",
   "in_review": "Sizning e'loningiz ko'rib chiqilmoqda, tez orada barchaga ko'rinadi.",
-  "notifications": "Bildirishnomalar"
+  "notifications": "Bildirishnomalar",
+  "notification": "Bildirishnoma",
+  "hiring_published": "E'loningiz joylashtirildi",
+  "hiring_not_published": "E'loningiz joylashtirilmadi",
+  "your_hires": "Sizning e'lonlaringiz"
 }
