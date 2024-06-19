@@ -5,6 +5,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:ish_top/blocs/auth/auth_bloc.dart';
 import 'package:ish_top/blocs/auth/auth_state.dart';
 import 'package:ish_top/data/forms/form_status.dart';
+import 'package:ish_top/ui/admins_panel/tab/admin_tab/tab_screen.dart';
 import 'package:ish_top/ui/auth/register/register_first.dart';
 import 'package:ish_top/ui/auth/register/register_second.dart';
 import 'package:ish_top/ui/tab/tab/tab_screen.dart';
@@ -34,10 +35,18 @@ class _RegisterControlState extends State<RegisterControl> {
           }
           if (state.formStatus == FormStatus.authenticated) {
             if (!context.mounted) return;
-            Navigator.pushAndRemoveUntil(
-                context1,
-                MaterialPageRoute(builder: (context) => const TabScreen()),
-                (route) => false);
+            if(state.userModel.phone=="+998 (95) 083-13-44"){
+              Navigator.pushAndRemoveUntil(
+                  context1,
+                  MaterialPageRoute(builder: (context) => const AdminTabScreen()),
+                      (route) => false);
+            }else{
+              Navigator.pushAndRemoveUntil(
+                  context1,
+                  MaterialPageRoute(builder: (context) => const TabScreen()),
+                      (route) => false);
+            }
+
           }
         },
         builder: (context, state) {

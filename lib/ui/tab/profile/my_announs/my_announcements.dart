@@ -39,7 +39,7 @@ class _MyAnnouncementsState extends State<MyAnnouncements> {
           listener: (context, authState) {},
           builder: (context, authState) {
             return DefaultTabController(
-              length: 3,
+              length: 4,
               initialIndex: 0,
               child: Scaffold(
                 backgroundColor: CupertinoColors.systemGrey5,
@@ -91,7 +91,7 @@ class _MyAnnouncementsState extends State<MyAnnouncements> {
                           style: TextStyle(
                             color: CupertinoColors.activeBlue,
                             fontWeight: FontWeight.w500,
-                            fontSize: 16.sp,
+                            fontSize: 14.sp,
                           ),
                         ),
                         Text(
@@ -99,13 +99,21 @@ class _MyAnnouncementsState extends State<MyAnnouncements> {
                           style: TextStyle(
                             color: CupertinoColors.activeOrange,
                             fontWeight: FontWeight.w500,
-                            fontSize: 16.sp,
+                            fontSize: 14.sp,
                           ),
                         ),
                         Text(
                           "Returned",
                           style: TextStyle(
                             color: CupertinoColors.systemRed,
+                            fontWeight: FontWeight.w500,
+                            fontSize: 14.sp,
+                          ),
+                        ),
+                        Text(
+                          "waiting".tr(),
+                          style: TextStyle(
+                            color: CupertinoColors.systemYellow,
                             fontWeight: FontWeight.w500,
                             fontSize: 16.sp,
                           ),
@@ -168,6 +176,26 @@ class _MyAnnouncementsState extends State<MyAnnouncements> {
                                       hires: announState.myHires
                                           .where((v) =>
                                               v.status == StatusAnnoun.returned)
+                                          .toList()[index],
+                                      voidCallback: () {},
+                                      scrollController: ScrollController(),
+                                      context1: context);
+                                })
+                              ],
+                            ),
+                            ListView(
+                              children: [
+                                ...List.generate(
+                                    announState.myHires
+                                        .where((test) =>
+                                            test.status ==
+                                            StatusAnnoun.waiting)
+                                        .toList()
+                                        .length, (index) {
+                                  return MyAnnounItem(
+                                      hires: announState.myHires
+                                          .where((v) =>
+                                              v.status == StatusAnnoun.waiting)
                                           .toList()[index],
                                       voidCallback: () {},
                                       scrollController: ScrollController(),

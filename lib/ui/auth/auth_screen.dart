@@ -9,6 +9,8 @@ import 'package:ish_top/blocs/auth/auth_bloc.dart';
 import 'package:ish_top/blocs/auth/auth_event.dart';
 import 'package:ish_top/blocs/auth/auth_state.dart';
 import 'package:ish_top/data/forms/form_status.dart';
+import 'package:ish_top/data/local/local_storage.dart';
+import 'package:ish_top/ui/admins_panel/tab/admin_tab/tab_screen.dart';
 import 'package:ish_top/ui/auth/register/register_control.dart';
 import 'package:ish_top/ui/auth/widgets/button.dart';
 import 'package:ish_top/ui/auth/widgets/textfielad.dart';
@@ -17,7 +19,6 @@ import 'package:ish_top/ui/tab/tab/tab_screen.dart';
 import 'package:ish_top/utils/formatters/formatters.dart';
 import 'package:ish_top/utils/images/app_images.dart';
 import 'package:ish_top/utils/size/size_utils.dart';
-import 'package:rive/rive.dart';
 
 class AuthScreen extends StatefulWidget {
   const AuthScreen({super.key});
@@ -39,12 +40,6 @@ class _AuthScreenState extends State<AuthScreen> {
     super.dispose();
   }
 
-  StateMachineController? stateMachineController;
-  SMIInput<bool>? isChecking;
-  SMIInput<double>? numLook;
-  SMIInput<bool>? isHandsUp;
-  SMIInput<bool>? trigSuccess;
-  SMIInput<bool>? trigFail;
 
   @override
   Widget build(BuildContext context) {
@@ -97,28 +92,6 @@ class _AuthScreenState extends State<AuthScreen> {
                         isPhone: true,
                         formStatus: state.formStatus,
                       ),
-                    ),
-                    RiveAnimation.asset(
-                      "assets/rives/login_rive.riv",
-                      stateMachines: const ["Login machine"],
-                      onInit: (adBoard) {
-                        stateMachineController =
-                            StateMachineController.fromArtboard(
-                                adBoard, "Login Machine");
-
-                        if (stateMachineController == null) return;
-
-                        adBoard.addController(stateMachineController!);
-                        isChecking =
-                            stateMachineController?.findInput("isChecking");
-                        numLook = stateMachineController?.findInput("numLook");
-                        isHandsUp =
-                            stateMachineController?.findInput("isHandsUp");
-                        trigSuccess =
-                            stateMachineController?.findInput("trigSuccess");
-                        trigFail =
-                            stateMachineController?.findInput("trigFail");
-                      },
                     ),
                     16.getH(),
                     Padding(
@@ -196,12 +169,21 @@ class _AuthScreenState extends State<AuthScreen> {
           );
         },
         listener: (BuildContext context, AuthState state) async {
-          if (state.formStatus == FormStatus.authenticated) {
+          String userNumber=StorageRepository.getString(key:"userNumber");
+          if (state.formStatus ==
+              FormStatus.authenticated) {
             if (!context.mounted) return;
-            Navigator.pushAndRemoveUntil(
-                context,
-                MaterialPageRoute(builder: (context) => const TabScreen()),
-                (route) => false);
+           if(userNumber!="+998 (95) 083-13-44"){
+             Navigator.pushAndRemoveUntil(
+                 context,
+                 MaterialPageRoute(builder: (context) => const TabScreen()),
+                     (route) => false);
+           }{
+              Navigator.pushAndRemoveUntil(
+                  context,
+                  MaterialPageRoute(builder: (context) => const AdminTabScreen()),
+                      (route) => false);
+            }
           }
         },
       ),

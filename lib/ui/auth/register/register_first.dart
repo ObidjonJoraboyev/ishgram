@@ -119,7 +119,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                       isPhone: true,
                       formStatus: state.formStatus,
                     ),
-                    16.getH(),
+                    10.getH(),
                     Padding(
                       padding: EdgeInsets.symmetric(horizontal: 16.w),
                       child: PinPutItem(
@@ -150,10 +150,10 @@ class _RegisterScreenState extends State<RegisterScreen> {
                         style: TextStyle(
                             color: CupertinoColors.activeBlue,
                             fontWeight: FontWeight.w400,
-                            fontSize: 12.sp),
+                            fontSize: 14.sp),
                       ),
                     ),
-                    20.getH(),
+                    15.getH(),
                     Padding(
                       padding: EdgeInsets.symmetric(horizontal: 16.w),
                       child: SizedBox(

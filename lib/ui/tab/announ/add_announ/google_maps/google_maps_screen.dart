@@ -31,7 +31,7 @@ class _GoogleMapsScreenState extends State<GoogleMapsScreen> {
   CameraPosition? cameraPosition;
   GoogleMapController? mapController;
 
-  bool open = false;
+  bool open = true;
 
   @override
   Widget build(BuildContext context) {

@@ -89,7 +89,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                 children: [
                                   50.getH(),
                                   SizedBox(
-                                    height: 90.w,
+                                    height: 150.w,
                                     width: 90.w,
                                     child: GestureDetector(
                                       onTap: () async {

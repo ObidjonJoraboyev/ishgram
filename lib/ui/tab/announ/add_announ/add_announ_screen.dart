@@ -108,10 +108,13 @@ class _AddHireScreenState extends State<AddHireScreen> {
           appBar: AppBar(
             scrolledUnderElevation: 0,
             backgroundColor: Colors.transparent,
-            title: Text("add_hire".tr(),style: TextStyle(
-                color: Colors.black,
-                fontWeight: FontWeight.w400,
-                fontSize: 18.sp),),
+            title: Text(
+              "add_hire".tr(),
+              style: TextStyle(
+                  color: Colors.black,
+                  fontWeight: FontWeight.w400,
+                  fontSize: 18.sp),
+            ),
             actions: [
               BlocBuilder<ImageBloc, ImageUploadState>(
                 builder: (context, state) {
@@ -602,7 +605,9 @@ class _AddHireScreenState extends State<AddHireScreen> {
                     description: descriptionCtrl.text,
                     image: context.read<ImageBloc>().state.images,
                     money: money.text,
+                    userId: context.read<AuthBloc>().state.userModel.docId,
                     number: numberCtrl.text,
+                    status: StatusAnnoun.waiting,
                     createdAt: DateTime.now().millisecondsSinceEpoch,
                   );
                   context.read<AuthBloc>().add(GetCurrentUser());
@@ -623,6 +628,8 @@ class _AddHireScreenState extends State<AddHireScreen> {
                     endWork = DateTime.now().millisecondsSinceEpoch;
                   });
                 }
+
+
               },
             ),
           ),

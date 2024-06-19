@@ -405,7 +405,7 @@ Widget toast = Container(
         width: 12.0,
       ),
       Text(
-        "added_hiring".tr(),
+        "in_review".tr(),
         style: TextStyle(
             color: Colors.white, fontWeight: FontWeight.w500, fontSize: 14.sp),
       ),

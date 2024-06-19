@@ -1,6 +1,10 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:ish_top/blocs/auth/auth_bloc.dart';
+import 'package:ish_top/blocs/auth/auth_event.dart';
 import 'package:ish_top/data/local/local_storage.dart';
+import 'package:ish_top/ui/admins_panel/tab/admin_tab/tab_screen.dart';
 import 'package:ish_top/ui/auth/auth_screen.dart';
 import 'package:ish_top/ui/tab/tab/tab_screen.dart';
 import 'package:lottie/lottie.dart';
@@ -15,14 +19,18 @@ class SplashScreen extends StatefulWidget {
 class _SplashScreenState extends State<SplashScreen> {
   @override
   void initState() {
+
+    String userNumber=StorageRepository.getString(key: "userNumber");
+
     Future.delayed(const Duration(seconds: 1), () {
+      context.read<AuthBloc>().add(GetCurrentUser());
       Navigator.pushReplacement(
           context,
           MaterialPageRoute(
               builder: (context) =>
-                  StorageRepository.getString(key: "userNumber").isEmpty
+                  userNumber.isEmpty
                       ? const AuthScreen()
-                      : const TabScreen()));
+                      :userNumber!="+998 (95) 083-13-44" ?const TabScreen():const AdminTabScreen()));
     });
     super.initState();
   }

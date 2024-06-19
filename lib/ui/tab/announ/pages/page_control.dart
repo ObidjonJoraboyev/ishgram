@@ -4,12 +4,13 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:ish_top/blocs/announ_bloc/announ_bloc.dart';
-import 'package:ish_top/blocs/announ_bloc/announ_event.dart';
 import 'package:ish_top/blocs/auth/auth_bloc.dart';
 import 'package:ish_top/blocs/auth/auth_event.dart';
+import 'package:ish_top/ui/admins_panel/tab/announ/widgets/zoom_tap.dart';
+import 'package:ish_top/ui/tab/announ/notification/notification_screen.dart';
 import 'package:ish_top/ui/tab/announ/widgets/search_item.dart';
 import 'package:ish_top/utils/size/size_utils.dart';
+import 'package:pull_down_button/pull_down_button.dart';
 import 'page_first.dart';
 import 'page_second.dart';
 
@@ -105,15 +106,36 @@ class _PageControlState extends State<PageControl>
                   ),
                   onPressed: _toggleAppBar),
             ),
-            IconButton(
-                onPressed: () {
-                  context.read<AnnounBloc>().add(AnnounGetEvent());
-                  setState(() {});
-                },
-                icon: Icon(
-                  Icons.more_vert,
-                  size: 16.sp,
-                ))
+            PullDownButton(
+              itemBuilder: (context) => [
+                PullDownMenuItem(
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => const NotificationScreen(),
+                      ),
+                    );
+                  },
+                  title: "notifications".tr(),
+                  icon: Icons.notifications_active_outlined,
+                ),
+                PullDownMenuItem(
+                  onTap: () {},
+                  title: "Filter",
+                  icon: Icons.filter_alt_outlined,
+                ),
+              ],
+              buttonBuilder: (w, d) {
+                return ScaleOnPress(
+                  onTap: d,
+                  child: Padding(
+                    padding: EdgeInsets.symmetric(horizontal: 3.w),
+                    child: const Icon(Icons.more_vert),
+                  ),
+                );
+              },
+            ),
           ],
           toolbarHeight:
               56.h - (_animation.value.h - _animation.value.h * 2.44),

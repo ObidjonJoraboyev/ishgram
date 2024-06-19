@@ -14,7 +14,10 @@ class InternetScreen extends StatefulWidget {
   State<InternetScreen> createState() => _InternetScreenState();
 }
 
+
 class _InternetScreenState extends State<InternetScreen> {
+
+
   @override
   Widget build(BuildContext context) {
     return PopScope(
@@ -26,6 +29,7 @@ class _InternetScreenState extends State<InternetScreen> {
             listener: (context, state) {
               widget.onInternetComeBack();
               if (state.hasInternet ||
+
                   state.connectResult != ConnectivityResult.none) {
                 Navigator.pop(context);
               }

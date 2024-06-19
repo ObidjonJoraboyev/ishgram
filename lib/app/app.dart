@@ -13,6 +13,8 @@ import 'package:ish_top/blocs/map/map_bloc.dart';
 import 'package:ish_top/blocs/map/map_event.dart';
 import 'package:ish_top/blocs/message/message_bloc.dart';
 import 'package:ish_top/blocs/message/message_event.dart';
+import 'package:ish_top/blocs/notification/notification_bloc.dart';
+import 'package:ish_top/blocs/notification/notification_event.dart';
 import 'package:ish_top/blocs/user_image/user_image_bloc.dart';
 import 'package:ish_top/ui/splash/splash_screen.dart';
 
@@ -37,6 +39,8 @@ class App extends StatelessWidget {
         ),
         BlocProvider(
           create: (context) => ImageBloc(),
+        ),BlocProvider(
+          create: (context) => NotificationBloc()..add(NotificationGetEvent()),
         ),
         BlocProvider(
           create: (context) => UserImageBloc(),

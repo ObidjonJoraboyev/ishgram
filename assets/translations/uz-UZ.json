@@ -66,5 +66,9 @@
   "worker": "Ishchi",
   "employer": "Ish beruvchi",
   "log_out": "Hisobdan chiqish",
-  "my_profile": "Mening hisobim"
+  "my_profile": "Mening hisobim",
+  "waiting": "Kutayotgan",
+  "no_hire_yet": "Hozircha e'lonlar mavjud emas.",
+  "in_review": "Sizning e'loningiz ko'rib chiqilmoqda, tez orada barchaga ko'rinadi.",
+  "notifications": "Bildirishnomalar"
 }
