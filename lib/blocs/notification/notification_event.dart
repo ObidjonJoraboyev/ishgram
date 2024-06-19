@@ -1,4 +1,5 @@
 import 'package:equatable/equatable.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:ish_top/data/models/notification_model.dart';
 
 abstract class NotificationEvent extends Equatable {
@@ -9,6 +10,8 @@ abstract class NotificationEvent extends Equatable {
 }
 
 class NotificationGetEvent extends NotificationEvent {
+  final BuildContext context;
+  const NotificationGetEvent({required this.context});
   @override
   List<Object?> get props => [];
 }

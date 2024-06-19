@@ -25,7 +25,7 @@ class NotificationScreen extends StatefulWidget {
 class _NotificationScreenState extends State<NotificationScreen> {
   @override
   void initState() {
-    context.read<NotificationBloc>().add(NotificationGetEvent());
+    context.read<NotificationBloc>().add(NotificationGetEvent(context: context));
     super.initState();
   }
 

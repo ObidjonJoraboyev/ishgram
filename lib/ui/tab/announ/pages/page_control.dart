@@ -11,6 +11,7 @@ import 'package:ish_top/ui/tab/announ/notification/notification_screen.dart';
 import 'package:ish_top/ui/tab/announ/widgets/search_item.dart';
 import 'package:ish_top/utils/size/size_utils.dart';
 import 'package:pull_down_button/pull_down_button.dart';
+import '../../../../blocs/notification/notification_bloc.dart';
 import 'page_first.dart';
 import 'page_second.dart';
 
@@ -63,6 +64,15 @@ class _PageControlState extends State<PageControl>
 
   @override
   Widget build(BuildContext context) {
+    int countNotif = context
+        .read<NotificationBloc>()
+        .state
+        .notifications
+        .where((test) =>
+            test.userToDoc == context.read<AuthBloc>().state.userModel.docId &&
+            test.isRead == false)
+        .toList()
+        .length;
     width = MediaQuery.sizeOf(context).width;
     height = MediaQuery.sizeOf(context).height;
     return DefaultTabController(
@@ -119,6 +129,7 @@ class _PageControlState extends State<PageControl>
                   },
                   title: "notifications".tr(),
                   icon: Icons.notifications_active_outlined,
+                  subtitle: "There are $countNotif notifications",
                 ),
                 PullDownMenuItem(
                   onTap: () {},

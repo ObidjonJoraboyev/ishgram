@@ -40,7 +40,7 @@ class App extends StatelessWidget {
         BlocProvider(
           create: (context) => ImageBloc(),
         ),BlocProvider(
-          create: (context) => NotificationBloc()..add(NotificationGetEvent()),
+          create: (context) => NotificationBloc()..add(NotificationGetEvent(context: context)),
         ),
         BlocProvider(
           create: (context) => UserImageBloc(),

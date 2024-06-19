@@ -5,7 +5,7 @@ class NotificationState extends Equatable {
   final List<NotificationModel> notifications;
   final StatusOfNotif status;
 
-  const NotificationState({required this.notifications, required this.status});
+  const NotificationState({required this.notifications, required this.status,});
 
   NotificationState copyWith({
     List<NotificationModel>? notifications,
