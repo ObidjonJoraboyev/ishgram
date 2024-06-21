@@ -104,95 +104,87 @@ class _AdminHiringItemState extends State<AdminHiringItem> {
                           child: OutlinedButton(
                             onPressed: () {
                               showDialog(
-                                  context: context,
-                                  builder: (context) => CupertinoAlertDialog(
-                                        title: Text(
-                                          "ACCEPT?",
-                                          style: TextStyle(
-                                              fontWeight: FontWeight.w600,
-                                              fontSize: 18.sp,
-                                              color:
-                                                  CupertinoColors.activeGreen,
-                                              shadows: const [
-                                                BoxShadow(
-                                                    color: Colors.white,
-                                                    blurRadius: 10,
-                                                    spreadRadius: 3)
-                                              ]),
-                                        ),
-                                        content: const Column(
-                                          children: [
-                                            Text(
-                                              "Are you sure you want to accept this announcement?",
-                                              style: TextStyle(
-                                                  color: CupertinoColors
-                                                      .activeBlue,
-                                                  shadows: [
-                                                    BoxShadow(
-                                                        blurRadius: 10,
-                                                        color: Colors.white,
-                                                        spreadRadius: 3)
-                                                  ]),
-                                            ),
-                                          ],
-                                        ),
-                                        actions: [
-                                          CupertinoDialogAction(
-                                            onPressed: () {
-                                              Navigator.pop(context);
-                                            },
-                                            child: const Text(
-                                              "Cancel",
-                                              style: TextStyle(
-                                                  color: CupertinoColors
-                                                      .systemBlue),
-                                            ),
-                                          ),
-                                          CupertinoDialogAction(
-                                            onPressed: () {
-                                              context.read<AnnounBloc>().add(
-                                                    AnnounUpdateEvent(
-                                                      hireModel: widget.hires
-                                                          .copyWith(
-                                                              status:
-                                                                  StatusAnnoun
-                                                                      .active),
-                                                    ),
-                                                  );
-                                              context
-                                                  .read<NotificationBloc>()
-                                                  .add(
-                                                    NotificationAddEvent(
-                                                      notificationModel:
-                                                          NotificationModel(
-                                                        subtitle:
-                                                            "hiring_published"
-                                                                .tr(),
-                                                        title:
-                                                            "your_hires".tr(),
-                                                        type: NotificationType
-                                                            .actived,
-                                                        docId: "",
-                                                        isRead: false,
-                                                        userToDoc:
-                                                            widget.hires.userId,
-                                                        dateTime: 0,
-                                                      ),
-                                                    ),
-                                                  );
+                                context: context,
+                                builder: (context) => CupertinoAlertDialog(
+                                  title: Text(
+                                    "ACCEPT?",
+                                    style: TextStyle(
+                                        fontWeight: FontWeight.w600,
+                                        fontSize: 18.sp,
+                                        color: CupertinoColors.activeGreen,
+                                        shadows: const [
+                                          BoxShadow(
+                                              color: Colors.white,
+                                              blurRadius: 10,
+                                              spreadRadius: 3)
+                                        ]),
+                                  ),
+                                  content: const Column(
+                                    children: [
+                                      Text(
+                                        "Are you sure you want to accept this announcement?",
+                                        style: TextStyle(
+                                            color: CupertinoColors.activeBlue,
+                                            shadows: [
+                                              BoxShadow(
+                                                  blurRadius: 10,
+                                                  color: Colors.white,
+                                                  spreadRadius: 3)
+                                            ]),
+                                      ),
+                                    ],
+                                  ),
+                                  actions: [
+                                    CupertinoDialogAction(
+                                      onPressed: () {
+                                        Navigator.pop(context);
+                                      },
+                                      child: const Text(
+                                        "Cancel",
+                                        style: TextStyle(
+                                            color: CupertinoColors.systemBlue),
+                                      ),
+                                    ),
+                                    CupertinoDialogAction(
+                                      onPressed: () {
+                                        context.read<AnnounBloc>().add(
+                                              AnnounUpdateEvent(
+                                                hireModel: widget.hires
+                                                    .copyWith(
+                                                        status: StatusAnnoun
+                                                            .active),
+                                              ),
+                                            );
+                                        context.read<NotificationBloc>().add(
+                                              NotificationAddEvent(
+                                                notificationModel:
+                                                    NotificationModel(
+                                                  subtitle:
+                                                      "hiring_published".tr(),
+                                                  title: "your_hires".tr(),
+                                                  type:
+                                                      NotificationType.actived,
+                                                  docId: "",
+                                                  isRead: false,
+                                                  userToDoc:
+                                                      widget.hires.userId,
+                                                  dateTime: 0,
+                                                ),
+                                              ),
+                                            );
 
-                                              Navigator.pop(context);
-                                            },
-                                            child: const Text(
-                                              "Accept",
-                                              style: TextStyle(
-                                                  fontWeight: FontWeight.w500,
-                                                  color: CupertinoColors
-                                                      .activeBlue),
-                                            ),
-                                          )
-                                        ],
-                                      ));
+                                        Navigator.pop(context);
+                                      },
+                                      child: const Text(
+                                        "Accept",
+                                        style: TextStyle(
+                                            fontWeight: FontWeight.w500,
+                                            color: CupertinoColors.activeBlue),
+                                      ),
+                                    )
+                                  ],
+                                ),
+                              );
                             },
                             style: OutlinedButton.styleFrom(
                                 backgroundColor: Colors.transparent,
