@@ -9,13 +9,13 @@ import 'package:ish_top/utils/size/size_utils.dart';
 import 'package:timeago/timeago.dart';
 
 class NotificationDetailScreen extends StatefulWidget {
-  const NotificationDetailScreen({super.key,
-  required this.notificationModel});
+  const NotificationDetailScreen({super.key, required this.notificationModel});
 
   final NotificationModel notificationModel;
 
   @override
-  State<NotificationDetailScreen> createState() => _NotificationDetailScreenState();
+  State<NotificationDetailScreen> createState() =>
+      _NotificationDetailScreenState();
 }
 
 class _NotificationDetailScreenState extends State<NotificationDetailScreen> {
@@ -52,7 +52,7 @@ class _NotificationDetailScreenState extends State<NotificationDetailScreen> {
         ),
       ),
       body: Padding(
-        padding:  EdgeInsets.symmetric(horizontal: 24.w,vertical: 18.h),
+        padding: EdgeInsets.symmetric(horizontal: 24.w, vertical: 18.h),
         child: ListView(
           children: [
             Text(
@@ -62,26 +62,23 @@ class _NotificationDetailScreenState extends State<NotificationDetailScreen> {
                   fontWeight: FontWeight.w600,
                   color: Colors.black),
             ),
-
-        10.getH(),
-        Text(
-          widget.notificationModel.subtitle,
-          style: TextStyle(
-              fontWeight: FontWeight.w400,
-              fontSize: 14.sp),
-        ),
-        15.getH(),
-        Text(
-          format(
-              DateTime.fromMillisecondsSinceEpoch(
-                int.parse(widget.notificationModel.dateTime),
-              ),
-              locale: "uz"),
-          style: TextStyle(
-              color:
-              CupertinoColors.black.withOpacity(.6),
-              fontWeight: FontWeight.w500),
-        ),
+            10.getH(),
+            Text(
+              widget.notificationModel.subtitle,
+              style: TextStyle(fontWeight: FontWeight.w400, fontSize: 14.sp),
+            ),
+            15.getH(),
+            Text(
+              format(
+                  DateTime.fromMillisecondsSinceEpoch(
+                    int.parse(
+                        widget.notificationModel.dateTime.toInt().toString()),
+                  ),
+                  locale: "uz"),
+              style: TextStyle(
+                  color: CupertinoColors.black.withOpacity(.6),
+                  fontWeight: FontWeight.w500),
+            ),
           ],
         ),
       ),

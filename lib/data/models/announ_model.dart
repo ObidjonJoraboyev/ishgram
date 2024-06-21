@@ -227,4 +227,4 @@ class AnnounModel extends Equatable {
 
 enum WorkCategory { easy, medium, hard }
 
-enum StatusAnnoun { active, done, returned, pure, deleted,waiting }
+enum StatusAnnoun { active, done, returned, pure, deleted, waiting }

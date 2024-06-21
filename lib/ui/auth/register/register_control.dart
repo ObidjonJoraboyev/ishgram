@@ -35,18 +35,18 @@ class _RegisterControlState extends State<RegisterControl> {
           }
           if (state.formStatus == FormStatus.authenticated) {
             if (!context.mounted) return;
-            if(state.userModel.phone=="+998 (95) 083-13-44"){
+            if (state.userModel.phone == "+998 (95) 083-13-44") {
               Navigator.pushAndRemoveUntil(
                   context1,
-                  MaterialPageRoute(builder: (context) => const AdminTabScreen()),
-                      (route) => false);
-            }else{
+                  MaterialPageRoute(
+                      builder: (context) => const AdminTabScreen()),
+                  (route) => false);
+            } else {
               Navigator.pushAndRemoveUntil(
                   context1,
                   MaterialPageRoute(builder: (context) => const TabScreen()),
-                      (route) => false);
+                  (route) => false);
             }
-
           }
         },
         builder: (context, state) {

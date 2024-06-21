@@ -1,3 +1,5 @@
+enum NotificationType { rejected, actived }
+
 class NotificationModel {
   final String docId;
   final String subtitle;
@@ -5,7 +7,7 @@ class NotificationModel {
   final NotificationType type;
   final bool isRead;
   final String userToDoc;
-  final String dateTime;
+  final int dateTime;
 
   NotificationModel({
     required this.subtitle,
@@ -21,25 +23,28 @@ class NotificationModel {
     return NotificationModel(
       subtitle: json['subtitle'] as String? ?? "",
       title: json['title'] as String? ?? "",
-      type: (json['type'] as String? ?? "") == "rejected"
+      type: (json['notif_type'] as String? ?? "") == "rejected"
           ? NotificationType.rejected
           : NotificationType.actived,
-      docId: json['docId'] as String? ?? "",
-      isRead: json['isRead'] as bool? ?? false,
-      userToDoc: json['userToDoc'] as String? ?? "",
-      dateTime: json['dateTime'] as String? ?? "",
+      docId: json['id'] as String? ?? "",
+      isRead: json['is_read'] as bool? ?? false,
+      userToDoc: json['user_id'] as String? ?? "",
+      dateTime: json['created_at'] as int? ?? 0,
     );
   }
-
+//{
+//   "notif_type": "activated",
+//   "subtitle": "string",
+//   "title": "string",
+//   "user_id": "string"
+// }
   Map<String, dynamic> toJson() {
     return {
-      'docId': docId,
       'subtitle': subtitle,
       'title': title,
-      'type': type == NotificationType.rejected ? "rejected" : "actived",
-      'isRead': isRead,
-      'userToDoc': userToDoc,
-      'dateTime': dateTime,
+      'notif_type':
+          type == NotificationType.rejected ? "rejected" : "activated",
+      'user_id': userToDoc,
     };
   }
 
@@ -47,10 +52,8 @@ class NotificationModel {
     return {
       'subtitle': subtitle,
       'title': title,
-      'type': type == NotificationType.rejected ? "rejected" : "actived",
-      'isRead': isRead,
-      'userToDoc': userToDoc,
-      'dateTime': dateTime,
+      'notif_type': type == NotificationType.rejected ? "rejected" : "actived",
+      'user_id': userToDoc,
     };
   }
 
@@ -61,7 +64,7 @@ class NotificationModel {
     String? docId,
     bool? isRead,
     String? userToDoc,
-    String? dateTime,
+    int? dateTime,
   }) {
     return NotificationModel(
       subtitle: subtitle ?? this.subtitle,
@@ -74,5 +77,3 @@ class NotificationModel {
     );
   }
 }
-
-enum NotificationType { rejected, actived }

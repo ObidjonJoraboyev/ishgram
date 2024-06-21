@@ -107,12 +107,11 @@ class _GlobalTextFiledState extends State<GlobalTextFiled> {
                 ),
               ),
               style: TextStyle(
-                color: Colors.black,
-                shadows: [
-                  Shadow(color: Colors.white.withOpacity(.4), blurRadius: 10)
-                ],
-                fontSize: 13.sp
-              ),
+                  color: Colors.black,
+                  shadows: [
+                    Shadow(color: Colors.white.withOpacity(.4), blurRadius: 10)
+                  ],
+                  fontSize: 13.sp),
               maxLength: widget.maxLength,
               maxLines: widget.maxLines,
             );

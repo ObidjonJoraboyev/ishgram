@@ -60,7 +60,10 @@ class _AdminPageSecondState extends State<AdminPageSecond> {
                                 ),
                               ),
                             ),
-                      title: Text(users[index].name,style: TextStyle(fontSize: 12.sp),),
+                      title: Text(
+                        users[index].name,
+                        style: TextStyle(fontSize: 12.sp),
+                      ),
                       subtitle: Text(users[index].phone),
                     ),
                     Container(

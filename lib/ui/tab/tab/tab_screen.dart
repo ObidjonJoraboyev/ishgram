@@ -54,7 +54,6 @@ class _TabScreenState extends State<TabScreen> {
           selectedItemColor: CupertinoColors.activeBlue,
           selectedFontSize: 13.sp,
           unselectedFontSize: 12.sp,
-
           currentIndex: activeIndex,
           type: BottomNavigationBarType.fixed,
           onTap: (v) {
@@ -64,19 +63,28 @@ class _TabScreenState extends State<TabScreen> {
           items: [
             BottomNavigationBarItem(
               label: "hires".tr(),
-              icon:  Icon(CupertinoIcons.house_fill,size: 20.sp,),
+              icon: Icon(
+                CupertinoIcons.house_fill,
+                size: 20.sp,
+              ),
             ),
             BottomNavigationBarItem(
               label: "add_hire".tr(),
-              icon:  Icon(CupertinoIcons.add_circled,size:20.sp),
+              icon: Icon(CupertinoIcons.add_circled, size: 20.sp),
             ),
             BottomNavigationBarItem(
               label: "feedback".tr(),
-              icon:  Icon(CupertinoIcons.chat_bubble_2_fill,size: 20.sp,),
+              icon: Icon(
+                CupertinoIcons.chat_bubble_2_fill,
+                size: 20.sp,
+              ),
             ),
             BottomNavigationBarItem(
               label: "profile".tr(),
-              icon:  Icon(CupertinoIcons.profile_circled,size: 20.sp,),
+              icon: Icon(
+                CupertinoIcons.profile_circled,
+                size: 20.sp,
+              ),
             ),
           ],
         ),

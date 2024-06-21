@@ -65,189 +65,187 @@ class _PageControlState extends State<PageControl>
 
   @override
   Widget build(BuildContext context) {
-
     width = MediaQuery.sizeOf(context).width;
     height = MediaQuery.sizeOf(context).height;
     return DefaultTabController(
       length: 2,
       initialIndex: 0,
       child: BlocConsumer<NotificationBloc, NotificationState>(
-  listener: (context, state) {
-  },
-  builder: (context2, state) {
-
-    return Scaffold(
-        appBar: AppBar(
-          elevation: 0,
-          flexibleSpace: ClipRect(
-            child: BackdropFilter(
-              filter: ImageFilter.blur(sigmaX: 10.0, sigmaY: 10.0),
-              child: Container(
-                color: Colors.transparent,
+        listener: (context, state) {},
+        builder: (context2, state) {
+          return Scaffold(
+            appBar: AppBar(
+              elevation: 0,
+              flexibleSpace: ClipRect(
+                child: BackdropFilter(
+                  filter: ImageFilter.blur(sigmaX: 10.0, sigmaY: 10.0),
+                  child: Container(
+                    color: Colors.transparent,
+                  ),
+                ),
               ),
-            ),
-          ),
-          scrolledUnderElevation: 0,
-          backgroundColor: CupertinoColors.white.withOpacity(.9),
-          title: Text(
-            "global".tr(),
-            style: TextStyle(
-                color: Colors.black,
-                fontWeight: FontWeight.w400,
-                fontSize: 18.sp),
-          ),
-          centerTitle: true,
-          actions: [
-            AnimatedSwitcher(
-              duration: const Duration(milliseconds: 250),
-              transitionBuilder: (Widget child, Animation<double> animation) {
-                return FadeTransition(
-                  opacity: animation,
-                  child: child,
-                );
-              },
-              child: IconButton(
-                  key: ValueKey<bool>(_isSearching),
-                  icon: Icon(
-                    _isSearching ? Icons.close : CupertinoIcons.search,
-                    size: 16.sp,
-                  ),
-                  onPressed: _toggleAppBar),
-            ),
-            PullDownButton(
-              itemBuilder: (context) => [
-                PullDownMenuItem(
-                  onTap: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => const NotificationScreen(),
-                      ),
-                    );
-                  },
-                  title: "notifications".tr(),
-                  icon: Icons.notifications_active_outlined,
-                ),
-                PullDownMenuItem(
-                  onTap: () {},
-                  title: "Filter",
-                  icon: Icons.filter_alt_outlined,
-                ),
-              ],
-              buttonBuilder: (w, d) {
-                return ScaleOnPress(
-                  onTap: ()async{
-
-                    d();
-                  },
-                  child: Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 3.w),
-                    child: const Icon(Icons.more_vert),
-                  ),
-                );
-              },
-            ),
-          ],
-          toolbarHeight:
-              56.h - (_animation.value.h - _animation.value.h * 2.44),
-          bottom: PreferredSize(
-            preferredSize: Size(width, _animation.value),
-            child: Column(
-              children: [
+              scrolledUnderElevation: 0,
+              backgroundColor: CupertinoColors.white.withOpacity(.9),
+              title: Text(
+                "global".tr(),
+                style: TextStyle(
+                    color: Colors.black,
+                    fontWeight: FontWeight.w400,
+                    fontSize: 18.sp),
+              ),
+              centerTitle: true,
+              actions: [
                 AnimatedSwitcher(
                   duration: const Duration(milliseconds: 250),
                   transitionBuilder:
                       (Widget child, Animation<double> animation) {
-                    return SizeTransition(sizeFactor: animation, child: child);
+                    return FadeTransition(
+                      opacity: animation,
+                      child: child,
+                    );
                   },
-                  child: _isSearching
-                      ? Container(
-                          key: const ValueKey('TextField'),
-                          color: Colors.transparent,
-                          child: SearchItem(
-                            controller: controller,
-                            focus: focus,
-                            valueChanged: (v) {
-                              setState(() {});
-                            },
-                          ),
-                        )
-                      : Container(
-                          key: const ValueKey('EmptyContainer'),
-                        ), // empty container when not searching
+                  child: IconButton(
+                      key: ValueKey<bool>(_isSearching),
+                      icon: Icon(
+                        _isSearching ? Icons.close : CupertinoIcons.search,
+                        size: 16.sp,
+                      ),
+                      onPressed: _toggleAppBar),
                 ),
-                Container(
-                  height: 0.6,
-                  width: double.infinity,
-                  color: CupertinoColors.systemGrey,
+                PullDownButton(
+                  itemBuilder: (context) => [
+                    PullDownMenuItem(
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => const NotificationScreen(),
+                          ),
+                        );
+                      },
+                      title: "notifications".tr(),
+                      icon: Icons.notifications_active_outlined,
+                    ),
+                    PullDownMenuItem(
+                      onTap: () {},
+                      title: "Filter",
+                      icon: Icons.filter_alt_outlined,
+                    ),
+                  ],
+                  buttonBuilder: (w, d) {
+                    return ScaleOnPress(
+                      onTap: () async {
+                        d();
+                      },
+                      child: Padding(
+                        padding: EdgeInsets.symmetric(horizontal: 3.w),
+                        child: const Icon(Icons.more_vert),
+                      ),
+                    );
+                  },
                 ),
               ],
+              toolbarHeight:
+                  56.h - (_animation.value.h - _animation.value.h * 2.44),
+              bottom: PreferredSize(
+                preferredSize: Size(width, _animation.value),
+                child: Column(
+                  children: [
+                    AnimatedSwitcher(
+                      duration: const Duration(milliseconds: 250),
+                      transitionBuilder:
+                          (Widget child, Animation<double> animation) {
+                        return SizeTransition(
+                            sizeFactor: animation, child: child);
+                      },
+                      child: _isSearching
+                          ? Container(
+                              key: const ValueKey('TextField'),
+                              color: Colors.transparent,
+                              child: SearchItem(
+                                controller: controller,
+                                focus: focus,
+                                valueChanged: (v) {
+                                  setState(() {});
+                                },
+                              ),
+                            )
+                          : Container(
+                              key: const ValueKey('EmptyContainer'),
+                            ), // empty container when not searching
+                    ),
+                    Container(
+                      height: 0.6,
+                      width: double.infinity,
+                      color: CupertinoColors.systemGrey,
+                    ),
+                  ],
+                ),
+              ),
             ),
-          ),
-        ),
-        backgroundColor: CupertinoColors.systemGrey5,
-        body: Column(
-          children: [
-            10.getH(),
-            ClipRect(
-              child: BackdropFilter(
-                filter: ImageFilter.blur(sigmaX: 10.0, sigmaY: 10.0),
-                child: Container(
-                  color: Colors.transparent,
-                  child: TabBar(
-                    dividerColor: CupertinoColors.systemGrey5,
-                    onTap: (v) {
-                      if (v == 1) {
-                        context.read<AuthBloc>().add(GetAllUsers());
-                      }
-                    },
-                    indicatorSize: TabBarIndicatorSize.tab,
-                    indicatorColor: CupertinoColors.activeBlue,
-                    splashBorderRadius: BorderRadius.circular(160),
-                    physics: const BouncingScrollPhysics(),
-                    labelPadding: const EdgeInsets.only(bottom: 10),
-                    labelColor: Colors.white,
-                    indicatorWeight: 3.h,
-                    overlayColor: WidgetStateColor.transparent,
-                    tabs: [
-                      Text(
-                        "hires".tr(),
-                        style: TextStyle(
-                          color: Colors.black,
-                          fontWeight: FontWeight.w500,
-                          fontSize: 17.sp,
-                        ),
+            backgroundColor: CupertinoColors.systemGrey5,
+            body: Column(
+              children: [
+                10.getH(),
+                ClipRect(
+                  child: BackdropFilter(
+                    filter: ImageFilter.blur(sigmaX: 10.0, sigmaY: 10.0),
+                    child: Container(
+                      color: Colors.transparent,
+                      child: TabBar(
+                        dividerColor: CupertinoColors.systemGrey5,
+                        onTap: (v) {
+                          if (v == 1) {
+                            context.read<AuthBloc>().add(GetAllUsers());
+                          }
+                        },
+                        indicatorSize: TabBarIndicatorSize.tab,
+                        indicatorColor: CupertinoColors.activeBlue,
+                        splashBorderRadius: BorderRadius.circular(160),
+                        physics: const BouncingScrollPhysics(),
+                        labelPadding: const EdgeInsets.only(bottom: 10),
+                        labelColor: Colors.white,
+                        indicatorWeight: 3.h,
+                        overlayColor: WidgetStateColor.transparent,
+                        tabs: [
+                          Text(
+                            "hires".tr(),
+                            style: TextStyle(
+                              color: Colors.black,
+                              fontWeight: FontWeight.w500,
+                              fontSize: 17.sp,
+                            ),
+                          ),
+                          Text(
+                            "workers".tr(),
+                            style: TextStyle(
+                              color: Colors.black,
+                              fontWeight: FontWeight.w500,
+                              fontSize: 17.sp,
+                            ),
+                          ),
+                        ],
                       ),
-                      Text(
-                        "workers".tr(),
-                        style: TextStyle(
-                          color: Colors.black,
-                          fontWeight: FontWeight.w500,
-                          fontSize: 17.sp,
-                        ),
+                    ),
+                  ),
+                ),
+                Expanded(
+                  child: TabBarView(
+                    children: [
+                      HireScreen(
+                        context: context,
+                        controller: controller,
+                        focus: focus,
                       ),
+                      const PageSecond()
                     ],
                   ),
                 ),
-              ),
+              ],
             ),
-            Expanded(
-              child: TabBarView(
-                children: [
-                  HireScreen(
-                    context: context,
-                    controller: controller,
-                    focus: focus,
-                  ),
-                  const PageSecond()
-                ],
-              ),
-            ),
-          ],
-        ),
-      );
-  },
-),
+          );
+        },
+      ),
     );
   }
 }

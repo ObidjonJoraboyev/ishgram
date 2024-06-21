@@ -19,9 +19,9 @@ class PinPutItem extends StatelessWidget {
   final defaultPinTheme = PinTheme(
     width: 48.sp,
     height: 48.sp,
-    textStyle:  TextStyle(
+    textStyle: TextStyle(
       fontSize: 22.sp,
-      color:Colors.black,
+      color: Colors.black,
     ),
     decoration: BoxDecoration(
       borderRadius: BorderRadius.circular(19.r),
@@ -39,7 +39,7 @@ class PinPutItem extends StatelessWidget {
       defaultPinTheme: PinTheme(
         height: 48.sp,
         width: 48.sp,
-        textStyle:  TextStyle(
+        textStyle: TextStyle(
           fontSize: 22.sp,
           color: Colors.black,
         ),
@@ -88,7 +88,6 @@ class PinPutItem extends StatelessWidget {
       closeKeyboardWhenCompleted: true,
       keyboardType: TextInputType.phone,
       submittedPinTheme: defaultPinTheme.copyWith(
-
         decoration: defaultPinTheme.decoration!.copyWith(
           color: Colors.transparent,
           borderRadius: BorderRadius.circular(16.r),

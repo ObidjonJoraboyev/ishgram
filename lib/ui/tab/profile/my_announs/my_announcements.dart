@@ -130,13 +130,13 @@ class _MyAnnouncementsState extends State<MyAnnouncements> {
                                 ...List.generate(
                                     announState.myHires
                                         .where((test) =>
-                                            test.status == StatusAnnoun.pure)
+                                            test.status == StatusAnnoun.active)
                                         .toList()
                                         .length, (index) {
                                   return MyAnnounItem(
                                       hires: announState.myHires
                                           .where((v) =>
-                                              v.status == StatusAnnoun.pure)
+                                              v.status == StatusAnnoun.active)
                                           .toList()[index],
                                       voidCallback: () {},
                                       scrollController: ScrollController(),
@@ -188,8 +188,7 @@ class _MyAnnouncementsState extends State<MyAnnouncements> {
                                 ...List.generate(
                                     announState.myHires
                                         .where((test) =>
-                                            test.status ==
-                                            StatusAnnoun.waiting)
+                                            test.status == StatusAnnoun.waiting)
                                         .toList()
                                         .length, (index) {
                                   return MyAnnounItem(

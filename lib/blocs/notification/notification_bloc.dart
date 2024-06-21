@@ -1,10 +1,12 @@
+import 'dart:io';
+
 import 'package:bloc_concurrency/bloc_concurrency.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:ish_top/blocs/notification/notification_event.dart';
 import 'package:ish_top/blocs/notification/notification_state.dart';
-import 'package:ish_top/data/local/local_storage.dart';
 import 'package:ish_top/data/models/notification_model.dart';
 
 class NotificationBloc extends Bloc<NotificationEvent, NotificationState> {
@@ -29,9 +31,6 @@ class NotificationBloc extends Bloc<NotificationEvent, NotificationState> {
             .map((doc) => NotificationModel.fromJson(doc.data()))
             .toList());
     emit(state.copyWith(status: StatusOfNotif.loading));
-    print(StorageRepository.getString(key: "userDoc"));
-    StorageRepository.setString(key: "userDoc", value: "O5gsAcT0COW5QKVEAmHN");
-
     try {
       await emit.onEach<List<NotificationModel>>(streamController,
           onData: (List<NotificationModel> messages) async {
@@ -57,7 +56,6 @@ class NotificationBloc extends Bloc<NotificationEvent, NotificationState> {
   }
 
   notifRead(NotificationReadAllEvent event, emit) async {
-    print("sdvsdfv");
     for (int i = 0; i < event.notifs.length; i++) {
       try {
         await FirebaseFirestore.instance
@@ -83,15 +81,31 @@ class NotificationBloc extends Bloc<NotificationEvent, NotificationState> {
 
   notifAdd(NotificationAddEvent event, emit) async {
     try {
-      var docId = await FirebaseFirestore.instance
-          .collection("notifications")
-          .add(event.notificationModel.toJson());
-      await FirebaseFirestore.instance
-          .collection("notifications")
-          .doc(docId.id)
-          .update({"docId": docId.id});
-    } catch (error) {
-      debugPrint("ERROR CATCH $error");
+      emit(state.copyWith(status: StatusOfNotif.loading));
+      final dio = Dio();
+      Response response =
+          await dio.post("", data: event.notificationModel.toJson());
+      if (response.statusCode == HttpStatus.created) {
+        emit(state.copyWith(status: StatusOfNotif.success));
+      } else {
+        emit(state.copyWith(status: StatusOfNotif.error));
+      }
+    } catch (er) {
+      emit(state.copyWith(status: StatusOfNotif.error));
+
+      debugPrint(er.toString());
     }
+
+    //  try {
+    //       var docId = await FirebaseFirestore.instance
+    //           .collection("notifications")
+    //           .add(event.notificationModel.toJson());
+    //       await FirebaseFirestore.instance
+    //           .collection("notifications")
+    //           .doc(docId.id)
+    //           .update({"docId": docId.id});
+    //     } catch (error) {
+    //       debugPrint("ERROR CATCH $error");
+    //     }
   }
 }

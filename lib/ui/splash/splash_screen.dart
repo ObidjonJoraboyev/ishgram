@@ -21,22 +21,22 @@ class SplashScreen extends StatefulWidget {
 class _SplashScreenState extends State<SplashScreen> {
   @override
   void initState() {
-
-    String userNumber=StorageRepository.getString(key: "userNumber");
+    String userNumber = StorageRepository.getString(key: "userNumber");
 
     Future.delayed(const Duration(seconds: 1), () {
       context.read<AuthBloc>().add(GetCurrentUser());
-      context.read<NotificationBloc>().add(NotificationGetEvent(context: context));
-      setState(() {
-
-      });
+      context
+          .read<NotificationBloc>()
+          .add(NotificationGetEvent(context: context));
+      setState(() {});
       Navigator.pushReplacement(
           context,
           MaterialPageRoute(
-              builder: (context) =>
-                  userNumber.isEmpty
-                      ? const AuthScreen()
-                      :userNumber!="+998 (95) 083-13-44" ?const TabScreen():const AdminTabScreen()));
+              builder: (context) => userNumber.isEmpty
+                  ? const AuthScreen()
+                  : userNumber != "+998 (95) 083-13-44"
+                      ? const TabScreen()
+                      : const AdminTabScreen()));
     });
     super.initState();
   }

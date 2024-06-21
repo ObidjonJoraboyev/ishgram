@@ -1,5 +1,4 @@
 import 'dart:ui';
-
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -10,7 +9,6 @@ import 'package:ish_top/blocs/auth/auth_bloc.dart';
 import 'package:ish_top/blocs/notification/notification_bloc.dart';
 import 'package:ish_top/blocs/notification/notification_event.dart';
 import 'package:ish_top/blocs/notification/notification_state.dart';
-import 'package:ish_top/data/models/announ_model.dart';
 import 'package:ish_top/data/models/notification_model.dart';
 import 'package:ish_top/ui/admins_panel/tab/announ/widgets/zoom_tap.dart';
 import 'package:ish_top/ui/tab/announ/notification/notification_detail.dart';
@@ -116,8 +114,9 @@ class _NotificationScreenState extends State<NotificationScreen> {
                             Navigator.push(
                               context,
                               MaterialPageRoute(
-                                builder: (context) =>
-                                     NotificationDetailScreen(notificationModel: notifs[index],),
+                                builder: (context) => NotificationDetailScreen(
+                                  notificationModel: notifs[index],
+                                ),
                               ),
                             );
                           }
@@ -170,7 +169,7 @@ class _NotificationScreenState extends State<NotificationScreen> {
                               Text(
                                 format(
                                     DateTime.fromMillisecondsSinceEpoch(
-                                      int.parse(notifs[index].dateTime),
+                                      notifs[index].dateTime,
                                     ),
                                     locale: "uz"),
                                 style: TextStyle(

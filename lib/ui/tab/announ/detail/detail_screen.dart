@@ -115,7 +115,10 @@ class _DetailScreenState extends State<DetailScreen> {
               fontSize: 16.sp),
         ),
         leading: IconButton(
-          icon:  Icon(Icons.arrow_back_ios_new,size: 18.sp,),
+          icon: Icon(
+            Icons.arrow_back_ios_new,
+            size: 18.sp,
+          ),
           onPressed: () {
             Navigator.of(context).pop();
           },

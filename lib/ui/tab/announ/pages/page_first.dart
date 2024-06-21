@@ -100,13 +100,13 @@ class _HireScreenState extends State<HireScreen> {
                     : Center(
                         child: Padding(
                           padding: EdgeInsets.symmetric(horizontal: 14.w),
-
                           child: Text(
                             "no_hire_yet".tr(),
                             style: TextStyle(
                                 fontSize: 22.sp,
                                 fontWeight: FontWeight.w600,
-                                color: Colors.black.withOpacity(.7)),textAlign: TextAlign.center,
+                                color: Colors.black.withOpacity(.7)),
+                            textAlign: TextAlign.center,
                           ),
                         ),
                       );

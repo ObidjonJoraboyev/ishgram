@@ -40,7 +40,6 @@ class _AuthScreenState extends State<AuthScreen> {
     super.dispose();
   }
 
-
   @override
   Widget build(BuildContext context) {
     width = MediaQuery.of(context).size.width;
@@ -169,20 +168,21 @@ class _AuthScreenState extends State<AuthScreen> {
           );
         },
         listener: (BuildContext context, AuthState state) async {
-          String userNumber=StorageRepository.getString(key:"userNumber");
-          if (state.formStatus ==
-              FormStatus.authenticated) {
+          String userNumber = StorageRepository.getString(key: "userNumber");
+          if (state.formStatus == FormStatus.authenticated) {
             if (!context.mounted) return;
-           if(userNumber!="+998 (95) 083-13-44"){
-             Navigator.pushAndRemoveUntil(
-                 context,
-                 MaterialPageRoute(builder: (context) => const TabScreen()),
-                     (route) => false);
-           }{
+            if (userNumber != "+998 (95) 083-13-44") {
               Navigator.pushAndRemoveUntil(
                   context,
-                  MaterialPageRoute(builder: (context) => const AdminTabScreen()),
-                      (route) => false);
+                  MaterialPageRoute(builder: (context) => const TabScreen()),
+                  (route) => false);
+            }
+            {
+              Navigator.pushAndRemoveUntil(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => const AdminTabScreen()),
+                  (route) => false);
             }
           }
         },

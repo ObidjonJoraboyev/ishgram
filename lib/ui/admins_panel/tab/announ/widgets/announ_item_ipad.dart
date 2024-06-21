@@ -361,29 +361,267 @@ class _AdminHiringItemIpadState extends State<AdminHiringItemIpad> {
                 )
               ],
             ),
-            if(widget.announTwo!=null)Column(
-              children: [
-                GestureDetector(
-                  onTap: () async {
-                    Navigator.push(
-                      widget.context1,
-                      MaterialPageRoute(
-                        builder: (c) => AdminDetailScreen(
-                          hireModel: widget.announTwo!,
-                          defaultImageIndex: pageController.positions.isNotEmpty
-                              ? pageController.page!.round()
-                              : 0,
+            if (widget.announTwo != null)
+              Column(
+                children: [
+                  GestureDetector(
+                    onTap: () async {
+                      Navigator.push(
+                        widget.context1,
+                        MaterialPageRoute(
+                          builder: (c) => AdminDetailScreen(
+                            hireModel: widget.announTwo!,
+                            defaultImageIndex:
+                                pageController.positions.isNotEmpty
+                                    ? pageController.page!.round()
+                                    : 0,
+                          ),
                         ),
+                      );
+                    },
+                    child: Container(
+                      margin: EdgeInsets.only(top: 20.h),
+                      padding: EdgeInsets.all(7.sp),
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.only(
+                            topRight: Radius.circular(16.r),
+                            topLeft: Radius.circular(16.r)),
+                        boxShadow: [
+                          BoxShadow(
+                            offset: const Offset(0, 8),
+                            spreadRadius: 1,
+                            blurRadius: 10,
+                            color: CupertinoColors.systemGrey.withOpacity(.01),
+                          )
+                        ],
+                        color: CupertinoColors.white.withOpacity(.9),
                       ),
-                    );
-                  },
-                  child: Container(
-                    margin: EdgeInsets.only(top: 20.h),
-                    padding: EdgeInsets.all(7.sp),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Stack(
+                            children: [
+                              SizedBox(
+                                height: 300.h,
+                                child: (widget.announTwo!.image.isNotEmpty)
+                                    ? PageView(
+                                        controller: pageController,
+                                        onPageChanged: (index) {
+                                          setState(() {
+                                            activeIndex = index;
+                                          });
+                                        },
+                                        scrollDirection: Axis.horizontal,
+                                        children: [
+                                          ...List.generate(
+                                            widget.announTwo!.image.length,
+                                            (index) => Padding(
+                                              padding: EdgeInsets.all(8.sp),
+                                              child: Hero(
+                                                tag: Key(widget.announTwo!
+                                                    .image[0].imageUrl),
+                                                child: ClipRRect(
+                                                  borderRadius:
+                                                      BorderRadius.circular(16),
+                                                  child: CachedNetworkImage(
+                                                    placeholder: (context, st) {
+                                                      return Shimmer.fromColors(
+                                                        baseColor: Colors.white,
+                                                        highlightColor:
+                                                            Colors.grey,
+                                                        child: Container(
+                                                          height: 80.h,
+                                                          decoration:
+                                                              BoxDecoration(
+                                                            color: Colors.white,
+                                                            borderRadius:
+                                                                BorderRadius
+                                                                    .circular(
+                                                                        16),
+                                                          ),
+                                                        ),
+                                                      );
+                                                    },
+                                                    errorWidget:
+                                                        (BuildContext context,
+                                                            String st, a) {
+                                                      return Shimmer.fromColors(
+                                                        baseColor: Colors.white,
+                                                        highlightColor:
+                                                            Colors.grey,
+                                                        child: Container(
+                                                          height: 80.h,
+                                                          decoration:
+                                                              BoxDecoration(
+                                                            color: Colors.white,
+                                                            borderRadius:
+                                                                BorderRadius
+                                                                    .circular(
+                                                                        16),
+                                                          ),
+                                                        ),
+                                                      );
+                                                    },
+                                                    imageUrl: widget.announTwo!
+                                                        .image[index].imageUrl,
+                                                    fit: BoxFit.cover,
+                                                    width: double.infinity,
+                                                  ),
+                                                ),
+                                              ),
+                                            ),
+                                          ),
+                                        ],
+                                      )
+                                    : Center(
+                                        child: Container(
+                                        width: double.infinity,
+                                        height: double.infinity,
+                                        margin: EdgeInsets.all(8.sp),
+                                        decoration: BoxDecoration(
+                                            gradient: const LinearGradient(
+                                              begin: Alignment.topRight,
+                                              end: Alignment.bottomLeft,
+                                              colors: [
+                                                CupertinoColors.activeOrange,
+                                                CupertinoColors.activeBlue,
+                                                CupertinoColors.activeGreen,
+                                              ],
+                                            ),
+                                            color: CupertinoColors.activeBlue,
+                                            borderRadius:
+                                                BorderRadius.circular(12.r)),
+                                        child: Center(
+                                          child: Text(
+                                            "No Image",
+                                            style: TextStyle(
+                                                color: Colors.white,
+                                                fontSize: 30.sp,
+                                                fontWeight: FontWeight.w700),
+                                          ),
+                                        ),
+                                      )),
+                              ),
+                              widget.announTwo!.image.length > 1
+                                  ? Positioned(
+                                      bottom: 15.h,
+                                      right: 15.w,
+                                      child: Container(
+                                        padding: EdgeInsets.symmetric(
+                                            horizontal: 2.w, vertical: 2.w),
+                                        decoration: BoxDecoration(
+                                          borderRadius:
+                                              BorderRadius.circular(100),
+                                          color: CupertinoColors.systemGrey6,
+                                        ),
+                                        child: Row(
+                                          children: [
+                                            ...List.generate(
+                                              widget.announTwo!.image.length,
+                                              (index) {
+                                                return AnimatedContainer(
+                                                  curve: Curves.linear,
+                                                  duration: const Duration(
+                                                      milliseconds: 200),
+                                                  margin: EdgeInsets.all(1.sp),
+                                                  width: activeIndex != index
+                                                      ? 6.sp
+                                                      : 7.sp,
+                                                  height: activeIndex != index
+                                                      ? 6.sp
+                                                      : 7.sp,
+                                                  decoration: BoxDecoration(
+                                                      shape: BoxShape.circle,
+                                                      color:
+                                                          activeIndex != index
+                                                              ? Colors.grey
+                                                              : CupertinoColors
+                                                                  .activeBlue),
+                                                );
+                                              },
+                                            )
+                                          ],
+                                        ),
+                                      ),
+                                    )
+                                  : const SizedBox()
+                            ],
+                          ),
+                          Padding(
+                            padding: EdgeInsets.only(left: 8.w),
+                            child: Text(
+                              widget.announTwo!.title,
+                              style: TextStyle(
+                                fontSize: 18.sp,
+                                fontWeight: FontWeight.w500,
+                              ),
+                              maxLines: 1,
+                              overflow: TextOverflow.ellipsis,
+                            ),
+                          ),
+                          Padding(
+                            padding: EdgeInsets.only(left: 8.w, top: 3.h),
+                            child: Text(
+                              widget.announTwo!.money,
+                              style: TextStyle(
+                                fontSize: 19.sp,
+                                fontWeight: FontWeight.w600,
+                              ),
+                              maxLines: 1,
+                              overflow: TextOverflow.ellipsis,
+                            ),
+                          ),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.end,
+                            children: [
+                              Text(
+                                widget.announTwo!.viewedUsers.length.toString(),
+                                style: TextStyle(
+                                  fontWeight: FontWeight.w500,
+                                  fontSize: 10.sp,
+                                  color: CupertinoColors.black.withOpacity(.6),
+                                ),
+                              ),
+                              5.getW(),
+                              Icon(
+                                CupertinoIcons.eye_solid,
+                                size: 13.sp,
+                                color: CupertinoColors.black.withOpacity(.6),
+                              ),
+                              12.getW(),
+                              Text(
+                                timeago.format(
+                                    DateTime.fromMillisecondsSinceEpoch(
+                                      int.parse(widget.announTwo!.createdAt
+                                          .toString()),
+                                    ),
+                                    locale: "uz"),
+                                style: TextStyle(
+                                    color:
+                                        CupertinoColors.black.withOpacity(.6),
+                                    fontWeight: FontWeight.w500,
+                                    fontSize: 10.sp),
+                              ),
+                              8.getW()
+                            ],
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                  Container(
+                    width: double.infinity,
+                    height: 0.4,
+                    color: Colors.grey,
+                  ),
+                  Container(
+                    margin: EdgeInsets.symmetric(vertical: 0.h),
+                    padding:
+                        EdgeInsets.symmetric(horizontal: 12.w, vertical: 8.h),
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.only(
-                          topRight: Radius.circular(16.r),
-                          topLeft: Radius.circular(16.r)),
+                          bottomLeft: Radius.circular(16.r),
+                          bottomRight: Radius.circular(16.r)),
                       boxShadow: [
                         BoxShadow(
                           offset: const Offset(0, 8),
@@ -394,274 +632,42 @@ class _AdminHiringItemIpadState extends State<AdminHiringItemIpad> {
                       ],
                       color: CupertinoColors.white.withOpacity(.9),
                     ),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Stack(
-                          children: [
-                            SizedBox(
-                              height: 300.h,
-                              child: (widget.announTwo!.image.isNotEmpty)
-                                  ? PageView(
-                                      controller: pageController,
-                                      onPageChanged: (index) {
-                                        setState(() {
-                                          activeIndex = index;
-                                        });
-                                      },
-                                      scrollDirection: Axis.horizontal,
-                                      children: [
-                                        ...List.generate(
-                                          widget.announTwo!.image.length,
-                                          (index) => Padding(
-                                            padding: EdgeInsets.all(8.sp),
-                                            child: Hero(
-                                              tag: Key(widget
-                                                  .announTwo!.image[0].imageUrl),
-                                              child: ClipRRect(
-                                                borderRadius:
-                                                    BorderRadius.circular(16),
-                                                child: CachedNetworkImage(
-                                                  placeholder: (context, st) {
-                                                    return Shimmer.fromColors(
-                                                      baseColor: Colors.white,
-                                                      highlightColor:
-                                                          Colors.grey,
-                                                      child: Container(
-                                                        height: 80.h,
-                                                        decoration:
-                                                            BoxDecoration(
-                                                          color: Colors.white,
-                                                          borderRadius:
-                                                              BorderRadius
-                                                                  .circular(16),
-                                                        ),
-                                                      ),
-                                                    );
-                                                  },
-                                                  errorWidget:
-                                                      (BuildContext context,
-                                                          String st, a) {
-                                                    return Shimmer.fromColors(
-                                                      baseColor: Colors.white,
-                                                      highlightColor:
-                                                          Colors.grey,
-                                                      child: Container(
-                                                        height: 80.h,
-                                                        decoration:
-                                                            BoxDecoration(
-                                                          color: Colors.white,
-                                                          borderRadius:
-                                                              BorderRadius
-                                                                  .circular(16),
-                                                        ),
-                                                      ),
-                                                    );
-                                                  },
-                                                  imageUrl: widget.announTwo
-                                                      !.image[index].imageUrl,
-                                                  fit: BoxFit.cover,
-                                                  width: double.infinity,
-                                                ),
-                                              ),
-                                            ),
-                                          ),
-                                        ),
-                                      ],
-                                    )
-                                  : Center(
-                                      child: Container(
-                                      width: double.infinity,
-                                      height: double.infinity,
-                                      margin: EdgeInsets.all(8.sp),
-                                      decoration: BoxDecoration(
-                                          gradient: const LinearGradient(
-                                            begin: Alignment.topRight,
-                                            end: Alignment.bottomLeft,
-                                            colors: [
-                                              CupertinoColors.activeOrange,
-                                              CupertinoColors.activeBlue,
-                                              CupertinoColors.activeGreen,
-                                            ],
-                                          ),
-                                          color: CupertinoColors.activeBlue,
-                                          borderRadius:
-                                              BorderRadius.circular(12.r)),
-                                      child: Center(
-                                        child: Text(
-                                          "No Image",
-                                          style: TextStyle(
-                                              color: Colors.white,
-                                              fontSize: 30.sp,
-                                              fontWeight: FontWeight.w700),
-                                        ),
-                                      ),
-                                    )),
+                    child: ScaleOnPress(
+                      onTap: () {
+                        Navigator.push(
+                          widget.context1,
+                          CupertinoPageRoute(
+                            builder: (context) => AdminCommentScreen(
+                              announcementModel: widget.announTwo!,
                             ),
-                            widget.announTwo!.image.length > 1
-                                ? Positioned(
-                                    bottom: 15.h,
-                                    right: 15.w,
-                                    child: Container(
-                                      padding: EdgeInsets.symmetric(
-                                          horizontal: 2.w, vertical: 2.w),
-                                      decoration: BoxDecoration(
-                                        borderRadius:
-                                            BorderRadius.circular(100),
-                                        color: CupertinoColors.systemGrey6,
-                                      ),
-                                      child: Row(
-                                        children: [
-                                          ...List.generate(
-                                            widget.announTwo!.image.length,
-                                            (index) {
-                                              return AnimatedContainer(
-                                                curve: Curves.linear,
-                                                duration: const Duration(
-                                                    milliseconds: 200),
-                                                margin: EdgeInsets.all(1.sp),
-                                                width: activeIndex != index
-                                                    ? 6.sp
-                                                    : 7.sp,
-                                                height: activeIndex != index
-                                                    ? 6.sp
-                                                    : 7.sp,
-                                                decoration: BoxDecoration(
-                                                    shape: BoxShape.circle,
-                                                    color: activeIndex != index
-                                                        ? Colors.grey
-                                                        : CupertinoColors
-                                                            .activeBlue),
-                                              );
-                                            },
-                                          )
-                                        ],
-                                      ),
-                                    ),
-                                  )
-                                : const SizedBox()
-                          ],
-                        ),
-                        Padding(
-                          padding: EdgeInsets.only(left: 8.w),
-                          child: Text(
-                            widget.announTwo!.title,
-                            style: TextStyle(
-                              fontSize: 18.sp,
-                              fontWeight: FontWeight.w500,
-                            ),
-                            maxLines: 1,
-                            overflow: TextOverflow.ellipsis,
                           ),
-                        ),
-                        Padding(
-                          padding: EdgeInsets.only(left: 8.w, top: 3.h),
-                          child: Text(
-                            widget.announTwo!.money,
-                            style: TextStyle(
-                              fontSize: 19.sp,
-                              fontWeight: FontWeight.w600,
-                            ),
-                            maxLines: 1,
-                            overflow: TextOverflow.ellipsis,
-                          ),
-                        ),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.end,
-                          children: [
-                            Text(
-                              widget.announTwo!.viewedUsers.length.toString(),
+                        );
+                      },
+                      scaleValue: 0.98,
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Material(
+                            color: Colors.transparent,
+                            child: Text(
+                              "${widget.announTwo!.comments.length}  ${widget.announTwo!.comments.isNotEmpty ? "comments".tr() : "comment".tr()}",
                               style: TextStyle(
-                                fontWeight: FontWeight.w500,
-                                fontSize: 10.sp,
-                                color: CupertinoColors.black.withOpacity(.6),
-                              ),
+                                  color: CupertinoColors.activeBlue,
+                                  fontWeight: FontWeight.w400,
+                                  fontSize: 18.sp),
                             ),
-                            5.getW(),
-                            Icon(
-                              CupertinoIcons.eye_solid,
-                              size: 13.sp,
-                              color: CupertinoColors.black.withOpacity(.6),
-                            ),
-                            12.getW(),
-                            Text(
-                              timeago.format(
-                                  DateTime.fromMillisecondsSinceEpoch(
-                                    int.parse(
-                                        widget.announTwo!.createdAt.toString()),
-                                  ),
-                                  locale: "uz"),
-                              style: TextStyle(
-                                  color: CupertinoColors.black.withOpacity(.6),
-                                  fontWeight: FontWeight.w500,
-                                  fontSize: 10.sp),
-                            ),
-                            8.getW()
-                          ],
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
-                Container(
-                  width: double.infinity,
-                  height: 0.4,
-                  color: Colors.grey,
-                ),
-                Container(
-                  margin: EdgeInsets.symmetric(vertical: 0.h),
-                  padding:
-                      EdgeInsets.symmetric(horizontal: 12.w, vertical: 8.h),
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.only(
-                        bottomLeft: Radius.circular(16.r),
-                        bottomRight: Radius.circular(16.r)),
-                    boxShadow: [
-                      BoxShadow(
-                        offset: const Offset(0, 8),
-                        spreadRadius: 1,
-                        blurRadius: 10,
-                        color: CupertinoColors.systemGrey.withOpacity(.01),
-                      )
-                    ],
-                    color: CupertinoColors.white.withOpacity(.9),
-                  ),
-                  child: ScaleOnPress(
-                    onTap: () {
-                      Navigator.push(
-                        widget.context1,
-                        CupertinoPageRoute(
-                          builder: (context) => AdminCommentScreen(
-                            announcementModel: widget.announTwo!,
                           ),
-                        ),
-                      );
-                    },
-                    scaleValue: 0.98,
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Material(
-                          color: Colors.transparent,
-                          child: Text(
-                            "${widget.announTwo!.comments.length}  ${widget.announTwo!.comments.isNotEmpty ? "comments".tr() : "comment".tr()}",
-                            style: TextStyle(
-                                color: CupertinoColors.activeBlue,
-                                fontWeight: FontWeight.w400,
-                                fontSize: 18.sp),
-                          ),
-                        ),
-                        const Icon(
-                          Icons.arrow_forward_ios_rounded,
-                          color: CupertinoColors.activeBlue,
-                          weight: 1,
-                        )
-                      ],
+                          const Icon(
+                            Icons.arrow_forward_ios_rounded,
+                            color: CupertinoColors.activeBlue,
+                            weight: 1,
+                          )
+                        ],
+                      ),
                     ),
-                  ),
-                )
-              ],
-            ),
+                  )
+                ],
+              ),
           ],
         );
       },
