@@ -95,7 +95,7 @@ class _NotificationScreenState extends State<NotificationScreen> {
                       return ScaleOnPress(
                         scaleValue: 0.99,
                         onTap: () {
-                          if (notifs[index].type == NotificationType.actived &&
+                          if (notifs[index].type == NotificationType.activated &&
                               notifs[index].isRead == false) {
                             context.read<NotificationBloc>().add(
                                   NotificationUpdateEvent(

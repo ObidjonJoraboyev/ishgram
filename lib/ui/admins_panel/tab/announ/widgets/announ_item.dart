@@ -163,7 +163,7 @@ class _AdminHiringItemState extends State<AdminHiringItem> {
                                                       "hiring_published".tr(),
                                                   title: "your_hires".tr(),
                                                   type:
-                                                      NotificationType.actived,
+                                                      NotificationType.activated,
                                                   docId: "",
                                                   isRead: false,
                                                   userToDoc:

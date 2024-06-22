@@ -1,4 +1,4 @@
-enum NotificationType { rejected, actived }
+enum NotificationType { rejected, activated }
 
 class NotificationModel {
   final String docId;
@@ -25,19 +25,14 @@ class NotificationModel {
       title: json['title'] as String? ?? "",
       type: (json['notif_type'] as String? ?? "") == "rejected"
           ? NotificationType.rejected
-          : NotificationType.actived,
+          : NotificationType.activated,
       docId: json['id'] as String? ?? "",
       isRead: json['is_read'] as bool? ?? false,
       userToDoc: json['user_id'] as String? ?? "",
       dateTime: json['created_at'] as int? ?? 0,
     );
   }
-//{
-//   "notif_type": "activated",
-//   "subtitle": "string",
-//   "title": "string",
-//   "user_id": "string"
-// }
+
   Map<String, dynamic> toJson() {
     return {
       'subtitle': subtitle,
@@ -50,12 +45,23 @@ class NotificationModel {
 
   Map<String, dynamic> toJsonForUpdate() {
     return {
+      "id":docId,
+      "is_read":isRead,
+      'notif_type': type == NotificationType.rejected ? "rejected" : "activated",
       'subtitle': subtitle,
       'title': title,
-      'notif_type': type == NotificationType.rejected ? "rejected" : "actived",
       'user_id': userToDoc,
     };
   }
+
+  //{
+  //   "id": "3e9d00bb-a8a5-4ba1-83ff-a11223c95d56",
+  //   "is_read": true,
+  //   "notif_type": "rejected",
+  //   "subtitle": "string",
+  //   "title": "string",
+  //   "user_id": "string"
+  // }
 
   NotificationModel copyWith({
     String? subtitle,
