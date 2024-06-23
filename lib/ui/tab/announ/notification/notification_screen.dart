@@ -4,7 +4,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:ish_top/blocs/auth/auth_bloc.dart';
 import 'package:ish_top/blocs/notification/notification_bloc.dart';
 import 'package:ish_top/blocs/notification/notification_event.dart';
@@ -41,9 +40,7 @@ class _NotificationScreenState extends State<NotificationScreen> {
                 v.userToDoc == context.read<AuthBloc>().state.userModel.docId)
             .toList();
 
-        notifs.sort(
-          (a, b) => b.dateTime.compareTo(a.dateTime),
-        );
+
         return Scaffold(
           extendBodyBehindAppBar: true,
           backgroundColor: CupertinoColors.systemGrey5,
@@ -53,13 +50,9 @@ class _NotificationScreenState extends State<NotificationScreen> {
                 onPressed: () {
                   context
                       .read<NotificationBloc>()
-                      .add(NotificationReadAllEvent(notifs: notifs));
+                      .add(NotificationReadAllEvent(uuId: context.read<AuthBloc>().state.userModel.docId,context: context));
                 },
-                icon: SvgPicture.asset(
-                  "assets/icons/double_check.svg",
-                  width: 20.w,
-                  fit: BoxFit.cover,
-                ),
+                icon: const Icon(Icons.done_all)
               )
             ],
             elevation: 0,
@@ -103,6 +96,7 @@ class _NotificationScreenState extends State<NotificationScreen> {
                                         notifs[index].copyWith(isRead: true),
                                   ),
                                 );
+                            context.read<NotificationBloc>().add(NotificationGetEvent(context: context));
                           }
                           if (notifs[index].type == NotificationType.rejected) {
                             context.read<NotificationBloc>().add(
@@ -111,6 +105,10 @@ class _NotificationScreenState extends State<NotificationScreen> {
                                         notifs[index].copyWith(isRead: true),
                                   ),
                                 );
+                            setState(() {
+                              context.read<NotificationBloc>().add(NotificationGetEvent(context: context));
+
+                            });
                             Navigator.push(
                               context,
                               MaterialPageRoute(

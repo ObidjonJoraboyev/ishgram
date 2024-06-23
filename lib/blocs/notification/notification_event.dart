@@ -44,9 +44,10 @@ class NotificationDeleteEvent extends NotificationEvent {
 }
 
 class NotificationReadAllEvent extends NotificationEvent {
-  final List<NotificationModel> notifs;
+  final BuildContext context;
+  final String uuId;
 
-  const NotificationReadAllEvent({required this.notifs});
+  const NotificationReadAllEvent({required this.uuId,required this.context});
   @override
   List<Object?> get props => [];
 }

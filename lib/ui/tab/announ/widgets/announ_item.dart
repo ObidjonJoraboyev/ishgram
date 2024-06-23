@@ -111,50 +111,46 @@ class _HiringItemState extends State<HiringItem> {
                                       widget.hires.image.length,
                                       (index) => Padding(
                                         padding: EdgeInsets.all(8.sp),
-                                        child: Hero(
-                                          tag: Key(
-                                              widget.hires.image[0].imageUrl),
-                                          child: ClipRRect(
-                                            borderRadius:
-                                                BorderRadius.circular(16),
-                                            child: CachedNetworkImage(
-                                              placeholder: (context, st) {
-                                                return Shimmer.fromColors(
-                                                  baseColor: Colors.white,
-                                                  highlightColor: Colors.grey,
-                                                  child: Container(
-                                                    height: 80.h,
-                                                    decoration: BoxDecoration(
-                                                      color: Colors.white,
-                                                      borderRadius:
-                                                          BorderRadius.circular(
-                                                              16),
-                                                    ),
+                                        child: ClipRRect(
+                                          borderRadius:
+                                              BorderRadius.circular(16),
+                                          child: CachedNetworkImage(
+                                            placeholder: (context, st) {
+                                              return Shimmer.fromColors(
+                                                baseColor: Colors.white,
+                                                highlightColor: Colors.grey,
+                                                child: Container(
+                                                  height: 80.h,
+                                                  decoration: BoxDecoration(
+                                                    color: Colors.white,
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                            16),
                                                   ),
-                                                );
-                                              },
-                                              errorWidget:
-                                                  (BuildContext context,
-                                                      String st, a) {
-                                                return Shimmer.fromColors(
-                                                  baseColor: Colors.white,
-                                                  highlightColor: Colors.grey,
-                                                  child: Container(
-                                                    height: 80.h,
-                                                    decoration: BoxDecoration(
-                                                      color: Colors.white,
-                                                      borderRadius:
-                                                          BorderRadius.circular(
-                                                              16),
-                                                    ),
+                                                ),
+                                              );
+                                            },
+                                            errorWidget:
+                                                (BuildContext context,
+                                                    String st, a) {
+                                              return Shimmer.fromColors(
+                                                baseColor: Colors.white,
+                                                highlightColor: Colors.grey,
+                                                child: Container(
+                                                  height: 80.h,
+                                                  decoration: BoxDecoration(
+                                                    color: Colors.white,
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                            16),
                                                   ),
-                                                );
-                                              },
-                                              imageUrl: widget
-                                                  .hires.image[index].imageUrl,
-                                              fit: BoxFit.cover,
-                                              width: double.infinity,
-                                            ),
+                                                ),
+                                              );
+                                            },
+                                            imageUrl: widget
+                                                .hires.image[index].imageUrl,
+                                            fit: BoxFit.cover,
+                                            width: double.infinity,
                                           ),
                                         ),
                                       ),
@@ -198,6 +194,13 @@ class _HiringItemState extends State<HiringItem> {
                                   padding: EdgeInsets.symmetric(
                                       horizontal: 2.w, vertical: 2.w),
                                   decoration: BoxDecoration(
+                                    boxShadow: [
+                                      BoxShadow(
+                                      blurRadius: 8,spreadRadius: 0,color: Colors.black.withOpacity(.2)
+                                    ),
+
+
+                                    ],
                                     borderRadius: BorderRadius.circular(100),
                                     color: CupertinoColors.systemGrey6,
                                   ),

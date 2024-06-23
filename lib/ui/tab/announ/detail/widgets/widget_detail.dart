@@ -84,14 +84,11 @@ class _WidgetOfDetailState extends State<WidgetOfDetail>
         20.getH(),
         Padding(
           padding: EdgeInsets.symmetric(horizontal: 10.w),
-          child: Hero(
-            tag: "detail",
-            child: Material(
-              color: Colors.transparent,
-              child: Text(
-                widget.hireModel.title,
-                style: TextStyle(fontSize: 16.sp, fontWeight: FontWeight.w600),
-              ),
+          child: Material(
+            color: Colors.transparent,
+            child: Text(
+              widget.hireModel.title,
+              style: TextStyle(fontSize: 16.sp, fontWeight: FontWeight.w600),
             ),
           ),
         ),
@@ -103,15 +100,12 @@ class _WidgetOfDetailState extends State<WidgetOfDetail>
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Hero(
-                tag: "description",
-                child: Material(
-                  color: Colors.transparent,
-                  child: Text(
-                    widget.hireModel.description,
-                    style:
-                        TextStyle(fontWeight: FontWeight.w400, fontSize: 14.sp),
-                  ),
+              Material(
+                color: Colors.transparent,
+                child: Text(
+                  widget.hireModel.description,
+                  style:
+                      TextStyle(fontWeight: FontWeight.w400, fontSize: 14.sp),
                 ),
               ),
               32.getH(),

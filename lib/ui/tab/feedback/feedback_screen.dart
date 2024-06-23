@@ -77,6 +77,7 @@ class _FeedbackScreenState extends State<FeedbackScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      extendBodyBehindAppBar: 1==1,
       backgroundColor: CupertinoColors.systemGrey5,
       appBar: PreferredSize(
         preferredSize: const Size(double.infinity, 65),
@@ -87,8 +88,9 @@ class _FeedbackScreenState extends State<FeedbackScreen> {
             ),
           ),
           child: AppBar(
+            scrolledUnderElevation: 0,
+            elevation: 0,
             backgroundColor: CupertinoColors.systemGrey6,
-            toolbarHeight: 65,
             actions: [
               (selectMessages.isEmpty
                   ? ClipRRect(
@@ -121,7 +123,7 @@ class _FeedbackScreenState extends State<FeedbackScreen> {
                                 ),
                                 child: const Center(
                                     child: Icon(
-                                  Icons.support_agent_sharp,
+                                  Icons.support,
                                   color: Colors.white,
                                 )),
                               ),

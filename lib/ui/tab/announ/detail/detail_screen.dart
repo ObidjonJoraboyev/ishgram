@@ -150,7 +150,9 @@ class _DetailScreenState extends State<DetailScreen> {
                                 backgroundColor: Colors.black,
                                 closeButtonTooltip: "",
                                 context,
+
                                 MultiImageProvider(
+                                  initialIndex: index,
                                   [
                                     ...List.generate(
                                       widget.hireModel.image.length,
@@ -176,48 +178,45 @@ class _DetailScreenState extends State<DetailScreen> {
                                 ],
                                 borderRadius: BorderRadius.circular(17.r),
                               ),
-                              child: Hero(
-                                tag:
-                                    Key(widget.hireModel.image[index].imageUrl),
-                                child: ClipRRect(
-                                  borderRadius: BorderRadius.only(
-                                      topRight: Radius.circular(16.r),
-                                      topLeft: Radius.circular(16.r)),
-                                  child: CachedNetworkImage(
-                                    placeholder: (v, w) {
-                                      return Shimmer.fromColors(
-                                        baseColor: Colors.white,
-                                        highlightColor: Colors.grey,
-                                        child: Container(
-                                          height: 80.h,
-                                          decoration: BoxDecoration(
-                                            color: Colors.white,
-                                            borderRadius:
-                                                BorderRadius.circular(16.r),
-                                          ),
+                              child: ClipRRect(
+                                borderRadius: BorderRadius.only(
+                                    topRight: Radius.circular(16.r),
+                                    topLeft: Radius.circular(16.r)),
+                                child: CachedNetworkImage(
+                                  placeholder: (v, w) {
+                                    return Shimmer.fromColors(
+                                      baseColor: Colors.white,
+                                      highlightColor: Colors.grey,
+                                      child: Container(
+                                        height: 80.h,
+                                        decoration: BoxDecoration(
+                                          color: Colors.white,
+                                          borderRadius:
+                                              BorderRadius.circular(16.r),
                                         ),
-                                      );
-                                    },
-                                    errorWidget: (v, w, d) {
-                                      return Shimmer.fromColors(
-                                        baseColor: Colors.white,
-                                        highlightColor: Colors.grey,
-                                        child: Container(
-                                          height: 80.h,
-                                          decoration: BoxDecoration(
-                                            color: Colors.white,
-                                            borderRadius:
-                                                BorderRadius.circular(16.r),
-                                          ),
+                                      ),
+                                    );
+                                  },
+                                  errorWidget: (v, w, d) {
+                                    return Shimmer.fromColors(
+                                      baseColor: Colors.white,
+                                      highlightColor: Colors.grey,
+                                      child: Container(
+                                        height: 80.h,
+                                        decoration: BoxDecoration(
+                                          color: Colors.white,
+                                          borderRadius:
+                                              BorderRadius.circular(16.r),
                                         ),
-                                      );
-                                    },
-                                    imageUrl:
-                                        widget.hireModel.image[index].imageUrl,
-                                    width: MediaQuery.sizeOf(context).width,
-                                    fit: BoxFit.cover,
-                                    height: 340.h,
-                                  ),
+                                      ),
+                                    );
+                                  },
+                                  imageUrl:
+                                      widget.hireModel.image[index].imageUrl,
+                                  width: MediaQuery.sizeOf(context).width,
+                                  fit: BoxFit.cover,
+                                  height: 340.h,
+                                   filterQuality: FilterQuality.high,
                                 ),
                               ),
                             ),

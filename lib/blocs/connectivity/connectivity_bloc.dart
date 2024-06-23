@@ -8,7 +8,7 @@ class ConnectBloc extends Bloc<ConnectEvent, ConnectState> {
       : super(
           const ConnectState(
             connectResult: ConnectivityResult.none,
-            hasInternet: false,
+            hasInternet: true,
           ),
         ) {
     on<CheckConnect>(_checkConnect);
@@ -27,11 +27,13 @@ class ConnectBloc extends Bloc<ConnectEvent, ConnectState> {
     await emit.onEach(
       _connectivity.onConnectivityChanged,
       onData: (List<ConnectivityResult> results) {
-        if (results.contains(ConnectivityResult.mobile) ||
-            results.contains(ConnectivityResult.wifi)) {
+        if (!results.contains(ConnectivityResult.none)) {
           emit(state.copyWith(hasInternet: true));
         } else {
-          emit(state.copyWith(hasInternet: false));
+          if (!results.contains(ConnectivityResult.mobile) ||
+              !results.contains(ConnectivityResult.wifi)) {
+            emit(state.copyWith(hasInternet: false));
+          }
         }
       },
     );
