@@ -45,7 +45,6 @@ class NotificationBloc extends Bloc<NotificationEvent, NotificationState> {
         },
         onError: (error, handler) {
           emit(state.copyWith(status: StatusOfNotif.error));
-
           return handler.next(error); // continue
         },
       ),
@@ -85,8 +84,13 @@ class NotificationBloc extends Bloc<NotificationEvent, NotificationState> {
           onReceiveProgress: (v, w) {});
       if (response.statusCode == 200) {
         emit(state.copyWith(status: StatusOfNotif.success));
-        if(!event.context.mounted)return;
-        add(NotificationGetEvent(context: event.context));
+        List<NotificationModel> list =
+            (response.data["notifications"] as List?)
+                ?.map((element) => NotificationModel.fromJson(
+                element as Map<String, dynamic>))
+                .toList() ??
+                [];
+        emit(state.copyWith(notifications: list));
       } else {
         emit(state.copyWith(status: StatusOfNotif.error));
       }
@@ -95,9 +99,7 @@ class NotificationBloc extends Bloc<NotificationEvent, NotificationState> {
     }
   }
 
-  notifDelete(NotificationDeleteEvent event, emit) async {
-
-  }
+  notifDelete(NotificationDeleteEvent event, emit) async {}
 
   notifAdd(NotificationAddEvent event, emit) async {
     try {

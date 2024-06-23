@@ -96,7 +96,6 @@ class _NotificationScreenState extends State<NotificationScreen> {
                                         notifs[index].copyWith(isRead: true),
                                   ),
                                 );
-                            context.read<NotificationBloc>().add(NotificationGetEvent(context: context));
                           }
                           if (notifs[index].type == NotificationType.rejected) {
                             context.read<NotificationBloc>().add(
@@ -106,7 +105,6 @@ class _NotificationScreenState extends State<NotificationScreen> {
                                   ),
                                 );
                             setState(() {
-                              context.read<NotificationBloc>().add(NotificationGetEvent(context: context));
 
                             });
                             Navigator.push(
