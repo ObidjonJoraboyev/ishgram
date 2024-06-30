@@ -224,8 +224,7 @@ class _CommentScreenState extends State<CommentScreen> {
                                         maxLines: 10,
                                       ),
                                       Text(
-                                        "${DateTime.fromMillisecondsSinceEpoch(int.parse(messages[index].updatedTime)).hour}:${DateTime.fromMillisecondsSinceEpoch(int.parse(messages[index].updatedTime)).minute}",
-                                        style: TextStyle(
+                                       "11", style: TextStyle(
                                             color: Colors.white.withOpacity(.6),
                                             fontWeight: FontWeight.w400,
                                             fontSize: 14,

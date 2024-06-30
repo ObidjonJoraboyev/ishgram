@@ -220,6 +220,7 @@ class _AddHireScreenState extends State<AddHireScreen> {
                         ),
                         12.getH(),
                         GlobalTextFiled(
+                          textInputAction: TextInputAction.next,
                           onChanged: (v) {
                             setState(() {});
                           },
@@ -230,6 +231,7 @@ class _AddHireScreenState extends State<AddHireScreen> {
                           formStatus: authState.formStatus,
                         ),
                         GlobalTextFiled(
+                          textInputAction: TextInputAction.next,
                           onChanged: (v) {
                             setState(() {});
                           },
@@ -239,6 +241,7 @@ class _AddHireScreenState extends State<AddHireScreen> {
                           formStatus: authState.formStatus,
                         ),
                         GlobalTextFiled(
+                          textInputAction: TextInputAction.next,
                           onChanged: (v) {
                             setState(() {});
 
@@ -310,6 +313,7 @@ class _AddHireScreenState extends State<AddHireScreen> {
                         ),
                         25.getH(),
                         GlobalTextFiled(
+                          textInputAction: TextInputAction.done,
                           onChanged: (v) {
                             setState(() {});
 

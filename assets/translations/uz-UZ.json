@@ -15,6 +15,7 @@
   "error_name": "Ism noto'g'ri kiritilgan",
   "name": "Ism",
   "login": "Hisobga kirish",
+  "login_short":"Kirish",
   "password": "Parol",
   "code": "Kod",
   "new_password": "Yangi parol yarating",
@@ -74,5 +75,8 @@
   "notification": "Bildirishnoma",
   "hiring_published": "E'loningiz joylashtirildi",
   "hiring_not_published": "E'loningiz joylashtirilmadi",
-  "your_hires": "Sizning e'lonlaringiz"
+  "your_hires": "Sizning e'lonlaringiz",
+  "error": "Xatolik",
+  "account_exist": "Извините, этот аккаунт уже зарегистрирован.",
+  "account_not_exist": "Извините, этот аккаунт еще не зарегистрирован."
 }

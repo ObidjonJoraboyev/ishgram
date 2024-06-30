@@ -12,6 +12,7 @@ import 'package:ish_top/data/forms/form_status.dart';
 import 'package:ish_top/data/local/local_storage.dart';
 import 'package:ish_top/ui/admins_panel/tab/admin_tab/tab_screen.dart';
 import 'package:ish_top/ui/auth/register/register_control.dart';
+import 'package:ish_top/ui/auth/register/register_first.dart';
 import 'package:ish_top/ui/auth/widgets/button.dart';
 import 'package:ish_top/ui/auth/widgets/textfielad.dart';
 import 'package:ish_top/ui/tab/announ/add_announ/widgets/text_field_widget.dart';
@@ -78,6 +79,7 @@ class _AuthScreenState extends State<AuthScreen> {
                     Padding(
                       padding: EdgeInsets.symmetric(horizontal: 0.w),
                       child: GlobalTextFiled(
+                        textInputAction: TextInputAction.next,
                         isLogin: true,
                         onChanged: (v) {
                           setState(() {
@@ -184,6 +186,46 @@ class _AuthScreenState extends State<AuthScreen> {
                       builder: (context) => const AdminTabScreen()),
                   (route) => false);
             }
+          }
+          if (state.formStatus == FormStatus.notExist) {
+            showDialog(
+                context: context,
+                builder: (context) {
+                  return AlertDialog.adaptive(
+                    title: Text("error".tr()),
+                    content: Text("account_not_exist".tr()),
+                    actions: <Widget>[
+                      CupertinoButton(
+                        onPressed: () {
+                          Navigator.pop(context);
+
+                          passwordController.clear();
+                        },
+                        child: Text(
+                          "cancel".tr(),
+                          style: const TextStyle(
+                              color: CupertinoColors.activeBlue,
+                              fontWeight: FontWeight.w400),
+                        ),
+                      ),
+                      CupertinoButton(
+                        onPressed: () {
+                          Navigator.pop(context);
+                          Navigator.pushAndRemoveUntil(context,
+                              MaterialPageRoute(builder: (context) {
+                            return const RegisterScreen();
+                          }), (v) => false);
+                        },
+                        child: Text(
+                          "register".tr(),
+                          style: const TextStyle(
+                              color: CupertinoColors.activeBlue,
+                              fontWeight: FontWeight.w500),
+                        ),
+                      ),
+                    ],
+                  );
+                });
           }
         },
       ),

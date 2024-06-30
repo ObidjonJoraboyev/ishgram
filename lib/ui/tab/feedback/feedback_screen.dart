@@ -4,6 +4,7 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_chat_bubble/chat_bubble.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:ish_top/blocs/message/message_bloc.dart';
@@ -77,7 +78,7 @@ class _FeedbackScreenState extends State<FeedbackScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      extendBodyBehindAppBar: 1==1,
+      extendBodyBehindAppBar: 1 == 1,
       backgroundColor: CupertinoColors.systemGrey5,
       appBar: PreferredSize(
         preferredSize: const Size(double.infinity, 65),
@@ -190,9 +191,7 @@ class _FeedbackScreenState extends State<FeedbackScreen> {
         builder: (context, snapshot) {
           list = snapshot
               .where((e) =>
-                  (e.idFrom ==
-                      StorageRepository.getString(key: "userNumber")) &&
-                  e.isSupport)
+                  (e.idFrom == StorageRepository.getString(key: "userNumber")))
               .toList();
 
           if (list.isEmpty) {
@@ -244,154 +243,103 @@ class _FeedbackScreenState extends State<FeedbackScreen> {
                                           ? MainAxisAlignment.end
                                           : MainAxisAlignment.start,
                                       children: [
-                                        list[index].isSupport
-                                            ? Container(
-                                                margin:
-                                                    const EdgeInsets.symmetric(
-                                                        vertical: 8,
-                                                        horizontal: 12),
-                                                padding:
-                                                    const EdgeInsets.symmetric(
-                                                        vertical: 4,
-                                                        horizontal: 12),
-                                                decoration: BoxDecoration(
-                                                    boxShadow: [
-                                                      BoxShadow(
-                                                        spreadRadius: 0,
-                                                        color: Colors.black
-                                                            .withOpacity(.2),
-                                                        blurRadius: 10,
-                                                      )
-                                                    ],
-                                                    borderRadius: BorderRadius.only(
-                                                        topLeft: const Radius.circular(
-                                                            10),
-                                                        topRight: const Radius.circular(
-                                                            10),
-                                                        bottomRight: list[index].idTo ==
-                                                                "ibodulla@gmail.com"
-                                                            ? const Radius.circular(
-                                                                0)
-                                                            : const Radius.circular(
-                                                                10),
-                                                        bottomLeft: list[index].idTo ==
-                                                                "ibodulla@gmail.com"
-                                                            ? const Radius.circular(
-                                                                10)
-                                                            : const Radius.circular(
-                                                                0)),
-                                                    color: selectMessages.contains(list[index])
-                                                        ? Colors.grey
-                                                        : const Color(0xff30A3E6)),
-                                                child: Column(
-                                                  crossAxisAlignment:
-                                                      CrossAxisAlignment.end,
-                                                  children: [
-                                                    Text(
-                                                      list[index].messageText,
-                                                      style: const TextStyle(
-                                                        overflow: TextOverflow
-                                                            .ellipsis,
-                                                        color: Colors.white,
-                                                        fontWeight:
-                                                            FontWeight.w400,
-                                                        fontSize: 16,
-                                                        letterSpacing: 1,
-                                                      ),
-                                                      maxLines: 1,
-                                                    ),
-                                                    Text(
-                                                      "${DateTime.fromMillisecondsSinceEpoch(int.parse(list[index].updatedTime)).hour}:${DateTime.fromMillisecondsSinceEpoch(int.parse(list[index].updatedTime)).minute}",
-                                                      style: TextStyle(
-                                                        color: Colors.white
-                                                            .withOpacity(.6),
-                                                        fontWeight:
-                                                            FontWeight.w400,
-                                                        fontSize: 14,
-                                                        letterSpacing: 1,
-                                                      ),
-                                                    ),
-                                                  ],
+                                        1 == 1
+                                            ? ChatBubble(
+                                                margin: EdgeInsets.symmetric(
+                                                    vertical: 4.h,horizontal: 3.w),
+                                                clipper: ChatBubbleClipper3(
+                                                    type: BubbleType
+                                                        .receiverBubble),
+                                                child: Text(
+                                                  list[index].messageText,
+                                                  style: const TextStyle(
+                                                    overflow:
+                                                        TextOverflow.ellipsis,
+                                                    color: Colors.white,
+                                                    fontWeight: FontWeight.w400,
+                                                    fontSize: 16,
+                                                    letterSpacing: 1,
+                                                  ),
+                                                  maxLines: 1,
                                                 ),
                                               )
-                                            : GestureDetector(
-                                                child: Container(
-                                                  margin: const EdgeInsets
-                                                      .symmetric(
-                                                      horizontal: 10,
-                                                      vertical: 8),
-                                                  decoration: BoxDecoration(
-                                                    border: Border.all(
-                                                        width: 2,
-                                                        color: selectMessages
-                                                                .contains(
-                                                                    list[index])
-                                                            ? Colors.black
-                                                            : Colors.white),
-                                                    borderRadius: BorderRadius.only(
-                                                        topLeft: const Radius
-                                                            .circular(12),
-                                                        topRight:
-                                                            const Radius.circular(
-                                                                12),
-                                                        bottomRight: list[index]
-                                                                    .idTo !=
-                                                                widget.userModel
-                                                                    .phone
-                                                            ? const Radius.circular(
-                                                                12)
-                                                            : const Radius.circular(
-                                                                0),
-                                                        bottomLeft: list[index]
-                                                                    .idTo ==
-                                                                widget.userModel
-                                                                    .phone
-                                                            ? const Radius.circular(12)
-                                                            : const Radius.circular(0)),
-                                                  ),
-                                                  child: ClipRRect(
-                                                    borderRadius: BorderRadius.only(
-                                                        topLeft: const Radius
-                                                            .circular(10),
-                                                        topRight:
-                                                            const Radius.circular(
-                                                                10),
-                                                        bottomRight: list[index]
-                                                                    .idTo !=
-                                                                widget.userModel
-                                                                    .phone
-                                                            ? const Radius.circular(
-                                                                10)
-                                                            : const Radius.circular(
-                                                                0),
-                                                        bottomLeft: list[index]
-                                                                    .idTo ==
-                                                                widget.userModel
-                                                                    .phone
-                                                            ? const Radius.circular(10)
-                                                            : const Radius.circular(0)),
-                                                    child: Stack(
-                                                      children: [
-                                                        Image.network(
-                                                          list[index]
-                                                              .messageText,
-                                                          width: 200,
-                                                          height: 200,
-                                                          fit: BoxFit.cover,
-                                                        ),
-                                                        selectMessages.contains(
-                                                                list[index])
-                                                            ? Container(
-                                                                width: 200,
-                                                                height: 200,
-                                                                color: Colors
-                                                                    .black
-                                                                    .withOpacity(
-                                                                        .5),
-                                                              )
-                                                            : const SizedBox()
-                                                      ],
-                                                    ),
+                                            : Container(
+                                                margin:
+                                                    const EdgeInsets.symmetric(
+                                                        horizontal: 10,
+                                                        vertical: 8),
+                                                decoration: BoxDecoration(
+                                                  border: Border.all(
+                                                      width: 2,
+                                                      color: selectMessages
+                                                              .contains(
+                                                                  list[index])
+                                                          ? Colors.black
+                                                          : Colors.white),
+                                                  borderRadius: BorderRadius.only(
+                                                      topLeft:
+                                                          const Radius.circular(
+                                                              12),
+                                                      topRight:
+                                                          const Radius.circular(
+                                                              12),
+                                                      bottomRight: list[index]
+                                                                  .idTo !=
+                                                              widget.userModel
+                                                                  .phone
+                                                          ? const Radius.circular(
+                                                              12)
+                                                          : const Radius.circular(
+                                                              0),
+                                                      bottomLeft: list[index]
+                                                                  .idTo ==
+                                                              widget.userModel
+                                                                  .phone
+                                                          ? const Radius.circular(12)
+                                                          : const Radius.circular(0)),
+                                                ),
+                                                child: ClipRRect(
+                                                  borderRadius: BorderRadius.only(
+                                                      topLeft:
+                                                          const Radius.circular(
+                                                              10),
+                                                      topRight:
+                                                          const Radius.circular(
+                                                              10),
+                                                      bottomRight: list[index]
+                                                                  .idTo !=
+                                                              widget.userModel
+                                                                  .phone
+                                                          ? const Radius.circular(
+                                                              10)
+                                                          : const Radius.circular(
+                                                              0),
+                                                      bottomLeft: list[index]
+                                                                  .idTo ==
+                                                              widget.userModel
+                                                                  .phone
+                                                          ? const Radius.circular(10)
+                                                          : const Radius.circular(0)),
+                                                  child: Stack(
+                                                    children: [
+                                                      Image.network(
+                                                        list[index].messageText,
+                                                        width: 200,
+                                                        height: 200,
+                                                        fit: BoxFit.cover,
+                                                      ),
+                                                      selectMessages.contains(
+                                                              list[index])
+                                                          ? Container(
+                                                              width: 200,
+                                                              height: 200,
+                                                              color: Colors
+                                                                  .black
+                                                                  .withOpacity(
+                                                                      .5),
+                                                            )
+                                                          : const SizedBox()
+                                                    ],
                                                   ),
                                                 ),
                                               ),

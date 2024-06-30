@@ -100,71 +100,60 @@ class _AdminCommentScreenState extends State<AdminCommentScreen> {
                   child: Row(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Hero(
-                        tag: widget.announcementModel.image.isNotEmpty
-                            ? Key(widget.announcementModel.image[0].imageUrl)
-                            : UniqueKey(),
-                        child: ClipRRect(
-                          borderRadius: BorderRadius.circular(8.r),
-                          child: widget.announcementModel.image.isNotEmpty
-                              ? CachedNetworkImage(
-                                  imageUrl: widget
-                                      .announcementModel.image[0].imageUrl,
-                                  width: 50.w,
-                                  height: 50.w,
-                                  fit: BoxFit.cover,
-                                )
-                              : Container(
-                                  width: 50.w,
-                                  height: 50.w,
-                                  decoration: const BoxDecoration(
-                                    gradient: LinearGradient(
-                                      begin: Alignment.topRight,
-                                      end: Alignment.bottomLeft,
-                                      colors: [
-                                        CupertinoColors.activeOrange,
-                                        CupertinoColors.activeBlue,
-                                        CupertinoColors.activeGreen,
-                                      ],
-                                    ),
+                      ClipRRect(
+                        borderRadius: BorderRadius.circular(8.r),
+                        child: widget.announcementModel.image.isNotEmpty
+                            ? CachedNetworkImage(
+                                imageUrl: widget
+                                    .announcementModel.image[0].imageUrl,
+                                width: 50.w,
+                                height: 50.w,
+                                fit: BoxFit.cover,
+                              )
+                            : Container(
+                                width: 50.w,
+                                height: 50.w,
+                                decoration: const BoxDecoration(
+                                  gradient: LinearGradient(
+                                    begin: Alignment.topRight,
+                                    end: Alignment.bottomLeft,
+                                    colors: [
+                                      CupertinoColors.activeOrange,
+                                      CupertinoColors.activeBlue,
+                                      CupertinoColors.activeGreen,
+                                    ],
                                   ),
                                 ),
-                        ),
+                              ),
                       ),
                       10.getW(),
                       Expanded(
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            Hero(
-                              tag: "detail",
-                              child: Material(
-                                color: Colors.transparent,
-                                child: Text(
-                                  widget.announcementModel.title,
-                                  style: TextStyle(
-                                      color: Colors.black87,
-                                      fontWeight: FontWeight.w500,
-                                      fontSize: 16.sp),
-                                  overflow: TextOverflow.ellipsis,
-                                  maxLines: 1,
-                                ),
+                            Material(
+                              color: Colors.transparent,
+                              child: Text(
+                                widget.announcementModel.title,
+                                style: TextStyle(
+                                    color: Colors.black87,
+                                    fontWeight: FontWeight.w500,
+                                    fontSize: 16.sp),
+                                overflow: TextOverflow.ellipsis,
+                                maxLines: 1,
                               ),
                             ),
-                            Hero(
-                              tag: "description",
-                              child: Material(
-                                color: Colors.transparent,
-                                child: Text(
-                                  widget.announcementModel.description,
-                                  style: TextStyle(
-                                    color: Colors.black54,
-                                    fontWeight: FontWeight.w400,
-                                    fontSize: 14.sp,
-                                  ),
-                                  maxLines: 1,
-                                  overflow: TextOverflow.ellipsis,
+                            Material(
+                              color: Colors.transparent,
+                              child: Text(
+                                widget.announcementModel.description,
+                                style: TextStyle(
+                                  color: Colors.black54,
+                                  fontWeight: FontWeight.w400,
+                                  fontSize: 14.sp,
                                 ),
+                                maxLines: 1,
+                                overflow: TextOverflow.ellipsis,
                               ),
                             ),
                           ],
@@ -233,7 +222,7 @@ class _AdminCommentScreenState extends State<AdminCommentScreen> {
                                         maxLines: 10,
                                       ),
                                       Text(
-                                        "${DateTime.fromMillisecondsSinceEpoch(int.parse(messages[index].updatedTime)).hour}:${DateTime.fromMillisecondsSinceEpoch(int.parse(messages[index].updatedTime)).minute}",
+                                        "",
                                         style: TextStyle(
                                             color: Colors.white.withOpacity(.6),
                                             fontWeight: FontWeight.w400,

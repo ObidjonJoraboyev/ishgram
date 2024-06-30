@@ -57,7 +57,7 @@ class _TabScreenState extends State<TabScreen> {
         },
         builder: (context, state) {
           return Scaffold(
-            body: screens[activeIndex],
+            body: AnimatedSwitcher(duration: const Duration(milliseconds: 250),child: screens[activeIndex],transitionBuilder: (ctx,d){return FadeTransition(opacity: d,child: ctx,);},),
             bottomNavigationBar: BottomNavigationBar(
               backgroundColor: CupertinoColors.systemGrey6,
               selectedItemColor: CupertinoColors.activeBlue,

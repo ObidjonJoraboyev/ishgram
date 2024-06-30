@@ -22,6 +22,7 @@ class GlobalTextFiled extends StatefulWidget {
     this.isLogin,
     this.formatter,
     required this.formStatus,
+    required this.textInputAction,
   });
 
   final TextEditingController controller;
@@ -32,6 +33,7 @@ class GlobalTextFiled extends StatefulWidget {
   final bool? isLogin;
   final TextInputFormatter? formatter;
   final ValueChanged<String> onChanged;
+  final TextInputAction textInputAction;
 
   final FormStatus formStatus;
 
@@ -49,6 +51,7 @@ class _GlobalTextFiledState extends State<GlobalTextFiled> {
         child: BlocConsumer<AuthBloc, AuthState>(
           builder: (context, state) {
             return TextFormField(
+              textInputAction: widget.textInputAction,
               validator: (v) {
                 if (state.formStatus == FormStatus.exist) {
                   return "already_registered".tr();

@@ -18,6 +18,7 @@
   "error_password": "Пароль было введено неверно",
   "name": "Имя",
   "login": "Войти в аккаунт",
+  "login_short": "Войти",
   "password": "Пароль",
   "code": "Код",
   "already_registered": "Номер уже зарегистрирован",
@@ -74,9 +75,8 @@
   "notification": "Уведомление",
   "hiring_published": "Ваше объявление опубликовано",
   "hiring_not_published": "Ваше объявление не было опубликовано",
-  "your_hires": "Ваши объявления"
-
-
-
-
+  "your_hires": "Ваши объявления",
+  "error": "Ошибка",
+  "account_exist": "Kechirasiz, bu hisob allaqachon ro'yxatdan o'tgan.",
+  "account_not_exist": "Kechirasiz, bu hisob hali ro'yxatdan o'tmagan."
 }

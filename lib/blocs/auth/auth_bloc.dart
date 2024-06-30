@@ -41,21 +41,21 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     try {
       await emit.onEach(
         response,
-        onData: (List<UserModel> event) async {
-          for (int i = 0; i < event.length; i++) {
-            if (event[i].phone == event1.number &&
-                event[i].password == event1.password) {
+        onData: (List<UserModel> users) async {
+          for (int i = 0; i < users.length; i++) {
+            if (users[i].phone == event1.number &&
+                users[i].password == event1.password) {
               emit(state.copyWith(formStatus: FormStatus.authenticated));
 
               StorageRepository.setString(
-                  key: "userNumber", value: event[i].phone);
+                  key: "userNumber", value: users[i].phone);
               StorageRepository.setString(
-                  key: "userDoc", value: event[i].docId);
+                  key: "userDoc", value: users[i].docId);
               break;
             } else {
               emit(
                 state.copyWith(
-                  formStatus: FormStatus.error,
+                  formStatus: FormStatus.notExist,
                   errorMessage: "Invalid Credentials",
                 ),
               );

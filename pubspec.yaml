@@ -59,6 +59,7 @@ dependencies:
   pull_down_button: ^0.9.4
   google_maps_flutter_ios: ^2.7.0
   dio: ^5.4.3+1
+  flutter_chat_bubble: ^2.0.2
 
 
 dev_dependencies:

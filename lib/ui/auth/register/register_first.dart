@@ -102,13 +102,13 @@ class _RegisterScreenState extends State<RegisterScreen> {
                     ),
                     32.getH(),
                     GlobalTextFiled(
+                      textInputAction: TextInputAction.next,
                       onChanged: (v) {
                         setState(() {
                           checkInput();
                         });
                         if (v.length == 19 &&
                             passwordController.text.length == password) {
-                          loginTap();
                           setState(() {});
                         }
                       },
@@ -127,8 +127,6 @@ class _RegisterScreenState extends State<RegisterScreen> {
                           focusNode: focusNode,
                           password: password,
                           valueChanged: (v) {
-                            checkInput() ? loginTap() : null;
-                            checkInput();
                             setState(() {});
                           }),
                     ),
@@ -208,17 +206,47 @@ class _RegisterScreenState extends State<RegisterScreen> {
             ),
           );
         },
-        listener: (BuildContext context, AuthState state) async {
-          //     if (state.formStatus == FormStatus.firstAuth) {
-          //             if (!context.mounted) return;
-          //
-          //             Navigator.pushAndRemoveUntil(
-          //                 context,
-          //                 MaterialPageRoute(
-          //                   builder: (context) => RegisterSecond(userModel: userModel),
-          //                 ),
-          //                 (v) => false);
-          //           }
+        listener: (BuildContext contextListener, AuthState state) async {
+          if (state.formStatus == FormStatus.exist) {
+            showDialog(
+                context: contextListener,
+                builder: (context1) {
+                  return AlertDialog.adaptive(
+                    title: Text("error".tr()),
+                    content: Text("account_exist".tr()),
+                    actions: <Widget>[
+                      CupertinoButton(
+                        onPressed: () {
+                          Navigator.pop(context1);
+                          init();
+                          passwordController.clear();
+                        },
+                        child: Text(
+                          "cancel".tr(),
+                          style: const TextStyle(
+                              color: CupertinoColors.activeBlue,
+                              fontWeight: FontWeight.w400),
+                        ),
+                      ),
+                      CupertinoButton(
+                        onPressed: () {
+                          Navigator.pop(context1);
+                          Navigator.pushAndRemoveUntil(context,
+                              MaterialPageRoute(builder: (context) {
+                            return const AuthScreen();
+                          }), (v) => false);
+                        },
+                        child: Text(
+                          "login_short".tr(),
+                          style: const TextStyle(
+                              color: CupertinoColors.activeBlue,
+                              fontWeight: FontWeight.w500),
+                        ),
+                      ),
+                    ],
+                  );
+                });
+          }
         },
       ),
     );
