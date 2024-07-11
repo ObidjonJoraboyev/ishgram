@@ -67,10 +67,11 @@ class _NotificationDetailScreenState extends State<NotificationDetailScreen> {
               widget.notificationModel.subtitle,
               style: TextStyle(fontWeight: FontWeight.w400, fontSize: 14.sp),
             ),
-           Text(
+            Text(
               " user ${widget.notificationModel.userToDoc}",
               style: TextStyle(fontWeight: FontWeight.w400, fontSize: 14.sp),
-            ),Text(
+            ),
+            Text(
               " doc ${widget.notificationModel.docId}",
               style: TextStyle(fontWeight: FontWeight.w400, fontSize: 14.sp),
             ),

@@ -24,7 +24,7 @@ class _MyAnnouncementsState extends State<MyAnnouncements> {
   @override
   void initState() {
     context.read<AnnounBloc>().add(AnnounListGetEvent(
-        announcementDocs: context.read<AuthBloc>().state.userModel.allHiring));
+        announcementDocs: context.read<AuthBloc>().state.userModel.allAnnoun));
     super.initState();
   }
 

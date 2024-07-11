@@ -17,8 +17,8 @@ class UserModel extends Equatable {
   final double long;
   final int createdAt;
   final int updatedAt;
-  final List<String> allHiring;
-  final List<String> savedHiring;
+  final List<String> allAnnoun;
+  final List<String> savedAnnoun;
   final String fcm;
   final bool isPrivate;
   final int who;
@@ -41,8 +41,8 @@ class UserModel extends Equatable {
     required this.bio,
     required this.updatedAt,
     required this.createdAt,
-    required this.allHiring,
-    required this.savedHiring,
+    required this.allAnnoun,
+    required this.savedAnnoun,
     required this.isPrivate,
     required this.who,
   });
@@ -67,8 +67,8 @@ class UserModel extends Equatable {
     int? createdAt,
     String? location,
     List<String>? announcements,
-    List<String>? savedHiring,
-    List<String>? allHiring,
+    List<String>? savedAnnoun,
+    List<String>? allAnnoun,
     bool? isPrivate,
     int? who,
   }) {
@@ -89,8 +89,8 @@ class UserModel extends Equatable {
       bio: bio ?? this.bio,
       updatedAt: updatedAt ?? this.updatedAt,
       createdAt: createdAt ?? this.createdAt,
-      allHiring: allHiring ?? this.allHiring,
-      savedHiring: savedHiring ?? this.savedHiring,
+      allAnnoun: allAnnoun ?? this.allAnnoun,
+      savedAnnoun: savedAnnoun ?? this.savedAnnoun,
       color: color ?? this.color,
       isPrivate: isPrivate ?? this.isPrivate,
       who: who ?? this.who,
@@ -114,8 +114,8 @@ class UserModel extends Equatable {
         "bio": bio,
         "updatedAt": updatedAt,
         "createdAt": createdAt,
-        "announcements": allHiring.map((e) => e.toString()).toList(),
-        "likedHiring": savedHiring.map((e) => e.toString()).toList(),
+        "announcements": allAnnoun.map((e) => e.toString()).toList(),
+        "likedHiring": savedAnnoun.map((e) => e.toString()).toList(),
         "color": color,
         "isPrivate": isPrivate,
         "who": who
@@ -137,8 +137,8 @@ class UserModel extends Equatable {
         "bio": bio,
         "updatedAt": updatedAt,
         "createdAt": createdAt,
-        "announcements": allHiring.map((e) => e.toString()).toList(),
-        "likedHiring": savedHiring.map((e) => e.toString()).toList(),
+        "announcements": allAnnoun.map((e) => e.toString()).toList(),
+        "likedHiring": savedAnnoun.map((e) => e.toString()).toList(),
         "color": color,
         "isPrivate": isPrivate,
         "who": who
@@ -162,10 +162,10 @@ class UserModel extends Equatable {
       bio: json["bio"] as String? ?? "",
       updatedAt: json["updatedAt"] as int? ?? 0,
       createdAt: json["createdAt"] as int? ?? 0,
-      allHiring: (json["announcements"] as List? ?? [])
+      allAnnoun: (json["announcements"] as List? ?? [])
           .map((e) => e.toString())
           .toList(),
-      savedHiring: (json["likedHiring"] as List? ?? [])
+      savedAnnoun: (json["likedHiring"] as List? ?? [])
           .map((e) => e.toString())
           .toList(),
       color: json["color"] as String? ?? "",
@@ -191,8 +191,8 @@ class UserModel extends Equatable {
       bio: "",
       updatedAt: 0,
       createdAt: 0,
-      allHiring: [],
-      savedHiring: [],
+      allAnnoun: [],
+      savedAnnoun: [],
       color: "",
       isPrivate: false,
       who: 0);
@@ -215,8 +215,8 @@ class UserModel extends Equatable {
         bio,
         updatedAt,
         createdAt,
-        allHiring,
-        savedHiring,
+        allAnnoun,
+        savedAnnoun,
         color,
         isPrivate,
         who

@@ -40,20 +40,20 @@ class _NotificationScreenState extends State<NotificationScreen> {
                 v.userToDoc == context.read<AuthBloc>().state.userModel.docId)
             .toList();
 
-
         return Scaffold(
           extendBodyBehindAppBar: true,
           backgroundColor: CupertinoColors.systemGrey5,
           appBar: AppBar(
             actions: [
               IconButton(
-                onPressed: () {
-                  context
-                      .read<NotificationBloc>()
-                      .add(NotificationReadAllEvent(uuId: context.read<AuthBloc>().state.userModel.docId,context: context));
-                },
-                icon: const Icon(Icons.done_all)
-              )
+                  onPressed: () {
+                    context.read<NotificationBloc>().add(
+                        NotificationReadAllEvent(
+                            uuId:
+                                context.read<AuthBloc>().state.userModel.docId,
+                            context: context));
+                  },
+                  icon: const Icon(Icons.done_all))
             ],
             elevation: 0,
             bottom: PreferredSize(
@@ -88,7 +88,8 @@ class _NotificationScreenState extends State<NotificationScreen> {
                       return ScaleOnPress(
                         scaleValue: 0.99,
                         onTap: () {
-                          if (notifs[index].type == NotificationType.activated &&
+                          if (notifs[index].type ==
+                                  NotificationType.activated &&
                               notifs[index].isRead == false) {
                             context.read<NotificationBloc>().add(
                                   NotificationUpdateEvent(
@@ -104,9 +105,7 @@ class _NotificationScreenState extends State<NotificationScreen> {
                                         notifs[index].copyWith(isRead: true),
                                   ),
                                 );
-                            setState(() {
-
-                            });
+                            setState(() {});
                             Navigator.push(
                               context,
                               MaterialPageRoute(

@@ -1,4 +1,3 @@
-import 'dart:ui';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -88,7 +87,7 @@ class _PageControlState extends State<PageControl>
                               context,
                               MaterialPageRoute(
                                 builder: (context) =>
-                                const NotificationScreen(),
+                                    const NotificationScreen(),
                               ),
                             );
                           },
@@ -120,7 +119,6 @@ class _PageControlState extends State<PageControl>
                     children: [
                       10.getH(),
                       TabBar(
-
                         dividerColor: CupertinoColors.systemGrey5,
                         onTap: (v) {
                           if (v == 1) {
@@ -158,7 +156,10 @@ class _PageControlState extends State<PageControl>
                         height: height - 200,
                         child: TabBarView(
                           children: [
-                            HireScreen(context: context, focus: focus, controller: controller),
+                            HireScreen(
+                                context: context,
+                                focus: focus,
+                                controller: controller),
                             const PageSecond()
                           ],
                         ),

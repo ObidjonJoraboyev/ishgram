@@ -7,7 +7,7 @@ import 'package:ish_top/blocs/notification/notification_bloc.dart';
 import 'package:ish_top/blocs/notification/notification_event.dart';
 import 'package:ish_top/data/local/local_storage.dart';
 import 'package:ish_top/ui/admins_panel/tab/admin_tab/tab_screen.dart';
-import 'package:ish_top/ui/auth/auth_screen.dart';
+import 'package:ish_top/ui/auth/register/get_number.dart';
 import 'package:ish_top/ui/tab/tab/tab_screen.dart';
 import 'package:lottie/lottie.dart';
 
@@ -32,11 +32,12 @@ class _SplashScreenState extends State<SplashScreen> {
       Navigator.pushReplacement(
           context,
           MaterialPageRoute(
-              builder: (context) => userNumber.isEmpty
-                  ? const AuthScreen()
-                  : userNumber != "+998 (95) 083-13-44"
-                      ? const TabScreen()
-                      : const AdminTabScreen()));
+            builder: (context) => userNumber.isEmpty
+                ? const RegisterScreen()
+                : userNumber != "+998 (95) 083-13-44"
+                    ? const TabScreen()
+                    : const AdminTabScreen(),
+          ));
     });
     super.initState();
   }

@@ -25,7 +25,7 @@ class TabScreen extends StatefulWidget {
 class _TabScreenState extends State<TabScreen> {
   int activeIndex = 0;
 
-  bool hasInternet=true;
+  bool hasInternet = true;
   PageController pageController = PageController();
 
   @override
@@ -52,12 +52,20 @@ class _TabScreenState extends State<TabScreen> {
       debugShowCheckedModeBanner: false,
       home: BlocConsumer<ConnectBloc, ConnectState>(
         listener: (context, state) {
-          hasInternet=state.hasInternet;
-
+          hasInternet = state.hasInternet;
         },
         builder: (context, state) {
           return Scaffold(
-            body: AnimatedSwitcher(duration: const Duration(milliseconds: 250),child: screens[activeIndex],transitionBuilder: (ctx,d){return FadeTransition(opacity: d,child: ctx,);},),
+            body: AnimatedSwitcher(
+              duration: const Duration(milliseconds: 250),
+              child: screens[activeIndex],
+              transitionBuilder: (ctx, d) {
+                return FadeTransition(
+                  opacity: d,
+                  child: ctx,
+                );
+              },
+            ),
             bottomNavigationBar: BottomNavigationBar(
               backgroundColor: CupertinoColors.systemGrey6,
               selectedItemColor: CupertinoColors.activeBlue,
@@ -97,7 +105,12 @@ class _TabScreenState extends State<TabScreen> {
                 ),
               ],
             ),
-            floatingActionButton:!state.hasInternet? const Text("Internet mavjud emas",style: TextStyle(fontSize: 24,color: Colors.red),):const SizedBox(),
+            floatingActionButton: !state.hasInternet
+                ? const Text(
+                    "Internet mavjud emas",
+                    style: TextStyle(fontSize: 24, color: Colors.red),
+                  )
+                : const SizedBox(),
           );
         },
       ),

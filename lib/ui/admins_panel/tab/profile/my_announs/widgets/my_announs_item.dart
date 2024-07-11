@@ -215,12 +215,12 @@ class _MyAnnounItemState extends State<MyAnnounItem> {
                                                                 .state
                                                                 .userModel
                                                                 .copyWith(
-                                                                    allHiring: context
+                                                                    allAnnoun: context
                                                                         .read<
                                                                             AuthBloc>()
                                                                         .state
                                                                         .userModel
-                                                                        .allHiring
+                                                                        .allAnnoun
                                                                         .where((v) =>
                                                                             v !=
                                                                             widget.hires.docId)
@@ -246,7 +246,7 @@ class _MyAnnounItemState extends State<MyAnnounItem> {
                       children: [
                         SizedBox(
                           height: 200.h,
-                          child: widget.hires.image.isNotEmpty
+                          child: widget.hires.images.isNotEmpty
                               ? PageView(
                                   onPageChanged: (index) {
                                     setState(() {
@@ -256,7 +256,7 @@ class _MyAnnounItemState extends State<MyAnnounItem> {
                                   scrollDirection: Axis.horizontal,
                                   children: [
                                     ...List.generate(
-                                      widget.hires.image.length,
+                                      widget.hires.images.length,
                                       (index) => Padding(
                                         padding: EdgeInsets.symmetric(
                                             horizontal: 8.w),
@@ -296,7 +296,7 @@ class _MyAnnounItemState extends State<MyAnnounItem> {
                                               );
                                             },
                                             imageUrl: widget
-                                                .hires.image[index].imageUrl,
+                                                .hires.images[index].imageUrl,
                                             fit: BoxFit.cover,
                                             width: double.infinity,
                                           ),
@@ -325,7 +325,7 @@ class _MyAnnounItemState extends State<MyAnnounItem> {
                                   ),
                                 )),
                         ),
-                        widget.hires.image.length > 1
+                        widget.hires.images.length > 1
                             ? Positioned(
                                 bottom: 10.h,
                                 right: 18.w,
@@ -339,7 +339,7 @@ class _MyAnnounItemState extends State<MyAnnounItem> {
                                   child: Row(
                                     children: [
                                       ...List.generate(
-                                        widget.hires.image.length,
+                                        widget.hires.images.length,
                                         (index) {
                                           return AnimatedContainer(
                                             curve: Curves.linear,

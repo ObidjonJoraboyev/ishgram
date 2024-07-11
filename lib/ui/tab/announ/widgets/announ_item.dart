@@ -97,7 +97,7 @@ class _HiringItemState extends State<HiringItem> {
                       children: [
                         SizedBox(
                           height: 300.h,
-                          child: (widget.hires.image.isNotEmpty)
+                          child: (widget.hires.images.isNotEmpty)
                               ? PageView(
                                   controller: pageController,
                                   onPageChanged: (index) {
@@ -108,7 +108,7 @@ class _HiringItemState extends State<HiringItem> {
                                   scrollDirection: Axis.horizontal,
                                   children: [
                                     ...List.generate(
-                                      widget.hires.image.length,
+                                      widget.hires.images.length,
                                       (index) => Padding(
                                         padding: EdgeInsets.all(8.sp),
                                         child: ClipRRect(
@@ -130,9 +130,8 @@ class _HiringItemState extends State<HiringItem> {
                                                 ),
                                               );
                                             },
-                                            errorWidget:
-                                                (BuildContext context,
-                                                    String st, a) {
+                                            errorWidget: (BuildContext context,
+                                                String st, a) {
                                               return Shimmer.fromColors(
                                                 baseColor: Colors.white,
                                                 highlightColor: Colors.grey,
@@ -148,7 +147,7 @@ class _HiringItemState extends State<HiringItem> {
                                               );
                                             },
                                             imageUrl: widget
-                                                .hires.image[index].imageUrl,
+                                                .hires.images[index].imageUrl,
                                             fit: BoxFit.cover,
                                             width: double.infinity,
                                           ),
@@ -186,7 +185,7 @@ class _HiringItemState extends State<HiringItem> {
                                   ),
                                 )),
                         ),
-                        widget.hires.image.length > 1
+                        widget.hires.images.length > 1
                             ? Positioned(
                                 bottom: 15.h,
                                 right: 15.w,
@@ -196,10 +195,9 @@ class _HiringItemState extends State<HiringItem> {
                                   decoration: BoxDecoration(
                                     boxShadow: [
                                       BoxShadow(
-                                      blurRadius: 8,spreadRadius: 0,color: Colors.black.withOpacity(.2)
-                                    ),
-
-
+                                          blurRadius: 8,
+                                          spreadRadius: 0,
+                                          color: Colors.black.withOpacity(.2)),
                                     ],
                                     borderRadius: BorderRadius.circular(100),
                                     color: CupertinoColors.systemGrey6,
@@ -207,7 +205,7 @@ class _HiringItemState extends State<HiringItem> {
                                   child: Row(
                                     children: [
                                       ...List.generate(
-                                        widget.hires.image.length,
+                                        widget.hires.images.length,
                                         (index) {
                                           return AnimatedContainer(
                                             curve: Curves.linear,

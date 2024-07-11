@@ -77,6 +77,17 @@
   "hiring_not_published": "Ваше объявление не было опубликовано",
   "your_hires": "Ваши объявления",
   "error": "Ошибка",
-  "account_exist": "Kechirasiz, bu hisob allaqachon ro'yxatdan o'tgan.",
-  "account_not_exist": "Kechirasiz, bu hisob hali ro'yxatdan o'tmagan."
+
+  "account_exist": "Извините, этот аккаунт уже зарегистрирован.",
+  "account_not_exist": "Извините, этот аккаунт еще не зарегистрирован.",
+  "enter_num": "Пожалуйста, введите свой номер телефона",
+  "continue": "Продолжать",
+  "enter_more_info": "Пожалуйста, введите основную информацию",
+  "is_correct_num": "Это правильный номер?",
+  "edit": "Редактировать",
+  "back": "Назад",
+  "enter_code": "Пожалуйста, введите код, отправленный на этот номер.",
+  "sure_stop": "Вы уверены, что хотите прекратить проверку?",
+  "warning": "Предупреждение",
+  "exit": "Выход"
 }

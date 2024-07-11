@@ -24,11 +24,9 @@ void main() async {
         Locale("uz", "UZ"),
       ],
       path: "assets/translations",
-      fallbackLocale:
-          (Platform.localeName.split("_").first.toLowerCase() == "uz" ||
-                  Platform.localeName.split("_").last.toLowerCase() == "uz")
-              ? const Locale("uz", "UZ")
-              : const Locale("ru", "RU"),
+      fallbackLocale: (Platform.localeName.substring(0, 2) == "ru")
+          ? const Locale("ru", "RU")
+          : const Locale("uz", "UZ"),
       child: const App(),
     ),
   );

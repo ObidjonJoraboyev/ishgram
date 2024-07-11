@@ -631,7 +631,7 @@ class _AddHireScreenState extends State<AddHireScreen> {
                     title: nameCtrl.text,
                     timeInterval: "$startWork:$endWork",
                     description: descriptionCtrl.text,
-                    image: context.read<ImageBloc>().state.images,
+                    images: context.read<ImageBloc>().state.images,
                     money: money.text,
                     userId: context.read<AuthBloc>().state.userModel.docId,
                     number: numberCtrl.text,

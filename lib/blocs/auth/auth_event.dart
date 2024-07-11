@@ -39,6 +39,11 @@ class GetCurrentUser extends AuthEvent {}
 
 class GetAllUsers extends AuthEvent {}
 
+class CheckCurrentUser extends AuthEvent {
+  final String userNumber;
+  CheckCurrentUser({required this.userNumber});
+}
+
 class RegisterUpdateEvent extends AuthEvent {
   RegisterUpdateEvent({
     required this.userModel,

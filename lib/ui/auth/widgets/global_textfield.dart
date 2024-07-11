@@ -54,7 +54,7 @@ class UniversalTextInput extends StatelessWidget {
         decoration: InputDecoration(
           border: OutlineInputBorder(borderRadius: BorderRadius.circular(16.r)),
           filled: true,
-          fillColor: Colors.grey.withOpacity(.7),
+          fillColor: CupertinoColors.white,
           labelStyle: TextStyle(
             color: Colors.black.withOpacity(.8),
             fontWeight: FontWeight.w500,

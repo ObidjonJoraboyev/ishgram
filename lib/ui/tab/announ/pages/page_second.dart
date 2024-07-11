@@ -5,6 +5,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:ish_top/blocs/auth/auth_bloc.dart';
 import 'package:ish_top/blocs/auth/auth_state.dart';
 import 'package:ish_top/data/models/user_model.dart';
+import 'package:ish_top/ui/tab/announ/pages/chat_screen/chatting_screens.dart';
 
 class PageSecond extends StatefulWidget {
   const PageSecond({super.key});
@@ -32,7 +33,16 @@ class _PageSecondState extends State<PageSecond> {
                 return Column(
                   children: [
                     ListTile(
-                      onTap: () {},
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) {
+                              return ChattingScreens(userModel: users[index]);
+                            },
+                          ),
+                        );
+                      },
                       leading: users[index].image.isNotEmpty
                           ? Image.network(users[index].image)
                           : Container(

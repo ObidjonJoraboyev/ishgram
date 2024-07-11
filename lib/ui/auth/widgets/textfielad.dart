@@ -1,7 +1,6 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:ish_top/utils/colors/app_colors.dart';
 
@@ -11,13 +10,14 @@ class PasswordTextInput extends StatefulWidget {
       required this.controller,
       required this.onChanged,
       required this.labelText,
+         this.whenError,
       this.newPass});
 
   final TextEditingController controller;
-
   final ValueChanged onChanged;
   final String labelText;
   final bool? newPass;
+  final String? whenError;
 
   @override
   State<PasswordTextInput> createState() => _PasswordTextInputState();
@@ -33,8 +33,7 @@ class _PasswordTextInputState extends State<PasswordTextInput> {
       child: TextFormField(
         cursorColor: CupertinoColors.activeBlue,
         onChanged: widget.onChanged,
-        keyboardType: TextInputType.phone,
-        inputFormatters: [FilteringTextInputFormatter.digitsOnly],
+        keyboardType: TextInputType.text,
         style: TextStyle(
           color: AppColors.black,
           fontSize: 13.sp,
@@ -43,8 +42,8 @@ class _PasswordTextInputState extends State<PasswordTextInput> {
         controller: widget.controller,
         obscureText: passwordVisibility,
         validator: (String? value) {
-          if (value?.length != 6) {
-            return "error_password".tr();
+          if (widget.whenError!=null) {
+            return widget.whenError;
           }
           return null;
         },
@@ -64,11 +63,12 @@ class _PasswordTextInputState extends State<PasswordTextInput> {
             ],
             fontSize: 15.sp,
           ),
-          fillColor: Colors.grey.withOpacity(.7),
+          fillColor: Colors.white,
           border: OutlineInputBorder(borderRadius: BorderRadius.circular(8)),
           filled: true,
           contentPadding: EdgeInsets.all(9.sp),
           labelText: widget.labelText.tr(),
+          iconColor: AppColors.black,
           suffixIcon: Padding(
             padding: EdgeInsets.only(right: 3.w),
             child: IconButton(
@@ -76,14 +76,16 @@ class _PasswordTextInputState extends State<PasswordTextInput> {
                 passwordVisibility = !passwordVisibility;
                 setState(() {});
               },
-              icon: passwordVisibility
+              icon: !passwordVisibility
                   ? Icon(
-                      Icons.visibility_off,
+                      CupertinoIcons.eye_slash_fill,
                       size: 20.sp,
+                      color: AppColors.black,
                     )
                   : Icon(
-                      Icons.visibility,
+                      CupertinoIcons.eye_fill,
                       size: 20.sp,
+                      color: CupertinoColors.black,
                     ),
             ),
           ),

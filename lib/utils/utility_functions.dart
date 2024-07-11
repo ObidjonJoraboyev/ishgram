@@ -572,3 +572,11 @@ class UzbekMessages implements timeago.LookupMessages {
   @override
   String wordSeparator() => ' ';
 }
+
+
+String replaceString(String string){
+  return string.replaceAll(" ", "")
+      .replaceAll("(", "")
+      .replaceAll(")", "")
+      .replaceAll("-", "");
+}

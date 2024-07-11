@@ -603,7 +603,7 @@ class _AdminAddHireScreenState extends State<AdminAddHireScreen> {
                     title: nameCtrl.text,
                     timeInterval: "$startWork:$endWork",
                     description: descriptionCtrl.text,
-                    image: context.read<ImageBloc>().state.images,
+                    images: context.read<ImageBloc>().state.images,
                     money: money.text,
                     number: numberCtrl.text,
                     createdAt: DateTime.now().millisecondsSinceEpoch,

@@ -4,7 +4,7 @@ import 'image_model.dart';
 class AnnounModel extends Equatable {
   final String docId;
   final String userId;
-  final List<ImageModel> image;
+  final List<ImageModel> images;
   final String title;
   final String ownerName;
   final String number;
@@ -31,7 +31,7 @@ class AnnounModel extends Equatable {
     required this.createdAt,
     required this.ownerName,
     required this.timeInterval,
-    required this.image,
+    required this.images,
     required this.lat,
     required this.long,
     required this.number,
@@ -51,7 +51,7 @@ class AnnounModel extends Equatable {
     String? description,
     String? money,
     String? timeInterval,
-    List<ImageModel>? image,
+    List<ImageModel>? images,
     double? lat,
     double? long,
     bool? isFavourite,
@@ -74,7 +74,7 @@ class AnnounModel extends Equatable {
       description: description ?? this.description,
       money: money ?? this.money,
       timeInterval: timeInterval ?? this.timeInterval,
-      image: image ?? this.image,
+      images: images ?? this.images,
       lat: lat ?? this.lat,
       long: long ?? this.long,
       number: number ?? this.number,
@@ -98,7 +98,7 @@ class AnnounModel extends Equatable {
       "description": description,
       "money": money,
       "timeInterval": timeInterval,
-      "image": image.map((img) => img.toJson()).toList(),
+      "image": images.map((img) => img.toJson()).toList(),
       "lat": lat,
       "long": long,
       "number": number,
@@ -121,7 +121,7 @@ class AnnounModel extends Equatable {
       "description": description,
       "money": money,
       "timeInterval": timeInterval,
-      "image": image.map((img) => img.toJson()).toList(),
+      "image": images.map((img) => img.toJson()).toList(),
       "lat": lat,
       "long": long,
       "number": number,
@@ -145,7 +145,7 @@ class AnnounModel extends Equatable {
       description: json["description"] as String? ?? "",
       money: json["money"] as String? ?? "",
       timeInterval: json["timeInterval"] as String? ?? "",
-      image: (json["image"] as List<dynamic>?)
+      images: (json["image"] as List<dynamic>?)
               ?.map((e) => ImageModel.fromJson(e as Map<String, dynamic>))
               .toList() ??
           [],
@@ -187,7 +187,7 @@ class AnnounModel extends Equatable {
     description: '',
     money: "",
     timeInterval: '',
-    image: [],
+    images: [],
     lat: 0.0,
     long: 0.0,
     number: '',
@@ -209,7 +209,7 @@ class AnnounModel extends Equatable {
         description,
         money,
         timeInterval,
-        image,
+        images,
         lat,
         long,
         number,

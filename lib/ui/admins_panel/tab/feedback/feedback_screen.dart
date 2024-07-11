@@ -78,14 +78,14 @@ class _AdminFeedbackScreenState extends State<AdminFeedbackScreen> {
       extendBodyBehindAppBar: true,
       backgroundColor: CupertinoColors.systemGrey5,
       appBar: PreferredSize(
-        preferredSize:  Size(double.infinity, 56.h),
+        preferredSize: Size(double.infinity, 56.h),
         child: Container(
           decoration: const BoxDecoration(
             border: Border.symmetric(
               horizontal: BorderSide(width: 0.5, color: Colors.black),
             ),
           ),
-          child:  AppBar(
+          child: AppBar(
             scrolledUnderElevation: 0,
             title: Text(
               "support".tr(),
@@ -122,8 +122,7 @@ class _AdminFeedbackScreenState extends State<AdminFeedbackScreen> {
         builder: (context, snapshot) {
           list = snapshot
               .where((e) =>
-                  (e.idFrom ==
-                      StorageRepository.getString(key: "userNumber")))
+                  (e.idFrom == StorageRepository.getString(key: "userNumber")))
               .toList();
 
           if (list.isEmpty) {
@@ -133,7 +132,6 @@ class _AdminFeedbackScreenState extends State<AdminFeedbackScreen> {
           return SizedBox(
             width: MediaQuery.sizeOf(context).width,
             height: MediaQuery.sizeOf(context).height,
-
           );
         },
       ),

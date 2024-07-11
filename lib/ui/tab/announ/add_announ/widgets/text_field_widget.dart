@@ -23,6 +23,8 @@ class GlobalTextFiled extends StatefulWidget {
     this.formatter,
     required this.formStatus,
     required this.textInputAction,
+    this.whenError,
+    this.focusNode,
   });
 
   final TextEditingController controller;
@@ -31,10 +33,12 @@ class GlobalTextFiled extends StatefulWidget {
   final int? maxLines;
   final bool? isPhone;
   final bool? isLogin;
+  final String? whenError;
   final TextInputFormatter? formatter;
   final ValueChanged<String> onChanged;
   final TextInputAction textInputAction;
 
+  final FocusNode? focusNode;
   final FormStatus formStatus;
 
   @override
@@ -51,14 +55,12 @@ class _GlobalTextFiledState extends State<GlobalTextFiled> {
         child: BlocConsumer<AuthBloc, AuthState>(
           builder: (context, state) {
             return TextFormField(
+
+              focusNode: widget.focusNode,
               textInputAction: widget.textInputAction,
               validator: (v) {
-                if (state.formStatus == FormStatus.exist) {
-                  return "already_registered".tr();
-                }
-
-                if (v!.length < 3) {
-                  return "minimum_error".tr();
+                if (widget.whenError != null) {
+                  return widget.whenError;
                 }
                 return null;
               },

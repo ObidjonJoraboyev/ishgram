@@ -102,10 +102,10 @@ class _AdminCommentScreenState extends State<AdminCommentScreen> {
                     children: [
                       ClipRRect(
                         borderRadius: BorderRadius.circular(8.r),
-                        child: widget.announcementModel.image.isNotEmpty
+                        child: widget.announcementModel.images.isNotEmpty
                             ? CachedNetworkImage(
-                                imageUrl: widget
-                                    .announcementModel.image[0].imageUrl,
+                                imageUrl:
+                                    widget.announcementModel.images[0].imageUrl,
                                 width: 50.w,
                                 height: 50.w,
                                 fit: BoxFit.cover,

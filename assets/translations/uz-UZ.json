@@ -77,6 +77,19 @@
   "hiring_not_published": "E'loningiz joylashtirilmadi",
   "your_hires": "Sizning e'lonlaringiz",
   "error": "Xatolik",
-  "account_exist": "Извините, этот аккаунт уже зарегистрирован.",
-  "account_not_exist": "Извините, этот аккаунт еще не зарегистрирован."
+  "account_exist": "Kechirasiz, bu hisob allaqachon ro'yxatdan o'tgan.",
+  "account_not_exist": "Kechirasiz, bu hisob hali ro'yxatdan o'tmagan.",
+
+  "enter_num": "Iltimos, telefon raqamingizni kiriting",
+  "continue": "Davom etish",
+  "enter_more_info": "Iltimos, asosiy maʼlumotlaringizni kiriting",
+  "is_correct_num": "Bu to'g'ri raqammi?",
+  "edit": "Tahrirlash",
+  "back": "Orqaga",
+  "enter_code": "Iltimos, Ushbu raqamga yuborilgan kodni kiriting.",
+  "sure_stop": "Haqiqatdan ham tasdiqlashni to'xtatmoqchimisiz?",
+
+  "warning": "Ogohlantirish",
+  "exit": "Chiqish"
+
 }

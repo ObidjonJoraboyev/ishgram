@@ -37,7 +37,7 @@ class AnnounBloc extends Bloc<AnnounEvent, AnnounState> {
       if (!event.context.mounted) return;
       event.context.read<AuthBloc>().add(RegisterUpdateEvent(
           userModel: event.userModel
-              .copyWith(allHiring: event.userModel.allHiring + [docId.id]),
+              .copyWith(allAnnoun: event.userModel.allAnnoun + [docId.id]),
           docId: ""));
     } catch (error) {
       debugPrint("ERROR CATCH $error");

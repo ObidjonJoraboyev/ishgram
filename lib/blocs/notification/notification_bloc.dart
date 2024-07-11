@@ -84,12 +84,11 @@ class NotificationBloc extends Bloc<NotificationEvent, NotificationState> {
           onReceiveProgress: (v, w) {});
       if (response.statusCode == 200) {
         emit(state.copyWith(status: StatusOfNotif.success));
-        List<NotificationModel> list =
-            (response.data["notifications"] as List?)
-                ?.map((element) => NotificationModel.fromJson(
-                element as Map<String, dynamic>))
+        List<NotificationModel> list = (response.data["notifications"] as List?)
+                ?.map((element) =>
+                    NotificationModel.fromJson(element as Map<String, dynamic>))
                 .toList() ??
-                [];
+            [];
         emit(state.copyWith(notifications: list));
       } else {
         emit(state.copyWith(status: StatusOfNotif.error));

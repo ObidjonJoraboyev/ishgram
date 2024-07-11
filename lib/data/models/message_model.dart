@@ -1,13 +1,9 @@
 import 'package:equatable/equatable.dart';
 
-
-
-
 class MessageModel extends Equatable {
   final String messageId;
   final String messageText;
   final String createdTime;
-  final String image;
   final String idFrom;
   final String idTo;
 
@@ -17,27 +13,21 @@ class MessageModel extends Equatable {
     required this.messageText,
     required this.messageId,
     required this.createdTime,
-    required this.image,
   });
 
-  Map<String, dynamic> toJson() =>
-      {
+  Map<String, dynamic> toJson() => {
         "id_from": idFrom,
         "id_to": idTo,
         "doc_id": messageId,
         "message_text": messageText,
         "created_time": createdTime,
-        "image": image,
-
       };
 
-  Map<String, dynamic> toJsonForUpdate() =>
-      {
+  Map<String, dynamic> toJsonForUpdate() => {
         "id_from": idFrom,
         "id_to": idTo,
         "message_text": messageText,
         "created_time": createdTime,
-        "image": image
       };
 
   factory MessageModel.fromJson(Map<String, dynamic> json) {
@@ -47,7 +37,6 @@ class MessageModel extends Equatable {
       messageText: json["message_text"] as String? ?? "",
       messageId: json["doc_id"] as String? ?? "",
       createdTime: json["updated_time"] as String? ?? "",
-      image: json["image"] as String? ?? "",
     );
   }
 
@@ -56,7 +45,7 @@ class MessageModel extends Equatable {
     idTo: "",
     messageText: "",
     messageId: "",
-    createdTime: "", image: '',
+    createdTime: "",
   );
 
   MessageModel copyWith({
@@ -70,18 +59,16 @@ class MessageModel extends Equatable {
     String? image,
   }) {
     return MessageModel(
-        idFrom: idFrom ?? this.idFrom,
-        idTo: idTo ?? this.idTo,
-        messageText: messageText ?? this.messageText,
-        messageId: messageId ?? this.messageId,
-        createdTime: createdTime ?? this.createdTime,
-        image: image ?? this.image
+      idFrom: idFrom ?? this.idFrom,
+      idTo: idTo ?? this.idTo,
+      messageText: messageText ?? this.messageText,
+      messageId: messageId ?? this.messageId,
+      createdTime: createdTime ?? this.createdTime,
     );
   }
 
   @override
-  List<Object?> get props =>
-      [
+  List<Object?> get props => [
         messageId,
         messageText,
         idTo,

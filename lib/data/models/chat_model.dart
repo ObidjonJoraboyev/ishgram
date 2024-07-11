@@ -16,11 +16,11 @@ class ChatModel extends Equatable {
   });
 
   Map<String, dynamic> toJson() => {
-    "chat_id": chatId,
-    "id_from": idFrom,
-    "id_to": idTo,
-    "messages": messages.map((message) => message.toJson()).toList(),
-  };
+        "chat_id": chatId,
+        "id_from": idFrom,
+        "id_to": idTo,
+        "messages": messages.map((message) => message.toJson()).toList(),
+      };
 
   factory ChatModel.fromJson(Map<String, dynamic> json) {
     return ChatModel(
@@ -28,7 +28,8 @@ class ChatModel extends Equatable {
       idFrom: json["id_from"] as String? ?? "",
       idTo: json["id_to"] as String? ?? "",
       messages: (json["messages"] as List)
-          .map((messageJson) => MessageModel.fromJson(messageJson as Map<String, dynamic>))
+          .map((messageJson) =>
+              MessageModel.fromJson(messageJson as Map<String, dynamic>))
           .toList(),
     );
   }
@@ -49,9 +50,9 @@ class ChatModel extends Equatable {
 
   @override
   List<Object?> get props => [
-    chatId,
-    idFrom,
-    idTo,
-    messages,
-  ];
+        chatId,
+        idFrom,
+        idTo,
+        messages,
+      ];
 }

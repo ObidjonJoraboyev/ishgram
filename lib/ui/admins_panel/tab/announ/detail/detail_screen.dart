@@ -93,7 +93,7 @@ class _AdminDetailScreenState extends State<AdminDetailScreen> {
                             .read<AuthBloc>()
                             .state
                             .userModel
-                            .savedHiring
+                            .savedAnnoun
                             .contains(widget.hireModel.docId)
                         ? "assets/icons/save.svg"
                         : "assets/icons/save_fill.svg",
@@ -136,7 +136,7 @@ class _AdminDetailScreenState extends State<AdminDetailScreen> {
                   scrollDirection: Axis.horizontal,
                   children: [
                     ...List.generate(
-                      widget.hireModel.image.length,
+                      widget.hireModel.images.length,
                       (index) => Row(
                         children: [
                           GestureDetector(
@@ -153,9 +153,9 @@ class _AdminDetailScreenState extends State<AdminDetailScreen> {
                                 MultiImageProvider(
                                   [
                                     ...List.generate(
-                                      widget.hireModel.image.length,
+                                      widget.hireModel.images.length,
                                       (index) => CachedNetworkImageProvider(
-                                        widget.hireModel.image[index].imageUrl,
+                                        widget.hireModel.images[index].imageUrl,
                                         maxWidth: MediaQuery.sizeOf(context)
                                             .width
                                             .toInt(),
@@ -210,7 +210,7 @@ class _AdminDetailScreenState extends State<AdminDetailScreen> {
                                     );
                                   },
                                   imageUrl:
-                                      widget.hireModel.image[index].imageUrl,
+                                      widget.hireModel.images[index].imageUrl,
                                   width: MediaQuery.sizeOf(context).width,
                                   fit: BoxFit.cover,
                                   height: 340.h,

@@ -100,7 +100,7 @@ class _HiringItemIpadState extends State<HiringItemIpad> {
                           children: [
                             SizedBox(
                               height: 300.h,
-                              child: (widget.announOne.image.isNotEmpty)
+                              child: (widget.announOne.images.isNotEmpty)
                                   ? PageView(
                                       controller: pageController,
                                       onPageChanged: (index) {
@@ -111,12 +111,12 @@ class _HiringItemIpadState extends State<HiringItemIpad> {
                                       scrollDirection: Axis.horizontal,
                                       children: [
                                         ...List.generate(
-                                          widget.announOne.image.length,
+                                          widget.announOne.images.length,
                                           (index) => Padding(
                                             padding: EdgeInsets.all(8.sp),
                                             child: Hero(
-                                              tag: Key(widget
-                                                  .announOne.image[0].imageUrl),
+                                              tag: Key(widget.announOne
+                                                  .images[0].imageUrl),
                                               child: ClipRRect(
                                                 borderRadius:
                                                     BorderRadius.circular(16),
@@ -158,7 +158,7 @@ class _HiringItemIpadState extends State<HiringItemIpad> {
                                                     );
                                                   },
                                                   imageUrl: widget.announOne
-                                                      .image[index].imageUrl,
+                                                      .images[index].imageUrl,
                                                   fit: BoxFit.cover,
                                                   width: double.infinity,
                                                 ),
@@ -197,7 +197,7 @@ class _HiringItemIpadState extends State<HiringItemIpad> {
                                       ),
                                     )),
                             ),
-                            widget.announOne.image.length > 1
+                            widget.announOne.images.length > 1
                                 ? Positioned(
                                     bottom: 15.h,
                                     right: 15.w,
@@ -212,7 +212,7 @@ class _HiringItemIpadState extends State<HiringItemIpad> {
                                       child: Row(
                                         children: [
                                           ...List.generate(
-                                            widget.announOne.image.length,
+                                            widget.announOne.images.length,
                                             (index) {
                                               return AnimatedContainer(
                                                 curve: Curves.linear,
@@ -403,7 +403,7 @@ class _HiringItemIpadState extends State<HiringItemIpad> {
                             children: [
                               SizedBox(
                                 height: 300.h,
-                                child: (widget.announTwo!.image.isNotEmpty)
+                                child: (widget.announTwo!.images.isNotEmpty)
                                     ? PageView(
                                         controller: pageController,
                                         onPageChanged: (index) {
@@ -414,12 +414,12 @@ class _HiringItemIpadState extends State<HiringItemIpad> {
                                         scrollDirection: Axis.horizontal,
                                         children: [
                                           ...List.generate(
-                                            widget.announTwo!.image.length,
+                                            widget.announTwo!.images.length,
                                             (index) => Padding(
                                               padding: EdgeInsets.all(8.sp),
                                               child: Hero(
                                                 tag: Key(widget.announTwo!
-                                                    .image[0].imageUrl),
+                                                    .images[0].imageUrl),
                                                 child: ClipRRect(
                                                   borderRadius:
                                                       BorderRadius.circular(16),
@@ -463,7 +463,7 @@ class _HiringItemIpadState extends State<HiringItemIpad> {
                                                       );
                                                     },
                                                     imageUrl: widget.announTwo!
-                                                        .image[index].imageUrl,
+                                                        .images[index].imageUrl,
                                                     fit: BoxFit.cover,
                                                     width: double.infinity,
                                                   ),
@@ -502,7 +502,7 @@ class _HiringItemIpadState extends State<HiringItemIpad> {
                                         ),
                                       )),
                               ),
-                              widget.announTwo!.image.length > 1
+                              widget.announTwo!.images.length > 1
                                   ? Positioned(
                                       bottom: 15.h,
                                       right: 15.w,
@@ -517,7 +517,7 @@ class _HiringItemIpadState extends State<HiringItemIpad> {
                                         child: Row(
                                           children: [
                                             ...List.generate(
-                                              widget.announTwo!.image.length,
+                                              widget.announTwo!.images.length,
                                               (index) {
                                                 return AnimatedContainer(
                                                   curve: Curves.linear,

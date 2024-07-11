@@ -28,9 +28,11 @@ class PinPutItem extends StatelessWidget {
       border: Border.all(color: Colors.black),
     ),
   );
+
   @override
   Widget build(BuildContext context) {
     return Pinput(
+      autofillHints: const [AutofillHints.oneTimeCode],
       inputFormatters: [FilteringTextInputFormatter.digitsOnly],
       controller: controller,
       focusNode: focusNode,
@@ -45,7 +47,7 @@ class PinPutItem extends StatelessWidget {
         ),
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(16.r),
-          border: Border.all(color: CupertinoColors.activeBlue),
+          border: Border.all(color: CupertinoColors.black),
         ),
       ),
       separatorBuilder: (index) => const SizedBox(width: 8),
@@ -70,10 +72,10 @@ class PinPutItem extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.end,
         children: [
           Container(
-            margin: const EdgeInsets.only(bottom: 9),
-            width: 22,
-            height: 1,
-            color: CupertinoColors.activeBlue,
+            margin: EdgeInsets.only(bottom: 10.h),
+            width: 10.w,
+            height: 1.h,
+            color: CupertinoColors.black,
           ),
         ],
       ),
@@ -82,7 +84,7 @@ class PinPutItem extends StatelessWidget {
         width: 48.sp,
         decoration: defaultPinTheme.decoration!.copyWith(
           borderRadius: BorderRadius.circular(16.r),
-          border: Border.all(color: CupertinoColors.activeBlue),
+          border: Border.all(color: CupertinoColors.black),
         ),
       ),
       closeKeyboardWhenCompleted: true,
@@ -95,7 +97,7 @@ class PinPutItem extends StatelessWidget {
               color: int.parse(
                           controller.text.isNotEmpty ? controller.text : "0") !=
                       password
-                  ? CupertinoColors.activeBlue
+                  ? CupertinoColors.black
                   : CupertinoColors.activeGreen),
         ),
       ),

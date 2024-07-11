@@ -47,7 +47,7 @@ class NotificationReadAllEvent extends NotificationEvent {
   final BuildContext context;
   final String uuId;
 
-  const NotificationReadAllEvent({required this.uuId,required this.context});
+  const NotificationReadAllEvent({required this.uuId, required this.context});
   @override
   List<Object?> get props => [];
 }

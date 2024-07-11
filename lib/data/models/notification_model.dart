@@ -45,9 +45,10 @@ class NotificationModel {
 
   Map<String, dynamic> toJsonForUpdate() {
     return {
-      "id":docId,
-      "is_read":isRead,
-      'notif_type': type == NotificationType.rejected ? "rejected" : "activated",
+      "id": docId,
+      "is_read": isRead,
+      'notif_type':
+          type == NotificationType.rejected ? "rejected" : "activated",
       'subtitle': subtitle,
       'title': title,
       'user_id': userToDoc,

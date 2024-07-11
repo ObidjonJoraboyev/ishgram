@@ -246,7 +246,8 @@ class _FeedbackScreenState extends State<FeedbackScreen> {
                                         1 == 1
                                             ? ChatBubble(
                                                 margin: EdgeInsets.symmetric(
-                                                    vertical: 4.h,horizontal: 3.w),
+                                                    vertical: 4.h,
+                                                    horizontal: 3.w),
                                                 clipper: ChatBubbleClipper3(
                                                     type: BubbleType
                                                         .receiverBubble),

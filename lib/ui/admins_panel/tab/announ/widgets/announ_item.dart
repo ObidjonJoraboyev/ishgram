@@ -162,8 +162,8 @@ class _AdminHiringItemState extends State<AdminHiringItem> {
                                                   subtitle:
                                                       "hiring_published".tr(),
                                                   title: "your_hires".tr(),
-                                                  type:
-                                                      NotificationType.activated,
+                                                  type: NotificationType
+                                                      .activated,
                                                   docId: "",
                                                   isRead: false,
                                                   userToDoc:
@@ -304,7 +304,7 @@ class _AdminHiringItemState extends State<AdminHiringItem> {
                       children: [
                         SizedBox(
                           height: 200.h,
-                          child: (widget.hires.image.isNotEmpty)
+                          child: (widget.hires.images.isNotEmpty)
                               ? PageView(
                                   controller: pageController,
                                   onPageChanged: (index) {
@@ -315,7 +315,7 @@ class _AdminHiringItemState extends State<AdminHiringItem> {
                                   scrollDirection: Axis.horizontal,
                                   children: [
                                     ...List.generate(
-                                      widget.hires.image.length,
+                                      widget.hires.images.length,
                                       (index) => Padding(
                                         padding: EdgeInsets.all(8.sp),
                                         child: ClipRRect(
@@ -337,9 +337,8 @@ class _AdminHiringItemState extends State<AdminHiringItem> {
                                                 ),
                                               );
                                             },
-                                            errorWidget:
-                                                (BuildContext context,
-                                                    String st, a) {
+                                            errorWidget: (BuildContext context,
+                                                String st, a) {
                                               return Shimmer.fromColors(
                                                 baseColor: Colors.white,
                                                 highlightColor: Colors.grey,
@@ -355,7 +354,7 @@ class _AdminHiringItemState extends State<AdminHiringItem> {
                                               );
                                             },
                                             imageUrl: widget
-                                                .hires.image[index].imageUrl,
+                                                .hires.images[index].imageUrl,
                                             fit: BoxFit.cover,
                                             width: double.infinity,
                                           ),
@@ -393,7 +392,7 @@ class _AdminHiringItemState extends State<AdminHiringItem> {
                                   ),
                                 )),
                         ),
-                        widget.hires.image.length > 1
+                        widget.hires.images.length > 1
                             ? Positioned(
                                 bottom: 15.h,
                                 right: 15.w,
@@ -407,7 +406,7 @@ class _AdminHiringItemState extends State<AdminHiringItem> {
                                   child: Row(
                                     children: [
                                       ...List.generate(
-                                        widget.hires.image.length,
+                                        widget.hires.images.length,
                                         (index) {
                                           return AnimatedContainer(
                                             curve: Curves.linear,

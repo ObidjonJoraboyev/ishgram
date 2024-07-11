@@ -3,16 +3,13 @@ import UIKit
 import UserNotifications
 import alarm
 import GoogleMaps
-
-
-
 @UIApplicationMain
 @objc class AppDelegate: FlutterAppDelegate {
   override func application(
     _ application: UIApplication,
     didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?
   ) -> Bool {
-  if #available(iOS 10.0, *) {
+  if #available(iOS 14.0, *) {
     UNUserNotificationCenter.current().delegate = self as UNUserNotificationCenterDelegate
   }
     SwiftAlarmPlugin.registerBackgroundTasks()

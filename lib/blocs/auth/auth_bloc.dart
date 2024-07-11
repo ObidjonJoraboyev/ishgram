@@ -1,12 +1,14 @@
 import 'dart:async';
 import 'dart:math';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:ish_top/data/forms/form_status.dart';
 import 'package:ish_top/data/local/local_storage.dart';
 import 'package:ish_top/data/models/user_model.dart';
-import 'package:ish_top/ui/auth/auth_screen.dart';
+import 'package:ish_top/ui/auth/register/get_number.dart';
+import 'package:ish_top/utils/utility_functions.dart';
 import 'auth_event.dart';
 import 'auth_state.dart';
 
@@ -26,6 +28,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     on<RegisterUpdateEvent>(_registerUpdateUser);
     on<GetCurrentUser>(_getCurrentUser);
     on<GetAllUsers>(getAllUsers);
+    on<CheckCurrentUser>(checkUser);
   }
 
   Stream<List<UserModel>> response = FirebaseFirestore.instance
@@ -33,6 +36,23 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       .snapshots()
       .map((event) =>
           event.docs.map((doc) => UserModel.fromJson(doc.data())).toList());
+
+  checkUser(CheckCurrentUser event, Emitter<AuthState> emit) async {
+    Dio dio = Dio();
+
+    emit(state.copyWith(formStatus: FormStatus.loading));
+    Response response = await dio.post(
+        "https://ishgram-production.up.railway.app/api/auth/register",
+        data: {"Phone": replaceString(event.userNumber)});
+    if (response.statusCode == 200) {
+      emit(state.copyWith(
+          statusMessage: response.data["Data"],
+          formStatus: FormStatus.success));
+    } else {
+      emit(state.copyWith(
+          statusMessage: response.data["Data"], formStatus: FormStatus.error));
+    }
+  }
 
   Future<void> _loginUser(
       LoginUserEvent event1, Emitter<AuthState> emit) async {
@@ -46,19 +66,30 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
             if (users[i].phone == event1.number &&
                 users[i].password == event1.password) {
               emit(state.copyWith(formStatus: FormStatus.authenticated));
-
+              emit(state.copyWith(formStatus: FormStatus.pure));
               StorageRepository.setString(
                   key: "userNumber", value: users[i].phone);
               StorageRepository.setString(
                   key: "userDoc", value: users[i].docId);
+
               break;
-            } else {
+            } else if (users[i].phone == event1.number &&
+                users[i].password != event1.password) {
+              emit(
+                state.copyWith(
+                  formStatus: FormStatus.error,
+                  errorMessage: "Invalid Credentials",
+                ),
+              );
+              emit(state.copyWith(formStatus: FormStatus.pure));
+            } else if (users[i].phone != event1.number) {
               emit(
                 state.copyWith(
                   formStatus: FormStatus.notExist,
                   errorMessage: "Invalid Credentials",
                 ),
               );
+              emit(state.copyWith(formStatus: FormStatus.pure));
             }
           }
         },
@@ -70,6 +101,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
           errorMessage: e.toString(),
         ),
       );
+      emit(state.copyWith(formStatus: FormStatus.pure));
     }
   }
 
@@ -197,7 +229,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     Navigator.pushAndRemoveUntil(
       event.context,
       MaterialPageRoute(
-        builder: (context) => const AuthScreen(),
+        builder: (context) => const RegisterScreen(),
       ),
       (Route<dynamic> route) => false,
     );
@@ -211,5 +243,9 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     await emit.onEach(response, onData: (List<UserModel> users) {
       emit(state.copyWith(users: users, formStatus: FormStatus.success));
     });
+  }
+
+  toPure() {
+    emit(state.copyWith(formStatus: FormStatus.pure));
   }
 }
