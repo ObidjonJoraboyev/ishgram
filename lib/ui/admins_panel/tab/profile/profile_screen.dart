@@ -60,10 +60,9 @@ class _AdminProfileScreenState extends State<AdminProfileScreen> {
           return BlocConsumer<UserImageBloc, UserImageUploadState>(
             listener: (context, state) {
               if (state.formStatus == FormStatusImage.success) {
-                context.read<AuthBloc>().add(RegisterUpdateEvent(
+                context.read<AuthBloc>().add(UpdateUser(
                     userModel:
-                        state1.userModel.copyWith(image: state.images.imageUrl),
-                    docId: ""));
+                        state1.userModel.copyWith(image: state.images.imageUrl),));
               }
             },
             builder: (context, state) {
@@ -266,12 +265,11 @@ class _AdminProfileScreenState extends State<AdminProfileScreen> {
                                                       docId: state
                                                           .images.imageDocId));
                                               context.read<AuthBloc>().add(
-                                                    RegisterUpdateEvent(
+                                                    UpdateUser(
                                                         userModel: state1
                                                             .userModel
                                                             .copyWith(
-                                                                image: ""),
-                                                        docId: ""),
+                                                                image: ""),),
                                                   );
                                             },
                                             child: const Text(

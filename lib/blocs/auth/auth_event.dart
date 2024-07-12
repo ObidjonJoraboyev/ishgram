@@ -11,6 +11,10 @@ class CheckAuthenticationEvent extends AuthEvent {
   @override
   List<Object?> get props => [];
 }
+class AuthResetEvent extends AuthEvent {
+  @override
+  List<Object?> get props => [];
+}
 
 class LoginUserEvent extends AuthEvent {
   LoginUserEvent({required this.number, required this.password});
@@ -25,10 +29,8 @@ class LoginUserEvent extends AuthEvent {
 class RegisterUserEvent extends AuthEvent {
   RegisterUserEvent({
     required this.userModel,
-    required this.password,
   });
 
-  final int password;
   final UserModel userModel;
 
   @override
@@ -38,22 +40,17 @@ class RegisterUserEvent extends AuthEvent {
 class GetCurrentUser extends AuthEvent {}
 
 class GetAllUsers extends AuthEvent {}
+class UpdateUser extends AuthEvent {
+  final UserModel userModel;
+  UpdateUser({required this.userModel});
+}
 
 class CheckCurrentUser extends AuthEvent {
   final String userNumber;
   CheckCurrentUser({required this.userNumber});
 }
 
-class RegisterUpdateEvent extends AuthEvent {
-  RegisterUpdateEvent({
-    required this.userModel,
-    required this.docId,
-  });
-  final UserModel userModel;
-  final String docId;
-  @override
-  List<Object?> get props => [userModel];
-}
+
 
 class LogOutEvent extends AuthEvent {
   final BuildContext context;

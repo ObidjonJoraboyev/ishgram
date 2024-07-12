@@ -1,4 +1,5 @@
 import 'package:equatable/equatable.dart';
+import 'package:ish_top/utils/utility_functions.dart';
 
 class UserModel extends Equatable {
   final String docId;
@@ -21,7 +22,6 @@ class UserModel extends Equatable {
   final List<String> savedAnnoun;
   final String fcm;
   final bool isPrivate;
-  final int who;
 
   const UserModel({
     required this.location,
@@ -44,7 +44,6 @@ class UserModel extends Equatable {
     required this.allAnnoun,
     required this.savedAnnoun,
     required this.isPrivate,
-    required this.who,
   });
 
   UserModel copyWith({
@@ -70,7 +69,6 @@ class UserModel extends Equatable {
     List<String>? savedAnnoun,
     List<String>? allAnnoun,
     bool? isPrivate,
-    int? who,
   }) {
     return UserModel(
       password: password ?? this.password,
@@ -93,7 +91,6 @@ class UserModel extends Equatable {
       savedAnnoun: savedAnnoun ?? this.savedAnnoun,
       color: color ?? this.color,
       isPrivate: isPrivate ?? this.isPrivate,
-      who: who ?? this.who,
     );
   }
 
@@ -118,30 +115,33 @@ class UserModel extends Equatable {
         "likedHiring": savedAnnoun.map((e) => e.toString()).toList(),
         "color": color,
         "isPrivate": isPrivate,
-        "who": who
+      };
+
+  Map<String, dynamic> toJsonForApi() => {
+        "age": age,
+        "color": color,
+        "first_name": name,
+        "last_name": lastName,
+        "location": {"lat": lat, "long": long},
+        "password": password,
+        "phone": replaceString(phone),
       };
 
   Map<String, dynamic> toJsonForUpdate() => {
-        "password": password,
-        "city": location,
+        "address": location,
         "age": age,
-        "doc_id": docId,
-        "fcm": fcm,
-        "name": name,
-        "number": phone,
-        "last_name": lastName,
-        "image": image,
-        "lat": lat,
-        "long": long,
-        "rating": rating,
         "bio": bio,
-        "updatedAt": updatedAt,
-        "createdAt": createdAt,
-        "announcements": allAnnoun.map((e) => e.toString()).toList(),
-        "likedHiring": savedAnnoun.map((e) => e.toString()).toList(),
         "color": color,
-        "isPrivate": isPrivate,
-        "who": who
+        "first_name": name,
+        "id": docId,
+        "is_private": isPrivate,
+        "last_name": lastName,
+        "location": {"lat": lat, "long": long},
+        "password": password,
+        "phone": replaceString(phone),
+        "photo_url": image,
+        "rating": rating,
+        "region": region,
       };
 
   factory UserModel.fromJson(Map<String, dynamic> json) {
@@ -170,32 +170,31 @@ class UserModel extends Equatable {
           .toList(),
       color: json["color"] as String? ?? "",
       isPrivate: json["isPrivate"] as bool? ?? false,
-      who: json["who"] as int? ?? 0,
     );
   }
 
   static UserModel initial = const UserModel(
-      password: "",
-      age: 0,
-      location: "",
-      fcm: "",
-      docId: "",
-      name: "",
-      phone: "",
-      lastName: "",
-      image: "",
-      lat: 0,
-      long: 0,
-      region: "",
-      rating: 0,
-      bio: "",
-      updatedAt: 0,
-      createdAt: 0,
-      allAnnoun: [],
-      savedAnnoun: [],
-      color: "",
-      isPrivate: false,
-      who: 0);
+    password: "",
+    age: 0,
+    location: "",
+    fcm: "",
+    docId: "",
+    name: "",
+    phone: "",
+    lastName: "",
+    image: "",
+    lat: 0,
+    long: 0,
+    region: "",
+    rating: 0,
+    bio: "",
+    updatedAt: 0,
+    createdAt: 0,
+    allAnnoun: [],
+    savedAnnoun: [],
+    color: "",
+    isPrivate: false,
+  );
 
   @override
   List<Object?> get props => [
@@ -219,6 +218,5 @@ class UserModel extends Equatable {
         savedAnnoun,
         color,
         isPrivate,
-        who
       ];
 }

@@ -54,10 +54,9 @@ class _ListTileItemState extends State<ListTileItem> {
                         onChanged: (v) {
                           check = v;
                           context.read<AuthBloc>().add(
-                                RegisterUpdateEvent(
+                                UpdateUser(
                                     userModel:
-                                        state.userModel.copyWith(isPrivate: v),
-                                    docId: ""),
+                                        state.userModel.copyWith(isPrivate: v),),
                               );
 
                           context.read<AuthBloc>().add(GetCurrentUser());
@@ -71,22 +70,20 @@ class _ListTileItemState extends State<ListTileItem> {
             widget.isSwitch != null ? check = !check : null;
             if (widget.isSwitch != null) {
               if (check) {
-                context.read<AuthBloc>().add(RegisterUpdateEvent(
+                context.read<AuthBloc>().add(UpdateUser(
                     userModel: context
                         .read<AuthBloc>()
                         .state
                         .userModel
-                        .copyWith(isPrivate: true),
-                    docId: ""));
+                        .copyWith(isPrivate: true),));
               } else {
                 context.read<AuthBloc>().add(
-                      RegisterUpdateEvent(
+                      UpdateUser(
                           userModel: context
                               .read<AuthBloc>()
                               .state
                               .userModel
-                              .copyWith(isPrivate: false),
-                          docId: ""),
+                              .copyWith(isPrivate: false),),
                     );
               }
               context.read<AuthBloc>().add(GetCurrentUser());

@@ -1,3 +1,5 @@
+import 'dart:ui';
+
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -34,6 +36,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
   int password = 0;
 
   loginTap() async {
+    FocusScope.of(context).unfocus();
+    focusNode.unfocus();
     showDialog(
         context: context,
         builder: (context1) {
@@ -67,6 +71,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                 ScaleOnPress(
                   onTap: () {
                     Navigator.pop(context1);
+                    focusNode.requestFocus();
                   },
                   child: Text(
                     "edit".tr(),
@@ -119,84 +124,132 @@ class _RegisterScreenState extends State<RegisterScreen> {
           backgroundColor: CupertinoColors.systemGrey6,
           floatingActionButtonLocation:
               FloatingActionButtonLocation.centerDocked,
-          floatingActionButton: Padding(
-            padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 12.h),
-            child: LoginButtonItems(
-              title: "Continue",
-              onTap: () async {
-                loginTap();
-              },
-              isLoading: state.formStatus == FormStatus.loading,
-              active: checkInput(),
-            ),
-          ),
-          body: ListView(
-            physics: const NeverScrollableScrollPhysics(),
+          body: Stack(
             children: [
-
-              Padding(
-                padding: EdgeInsets.symmetric(horizontal: 12.w),
-                child: Form(
-                  key: formKey,
-                  child: Column(
-                    children: [
-                      20.getH(),
-                      Text(
-                        "📞",
-                        style: TextStyle(fontSize: 80.sp, color: Colors.red),
-                      ),
-                      Center(
-                        child: Text(
-                          "Your Phone",
-                          style: TextStyle(
-                            color: CupertinoColors.black,
-                            fontSize: 22.w,
-                            fontWeight: FontWeight.w600,
+              Column(
+                children: [
+                  Expanded(
+                    child: ListView(
+                      physics: const NeverScrollableScrollPhysics(),
+                      children: [
+                        Padding(
+                          padding: EdgeInsets.symmetric(horizontal: 12.w),
+                          child: Form(
+                            key: formKey,
+                            child: Column(
+                              children: [
+                                20.getH(),
+                                Text(
+                                  "📞",
+                                  style: TextStyle(
+                                      fontSize: 80.sp, color: Colors.red),
+                                ),
+                                Center(
+                                  child: Text(
+                                    "Your Phone",
+                                    style: TextStyle(
+                                      color: CupertinoColors.black,
+                                      fontSize: 22.w,
+                                      fontWeight: FontWeight.w600,
+                                    ),
+                                  ),
+                                ),
+                                10.getH(),
+                                Padding(
+                                  padding:
+                                      EdgeInsets.symmetric(horizontal: 32.w),
+                                  child: Text(
+                                    "enter_num".tr(),
+                                    style: TextStyle(
+                                        fontSize: 16.sp,
+                                        fontWeight: FontWeight.w400),
+                                    textAlign: TextAlign.center,
+                                  ),
+                                ),
+                                32.getH(),
+                                GlobalTextFiled(
+                                  focusNode: focusNode,
+                                  whenError: null,
+                                  textInputAction: TextInputAction.next,
+                                  onChanged: (v) {
+                                    setState(() {
+                                      checkInput();
+                                    });
+                                    if (v.length == 19) {
+                                      setState(() {});
+                                    }
+                                  },
+                                  controller: phoneController,
+                                  labelText: "phone_number",
+                                  maxLines: 1,
+                                  formatter: AppInputFormatters.phoneFormatter,
+                                  isPhone: true,
+                                  formStatus: state.formStatus,
+                                ),
+                              ],
+                            ),
                           ),
                         ),
-                      ),
-                      10.getH(),
-                      Padding(
-                        padding: EdgeInsets.symmetric(horizontal: 32.w),
-                        child: Text(
-                          "enter_num".tr(),
-                          style: TextStyle(
-                              fontSize: 16.sp, fontWeight: FontWeight.w400),
-                          textAlign: TextAlign.center,
+                      ],
+                    ),
+                  ),
+                  Padding(
+                    padding:
+                        EdgeInsets.symmetric(horizontal: 16.w, vertical: 12.h),
+                    child: LoginButtonItems(
+                      title: "Continue",
+                      onTap: () async {
+                        loginTap();
+                      },
+                      isLoading: false,
+                      active: checkInput(),
+                    ),
+                  ),
+                  20.getH(),
+
+                ],
+              ),
+              if (state.formStatus == FormStatus.loading)
+                Stack(
+                  children: [
+                    Positioned.fill(
+                      child: BackdropFilter(
+                        filter: ImageFilter.blur(sigmaX: 5.0, sigmaY: 5.0),
+                        child: Container(
+                          color: Colors.black.withOpacity(0.5),
                         ),
                       ),
-                      32.getH(),
-                      GlobalTextFiled(
-                        focusNode: focusNode,
-                        whenError: null,
-                        textInputAction: TextInputAction.next,
-                        onChanged: (v) {
-                          setState(() {
-                            checkInput();
-                          });
-                          if (v.length == 19) {
-                            setState(() {});
-                          }
-                        },
-                        controller: phoneController,
-                        labelText: "phone_number",
-                        maxLines: 1,
-                        formatter: AppInputFormatters.phoneFormatter,
-                        isPhone: true,
-                        formStatus: state.formStatus,
+                    ),
+                    Center(
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          SizedBox(
+                              width: 30.sp,
+                              height: 30.sp,
+                              child: const CircularProgressIndicator(
+                                strokeCap: StrokeCap.round,
+                                backgroundColor: Colors.grey,
+                                color: Colors.white,
+                              )),
+                          15.getH(),
+                          Text("checking".tr(),style: TextStyle(fontSize: 12.sp,fontWeight: FontWeight.w400,color: Colors.white,shadows: [BoxShadow(spreadRadius: 0,blurRadius: 10,color: Colors.black.withOpacity(.3))]),)
+                        ],
                       ),
-                    ],
-                  ),
+                    ),
+                  ],
                 ),
-              ),
             ],
           ),
         );
       },
       listener: (BuildContext contextListener, AuthState state) async {
+        if (state.formStatus == FormStatus.loading) {
+          FocusScope.of(contextListener).unfocus();
+        }
         if (state.statusMessage.contains("register")) {
           Navigator.push(context, MaterialPageRoute(builder: (context) {
-            return  GetPasswordScreen(
+            return GetPasswordScreen(
               num: phoneController.text,
             );
           }));

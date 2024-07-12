@@ -208,7 +208,7 @@ class _MyAnnounItemState extends State<MyAnnounItem> {
                                                             docId: widget
                                                                 .hires.docId));
                                                     context.read<AuthBloc>().add(
-                                                        RegisterUpdateEvent(
+                                                        UpdateUser(
                                                             userModel: context
                                                                 .read<
                                                                     AuthBloc>()
@@ -224,9 +224,7 @@ class _MyAnnounItemState extends State<MyAnnounItem> {
                                                                         .where((v) =>
                                                                             v !=
                                                                             widget.hires.docId)
-                                                                        .toList()),
-                                                            docId: ""
-                                                                ""));
+                                                                        .toList()),));
 
                                                     setState(() {});
                                                     Navigator.pop(con);

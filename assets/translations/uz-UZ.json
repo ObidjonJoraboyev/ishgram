@@ -15,7 +15,7 @@
   "error_name": "Ism noto'g'ri kiritilgan",
   "name": "Ism",
   "login": "Hisobga kirish",
-  "login_short":"Kirish",
+  "login_short": "Kirish",
   "password": "Parol",
   "code": "Kod",
   "new_password": "Yangi parol yarating",
@@ -79,7 +79,6 @@
   "error": "Xatolik",
   "account_exist": "Kechirasiz, bu hisob allaqachon ro'yxatdan o'tgan.",
   "account_not_exist": "Kechirasiz, bu hisob hali ro'yxatdan o'tmagan.",
-
   "enter_num": "Iltimos, telefon raqamingizni kiriting",
   "continue": "Davom etish",
   "enter_more_info": "Iltimos, asosiy maʼlumotlaringizni kiriting",
@@ -88,8 +87,9 @@
   "back": "Orqaga",
   "enter_code": "Iltimos, Ushbu raqamga yuborilgan kodni kiriting.",
   "sure_stop": "Haqiqatdan ham tasdiqlashni to'xtatmoqchimisiz?",
-
   "warning": "Ogohlantirish",
-  "exit": "Chiqish"
-
+  "exit": "Chiqish",
+  "want_cancel": "Haqiqatdan ham jarayonni bekor qilmoqchimisiz?",
+  "as_worker": "Barchaga ishchi sifatida ko'rinish",
+  "checking": "Tekshirilmoqda..."
 }

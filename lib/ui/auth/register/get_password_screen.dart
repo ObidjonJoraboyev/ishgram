@@ -6,9 +6,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:ish_top/blocs/auth/auth_bloc.dart';
+import 'package:ish_top/blocs/auth/auth_event.dart';
 import 'package:ish_top/blocs/auth/auth_state.dart';
 import 'package:ish_top/data/forms/form_status.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:ish_top/ui/auth/register/register_second.dart';
 import 'package:ish_top/ui/auth/register/widgets/pinput_item.dart';
 import 'package:ish_top/ui/auth/widgets/button.dart';
 import 'package:ish_top/utils/size/size_utils.dart';
@@ -134,7 +136,7 @@ class _GetPasswordScreenState extends State<GetPasswordScreen> {
                                     color: CupertinoColors.destructiveRed),
                               ),
                               onPressed: () {
-                                context.read<AuthBloc>().toPure();
+                                context.read<AuthBloc>().add(AuthResetEvent());
                                 Navigator.pop(context);
                                 Navigator.pop(context);
                               },
@@ -223,7 +225,20 @@ class _GetPasswordScreenState extends State<GetPasswordScreen> {
                               controller: passwordCtrl,
                               focusNode: focusNode,
                               password: password,
-                              valueChanged: (v) {}),
+                              valueChanged: (v) {
+                                if (int.parse(v) == password) {
+                                  context.read<AuthBloc>().add(AuthResetEvent());
+                                  Navigator.pushReplacement(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) {
+                                        return const RegisterSecond();
+                                      },
+                                    ),
+                                  );
+
+                                }
+                              }),
                         )
                       ],
                     ),

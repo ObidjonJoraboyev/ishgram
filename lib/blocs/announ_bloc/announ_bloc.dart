@@ -2,8 +2,6 @@ import 'dart:async';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:ish_top/blocs/auth/auth_bloc.dart';
-import 'package:ish_top/blocs/auth/auth_event.dart';
 import 'package:ish_top/data/models/announ_model.dart';
 import 'announ_event.dart';
 import 'package:bloc_concurrency/bloc_concurrency.dart' as bloc;
@@ -33,12 +31,6 @@ class AnnounBloc extends Bloc<AnnounEvent, AnnounState> {
           .collection("hires")
           .doc(docId.id)
           .update({"doc_id": docId.id});
-
-      if (!event.context.mounted) return;
-      event.context.read<AuthBloc>().add(RegisterUpdateEvent(
-          userModel: event.userModel
-              .copyWith(allAnnoun: event.userModel.allAnnoun + [docId.id]),
-          docId: ""));
     } catch (error) {
       debugPrint("ERROR CATCH $error");
     }

@@ -573,10 +573,50 @@ class UzbekMessages implements timeago.LookupMessages {
   String wordSeparator() => ' ';
 }
 
-
-String replaceString(String string){
-  return string.replaceAll(" ", "")
+String replaceString(String string) {
+  return string
+      .replaceAll(" ", "")
       .replaceAll("(", "")
       .replaceAll(")", "")
       .replaceAll("-", "");
+}
+
+showDialogCustom(
+    {required BuildContext context,
+    String? title,
+    required String content,
+    required String actionFirst,
+    required VoidCallback onAction,
+    required bool isRed,
+    required String actionSecond}) {
+  showDialog(
+      context: context,
+      builder: (context) {
+        return AlertDialog.adaptive(
+          content: Text(content.tr()),
+          title: Text(title ?? "warning".tr()),
+          actions: [
+            CupertinoButton(
+                child: Text(
+                  actionFirst.tr(),
+                  style: TextStyle(
+                      fontWeight: FontWeight.w400,
+                      fontSize: 14.sp,
+                      color: CupertinoColors.activeBlue),
+                ),
+                onPressed: () {
+                  Navigator.pop(context);
+                }),
+            CupertinoButton(
+                onPressed: onAction,
+                child: Text(
+                  actionFirst.tr(),
+                  style: TextStyle(
+                      fontWeight: FontWeight.w500,
+                      fontSize: 14.sp,
+                      color: isRed ? Colors.red : CupertinoColors.activeBlue),
+                )),
+          ],
+        );
+      });
 }

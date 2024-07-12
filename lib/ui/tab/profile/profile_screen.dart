@@ -59,10 +59,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
           return BlocConsumer<UserImageBloc, UserImageUploadState>(
             listener: (context, state) {
               if (state.formStatus == FormStatusImage.success) {
-                context.read<AuthBloc>().add(RegisterUpdateEvent(
-                    userModel:
-                        state1.userModel.copyWith(image: state.images.imageUrl),
-                    docId: ""));
+
               }
             },
             builder: (context, state) {
@@ -269,14 +266,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                                   UserImageRemoveEvent(context,
                                                       docId: state
                                                           .images.imageDocId));
-                                              context.read<AuthBloc>().add(
-                                                    RegisterUpdateEvent(
-                                                        userModel: state1
-                                                            .userModel
-                                                            .copyWith(
-                                                                image: ""),
-                                                        docId: ""),
-                                                  );
+
                                             },
                                             child: const Text(
                                               "Delete",

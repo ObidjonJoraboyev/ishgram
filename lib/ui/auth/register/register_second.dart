@@ -8,12 +8,15 @@ import 'package:ish_top/blocs/auth/auth_event.dart';
 import 'package:ish_top/blocs/auth/auth_state.dart';
 import 'package:ish_top/data/forms/form_status.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:ish_top/data/models/user_model.dart';
 import 'package:ish_top/ui/auth/widgets/button.dart';
 import 'package:ish_top/ui/auth/widgets/global_textfield.dart';
 import 'package:ish_top/ui/auth/widgets/textfielad.dart';
+import 'package:ish_top/ui/tab/tab/tab_screen.dart';
 import 'package:ish_top/utils/constants/app_constants.dart';
 import 'package:ish_top/utils/formatters/formatters.dart';
 import 'package:ish_top/utils/size/size_utils.dart';
+import 'package:ish_top/utils/utility_functions.dart';
 import 'package:pinput/pinput.dart';
 
 class RegisterSecond extends StatefulWidget {
@@ -33,7 +36,9 @@ class _RegisterSecondState extends State<RegisterSecond> {
   final TextEditingController lastNameController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
 
-  int activeSlider = 4;
+  bool check = true;
+
+  UserModel userModel = UserModel.initial;
 
   @override
   Widget build(BuildContext context) {
@@ -50,12 +55,28 @@ class _RegisterSecondState extends State<RegisterSecond> {
           child: Scaffold(
             appBar: AppBar(
               elevation: 0,
+              actions: [
+                IconButton(onPressed: (){
+                }, icon: const Icon(Icons.add))
+              ],
               scrolledUnderElevation: 0,
               backgroundColor: CupertinoColors.systemGrey6,
               automaticallyImplyLeading: false,
               leadingWidth: double.infinity,
               leading: CupertinoButton(
-                onPressed: () {},
+                onPressed: () {
+                  showDialogCustom(
+                      content: "want_cancel",
+                      context: context,
+                      actionFirst: "cancel",
+                      onAction: () {
+                        context.read<AuthBloc>().add(AuthResetEvent());
+                        Navigator.pop(context);
+                        Navigator.pop(context);
+                      },
+                      isRed: true,
+                      actionSecond: "close");
+                },
                 child: Row(
                   children: [
                     const Icon(
@@ -87,8 +108,8 @@ class _RegisterSecondState extends State<RegisterSecond> {
                               0.getH(),
                               Text(
                                 "🔏",
-                                style:
-                                    TextStyle(fontSize: 85.sp, color: Colors.red),
+                                style: TextStyle(
+                                    fontSize: 85.sp, color: Colors.red),
                               ),
                               Center(
                                 child: Text(
@@ -137,12 +158,12 @@ class _RegisterSecondState extends State<RegisterSecond> {
                                 type: TextInputType.text,
                                 regExp: AppConstants.textRegExp,
                                 errorTitle: "error_lastname".tr(),
-                                iconPath:
-                                    const Icon(CupertinoIcons.star_lefthalf_fill),
+                                iconPath: const Icon(
+                                    CupertinoIcons.star_lefthalf_fill),
                               ),
                               20.getH(),
                               Padding(
-                                padding: EdgeInsets.symmetric(horizontal: 16.w),
+                                padding: EdgeInsets.symmetric(horizontal: 14.w),
                                 child: PasswordTextInput(
                                   whenError: PasswordValidator.validatePassword(
                                       passwordController.text),
@@ -158,32 +179,26 @@ class _RegisterSecondState extends State<RegisterSecond> {
                               ),
                               15.getH(),
                               Padding(
-                                padding: EdgeInsets.symmetric(horizontal: 12.w),
+                                padding: EdgeInsets.symmetric(horizontal: 14.w),
                                 child: Row(
                                   children: [
-                                    Expanded(
-                                      child: CupertinoSlidingSegmentedControl(
-                                          groupValue: activeSlider,
-                                          children: {
-                                            4: Text(
-                                              "worker".tr(),
-                                              style: TextStyle(fontSize: 13.sp),
-                                            ),
-                                            5: Text(
-                                              "employer".tr(),
-                                              style: TextStyle(fontSize: 13.sp),
-                                            ),
-                                          },
-                                          onValueChanged: (dynamic f) {
-                                            setState(() {
-                                              activeSlider = f;
-                                            });
-                                          }),
+                                    Text(
+                                      "as_worker".tr(),
+                                      style: TextStyle(
+                                          fontWeight: FontWeight.w400,
+                                          fontSize: 14.sp),
                                     ),
+                                    const Spacer(),
+                                    CupertinoSwitch(
+                                        value: check,
+                                        onChanged: (b) {
+                                          check = b;
+                                          setState(() {});
+                                        })
                                   ],
                                 ),
                               ),
-                              50.getH(),
+                              20.getH(),
                             ],
                           ),
                         ),
@@ -196,16 +211,13 @@ class _RegisterSecondState extends State<RegisterSecond> {
                   child: LoginButtonItems(
                     title: "continue".tr(),
                     onTap: () async {
-                      context.read<AuthBloc>().add(
-                            RegisterUpdateEvent(
-                              userModel: state.userModel.copyWith(
-                                  lastName: lastNameController.text,
-                                  name: firstNameController.text,
-                                  password: passwordController.text,
-                                  who: activeSlider),
-                              docId: state.userModel.docId,
-                            ),
-                          );
+                      userModel = userModel.copyWith(
+                          lastName: lastNameController.text,
+                          name: firstNameController.text,
+                          password: passwordController.text);
+                      context
+                          .read<AuthBloc>()
+                          .add(RegisterUserEvent(userModel: userModel));
                     },
                     isLoading: state.formStatus == FormStatus.loading,
                     active: checkInput(),
@@ -217,7 +229,17 @@ class _RegisterSecondState extends State<RegisterSecond> {
           ),
         );
       },
-      listener: (BuildContext context, AuthState state) async {},
+      listener: (BuildContext context, AuthState state) async {
+        if (state.statusMessage == "success") {
+
+          Navigator.pushAndRemoveUntil(context,
+              MaterialPageRoute(builder: (context) {
+            return const TabScreen();
+          }), (v) {
+            return false;
+          });
+        }
+      },
     );
   }
 
@@ -226,7 +248,7 @@ class _RegisterSecondState extends State<RegisterSecond> {
         lastNameController.text.length <= 20 &&
         firstNameController.text.length <= 20 &&
         firstNameController.text.length >= 3 &&
-        passwordController.length == 6;
+        passwordController.length >= 8;
   }
 
   @override

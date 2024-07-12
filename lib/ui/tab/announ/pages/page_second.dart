@@ -24,9 +24,7 @@ class _PageSecondState extends State<PageSecond> {
       body: BlocConsumer<AuthBloc, AuthState>(
         listener: (context, state) {},
         builder: (context, state) {
-          users = state.users
-              .where((v) => v.isPrivate == false && v.who == 4)
-              .toList();
+
           return ListView(
             children: [
               ...List.generate(users.length, (index) {

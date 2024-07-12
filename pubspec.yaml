@@ -17,6 +17,7 @@ dependencies:
   firebase_core: ^2.32.0
   shared_preferences: ^2.2.3
   cloud_firestore: ^4.17.5
+  simple_circular_progress_bar: ^1.0.2
   firebase_messaging: ^14.9.4
   permission_handler: ^11.3.1
   flutter_bloc: ^8.1.6

@@ -207,26 +207,27 @@ class _MyAnnounItemState extends State<MyAnnounItem> {
                                                         .add(AnnounRemoveEvent(
                                                             docId: widget
                                                                 .hires.docId));
-                                                    context.read<AuthBloc>().add(
-                                                        RegisterUpdateEvent(
-                                                            userModel: context
-                                                                .read<
-                                                                    AuthBloc>()
-                                                                .state
-                                                                .userModel
-                                                                .copyWith(
-                                                                    allAnnoun: context
-                                                                        .read<
-                                                                            AuthBloc>()
-                                                                        .state
-                                                                        .userModel
-                                                                        .allAnnoun
-                                                                        .where((v) =>
-                                                                            v !=
-                                                                            widget.hires.docId)
-                                                                        .toList()),
-                                                            docId: ""
-                                                                ""));
+                                                    context
+                                                        .read<AuthBloc>()
+                                                        .add(UpdateUser(
+                                                          userModel: context
+                                                              .read<AuthBloc>()
+                                                              .state
+                                                              .userModel
+                                                              .copyWith(
+                                                                  allAnnoun: context
+                                                                      .read<
+                                                                          AuthBloc>()
+                                                                      .state
+                                                                      .userModel
+                                                                      .allAnnoun
+                                                                      .where((v) =>
+                                                                          v !=
+                                                                          widget
+                                                                              .hires
+                                                                              .docId)
+                                                                      .toList()),
+                                                        ));
 
                                                     setState(() {});
                                                     Navigator.pop(con);
