@@ -5,10 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:ish_top/blocs/announ_bloc/announ_bloc.dart';
-import 'package:ish_top/blocs/announ_bloc/announ_event.dart';
 import 'package:ish_top/blocs/announ_bloc/announ_state.dart';
-import 'package:ish_top/blocs/auth/auth_bloc.dart';
-import 'package:ish_top/blocs/auth/auth_event.dart';
 import 'package:ish_top/data/local/local_storage.dart';
 import 'package:ish_top/data/models/announ_model.dart';
 import 'package:ish_top/ui/tab/announ/comment_screen/comment_screen.dart';
@@ -202,35 +199,7 @@ class _MyAnnounItemState extends State<MyAnnounItem> {
                                                             .destructiveRed),
                                                   ),
                                                   onPressed: () {
-                                                    context
-                                                        .read<AnnounBloc>()
-                                                        .add(AnnounRemoveEvent(
-                                                            docId: widget
-                                                                .hires.docId));
-                                                    context
-                                                        .read<AuthBloc>()
-                                                        .add(UpdateUser(
-                                                          userModel: context
-                                                              .read<AuthBloc>()
-                                                              .state
-                                                              .userModel
-                                                              .copyWith(
-                                                                  allAnnoun: context
-                                                                      .read<
-                                                                          AuthBloc>()
-                                                                      .state
-                                                                      .userModel
-                                                                      .allAnnoun
-                                                                      .where((v) =>
-                                                                          v !=
-                                                                          widget
-                                                                              .hires
-                                                                              .docId)
-                                                                      .toList()),
-                                                        ));
 
-                                                    setState(() {});
-                                                    Navigator.pop(con);
                                                   }),
                                             ],
                                           );

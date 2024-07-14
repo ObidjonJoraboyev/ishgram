@@ -49,6 +49,7 @@ class _GetPasswordScreenState extends State<GetPasswordScreen> {
   void startTimer() {
     remainingSeconds = maxSeconds;
     timer = Timer.periodic(const Duration(seconds: 1), (Timer timer) {
+    if(mounted){
       if (remainingSeconds == 0) {
         setState(() {
           timer.cancel();
@@ -58,13 +59,12 @@ class _GetPasswordScreenState extends State<GetPasswordScreen> {
           remainingSeconds--;
         });
       }
+    }
     });
   }
 
   @override
   Widget build(BuildContext context) {
-    width = MediaQuery.of(context).size.width;
-    height = MediaQuery.of(context).size.height;
     final minutes = remainingSeconds ~/ 60;
     final seconds = remainingSeconds % 60;
 
@@ -225,14 +225,14 @@ class _GetPasswordScreenState extends State<GetPasswordScreen> {
                               controller: passwordCtrl,
                               focusNode: focusNode,
                               password: password,
-                              valueChanged: (v) {
+                              valueChanged: (v) async{
                                 if (int.parse(v) == password) {
                                   context.read<AuthBloc>().add(AuthResetEvent());
                                   Navigator.pushReplacement(
                                     context,
                                     MaterialPageRoute(
                                       builder: (context) {
-                                        return const RegisterSecond();
+                                        return  RegisterSecond(userNumber: widget.num,);
                                       },
                                     ),
                                   );

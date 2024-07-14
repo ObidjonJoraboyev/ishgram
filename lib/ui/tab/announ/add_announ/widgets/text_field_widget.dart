@@ -55,7 +55,6 @@ class _GlobalTextFiledState extends State<GlobalTextFiled> {
         child: BlocConsumer<AuthBloc, AuthState>(
           builder: (context, state) {
             return TextFormField(
-
               focusNode: widget.focusNode,
               textInputAction: widget.textInputAction,
               validator: (v) {
@@ -90,9 +89,7 @@ class _GlobalTextFiledState extends State<GlobalTextFiled> {
                 ),
                 counterText: widget.maxLength == 50 ? "" : null,
                 contentPadding: EdgeInsets.all(10.sp),
-                fillColor: widget.isLogin == null
-                    ? Colors.white
-                    : Colors.grey.shade400,
+                fillColor: widget.isLogin == null ? Colors.white : Colors.white,
                 filled: true,
                 focusedBorder: OutlineInputBorder(
                   borderSide: const BorderSide(width: 0, color: Colors.white),

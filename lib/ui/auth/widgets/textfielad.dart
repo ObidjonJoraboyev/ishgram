@@ -10,7 +10,9 @@ class PasswordTextInput extends StatefulWidget {
       required this.controller,
       required this.onChanged,
       required this.labelText,
-         this.whenError,
+      this.whenError,
+      this.maxLength,
+      this.focusNode,
       this.newPass});
 
   final TextEditingController controller;
@@ -18,6 +20,8 @@ class PasswordTextInput extends StatefulWidget {
   final String labelText;
   final bool? newPass;
   final String? whenError;
+  final int? maxLength;
+  final FocusNode? focusNode;
 
   @override
   State<PasswordTextInput> createState() => _PasswordTextInputState();
@@ -31,6 +35,7 @@ class _PasswordTextInputState extends State<PasswordTextInput> {
     return Form(
       autovalidateMode: AutovalidateMode.onUserInteraction,
       child: TextFormField(
+        focusNode: widget.focusNode,
         cursorColor: CupertinoColors.activeBlue,
         onChanged: widget.onChanged,
         keyboardType: TextInputType.text,
@@ -42,11 +47,12 @@ class _PasswordTextInputState extends State<PasswordTextInput> {
         controller: widget.controller,
         obscureText: passwordVisibility,
         validator: (String? value) {
-          if (widget.whenError!=null) {
+          if (widget.whenError != null) {
             return widget.whenError;
           }
           return null;
         },
+        maxLength: widget.maxLength,
         autovalidateMode: AutovalidateMode.onUserInteraction,
         decoration: InputDecoration(
           errorStyle: TextStyle(fontSize: 9.sp),
@@ -69,6 +75,7 @@ class _PasswordTextInputState extends State<PasswordTextInput> {
           contentPadding: EdgeInsets.all(9.sp),
           labelText: widget.labelText.tr(),
           iconColor: AppColors.black,
+          counterText: "",
           suffixIcon: Padding(
             padding: EdgeInsets.only(right: 3.w),
             child: IconButton(
@@ -110,7 +117,7 @@ class _PasswordTextInputState extends State<PasswordTextInput> {
             borderRadius: BorderRadius.circular(16.r),
           ),
         ),
-        textInputAction: TextInputAction.next,
+        textInputAction: TextInputAction.done,
       ),
     );
   }

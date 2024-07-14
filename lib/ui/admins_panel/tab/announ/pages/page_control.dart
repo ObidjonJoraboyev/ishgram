@@ -65,8 +65,6 @@ class _AdminPageControlState extends State<AdminPageControl>
 
   @override
   Widget build(BuildContext context) {
-    width = MediaQuery.sizeOf(context).width;
-    height = MediaQuery.sizeOf(context).height;
     return DefaultTabController(
       length: 2,
       initialIndex: 0,

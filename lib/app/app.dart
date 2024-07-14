@@ -15,14 +15,16 @@ import 'package:ish_top/blocs/message/message_bloc.dart';
 import 'package:ish_top/blocs/message/message_event.dart';
 import 'package:ish_top/blocs/notification/notification_bloc.dart';
 import 'package:ish_top/blocs/notification/notification_event.dart';
-import 'package:ish_top/blocs/user_image/user_image_bloc.dart';
 import 'package:ish_top/ui/splash/splash_screen.dart';
+import 'package:ish_top/utils/size/size_utils.dart';
 
 class App extends StatelessWidget {
   const App({super.key});
 
   @override
   Widget build(BuildContext context) {
+    width = MediaQuery.of(context).size.width;
+    height = MediaQuery.of(context).size.height;
     return MultiBlocProvider(
       providers: [
         BlocProvider(
@@ -43,9 +45,6 @@ class App extends StatelessWidget {
         BlocProvider(
           create: (context) =>
               NotificationBloc()..add(NotificationGetEvent(context: context)),
-        ),
-        BlocProvider(
-          create: (context) => UserImageBloc(),
         ),
         BlocProvider(
           create: (context) => MapBloc()..add(GetUserLocation()),

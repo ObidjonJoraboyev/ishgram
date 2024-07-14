@@ -8,13 +8,13 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:ish_top/blocs/user_image/user_image_bloc.dart';
+import 'package:ish_top/blocs/auth/auth_bloc.dart';
+import 'package:ish_top/blocs/auth/auth_event.dart';
 import 'package:ish_top/ui/tab/announ/widgets/zoom_tap.dart';
 import 'package:ish_top/utils/size/size_utils.dart';
 import 'package:url_launcher/url_launcher.dart';
 import '../blocs/image/image_bloc.dart';
 import '../blocs/image/image_event.dart';
-import '../blocs/user_image/user_image_event.dart';
 import '../data/models/announ_model.dart';
 import 'package:timeago/timeago.dart' as timeago;
 
@@ -42,8 +42,8 @@ Future<void> _getImageFromGallery(
             .read<ImageBloc>()
             .add(ImageSetEvent(pickedFile: image, images: images))
         : context
-            .read<UserImageBloc>()
-            .add(UserImageSetEvent(pickedFile: image));
+            .read<AuthBloc>()
+            .add(AuthUpdateProfileUser(pickedFile: image[0]));
   } else {
     XFile? image = await picker.pickImage(
       maxHeight: 1024,
@@ -58,8 +58,8 @@ Future<void> _getImageFromGallery(
         ? context
             .read<ImageBloc>()
             .add(ImageSetEvent(pickedFile: [image!], images: images))
-        : context.read<UserImageBloc>().add(UserImageSetEvent(
-              pickedFile: [image!],
+        : context.read<AuthBloc>().add(AuthUpdateProfileUser(
+              pickedFile: image!,
             ));
   }
 }
@@ -80,8 +80,8 @@ Future<void> _getImageFromCamera(BuildContext context,
       ? context
           .read<ImageBloc>()
           .add(ImageSetEvent(pickedFile: [image!], images: images))
-      : context.read<UserImageBloc>().add(UserImageSetEvent(
-            pickedFile: [image!],
+      : context.read<AuthBloc>().add(AuthUpdateProfileUser(
+            pickedFile: image!,
           ));
 }
 

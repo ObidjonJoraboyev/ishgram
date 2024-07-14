@@ -7,24 +7,21 @@ class UserModel extends Equatable {
   final String lastName;
   final int age;
   final String phone;
-  final String password;
   final String image;
   final String color;
-  final double rating;
+  final num rating;
   final String bio;
-  final String location;
+  final String address;
   final String region;
-  final double lat;
-  final double long;
+  final num lat;
+  final num long;
   final int createdAt;
-  final int updatedAt;
-  final List<String> allAnnoun;
-  final List<String> savedAnnoun;
-  final String fcm;
+  final List<String> likedAnnouns;
   final bool isPrivate;
+  final String password;
 
   const UserModel({
-    required this.location,
+    required this.address,
     required this.age,
     required this.color,
     required this.docId,
@@ -32,18 +29,15 @@ class UserModel extends Equatable {
     required this.phone,
     required this.lastName,
     required this.image,
-    required this.fcm,
-    required this.password,
     required this.lat,
     required this.long,
     required this.rating,
     required this.region,
     required this.bio,
-    required this.updatedAt,
     required this.createdAt,
-    required this.allAnnoun,
-    required this.savedAnnoun,
+    required this.likedAnnouns,
     required this.isPrivate,
+    required this.password,
   });
 
   UserModel copyWith({
@@ -54,28 +48,21 @@ class UserModel extends Equatable {
     String? docId,
     String? image,
     String? userId,
-    String? fcm,
-    String? password,
     String? region,
     double? lat,
     double? long,
     double? rating,
     int? age,
     String? bio,
-    int? updatedAt,
     int? createdAt,
-    String? location,
-    List<String>? announcements,
-    List<String>? savedAnnoun,
-    List<String>? allAnnoun,
+    String? address,
+    List<String>? likedAnnouns,
     bool? isPrivate,
+    String? password,
   }) {
     return UserModel(
-      password: password ?? this.password,
-      fcm: fcm ?? this.fcm,
       lat: lat ?? this.lat,
       long: long ?? this.long,
-      location: location ?? this.location,
       age: age ?? this.age,
       docId: docId ?? this.docId,
       name: name ?? this.name,
@@ -85,21 +72,19 @@ class UserModel extends Equatable {
       region: region ?? this.region,
       rating: rating ?? this.rating,
       bio: bio ?? this.bio,
-      updatedAt: updatedAt ?? this.updatedAt,
       createdAt: createdAt ?? this.createdAt,
-      allAnnoun: allAnnoun ?? this.allAnnoun,
-      savedAnnoun: savedAnnoun ?? this.savedAnnoun,
+      likedAnnouns: likedAnnouns ?? this.likedAnnouns,
       color: color ?? this.color,
       isPrivate: isPrivate ?? this.isPrivate,
+      address: address ?? this.address,
+      password: password ?? this.password,
     );
   }
 
   Map<String, dynamic> toJson() => {
-        "password": password,
-        "city": location,
+        "city": address,
         "age": age,
         "doc_id": docId,
-        "fcm": fcm,
         "name": name,
         "number": phone,
         "last_name": lastName,
@@ -109,10 +94,8 @@ class UserModel extends Equatable {
         "region": region,
         "rating": rating,
         "bio": bio,
-        "updatedAt": updatedAt,
         "createdAt": createdAt,
-        "announcements": allAnnoun.map((e) => e.toString()).toList(),
-        "likedHiring": savedAnnoun.map((e) => e.toString()).toList(),
+        "likedHiring": likedAnnouns.map((e) => e.toString()).toList(),
         "color": color,
         "isPrivate": isPrivate,
       };
@@ -123,12 +106,12 @@ class UserModel extends Equatable {
         "first_name": name,
         "last_name": lastName,
         "location": {"lat": lat, "long": long},
-        "password": password,
         "phone": replaceString(phone),
+        "password": password
       };
 
   Map<String, dynamic> toJsonForUpdate() => {
-        "address": location,
+        "address": address,
         "age": age,
         "bio": bio,
         "color": color,
@@ -136,48 +119,41 @@ class UserModel extends Equatable {
         "id": docId,
         "is_private": isPrivate,
         "last_name": lastName,
+        "liked_announcements": likedAnnouns.map((e) => e.toString()).toList(),
         "location": {"lat": lat, "long": long},
-        "password": password,
         "phone": replaceString(phone),
         "photo_url": image,
         "rating": rating,
-        "region": region,
+        "region": region
       };
 
   factory UserModel.fromJson(Map<String, dynamic> json) {
     return UserModel(
-      password: json["password"] as String? ?? "",
-      location: json["city"] as String? ?? "",
-      age: json["age"] as int? ?? 0,
-      image: json["image"] as String? ?? "",
-      docId: json["doc_id"] as String? ?? "",
-      phone: json["number"] as String? ?? "",
+      docId: json["id"] as String? ?? "",
+      name: json["first_name"] as String? ?? "",
       lastName: json["last_name"] as String? ?? "",
-      name: json["name"] as String? ?? "",
-      fcm: json["fcm"] as String? ?? "",
-      lat: json["lat"] as double? ?? 0,
-      long: json["long"] as double? ?? 0,
-      region: json["region"] as String? ?? "",
-      rating: json["rating"] as double? ?? 0,
-      bio: json["bio"] as String? ?? "",
-      updatedAt: json["updatedAt"] as int? ?? 0,
-      createdAt: json["createdAt"] as int? ?? 0,
-      allAnnoun: (json["announcements"] as List? ?? [])
-          .map((e) => e.toString())
-          .toList(),
-      savedAnnoun: (json["likedHiring"] as List? ?? [])
-          .map((e) => e.toString())
-          .toList(),
+      age: json["age"] as int? ?? 0,
+      phone: json["phone"] as String? ?? "",
+      image: json["photo_url"] as String? ?? "",
       color: json["color"] as String? ?? "",
-      isPrivate: json["isPrivate"] as bool? ?? false,
+      rating: json["rating"] as num? ?? 0,
+      bio: json["bio"] as String? ?? "",
+      address: json["address"] as String? ?? "",
+      region: json["region"] as String? ?? "",
+      lat: json["location"]["lat"] as num? ?? 0,
+      long: json["location"]["long"] as num? ?? 0,
+      isPrivate: json["is_private"] as bool? ?? false,
+      createdAt: json["created_at"] as int? ?? 0,
+      likedAnnouns: (json["likedHiring"] as List? ?? [])
+          .map((e) => e.toString())
+          .toList(),
+      password: json["password"] as String? ?? "",
     );
   }
 
   static UserModel initial = const UserModel(
-    password: "",
     age: 0,
-    location: "",
-    fcm: "",
+    address: "",
     docId: "",
     name: "",
     phone: "",
@@ -188,35 +164,31 @@ class UserModel extends Equatable {
     region: "",
     rating: 0,
     bio: "",
-    updatedAt: 0,
     createdAt: 0,
-    allAnnoun: [],
-    savedAnnoun: [],
+    likedAnnouns: [],
     color: "",
     isPrivate: false,
+    password: '',
   );
 
   @override
   List<Object?> get props => [
-        password,
-        fcm,
         name,
         phone,
         lastName,
         image,
         docId,
         age,
-        location,
+        address,
         lat,
         long,
         region,
         rating,
         bio,
-        updatedAt,
         createdAt,
-        allAnnoun,
-        savedAnnoun,
+        likedAnnouns,
         color,
         isPrivate,
+        password
       ];
 }

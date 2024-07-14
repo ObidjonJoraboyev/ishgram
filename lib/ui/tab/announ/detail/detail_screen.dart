@@ -93,7 +93,7 @@ class _DetailScreenState extends State<DetailScreen> {
                             .read<AuthBloc>()
                             .state
                             .userModel
-                            .savedAnnoun
+                            .likedAnnouns
                             .contains(widget.hireModel.docId)
                         ? "assets/icons/save.svg"
                         : "assets/icons/save_fill.svg",

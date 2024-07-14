@@ -9,7 +9,6 @@ import 'package:ish_top/blocs/connectivity/connectivity_bloc.dart';
 import 'package:ish_top/blocs/connectivity/connectivity_state.dart';
 import 'package:ish_top/data/models/announ_model.dart';
 import 'package:ish_top/ui/admins_panel/tab/announ/widgets/announ_item_ipad.dart';
-import 'package:ish_top/utils/size/size_utils.dart';
 import '../widgets/announ_item.dart';
 
 class AdminHireScreen extends StatefulWidget {
@@ -40,8 +39,6 @@ class _AdminHireScreenState extends State<AdminHireScreen> {
 
   @override
   Widget build(BuildContext context) {
-    width = MediaQuery.sizeOf(context).width;
-    height = MediaQuery.sizeOf(context).height;
     return MaterialApp(
       localizationsDelegates: context.localizationDelegates,
       supportedLocales: context.supportedLocales,

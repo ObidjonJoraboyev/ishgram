@@ -8,6 +8,7 @@ import 'package:ish_top/blocs/auth/auth_event.dart';
 import 'package:ish_top/blocs/auth/auth_state.dart';
 import 'package:ish_top/data/forms/form_status.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:ish_top/data/local/local_storage.dart';
 import 'package:ish_top/data/models/user_model.dart';
 import 'package:ish_top/ui/auth/widgets/button.dart';
 import 'package:ish_top/ui/auth/widgets/global_textfield.dart';
@@ -22,7 +23,10 @@ import 'package:pinput/pinput.dart';
 class RegisterSecond extends StatefulWidget {
   const RegisterSecond({
     super.key,
+    required this.userNumber,
   });
+
+  final String userNumber;
 
   @override
   State<RegisterSecond> createState() => _RegisterSecondState();
@@ -35,6 +39,35 @@ class _RegisterSecondState extends State<RegisterSecond> {
   final TextEditingController firstNameController = TextEditingController();
   final TextEditingController lastNameController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
+  FocusNode focusName = FocusNode();
+  FocusNode focusLastname = FocusNode();
+  FocusNode focusPass = FocusNode();
+
+  int selectedFruit = 0;
+
+  void _showDialog(Widget child) {
+    focusName.unfocus();
+    focusPass.unfocus();
+    focusLastname.unfocus();
+    showCupertinoModalPopup<void>(
+      context: context,
+      builder: (BuildContext context) => Container(
+        height: 216,
+        padding: const EdgeInsets.only(top: 6.0),
+        margin: EdgeInsets.only(
+          bottom: MediaQuery.of(context).viewInsets.bottom,
+        ),
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(16.r),
+          color: CupertinoColors.white,
+        ),
+        child: SafeArea(
+          top: false,
+          child: child,
+        ),
+      ),
+    );
+  }
 
   bool check = true;
 
@@ -42,9 +75,6 @@ class _RegisterSecondState extends State<RegisterSecond> {
 
   @override
   Widget build(BuildContext context) {
-    width = MediaQuery.of(context).size.width;
-    height = MediaQuery.of(context).size.height;
-
     SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle.dark
         .copyWith(statusBarIconBrightness: Brightness.dark));
 
@@ -55,10 +85,6 @@ class _RegisterSecondState extends State<RegisterSecond> {
           child: Scaffold(
             appBar: AppBar(
               elevation: 0,
-              actions: [
-                IconButton(onPressed: (){
-                }, icon: const Icon(Icons.add))
-              ],
               scrolledUnderElevation: 0,
               backgroundColor: CupertinoColors.systemGrey6,
               automaticallyImplyLeading: false,
@@ -134,6 +160,7 @@ class _RegisterSecondState extends State<RegisterSecond> {
                               ),
                               32.getH(),
                               UniversalTextInput(
+                                focusNode: focusName,
                                 onTap: (s) {
                                   setState(() {
                                     checkInput();
@@ -148,6 +175,7 @@ class _RegisterSecondState extends State<RegisterSecond> {
                               ),
                               20.getH(),
                               UniversalTextInput(
+                                focusNode: focusLastname,
                                 onTap: (s) {
                                   setState(() {
                                     checkInput();
@@ -165,6 +193,8 @@ class _RegisterSecondState extends State<RegisterSecond> {
                               Padding(
                                 padding: EdgeInsets.symmetric(horizontal: 14.w),
                                 child: PasswordTextInput(
+                                  focusNode: focusPass,
+                                  maxLength: 30,
                                   whenError: PasswordValidator.validatePassword(
                                       passwordController.text),
                                   newPass: false,
@@ -178,6 +208,70 @@ class _RegisterSecondState extends State<RegisterSecond> {
                                 ),
                               ),
                               15.getH(),
+                              Padding(
+                                padding: EdgeInsets.symmetric(horizontal: 14.w),
+                                child: CupertinoButton(
+                                  padding: EdgeInsets.zero,
+                                  onPressed: () => _showDialog(
+                                    CupertinoPicker(
+                                        magnification: 1.22,
+                                        squeeze: 1.2,
+                                        useMagnifier: true,
+                                        itemExtent: 32,
+                                        // This sets the initial item.
+                                        scrollController:
+                                            FixedExtentScrollController(
+                                          initialItem: selectedFruit,
+                                        ),
+                                        // This is called when selected item is changed.
+                                        onSelectedItemChanged:
+                                            (int selectedItem) {
+                                          setState(() {
+                                            selectedFruit = selectedItem;
+                                          });
+                                        },
+                                        children: [
+                                          const Text("-"),
+                                          ...List<Widget>.generate(82,
+                                              (int index) {
+                                            return Center(
+                                                child: Text(
+                                                    (index + 18).toString()));
+                                          }),
+                                        ]),
+                                  ),
+                                  // This displays the selected fruit name.
+                                  child: Row(
+                                    children: [
+                                      Text(
+                                        selectedFruit == 0
+                                            ? "enter_your_age".tr()
+                                            : "your_age_this".tr(),
+                                        style: TextStyle(
+                                            fontWeight: FontWeight.w400,
+                                            color: Colors.black,
+                                            fontSize: 14.sp),
+                                      ),
+                                      const Spacer(),
+                                      selectedFruit != 0
+                                          ? Text(
+                                              (selectedFruit + 17).toString(),
+                                              style: TextStyle(
+                                                color: Colors.black,
+                                                fontWeight: FontWeight.w500,
+                                                fontSize: 14.0.sp,
+                                              ),
+                                            )
+                                          : Icon(
+                                              Icons.arrow_forward_ios_rounded,
+                                              size: 14.sp,
+                                              color: Colors.black,
+                                            )
+                                    ],
+                                  ),
+                                ),
+                              ),
+                              10.getH(),
                               Padding(
                                 padding: EdgeInsets.symmetric(horizontal: 14.w),
                                 child: Row(
@@ -198,7 +292,7 @@ class _RegisterSecondState extends State<RegisterSecond> {
                                   ],
                                 ),
                               ),
-                              20.getH(),
+                              10.getH(),
                             ],
                           ),
                         ),
@@ -212,7 +306,9 @@ class _RegisterSecondState extends State<RegisterSecond> {
                     title: "continue".tr(),
                     onTap: () async {
                       userModel = userModel.copyWith(
+                          age: selectedFruit + 17,
                           lastName: lastNameController.text,
+                          phone: widget.userNumber,
                           name: firstNameController.text,
                           password: passwordController.text);
                       context
@@ -231,7 +327,8 @@ class _RegisterSecondState extends State<RegisterSecond> {
       },
       listener: (BuildContext context, AuthState state) async {
         if (state.statusMessage == "success") {
-
+          StorageRepository.setString(key: "userNum", value: widget.userNumber);
+          StorageRepository.setString(key: "userDoc", value: widget.userNumber);
           Navigator.pushAndRemoveUntil(context,
               MaterialPageRoute(builder: (context) {
             return const TabScreen();
@@ -245,10 +342,11 @@ class _RegisterSecondState extends State<RegisterSecond> {
 
   bool checkInput() {
     return lastNameController.text.length >= 3 &&
-        lastNameController.text.length <= 20 &&
-        firstNameController.text.length <= 20 &&
+        lastNameController.text.length <= 30 &&
+        firstNameController.text.length <= 30 &&
         firstNameController.text.length >= 3 &&
-        passwordController.length >= 8;
+        passwordController.length >= 6 &&
+        selectedFruit != 0;
   }
 
   @override

@@ -85,11 +85,18 @@
   "is_correct_num": "Bu to'g'ri raqammi?",
   "edit": "Tahrirlash",
   "back": "Orqaga",
-  "enter_code": "Iltimos, Ushbu raqamga yuborilgan kodni kiriting.",
+  "enter_code": "Iltimos, Ushbu raqamga sms tarzda yuborilgan kodni kiriting.",
   "sure_stop": "Haqiqatdan ham tasdiqlashni to'xtatmoqchimisiz?",
   "warning": "Ogohlantirish",
   "exit": "Chiqish",
   "want_cancel": "Haqiqatdan ham jarayonni bekor qilmoqchimisiz?",
   "as_worker": "Barchaga ishchi sifatida ko'rinish",
-  "checking": "Tekshirilmoqda..."
+  "checking": "Tekshirilmoqda...",
+  "your_age_this": "Sizning yoshingiz",
+  "enter_your_age": "Yoshingizni kiriting",
+  "common_password": "Parol juda keng tarqalgan yoki taxmin qilish oson",
+  "same_symbol": "Har bir belgilar bir xil bo'lishi mumkin emas",
+  "min_six": "Parol kamida 6 ta belgidan iborat bo'lishi kerak",
+  "enter_login_pass": "Iltimos, parolingizni kiriting"
+
 }

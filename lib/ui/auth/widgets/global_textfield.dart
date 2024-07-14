@@ -14,6 +14,7 @@ class UniversalTextInput extends StatelessWidget {
       required this.type,
       required this.regExp,
       required this.errorTitle,
+      this.focusNode,
       required this.iconPath});
 
   final TextEditingController controller;
@@ -24,12 +25,14 @@ class UniversalTextInput extends StatelessWidget {
   final RegExp regExp;
   final String errorTitle;
   final Widget iconPath;
+  final FocusNode? focusNode;
 
   @override
   Widget build(BuildContext context) {
     return Padding(
       padding: EdgeInsets.symmetric(horizontal: 14.w),
       child: TextFormField(
+        focusNode: focusNode,
         onChanged: onTap,
         inputFormatters:
             isNumber == true ? [FilteringTextInputFormatter.digitsOnly] : null,

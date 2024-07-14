@@ -29,6 +29,12 @@ class _TabScreenState extends State<TabScreen> {
   PageController pageController = PageController();
 
   @override
+  void initState() {
+    activeIndex = widget.index;
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
     List<Widget> screens = [
       const PageControl(),

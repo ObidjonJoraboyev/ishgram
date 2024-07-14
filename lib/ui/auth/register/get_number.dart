@@ -17,6 +17,7 @@ import 'package:ish_top/ui/auth/widgets/button.dart';
 import 'package:ish_top/ui/tab/announ/add_announ/widgets/text_field_widget.dart';
 import 'package:ish_top/utils/formatters/formatters.dart';
 import 'package:ish_top/utils/size/size_utils.dart';
+import 'package:ish_top/utils/utility_functions.dart';
 
 class RegisterScreen extends StatefulWidget {
   const RegisterScreen({
@@ -113,9 +114,6 @@ class _RegisterScreenState extends State<RegisterScreen> {
 
   @override
   Widget build(BuildContext context) {
-    width = MediaQuery.of(context).size.width;
-    height = MediaQuery.of(context).size.height;
-
     SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle.dark
         .copyWith(statusBarIconBrightness: Brightness.dark));
     return BlocConsumer<AuthBloc, AuthState>(
@@ -206,7 +204,6 @@ class _RegisterScreenState extends State<RegisterScreen> {
                     ),
                   ),
                   20.getH(),
-
                 ],
               ),
               if (state.formStatus == FormStatus.loading)
@@ -233,7 +230,19 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                 color: Colors.white,
                               )),
                           15.getH(),
-                          Text("checking".tr(),style: TextStyle(fontSize: 12.sp,fontWeight: FontWeight.w400,color: Colors.white,shadows: [BoxShadow(spreadRadius: 0,blurRadius: 10,color: Colors.black.withOpacity(.3))]),)
+                          Text(
+                            "checking".tr(),
+                            style: TextStyle(
+                                fontSize: 12.sp,
+                                fontWeight: FontWeight.w400,
+                                color: Colors.white,
+                                shadows: [
+                                  BoxShadow(
+                                      spreadRadius: 0,
+                                      blurRadius: 10,
+                                      color: Colors.black.withOpacity(.3))
+                                ]),
+                          )
                         ],
                       ),
                     ),
@@ -247,18 +256,24 @@ class _RegisterScreenState extends State<RegisterScreen> {
         if (state.formStatus == FormStatus.loading) {
           FocusScope.of(contextListener).unfocus();
         }
-        if (state.statusMessage.contains("register")) {
+        if (state.statusMessage.contains("enter")) {
           Navigator.push(context, MaterialPageRoute(builder: (context) {
             return GetPasswordScreen(
-              num: phoneController.text,
+              num: replaceString(phoneController.text),
             );
           }));
+          context.read<AuthBloc>().add(AuthResetEvent());
         } else if (state.statusMessage.contains("already")) {
+          //print("already");
+          context.read<AuthBloc>().add(AuthResetEvent());
+
           Navigator.push(
             context,
             MaterialPageRoute(
               builder: (context) {
-                return const AuthScreen();
+                return AuthScreen(
+                  num: replaceString(phoneController.text),
+                );
               },
             ),
           );

@@ -8,12 +8,15 @@ class AuthState extends Equatable {
       required this.statusMessage,
       required this.formStatus,
       required this.userModel,
-      required this.users});
+      required this.users,
+        required this.progress
+      });
 
   final String errorMessage;
   final String statusMessage;
   final FormStatus formStatus;
   final UserModel userModel;
+  final double progress;
   final List<UserModel> users;
 
   AuthState copyWith({
@@ -21,6 +24,7 @@ class AuthState extends Equatable {
     String? statusMessage,
     FormStatus? formStatus,
     UserModel? userModel,
+    double? progress,
     List<UserModel>? users,
   }) {
     return AuthState(
@@ -29,6 +33,7 @@ class AuthState extends Equatable {
       formStatus: formStatus ?? this.formStatus,
       userModel: userModel ?? this.userModel,
       users: users ?? this.users,
+      progress: progress?? this.progress,
     );
   }
 
@@ -39,5 +44,6 @@ class AuthState extends Equatable {
         formStatus,
         userModel,
         users,
+    progress,
       ];
 }

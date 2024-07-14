@@ -19,7 +19,7 @@ class SplashScreen extends StatefulWidget {
 class _SplashScreenState extends State<SplashScreen> {
   @override
   void initState() {
-    String userNumber = StorageRepository.getString(key: "userNumber");
+    String userNumber = StorageRepository.getString(key: "userNum");
 
     Future.delayed(const Duration(seconds: 1), () {
       context.read<AuthBloc>().add(GetCurrentUser());
@@ -29,7 +29,7 @@ class _SplashScreenState extends State<SplashScreen> {
         MaterialPageRoute(
           builder: (context) => userNumber.isEmpty
               ? const RegisterScreen()
-              : userNumber != "+998 (95) 083-13-44"
+              : userNumber != "+998950831344"
                   ? const TabScreen()
                   : const AdminTabScreen(),
         ),

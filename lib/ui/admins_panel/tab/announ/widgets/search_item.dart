@@ -1,6 +1,7 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:ish_top/ui/admins_panel/tab/announ/widgets/zoom_tap.dart';
 
 class SearchItem extends StatefulWidget {
@@ -69,14 +70,14 @@ class _SearchItemState extends State<SearchItem>
         Expanded(
           child: Padding(
             padding:
-                const EdgeInsets.only(top: 14, left: 12, bottom: 8, right: 12),
+                EdgeInsets.only(top: 12.h, left: 10.w, right: 10.w),
             child: Container(
               decoration: BoxDecoration(
                 boxShadow: [
                   BoxShadow(
                     spreadRadius: 1,
                     blurRadius: 16,
-                    color: CupertinoColors.systemGrey4.withOpacity(.5),
+                    color: CupertinoColors.white.withOpacity(.5),
                   )
                 ],
               ),
@@ -109,7 +110,7 @@ class _SearchItemState extends State<SearchItem>
                     ]),
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(12),
-                  color: CupertinoColors.systemGrey4,
+                  color: CupertinoColors.systemGrey5,
                 ),
               ),
             ),
