@@ -4,9 +4,9 @@ import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:ish_top/blocs/auth/auth_bloc.dart';
 import 'package:ish_top/blocs/notification/notification_event.dart';
 import 'package:ish_top/blocs/notification/notification_state.dart';
+import 'package:ish_top/data/local/local_storage.dart';
 import 'package:ish_top/data/models/notification_model.dart';
 
 class NotificationBloc extends Bloc<NotificationEvent, NotificationState> {
@@ -23,39 +23,22 @@ class NotificationBloc extends Bloc<NotificationEvent, NotificationState> {
   }
 
   notifGet(NotificationGetEvent event, emit) async {
-    final dio = Dio();
-    dio.interceptors.add(
-      InterceptorsWrapper(
-        onRequest: (options, handler) {
-          emit(state.copyWith(status: StatusOfNotif.loading));
-
-          return handler.next(options); // continue
-        },
-        onResponse: (Response response, handler) {
-          List<NotificationModel> list =
-              (response.data["notifications"] as List?)
-                      ?.map((element) => NotificationModel.fromJson(
-                          element as Map<String, dynamic>))
-                      .toList() ??
-                  [];
-
-          emit(state.copyWith(
-              notifications: list, status: StatusOfNotif.success));
-          return handler.next(response); // continue
-        },
-        onError: (error, handler) {
-          emit(state.copyWith(status: StatusOfNotif.error));
-          return handler.next(error); // continue
-        },
-      ),
-    );
+    emit(state.copyWith(status: StatusOfNotif.loading));
+    Dio dio = Dio();
 
     try {
-      await dio.get(
-          "https://notification-api-production.up.railway.app/api/v1/notifications/",
-          queryParameters: {
-            "user_id": event.context.read<AuthBloc>().state.userModel.docId
-          });
+      Response response = await dio.get(
+        "https://ishgram-production.up.railway.app/api/v1/notifications/${StorageRepository.getString(key: "userId")}",
+      );
+      if (response.statusCode == 200) {
+        List<NotificationModel> list = (response.data["notifications"] as List?)
+                ?.map((element) =>
+                    NotificationModel.fromJson(element as Map<String, dynamic>))
+                .toList() ??
+            [];
+        emit(
+            state.copyWith(notifications: list, status: StatusOfNotif.success));
+      }
     } catch (error) {
       debugPrint("ERROR CATCH $error");
     }
@@ -80,7 +63,7 @@ class NotificationBloc extends Bloc<NotificationEvent, NotificationState> {
     try {
       emit(state.copyWith(status: StatusOfNotif.loading));
       Response response = await dio.patch(
-          "https://notification-api-production.up.railway.app/api/v1/notifications/${event.uuId}",
+          "https://ishgram-production.up.railway.app/api/v1/notifications/${StorageRepository.getString(key: "userId")}",
           onReceiveProgress: (v, w) {});
       if (response.statusCode == 200) {
         emit(state.copyWith(status: StatusOfNotif.success));

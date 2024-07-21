@@ -331,6 +331,7 @@ class _RegisterSecondState extends State<RegisterSecond> {
           StorageRepository.setString(key: "userDoc", value: widget.userNumber);
           Navigator.pushAndRemoveUntil(context,
               MaterialPageRoute(builder: (context) {
+            context.read<AuthBloc>().add(GetCurrentUser());
             return const TabScreen();
           }), (v) {
             return false;

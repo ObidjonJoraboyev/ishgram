@@ -1,6 +1,5 @@
 import 'dart:io';
 import 'package:alarm/alarm.dart';
-import 'package:alarm/model/alarm_settings.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -18,14 +17,12 @@ import '../blocs/image/image_event.dart';
 import '../data/models/announ_model.dart';
 import 'package:timeago/timeago.dart' as timeago;
 
-import '../data/models/image_model.dart';
-
-Future<void> _getImageFromGallery(
-  BuildContext context, {
-  required int limit,
-  required List<ImageModel> images,
-  bool? isProfile,
-}) async {
+Future<void> _getImageFromGallery(BuildContext context,
+    {required int limit,
+    required List<String> images,
+    bool? isProfile,
+    bool? isChange,
+    String? deletingImage}) async {
   final ImagePicker picker = ImagePicker();
 
   if (limit != 1) {
@@ -53,19 +50,26 @@ Future<void> _getImageFromGallery(
     if (!context.mounted) return;
 
     Navigator.pop(context);
-
-    isProfile != true
-        ? context
-            .read<ImageBloc>()
-            .add(ImageSetEvent(pickedFile: [image!], images: images))
-        : context.read<AuthBloc>().add(AuthUpdateProfileUser(
-              pickedFile: image!,
-            ));
+    if (isChange != null && isChange == true && deletingImage != null) {
+      context.read<ImageBloc>().add(
+          ImageChangeEvent(deletedUrl: deletingImage, changedFile: image!));
+    } else {
+      isProfile != true
+          ? context
+              .read<ImageBloc>()
+              .add(ImageSetEvent(pickedFile: [image!], images: images))
+          : context.read<AuthBloc>().add(AuthUpdateProfileUser(
+                pickedFile: image!,
+              ));
+    }
   }
 }
 
 Future<void> _getImageFromCamera(BuildContext context,
-    {required List<ImageModel> images, bool? isProfile}) async {
+    {required List<String> images,
+    bool? isProfile,
+    bool? isChange,
+    String? deletingImage}) async {
   final ImagePicker picker = ImagePicker();
 
   XFile? image = await picker.pickImage(
@@ -76,24 +80,31 @@ Future<void> _getImageFromCamera(BuildContext context,
   if (!context.mounted) return;
   Navigator.pop(context);
 
-  isProfile != true
-      ? context
-          .read<ImageBloc>()
-          .add(ImageSetEvent(pickedFile: [image!], images: images))
-      : context.read<AuthBloc>().add(AuthUpdateProfileUser(
-            pickedFile: image!,
-          ));
+  if (isChange != null && isChange == true && deletingImage != null) {
+    context
+        .read<ImageBloc>()
+        .add(ImageChangeEvent(deletedUrl: deletingImage, changedFile: image!));
+  } else {
+    isProfile != true
+        ? context
+            .read<ImageBloc>()
+            .add(ImageSetEvent(pickedFile: [image!], images: images))
+        : context.read<AuthBloc>().add(AuthUpdateProfileUser(
+              pickedFile: image!,
+            ));
+  }
 }
 
-void takeAnImage(
-  BuildContext context, {
-  required int limit,
-  required List<ImageModel> images,
-  bool? isProfile,
-  ImageModel? imageModel,
-}) {
+void takeAnImage(BuildContext context,
+    {required int limit,
+    required List<String> images,
+    bool? isProfile,
+    bool? isThereDelete,
+    bool? isChange,
+    VoidCallback? onDelete,
+    String? deletingImage}) {
   showCupertinoModalPopup(
-    barrierDismissible: false,
+    barrierDismissible: true,
     context: context,
     builder: (context) {
       return CupertinoActionSheet(
@@ -111,7 +122,10 @@ void takeAnImage(
           CupertinoActionSheetAction(
             onPressed: () async {
               await _getImageFromCamera(context,
-                  images: images, isProfile: isProfile);
+                  images: images,
+                  isProfile: isProfile,
+                  isChange: isChange,
+                  deletingImage: deletingImage);
             },
             child: Text(
               "takeCamera".tr(),
@@ -123,7 +137,11 @@ void takeAnImage(
           CupertinoActionSheetAction(
             onPressed: () async {
               await _getImageFromGallery(context,
-                  images: images, limit: limit, isProfile: isProfile);
+                  images: images,
+                  limit: limit,
+                  isProfile: isProfile,
+                  isChange: isChange,
+                  deletingImage: deletingImage);
             },
             child: Text(
               "takeGallery".tr(),
@@ -132,6 +150,17 @@ void takeAnImage(
                   fontWeight: FontWeight.w500),
             ),
           ),
+          isThereDelete != null
+              ? CupertinoActionSheetAction(
+                  onPressed: onDelete!,
+                  child: Text(
+                    "delete".tr(),
+                    style: const TextStyle(
+                        color: CupertinoColors.destructiveRed,
+                        fontWeight: FontWeight.w500),
+                  ),
+                )
+              : const SizedBox()
         ],
       );
     },
@@ -580,7 +609,17 @@ String replaceString(String string) {
       .replaceAll(")", "")
       .replaceAll("-", "");
 }
+String formatPhoneNumber(String phoneNumber) {
+  String cleaned = phoneNumber.replaceAll(RegExp(r'\D'), '');
+  String countryCode = cleaned.substring(0, 3);
+  String areaCode = cleaned.substring(3, 5);
+  String part1 = cleaned.substring(5, 8);
+  String part2 = cleaned.substring(8, 10);
+  String part3 = cleaned.substring(10, 12);
+  String formatted = '+$countryCode ($areaCode) $part1-$part2-$part3';
 
+  return formatted;
+}
 showDialogCustom(
     {required BuildContext context,
     String? title,
@@ -610,7 +649,7 @@ showDialogCustom(
             CupertinoButton(
                 onPressed: onAction,
                 child: Text(
-                  actionFirst.tr(),
+                  actionSecond.tr(),
                   style: TextStyle(
                       fontWeight: FontWeight.w500,
                       fontSize: 14.sp,

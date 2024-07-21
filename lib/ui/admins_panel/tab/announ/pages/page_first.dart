@@ -8,7 +8,6 @@ import 'package:ish_top/blocs/announ_bloc/announ_state.dart';
 import 'package:ish_top/blocs/connectivity/connectivity_bloc.dart';
 import 'package:ish_top/blocs/connectivity/connectivity_state.dart';
 import 'package:ish_top/data/models/announ_model.dart';
-import 'package:ish_top/ui/admins_panel/tab/announ/widgets/announ_item_ipad.dart';
 import '../widgets/announ_item.dart';
 
 class AdminHireScreen extends StatefulWidget {
@@ -66,30 +65,15 @@ class _AdminHireScreenState extends State<AdminHireScreen> {
                       ...List.generate(
                         hires.length,
                         (index) {
-                          return
-                              //(width <400) &
-                              //                           (hires.length % 2 != 0) &
-                              //                           (hires.length <= index + 2)
-                              1 == 1
-                                  ? AdminHiringItem(
-                                      context1: widget.context,
-                                      voidCallback: () {
-                                        widget.focus.unfocus();
-                                        setState(() {});
-                                      },
-                                      hires: hires[index],
-                                      scrollController: scrollController,
-                                    )
-                                  : AdminHiringItemIpad(
-                                      context1: widget.context,
-                                      voidCallback: () {
-                                        widget.focus.unfocus();
-                                        setState(() {});
-                                      },
-                                      announOne: hires[index],
-                                      scrollController: scrollController,
-                                      announTwo: null,
-                                    );
+                          return AdminHiringItem(
+                            context1: widget.context,
+                            voidCallback: () {
+                              widget.focus.unfocus();
+                              setState(() {});
+                            },
+                            hires: hires[index],
+                            scrollController: scrollController,
+                          );
                         },
                       )
                     ],

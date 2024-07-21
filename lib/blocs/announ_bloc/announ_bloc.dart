@@ -1,7 +1,9 @@
 import 'dart:async';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:ish_top/blocs/auth/auth_bloc.dart';
 import 'package:ish_top/data/models/announ_model.dart';
 import 'announ_event.dart';
 import 'package:bloc_concurrency/bloc_concurrency.dart' as bloc;
@@ -14,23 +16,19 @@ class AnnounBloc extends Bloc<AnnounEvent, AnnounState> {
     on<AnnounGetEvent>(getAnnoun);
     on<AnnounRemoveEvent>(deleteAnnoun);
     on<AnnounUpdateEvent>(updateAnnoun);
-    on<AnnounInitialEvent>(
-      initial,
-      transformer: bloc.restartable(),
-    );
+    on<AnnounGetUserIdEvent>(getAnnounByUserId);
+    on<AnnounInitialEvent>(initial, transformer: bloc.restartable());
   }
 
   FirebaseFirestore firebaseFirestore = FirebaseFirestore.instance;
 
   addAnnoun(AnnounAddEvent event, emit) async {
     try {
-      var docId = await firebaseFirestore
-          .collection("hires")
-          .add(event.hireModel.toJson());
-      await firebaseFirestore
-          .collection("hires")
-          .doc(docId.id)
-          .update({"doc_id": docId.id});
+      Response response = await dio.post(
+          "https://ishgram-production.up.railway.app/api/v1/announcement",
+          data: event.hireModel.formData());
+      if (response.statusCode == 200) {
+      } else {}
     } catch (error) {
       debugPrint("ERROR CATCH $error");
     }
@@ -66,19 +64,37 @@ class AnnounBloc extends Bloc<AnnounEvent, AnnounState> {
     }
   }
 
-  Stream<List<AnnounModel>> streamController = FirebaseFirestore.instance
-      .collection("hires")
-      .snapshots()
-      .map((event) =>
-          event.docs.map((doc) => AnnounModel.fromJson(doc.data())).toList());
-
   getAnnoun(AnnounGetEvent event, Emitter emit) async {
     try {
-      await emit.onEach(streamController,
-          onData: (List<AnnounModel> hires) async {
-        hires.sort((a, b) => b.createdAt.compareTo(a.createdAt));
-        emit(state.copyWith(allHires: hires));
-      }, onError: (c, d) {});
+      Response response = await dio.get(
+          "https://ishgram-production.up.railway.app/api/v1/announcements");
+      if (response.statusCode == 200) {
+        emit(
+          state.copyWith(
+            allHires: (response.data["announcements"] as List? ?? [])
+                .map((e) => AnnounModel.fromJson(e))
+                .toList(),
+          ),
+        );
+      } else {}
+    } catch (error) {
+      debugPrint("ERROR CATCH $error");
+    }
+  }
+
+  getAnnounByUserId(AnnounGetUserIdEvent event, Emitter emit) async {
+    try {
+      Response response = await dio.get(
+          "https://ishgram-production.up.railway.app/api/v1/announcements-by-user-id?user_id=${event.userId}");
+      if (response.statusCode == 200) {
+        emit(
+          state.copyWith(
+            myHires: (response.data["announcements"] as List? ?? [])
+                .map((e) => AnnounModel.fromJson(e))
+                .toList(),
+          ),
+        );
+      } else {}
     } catch (error) {
       debugPrint("ERROR CATCH $error");
     }

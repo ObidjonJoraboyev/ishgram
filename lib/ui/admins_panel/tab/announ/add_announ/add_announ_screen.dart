@@ -135,7 +135,7 @@ class _AdminAddHireScreenState extends State<AdminAddHireScreen> {
                         for (int i = 0; i < state.images.length; i++) {
                           context.read<ImageBloc>().add(
                                 ImageRemoveEvent(
-                                    docId: state.images[i].imageDocId, context),
+                                    docId: state.images[i], context),
                               );
                         }
                       },
@@ -603,7 +603,7 @@ class _AdminAddHireScreenState extends State<AdminAddHireScreen> {
                     title: nameCtrl.text,
                     timeInterval: "$startWork:$endWork",
                     description: descriptionCtrl.text,
-                    images: context.read<ImageBloc>().state.images,
+                    images: context.read<ImageBloc>().state.images.map((e)=>e).toList(),
                     money: money.text,
                     number: numberCtrl.text,
                     createdAt: DateTime.now().millisecondsSinceEpoch,

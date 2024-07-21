@@ -1,12 +1,11 @@
 import 'package:equatable/equatable.dart';
-import 'package:ish_top/data/models/image_model.dart';
 import 'formstatus.dart';
 
 class ImageUploadState extends Equatable {
   final String downloadImage;
 
   final double progress;
-  final List<ImageModel> images;
+  final List<String> images;
   final FormStatusImage formStatus;
 
   const ImageUploadState({
@@ -25,7 +24,7 @@ class ImageUploadState extends Equatable {
   ImageUploadState copyWith({
     String? downloadImage,
     FormStatusImage? formStatus,
-    List<ImageModel>? images,
+    List<String>? images,
     double? progress,
   }) {
     return ImageUploadState(

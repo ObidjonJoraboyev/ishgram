@@ -22,6 +22,7 @@ class AdminDetailScreen extends StatefulWidget {
   final AnnounModel hireModel;
 
   final int defaultImageIndex;
+
   @override
   State<AdminDetailScreen> createState() => _AdminDetailScreenState();
 }
@@ -59,6 +60,7 @@ class _AdminDetailScreenState extends State<AdminDetailScreen> {
   }
 
   PageController pageController = PageController();
+
   @override
   void initState() {
     pageController = PageController(initialPage: widget.defaultImageIndex);
@@ -155,7 +157,7 @@ class _AdminDetailScreenState extends State<AdminDetailScreen> {
                                     ...List.generate(
                                       widget.hireModel.images.length,
                                       (index) => CachedNetworkImageProvider(
-                                        widget.hireModel.images[index].imageUrl,
+                                        widget.hireModel.images[index],
                                         maxWidth: MediaQuery.sizeOf(context)
                                             .width
                                             .toInt(),
@@ -209,8 +211,7 @@ class _AdminDetailScreenState extends State<AdminDetailScreen> {
                                       ),
                                     );
                                   },
-                                  imageUrl:
-                                      widget.hireModel.images[index].imageUrl,
+                                  imageUrl: widget.hireModel.images[index],
                                   width: MediaQuery.sizeOf(context).width,
                                   fit: BoxFit.cover,
                                   height: 340.h,

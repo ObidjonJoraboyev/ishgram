@@ -18,7 +18,6 @@ import 'package:ish_top/blocs/image/image_bloc.dart';
 import 'package:ish_top/blocs/image/image_event.dart';
 import 'package:ish_top/blocs/image/image_state.dart';
 import 'package:ish_top/blocs/map/map_bloc.dart';
-import 'package:ish_top/data/local/local_storage.dart';
 import 'package:ish_top/data/models/announ_model.dart';
 import 'package:ish_top/data/network/api_provider_location.dart';
 import 'package:ish_top/ui/tab/announ/add_announ/google_maps/google_maps_screen.dart';
@@ -27,7 +26,6 @@ import 'package:ish_top/utils/formatters/formatters.dart';
 import 'package:ish_top/utils/size/size_utils.dart';
 import 'package:ish_top/utils/utility_functions.dart';
 import 'package:vibration/vibration.dart';
-import 'widgets/generate_blame.dart';
 import 'widgets/generate_image.dart';
 import 'widgets/global_button.dart';
 import 'widgets/salary_textfield.dart';
@@ -138,7 +136,7 @@ class _AddHireScreenState extends State<AddHireScreen> {
                         descriptionCtrl.clear();
                         for (int i = 0; i < state.images.length; i++) {
                           context.read<ImageBloc>().add(ImageRemoveEvent(
-                              docId: state.images[i].imageDocId, context));
+                              docId: state.images[i], context));
                         }
                         setState(() {});
                       },
@@ -189,20 +187,12 @@ class _AddHireScreenState extends State<AddHireScreen> {
                   Expanded(
                     child: ListView(
                       controller: controller,
+                      scrollDirection: Axis.vertical,
                       physics: const BouncingScrollPhysics(),
                       children: [
-                        SizedBox(
-                          height: 150.w,
-                          child: ListView(
-                            physics: const BouncingScrollPhysics(),
-                            scrollDirection: Axis.horizontal,
-                            children: [
-                              12.getW(),
-                              GenerateImage(state: state),
-                              GenerateBlame(state: state),
-                              12.getW(),
-                            ],
-                          ),
+                        Padding(
+                          padding: EdgeInsets.symmetric(vertical: 8.h),
+                          child: GenerateImage(state: state),
                         ),
                         2.getH(),
                         Align(
@@ -318,8 +308,11 @@ class _AddHireScreenState extends State<AddHireScreen> {
                             setState(() {});
 
                             if (v ==
-                                StorageRepository.getString(
-                                    key: "userNumber")) {
+                                formatPhoneNumber(context
+                                    .read<AuthBloc>()
+                                    .state
+                                    .userModel
+                                    .phone)) {
                               checkBoxNum = true;
                             } else {
                               checkBoxNum = false;
@@ -339,10 +332,13 @@ class _AddHireScreenState extends State<AddHireScreen> {
                               checkBoxNum = !checkBoxNum;
 
                               if (checkBoxNum) {
-                                numberCtrl.text = StorageRepository.getString(
-                                    key: "userNumber");
+                                numberCtrl.text = formatPhoneNumber(context
+                                    .read<AuthBloc>()
+                                    .state
+                                    .userModel
+                                    .phone);
                               } else {
-                                numberCtrl.text = "";
+                                numberCtrl.text = "+998";
                               }
                               setState(() {});
                             },
@@ -357,11 +353,14 @@ class _AddHireScreenState extends State<AddHireScreen> {
                                       checkBoxNum = v!;
 
                                       if (checkBoxNum) {
-                                        numberCtrl.text =
-                                            StorageRepository.getString(
-                                                key: "userNumber");
+                                        numberCtrl.text = formatPhoneNumber(
+                                            context
+                                                .read<AuthBloc>()
+                                                .state
+                                                .userModel
+                                                .phone);
                                       } else {
-                                        numberCtrl.text = "";
+                                        numberCtrl.text = "+998";
                                       }
                                       setState(() {});
                                     },
@@ -631,7 +630,12 @@ class _AddHireScreenState extends State<AddHireScreen> {
                     title: nameCtrl.text,
                     timeInterval: "$startWork:$endWork",
                     description: descriptionCtrl.text,
-                    images: context.read<ImageBloc>().state.images,
+                    images: context
+                        .read<ImageBloc>()
+                        .state
+                        .images
+                        .map((e) => e.toString())
+                        .toList(),
                     money: money.text,
                     userId: context.read<AuthBloc>().state.userModel.docId,
                     number: numberCtrl.text,

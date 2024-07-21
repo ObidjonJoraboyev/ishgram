@@ -6,9 +6,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:image_picker/image_picker.dart';
-import 'package:ish_top/blocs/message/message_bloc.dart';
-import 'package:ish_top/data/local/local_storage.dart';
+import 'package:ish_top/blocs/comment/comment_bloc.dart';
+import 'package:ish_top/blocs/comment/comment_state.dart';
 import 'package:ish_top/data/models/message_model.dart';
 import 'package:ish_top/data/models/user_model.dart';
 
@@ -27,20 +26,9 @@ class _AdminFeedbackScreenState extends State<AdminFeedbackScreen> {
   final TextEditingController controller = TextEditingController();
 
   final ScrollController scrollController = ScrollController();
-
-  List<MessageModel> selectMessages = [];
-  String userNumber = StorageRepository.getString(key: "userNumber");
-
-  String fcm = "";
-  bool check = false;
-
-  final ImagePicker picker = ImagePicker();
   String imageUrl = "";
   String storagePath = "";
   bool bottomVisibility = false;
-
-  List<MessageModel> list = [];
-
   MessageModel messageModel = MessageModel.initialValue;
 
   init() async {}
@@ -68,9 +56,6 @@ class _AdminFeedbackScreenState extends State<AdminFeedbackScreen> {
     init();
     super.initState();
   }
-
-  bool isOnline = false;
-  String lastOnline = "";
 
   @override
   Widget build(BuildContext context) {
@@ -118,14 +103,9 @@ class _AdminFeedbackScreenState extends State<AdminFeedbackScreen> {
           ),
         ),
       ),
-      body: BlocBuilder<MessageBloc, List<MessageModel>>(
-        builder: (context, snapshot) {
-          list = snapshot
-              .where((e) =>
-                  (e.idFrom == StorageRepository.getString(key: "userNumber")))
-              .toList();
-
-          if (list.isEmpty) {
+      body: BlocBuilder<MessageBloc, MessageState>(
+        builder: (context, state) {
+          if (state.messages.isEmpty) {
             bottomVisibility = false;
           }
 
@@ -163,83 +143,6 @@ class _AdminFeedbackScreenState extends State<AdminFeedbackScreen> {
               ),
             )
           : null,
-    );
-  }
-
-  Future<void> _getImageFromCamera() async {
-    XFile? image = await picker.pickImage(
-      source: ImageSource.camera,
-      maxHeight: 1024,
-      maxWidth: 1024,
-    );
-    if (image != null && context.mounted) {
-      debugPrint("IMAGE PATH:${image.path}");
-      storagePath = "files/images/${image.name}";
-      if (!mounted) return;
-
-      // contactModel= contactModel.copyWith(imageUrl: imageUrl);
-
-      debugPrint("DOWNLOAD URL:$imageUrl");
-    }
-  }
-
-  Future<void> _getImageFromGallery() async {
-    List<String> images = [];
-    List<XFile>? image = await picker.pickMultiImage(
-      limit: 4,
-      maxHeight: 1024,
-      maxWidth: 1024,
-    );
-    if (image.isNotEmpty && context.mounted) {
-      for (var i in image) {
-        storagePath = "files/images/${i.name}";
-
-        if (!mounted) return;
-
-        images.add(imageUrl);
-      }
-
-      setState(() {});
-      debugPrint("DOWNLOAD URL:$imageUrl");
-    }
-  }
-
-  takeAnImage() {
-    showModalBottomSheet(
-      shape: const RoundedRectangleBorder(
-          borderRadius: BorderRadius.only(
-        topLeft: Radius.circular(16),
-        topRight: Radius.circular(16),
-      )),
-      context: context,
-      builder: (context) {
-        return Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            SizedBox(height: 12.h),
-            ListTile(
-              onTap: () async {
-                await _getImageFromGallery();
-                setState(() {});
-                // Navigator.pop(context);
-              },
-              leading: const Icon(Icons.photo_album_outlined),
-              title: const Text("Take From Gallery"),
-            ),
-            ListTile(
-              onTap: () async {
-                await _getImageFromCamera();
-                setState(() {});
-                if (!context.mounted) return;
-                Navigator.pop(context);
-              },
-              leading: const Icon(Icons.camera_alt),
-              title: const Text("Take From Camera"),
-            ),
-            SizedBox(height: 24.h),
-          ],
-        );
-      },
     );
   }
 }

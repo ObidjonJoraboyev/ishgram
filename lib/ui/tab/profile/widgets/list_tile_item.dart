@@ -92,7 +92,7 @@ class _ListTileItemState extends State<ListTileItem> {
             setState(() {});
           },
           backgroundColorActivated: CupertinoColors.systemGrey6,
-          backgroundColor: Colors.grey.shade50,
+          backgroundColor: Colors.white,
           leadingSize: 35,
           leading: Container(
             width: 28.sp,

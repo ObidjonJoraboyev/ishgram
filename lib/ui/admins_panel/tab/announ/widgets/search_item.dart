@@ -66,11 +66,11 @@ class _SearchItemState extends State<SearchItem>
       setState(() {});
     }
     return Row(
+      crossAxisAlignment: CrossAxisAlignment.center,
       children: [
         Expanded(
           child: Padding(
-            padding:
-                EdgeInsets.only(top: 12.h, left: 10.w, right: 10.w),
+            padding: EdgeInsets.only(top: 5.h, left: 10.w, right: 10.w),
             child: Container(
               decoration: BoxDecoration(
                 boxShadow: [
@@ -130,7 +130,8 @@ class _SearchItemState extends State<SearchItem>
             style: TextStyle(color: Colors.blue, fontSize: animation.value),
           ),
         ),
-        Padding(padding: EdgeInsets.only(right: widget.focus.hasFocus ? 12 : 0))
+        Padding(
+            padding: EdgeInsets.only(right: widget.focus.hasFocus ? 12.w : 0))
       ],
     );
   }

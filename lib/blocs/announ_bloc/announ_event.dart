@@ -28,6 +28,11 @@ class AnnounRemoveEvent extends AnnounEvent {
 }
 
 class AnnounGetEvent extends AnnounEvent {}
+class AnnounGetUserIdEvent extends AnnounEvent {
+  final String userId;
+
+  AnnounGetUserIdEvent({required this.userId});
+}
 
 class AnnounInitialEvent extends AnnounEvent {}
 

@@ -42,8 +42,9 @@ class _AuthScreenState extends State<AuthScreen> {
           if (state.formStatus == FormStatus.success) {
             Navigator.pushAndRemoveUntil(context,
                 MaterialPageRoute(builder: (context) {
+              context.read<AuthBloc>().add(GetCurrentUser());
               return const TabScreen(
-                index: 3,
+                index: 0,
               );
             }), (v) {
               return false;

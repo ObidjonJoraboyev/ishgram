@@ -7,9 +7,9 @@
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:1065279699955:android:f10d5c4308046324433086",
+        "mobilesdk_app_id": "1:1065279699955:android:97314e2d8f9c5b70433086",
         "android_client_info": {
-          "package_name": "com.example.ish_top"
+          "package_name": "com.example.ishgram"
         }
       },
       "oauth_client": [
@@ -31,10 +31,10 @@
               "client_type": 3
             },
             {
-              "client_id": "1065279699955-qgnn30c4r6puro5846f3fp213onf503g.apps.googleusercontent.com",
+              "client_id": "1065279699955-kda2mvrvgtfro1gi582nvul61jfp6f7j.apps.googleusercontent.com",
               "client_type": 2,
               "ios_info": {
-                "bundle_id": "com.example.ishTop"
+                "bundle_id": "com.example.ntExam4"
               }
             }
           ]

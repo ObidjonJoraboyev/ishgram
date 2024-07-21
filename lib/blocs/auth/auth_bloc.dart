@@ -14,6 +14,7 @@ import 'package:ish_top/ui/auth/register/get_number.dart';
 import 'package:ish_top/utils/utility_functions.dart';
 import 'auth_event.dart';
 import 'auth_state.dart';
+Dio dio = Dio();
 
 class AuthBloc extends Bloc<AuthEvent, AuthState> {
   AuthBloc()
@@ -35,9 +36,27 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     on<AuthResetEvent>(toPure);
     on<UpdateUser>(updateUser);
     on<AuthUpdateProfileUser>(updateProfile);
+    on<AuthDeleteImage>(imageDelete);
   }
 
-  Dio dio = Dio();
+
+  imageDelete(AuthDeleteImage event, Emitter<AuthState> emit) async {
+    try {
+      Response response = await dio.delete(
+          "https://ishgram-production.up.railway.app/api/v1/user-image/${StorageRepository.getString(key: "userId")}");
+
+      if (response.statusCode == 200) {
+        emit(state.copyWith(
+          formStatus: FormStatus.success,
+          userModel: UserModel.fromJson(response.data),
+        ));
+      } else {
+        emit(state.copyWith(formStatus: FormStatus.errorImage));
+      }
+    } catch (o) {
+      debugPrint(o.toString());
+    }
+  }
 
   updateProfile(AuthUpdateProfileUser event, Emitter<AuthState> emit) async {
     emit(state.copyWith(formStatus: FormStatus.uploadingImage));
@@ -53,11 +72,13 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       String newPath = file.path.replaceAll(RegExp(r'\.\w+$'), '.jpg');
       File jpgFile = File(newPath);
       await jpgFile.writeAsBytes(jpgBytes);
-      String userId = StorageRepository.getString(key: "userId");
       FormData formData = FormData.fromMap({
         'file':
             await MultipartFile.fromFile(jpgFile.path, filename: 'upload.jpg'),
       });
+
+      String userId = StorageRepository.getString(key: "userId");
+
       Response response = await dio.patch(
           "https://ishgram-production.up.railway.app/api/v1/user-photo/$userId",
           data: formData, onSendProgress: (sent, total) {
@@ -67,15 +88,15 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
 
       if (response.statusCode == 200) {
         emit(state.copyWith(
-          formStatus: FormStatus.successImage,
-          userModel: UserModel.fromJson(response.data),progress: 0
-        ));
+            formStatus: FormStatus.successImage,
+            userModel: UserModel.fromJson(response.data),
+            progress: 0));
       } else {
-        emit(state.copyWith(formStatus: FormStatus.error,progress: 0));
+        emit(state.copyWith(formStatus: FormStatus.error, progress: 0));
       }
     } catch (error) {
       debugPrint(error.toString());
-      emit(state.copyWith(formStatus: FormStatus.errorImage,progress: 0));
+      emit(state.copyWith(formStatus: FormStatus.errorImage, progress: 0));
     }
   }
 

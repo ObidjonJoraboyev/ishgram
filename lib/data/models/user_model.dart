@@ -19,6 +19,7 @@ class UserModel extends Equatable {
   final List<String> likedAnnouns;
   final bool isPrivate;
   final String password;
+  final String username;
 
   const UserModel({
     required this.address,
@@ -38,6 +39,7 @@ class UserModel extends Equatable {
     required this.likedAnnouns,
     required this.isPrivate,
     required this.password,
+    required this.username,
   });
 
   UserModel copyWith({
@@ -59,6 +61,7 @@ class UserModel extends Equatable {
     List<String>? likedAnnouns,
     bool? isPrivate,
     String? password,
+    String? username,
   }) {
     return UserModel(
       lat: lat ?? this.lat,
@@ -78,6 +81,7 @@ class UserModel extends Equatable {
       isPrivate: isPrivate ?? this.isPrivate,
       address: address ?? this.address,
       password: password ?? this.password,
+      username: username ?? this.username,
     );
   }
 
@@ -98,6 +102,7 @@ class UserModel extends Equatable {
         "likedHiring": likedAnnouns.map((e) => e.toString()).toList(),
         "color": color,
         "isPrivate": isPrivate,
+        "username": username,
       };
 
   Map<String, dynamic> toJsonForApi() => {
@@ -124,7 +129,8 @@ class UserModel extends Equatable {
         "phone": replaceString(phone),
         "photo_url": image,
         "rating": rating,
-        "region": region
+        "region": region,
+        "username": username,
       };
 
   factory UserModel.fromJson(Map<String, dynamic> json) {
@@ -148,6 +154,7 @@ class UserModel extends Equatable {
           .map((e) => e.toString())
           .toList(),
       password: json["password"] as String? ?? "",
+      username: json["username"] as String? ?? "",
     );
   }
 
@@ -169,6 +176,7 @@ class UserModel extends Equatable {
     color: "",
     isPrivate: false,
     password: '',
+    username: '',
   );
 
   @override
@@ -189,6 +197,7 @@ class UserModel extends Equatable {
         likedAnnouns,
         color,
         isPrivate,
-        password
+        password,
+        username,
       ];
 }

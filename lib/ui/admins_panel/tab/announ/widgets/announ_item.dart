@@ -354,7 +354,7 @@ class _AdminHiringItemState extends State<AdminHiringItem> {
                                               );
                                             },
                                             imageUrl: widget
-                                                .hires.images[index].imageUrl,
+                                                .hires.images[index],
                                             fit: BoxFit.cover,
                                             width: double.infinity,
                                           ),
@@ -536,7 +536,7 @@ class _AdminHiringItemState extends State<AdminHiringItem> {
                     Material(
                       color: Colors.transparent,
                       child: Text(
-                        "${widget.hires.comments.length}  ${widget.hires.comments.isNotEmpty ? "comments".tr() : "comment".tr()}",
+                        "comments".tr(),
                         style: TextStyle(
                             color: CupertinoColors.activeBlue,
                             fontWeight: FontWeight.w400,

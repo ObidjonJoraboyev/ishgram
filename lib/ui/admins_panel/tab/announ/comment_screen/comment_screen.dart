@@ -6,8 +6,9 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:ish_top/blocs/message/message_bloc.dart';
-import 'package:ish_top/blocs/message/message_event.dart';
+import 'package:ish_top/blocs/comment/comment_bloc.dart';
+import 'package:ish_top/blocs/comment/comment_event.dart';
+import 'package:ish_top/blocs/comment/comment_state.dart';
 import 'package:ish_top/data/local/local_storage.dart';
 import 'package:ish_top/data/models/announ_model.dart';
 import 'package:ish_top/data/models/message_model.dart';
@@ -62,10 +63,10 @@ class _AdminCommentScreenState extends State<AdminCommentScreen> {
         backgroundColor: CupertinoColors.systemGrey6,
       ),
       backgroundColor: CupertinoColors.systemGrey5,
-      body: BlocConsumer<MessageBloc, List<MessageModel>>(
+      body: BlocConsumer<MessageBloc, MessageState>(
         listener: (context, state) {},
         builder: (context, state) {
-          List<MessageModel> messages = state
+          List<MessageModel> messages = state.messages
               .where((v) => v.idTo == widget.announcementModel.docId)
               .toList();
 
@@ -105,7 +106,7 @@ class _AdminCommentScreenState extends State<AdminCommentScreen> {
                         child: widget.announcementModel.images.isNotEmpty
                             ? CachedNetworkImage(
                                 imageUrl:
-                                    widget.announcementModel.images[0].imageUrl,
+                                    widget.announcementModel.images[0],
                                 width: 50.w,
                                 height: 50.w,
                                 fit: BoxFit.cover,

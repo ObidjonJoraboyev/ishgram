@@ -1,4 +1,3 @@
-
 import 'package:equatable/equatable.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:image_picker/image_picker.dart';
@@ -66,11 +65,12 @@ class LogOutEvent extends AuthEvent {
 }
 
 class AuthUpdateProfileUser extends AuthEvent {
-
-
   AuthUpdateProfileUser({
     required this.pickedFile,
   });
 
   final XFile pickedFile;
+}
+class AuthDeleteImage extends AuthEvent{
+
 }

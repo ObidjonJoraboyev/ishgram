@@ -9,7 +9,6 @@ import 'package:ish_top/blocs/connectivity/connectivity_bloc.dart';
 import 'package:ish_top/blocs/connectivity/connectivity_state.dart';
 import 'package:ish_top/data/models/announ_model.dart';
 import 'package:ish_top/ui/tab/announ/widgets/announ_item.dart';
-import 'package:ish_top/ui/tab/announ/widgets/announ_item_ipad.dart';
 
 class HireScreen extends StatefulWidget {
   const HireScreen(
@@ -50,13 +49,7 @@ class _HireScreenState extends State<HireScreen> {
           builder: (context, state) {
             return BlocBuilder<AnnounBloc, AnnounState>(
               builder: (BuildContext context, AnnounState state) {
-                List<AnnounModel> hires = state.allHires
-                    .where((element) =>
-                        element.title
-                            .toLowerCase()
-                            .contains(widget.controller.text.toLowerCase()) &&
-                        element.status == StatusAnnoun.active)
-                    .toList();
+                List<AnnounModel> hires = state.allHires;
                 return hires.isNotEmpty
                     ? Padding(
                         padding: EdgeInsets.symmetric(horizontal: 14.w),
@@ -65,30 +58,15 @@ class _HireScreenState extends State<HireScreen> {
                             ...List.generate(
                               hires.length,
                               (index) {
-                                return
-                                    //(width <400) &
-                                    //                           (hires.length % 2 != 0) &
-                                    //                           (hires.length <= index + 2)
-                                    1 == 1
-                                        ? HiringItem(
-                                            context1: widget.context,
-                                            voidCallback: () {
-                                              widget.focus.unfocus();
-                                              setState(() {});
-                                            },
-                                            hires: hires[index],
-                                            scrollController: scrollController,
-                                          )
-                                        : HiringItemIpad(
-                                            context1: widget.context,
-                                            voidCallback: () {
-                                              widget.focus.unfocus();
-                                              setState(() {});
-                                            },
-                                            announOne: hires[index],
-                                            scrollController: scrollController,
-                                            announTwo: null,
-                                          );
+                                return HiringItem(
+                                  context1: widget.context,
+                                  voidCallback: () {
+                                    widget.focus.unfocus();
+                                    setState(() {});
+                                  },
+                                  hires: hires[index],
+                                  scrollController: scrollController,
+                                );
                               },
                             )
                           ],

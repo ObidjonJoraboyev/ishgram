@@ -1,10 +1,10 @@
+import 'package:dio/dio.dart';
 import 'package:equatable/equatable.dart';
-import 'image_model.dart';
 
 class AnnounModel extends Equatable {
   final String docId;
   final String userId;
-  final List<ImageModel> images;
+  final List<String> images;
   final String title;
   final String ownerName;
   final String number;
@@ -12,15 +12,14 @@ class AnnounModel extends Equatable {
   final WorkCategory category;
   final String money;
   final String location;
-  final double lat;
-  final double long;
+  final num lat;
+  final num long;
   final String timeInterval;
   final StatusAnnoun status;
   final int createdAt;
   final int updatedAt;
   final List<String> viewedUsers;
   final List<String> likedUsers;
-  final List<String> comments;
 
   const AnnounModel({
     required this.docId,
@@ -41,7 +40,6 @@ class AnnounModel extends Equatable {
     required this.viewedUsers,
     required this.status,
     required this.likedUsers,
-    required this.comments,
   });
 
   AnnounModel copyWith({
@@ -51,7 +49,7 @@ class AnnounModel extends Equatable {
     String? description,
     String? money,
     String? timeInterval,
-    List<ImageModel>? images,
+    List<String>? images,
     double? lat,
     double? long,
     bool? isFavourite,
@@ -63,7 +61,6 @@ class AnnounModel extends Equatable {
     WorkCategory? category,
     StatusAnnoun? status,
     List<String>? likedUsers,
-    List<String>? comments,
     List<String>? viewedUsers,
     String? userId,
   }) {
@@ -85,7 +82,6 @@ class AnnounModel extends Equatable {
       viewedUsers: viewedUsers ?? this.viewedUsers,
       status: status ?? this.status,
       likedUsers: likedUsers ?? this.likedUsers,
-      comments: comments ?? this.comments,
       userId: userId ?? this.userId,
     );
   }
@@ -98,7 +94,7 @@ class AnnounModel extends Equatable {
       "description": description,
       "money": money,
       "timeInterval": timeInterval,
-      "image": images.map((img) => img.toJson()).toList(),
+      "image": images.map((img) => img.toString()).toList(),
       "lat": lat,
       "long": long,
       "number": number,
@@ -109,7 +105,6 @@ class AnnounModel extends Equatable {
       "updatedAt": updatedAt,
       "status": status.name,
       "likedUsers": likedUsers.map((e) => e.toString()).toList(),
-      "comments": comments.map((e) => e.toString()).toList(),
       "userId": userId,
     };
   }
@@ -121,7 +116,7 @@ class AnnounModel extends Equatable {
       "description": description,
       "money": money,
       "timeInterval": timeInterval,
-      "image": images.map((img) => img.toJson()).toList(),
+      "image": images.map((img) => img.toString()).toList(),
       "lat": lat,
       "long": long,
       "number": number,
@@ -132,42 +127,65 @@ class AnnounModel extends Equatable {
       "updatedAt": updatedAt,
       "status": status.name,
       "likedUsers": likedUsers.map((e) => e.toString()).toList(),
-      "comments": comments.map((e) => e.toString()).toList(),
       "userId": userId,
+    };
+  }
+
+  FormData formData() => FormData.fromMap({
+        "user_id": userId,
+        "title": title,
+        "owner_name": ownerName,
+        "phone": number,
+        "description": description,
+        "category": category.name, // or medium, hard
+        "money": money,
+        "address": location,
+        "lat": lat,
+        "long": long,
+        "time_interval": timeInterval,
+        "files": [],
+      });
+
+  Map<String, dynamic> toJsonForPost() {
+    return {
+      "address": location,
+      "category": category.name,
+      "descrioption": description,
+      "images": images.map((img) => img.toString()).toList,
+      "lat": lat,
+      "long": long,
+      "money": money,
+      "owner_name": ownerName,
+      "phone": number,
+      "status": status.name,
+      "time_interval": timeInterval,
+      "title": title,
+      "user_id": userId
     };
   }
 
   factory AnnounModel.fromJson(Map<String, dynamic> json) {
     return AnnounModel(
-      ownerName: json["owner_name"] as String? ?? "",
-      docId: json["doc_id"] as String? ?? "",
+      docId: json["id"] as String? ?? "",
+      userId: json["user_id"] as String? ?? "",
       title: json["title"] as String? ?? "",
+      ownerName: json["owner_name"] as String? ?? "",
+      number: json["phone"] as String? ?? "",
       description: json["description"] as String? ?? "",
-      money: json["money"] as String? ?? "",
-      timeInterval: json["timeInterval"] as String? ?? "",
-      images: (json["image"] as List<dynamic>?)
-              ?.map((e) => ImageModel.fromJson(e as Map<String, dynamic>))
-              .toList() ??
-          [],
-      lat: json["lat"] as double? ?? 0.0,
-      long: json["long"] as double? ?? 0.0,
-      number: json["number"] as String? ?? "",
-      location: json["location"] as String? ?? "",
-      createdAt: json["createdAt"] as int? ?? 0,
-      updatedAt: json["updatedAt"] as int? ?? 0,
-      viewedUsers:
-          (json["countView"] as List? ?? []).map((e) => e.toString()).toList(),
-      category: enumFromString(
-        json["category"] as String? ?? "",
-      ),
-      status: enumFromString2(
-        json["status"] as String? ?? "",
-      ),
-      likedUsers:
-          (json["likedUsers"] as List? ?? []).map((e) => e.toString()).toList(),
-      comments:
-          (json["comments"] as List? ?? []).map((e) => e.toString()).toList(),
-      userId: json["userId"] as String? ?? "",
+      category: enumFromString(json["category"] as String? ?? ""),
+      money: (json["money"] as int? ?? 0).toString(),
+      location: json["address"] as String? ?? "",
+      lat: json["location"]["lat"] as num? ?? 0.0,
+      long: json["location"]["long"] as num? ?? 0.0,
+      timeInterval: json["time_interval"] as String? ?? "",
+      status: enumFromString2(json["status"] as String? ?? ""),
+      viewedUsers: (json["viewed_users"] as List? ?? [])
+          .map((e) => e.toString())
+          .toList(),
+      images: (json["images"] as List? ?? []).map((e) => e.toString()).toList(),
+      createdAt: json["created_at"] as int? ?? 0,
+      updatedAt: json["updated_at"] as int? ?? 0,
+      likedUsers: const [],
     );
   }
 
@@ -199,7 +217,6 @@ class AnnounModel extends Equatable {
     viewedUsers: [],
     status: StatusAnnoun.pure,
     likedUsers: [],
-    comments: [],
     userId: '',
   );
 
@@ -220,7 +237,6 @@ class AnnounModel extends Equatable {
         viewedUsers,
         status,
         likedUsers,
-        comments,
         userId,
       ];
 }

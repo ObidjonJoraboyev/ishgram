@@ -45,7 +45,7 @@ class _GlobalTextFiledState extends State<GlobalTextFiled> {
     return Form(
       autovalidateMode: AutovalidateMode.onUserInteraction,
       child: Padding(
-        padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 10.h),
+        padding: EdgeInsets.symmetric(horizontal: 14.w, vertical: 10.h),
         child: BlocConsumer<AuthBloc, AuthState>(
           builder: (context, state) {
             return TextFormField(

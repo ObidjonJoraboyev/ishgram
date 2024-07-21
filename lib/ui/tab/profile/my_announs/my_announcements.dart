@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:ish_top/blocs/announ_bloc/announ_bloc.dart';
+import 'package:ish_top/blocs/announ_bloc/announ_event.dart';
 import 'package:ish_top/blocs/announ_bloc/announ_state.dart';
 import 'package:ish_top/blocs/auth/auth_bloc.dart';
 import 'package:ish_top/blocs/auth/auth_state.dart';
@@ -22,7 +23,7 @@ class MyAnnouncements extends StatefulWidget {
 class _MyAnnouncementsState extends State<MyAnnouncements> {
   @override
   void initState() {
-
+    context.read<AnnounBloc>().add(AnnounGetUserIdEvent(userId: context.read<AuthBloc>().state.userModel.docId));
     super.initState();
   }
 

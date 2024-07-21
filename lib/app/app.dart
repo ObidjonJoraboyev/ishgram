@@ -11,8 +11,8 @@ import 'package:ish_top/blocs/connectivity/connectivity_event.dart';
 import 'package:ish_top/blocs/image/image_bloc.dart';
 import 'package:ish_top/blocs/map/map_bloc.dart';
 import 'package:ish_top/blocs/map/map_event.dart';
-import 'package:ish_top/blocs/message/message_bloc.dart';
-import 'package:ish_top/blocs/message/message_event.dart';
+import 'package:ish_top/blocs/comment/comment_bloc.dart';
+import 'package:ish_top/blocs/comment/comment_event.dart';
 import 'package:ish_top/blocs/notification/notification_bloc.dart';
 import 'package:ish_top/blocs/notification/notification_event.dart';
 import 'package:ish_top/ui/splash/splash_screen.dart';
@@ -31,10 +31,7 @@ class App extends StatelessWidget {
           create: (context) => AuthBloc()..add(GetCurrentUser()),
         ),
         BlocProvider(
-          create: (context) => MessageBloc()
-            ..add(
-              const MessageGetEvent(),
-            ),
+          create: (context) => MessageBloc()..add(const MessageGetEvent()),
         ),
         BlocProvider(
           create: (context) => AnnounBloc()..add(AnnounGetEvent()),

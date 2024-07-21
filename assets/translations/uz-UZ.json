@@ -97,6 +97,18 @@
   "common_password": "Parol juda keng tarqalgan yoki taxmin qilish oson",
   "same_symbol": "Har bir belgilar bir xil bo'lishi mumkin emas",
   "min_six": "Parol kamida 6 ta belgidan iborat bo'lishi kerak",
-  "enter_login_pass": "Iltimos, parolingizni kiriting"
+  "enter_login_pass": "Iltimos, parolingizni kiriting",
+  "scan": "Skanerlash",
+  "username": "Foydalanuvchi nomi",
+  "change_number": "Raqamni o'zgartirish",
+  "bio": "O'zingiz haqingizda",
+  "upload_image": "Yangi rasm yuklash",
+  "username_busy": "Bu foydalanuvchi nomi band",
+  "username_description": "Ishgram-da foydalanuvchi nomini o'rnatgan bo'lsangiz, odamlar sizning telefon raqamingizga muhtoj bo'lmasdan o'sha foydalanuvchi nomi orqali siz bilan bog'lanishlari mumkin.\n\nSiz a-z, 0-9 va pastki chiziqdan foydalanishingiz mumkin. Minimal uzunlik - 5 ta belgi.",
+  "min_five": "Foydalanuvchi nomi kamida 5 ta belgidan iborat boʻlishi kerak",
+  "start_underscore": "Kechirasiz, foydalanuvchi nomi pastki chiziq bilan boshlanmaydi.",
+  "end_underscore": "Kechirasiz, foydalanuvchi nomi pastki chiziq bilan tugamaydi.",
+  "click_discard": "Agar siz ushbu oynadan chiqish tugmasini bossangiz, o'zgartirmoqchi bo'lgan barcha ma'lumotlar o'zgarmaydi.",
+  "delete":"O'chirish"
 
 }

@@ -6,8 +6,10 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:ish_top/blocs/message/message_bloc.dart';
-import 'package:ish_top/blocs/message/message_event.dart';
+import 'package:ish_top/blocs/auth/auth_bloc.dart';
+import 'package:ish_top/blocs/comment/comment_bloc.dart';
+import 'package:ish_top/blocs/comment/comment_event.dart';
+import 'package:ish_top/blocs/comment/comment_state.dart';
 import 'package:ish_top/data/local/local_storage.dart';
 import 'package:ish_top/data/models/announ_model.dart';
 import 'package:ish_top/data/models/message_model.dart';
@@ -35,7 +37,7 @@ class _CommentScreenState extends State<CommentScreen> {
 
   MessageModel messageModel = MessageModel.initialValue;
 
-  final String currentNum = StorageRepository.getString(key: "userNumber");
+  final String currentNum = StorageRepository.getString(key: "userNum");
   final String currentDoc = StorageRepository.getString(key: "userDoc");
 
   @override
@@ -64,10 +66,10 @@ class _CommentScreenState extends State<CommentScreen> {
         backgroundColor: CupertinoColors.systemGrey6,
       ),
       backgroundColor: CupertinoColors.systemGrey5,
-      body: BlocConsumer<MessageBloc, List<MessageModel>>(
+      body: BlocConsumer<MessageBloc, MessageState>(
         listener: (context, state) {},
         builder: (context, state) {
-          List<MessageModel> messages = state
+          List<MessageModel> messages = state.messages
               .where((v) => v.idTo == widget.announcementModel.docId)
               .toList();
 
@@ -106,8 +108,7 @@ class _CommentScreenState extends State<CommentScreen> {
                         borderRadius: BorderRadius.circular(8.r),
                         child: widget.announcementModel.images.isNotEmpty
                             ? CachedNetworkImage(
-                                imageUrl:
-                                    widget.announcementModel.images[0].imageUrl,
+                                imageUrl: widget.announcementModel.images[0],
                                 width: 50.w,
                                 height: 50.w,
                                 fit: BoxFit.cover,
@@ -245,67 +246,94 @@ class _CommentScreenState extends State<CommentScreen> {
                   ],
                 ),
               ),
-              Container(
-                padding: EdgeInsets.symmetric(horizontal: 18.w),
-                color: CupertinoColors.systemGrey5,
-                height: Platform.isIOS ? 75 : null,
-                alignment: Alignment.topCenter,
-                child: CupertinoTextField(
-                  textInputAction: TextInputAction.done,
-                  maxLines: null,
-                  controller: controller,
-                  onChanged: (v) {},
-                  onTap: () {
-                    focus.requestFocus();
-                  },
-                  cursorColor: const Color(0xff30A3E6),
-                  focusNode: focus,
-                  suffix: IconButton(
-                    onPressed: () async {
-                      if (controller.text.isNotEmpty) {
-                        if (!context.mounted) return;
-                        String controllerTemp = controller.text;
-                        controller.clear();
-
-                        messageModel = messageModel.copyWith(
-                          createdTime:
-                              DateTime.now().millisecondsSinceEpoch.toString(),
-                          messageText: controllerTemp,
-                          isSupport: false,
-                          idFrom: currentDoc,
-                          idTo: widget.announcementModel.docId,
-                        );
-
-                        context
-                            .read<MessageBloc>()
-                            .add(MessageAddEvent(messages: messageModel));
-                        scrollController.position.animateTo(
-                            scrollController.position.minScrollExtent,
-                            duration: const Duration(seconds: 1),
-                            curve: Curves.linear);
-                        bottomVisibility = false;
-                      }
-                    },
-                    icon: const Padding(
-                      padding: EdgeInsets.only(left: 6),
-                      child: Icon(
-                        CupertinoIcons.paperplane_fill,
-                        color: CupertinoColors.activeBlue,
+              Padding(
+                padding: EdgeInsets.symmetric(horizontal: 14.w),
+                child: Row(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    Expanded(
+                      child: Container(
+                        alignment: Alignment.topCenter,
+                        decoration: BoxDecoration(
+                            color: CupertinoColors.systemGrey5,
+                            boxShadow: [
+                              BoxShadow(
+                                  color: CupertinoColors.systemGrey
+                                      .withOpacity(.3),
+                                  spreadRadius: 0,
+                                  blurRadius: 10)
+                            ],
+                            borderRadius: BorderRadius.circular(16.r)),
+                        child: CupertinoTextField(
+                          style: const TextStyle(color: Colors.black),
+                          onTapOutside: (v) {
+                            focus.unfocus();
+                          },
+                          textInputAction: TextInputAction.done,
+                          maxLines: null,
+                          controller: controller,
+                          onChanged: (v) {},
+                          onTap: () {
+                            focus.requestFocus();
+                          },
+                          cursorColor: const Color(0xff30A3E6),
+                          focusNode: focus,
+                          keyboardType: TextInputType.text,
+                          placeholder: "Message",
+                          placeholderStyle: TextStyle(
+                              color: CupertinoColors.systemGrey3,
+                              fontSize: 16.sp,
+                              fontWeight: FontWeight.w500),
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(16.r),
+                            color: CupertinoColors.white,
+                          ),
+                        ),
                       ),
                     ),
-                  ),
-                  clearButtonMode: OverlayVisibilityMode.editing,
-                  placeholder: "Message",
-                  placeholderStyle: TextStyle(
-                      color: Colors.white.withOpacity(.9),
-                      fontSize: 16.sp,
-                      fontWeight: FontWeight.w500),
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(16.r),
-                    color: CupertinoColors.systemGrey2,
-                  ),
+                    15.getW(),
+                    ScaleOnPress(
+                      onTap: () async {
+                        if (controller.text.isNotEmpty) {
+                          if (!context.mounted) return;
+                          String controllerTemp = controller.text;
+                          controller.clear();
+                          messageModel = messageModel.copyWith(
+                            messageText: controllerTemp,
+                            isSupport: false,
+                            idFrom:
+                                context.read<AuthBloc>().state.userModel.docId,
+                            idTo: widget.announcementModel.docId,
+                          );
+
+                          context
+                              .read<MessageBloc>()
+                              .add(MessageAddEvent(messages: messageModel));
+                          scrollController.position.animateTo(
+                              scrollController.position.minScrollExtent,
+                              duration: const Duration(seconds: 1),
+                              curve: Curves.linear);
+                          bottomVisibility = false;
+                        }
+                      },
+                      child: Container(
+                        padding: EdgeInsets.all(7.sp),
+                        decoration: BoxDecoration(
+                          shape: BoxShape.circle,
+                          color: CupertinoColors.systemBlue.withOpacity(.2),
+                        ),
+                        child: const Icon(
+                          CupertinoIcons.paperplane,
+                          color: CupertinoColors.activeBlue,
+                        ),
+                      ),
+                    ),
+                  ],
                 ),
               ),
+              SizedBox(
+                height: MediaQuery.of(context).padding.bottom,
+              )
             ],
           );
         },

@@ -156,7 +156,7 @@ class _DetailScreenState extends State<DetailScreen> {
                                     ...List.generate(
                                       widget.hireModel.images.length,
                                       (index) => CachedNetworkImageProvider(
-                                        widget.hireModel.images[index].imageUrl,
+                                        widget.hireModel.images[index],
                                         maxWidth: MediaQuery.sizeOf(context)
                                             .width
                                             .toInt(),
@@ -211,7 +211,7 @@ class _DetailScreenState extends State<DetailScreen> {
                                     );
                                   },
                                   imageUrl:
-                                      widget.hireModel.images[index].imageUrl,
+                                      widget.hireModel.images[index],
                                   width: MediaQuery.sizeOf(context).width,
                                   fit: BoxFit.cover,
                                   height: 340.h,

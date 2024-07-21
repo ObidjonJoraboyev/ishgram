@@ -38,7 +38,7 @@ class _GenerateImageState extends State<GenerateImage> {
                         context.read<ImageBloc>().add(
                               ImageRemoveEvent(
                                 context,
-                                docId: widget.state.images[index].imageDocId,
+                                docId: widget.state.images[index],
                               ),
                             );
                         Navigator.of(context, rootNavigator: true).pop();
@@ -49,7 +49,7 @@ class _GenerateImageState extends State<GenerateImage> {
                     ),
                   ],
                   child: CachedNetworkImage(
-                    imageUrl: widget.state.images[index].imageUrl,
+                    imageUrl: widget.state.images[index],
                     fit: BoxFit.cover,
                     width: 150.w,
                     height: 150.w,

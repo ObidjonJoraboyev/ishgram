@@ -29,7 +29,7 @@ class _SplashScreenState extends State<SplashScreen> {
         MaterialPageRoute(
           builder: (context) => userNumber.isEmpty
               ? const RegisterScreen()
-              : userNumber != "+998950831344"
+              : userNumber != "+9989508313449"
                   ? const TabScreen()
                   : const AdminTabScreen(),
         ),
