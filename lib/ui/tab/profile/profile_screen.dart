@@ -1,5 +1,7 @@
+import 'dart:async';
 import 'dart:ui';
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:dio/dio.dart';
 import 'package:easy_image_viewer/easy_image_viewer.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/cupertino.dart';
@@ -17,6 +19,7 @@ import 'package:ish_top/ui/tab/profile/my_announs/my_announcements.dart';
 import 'package:ish_top/ui/tab/profile/my_profile/my_profile_screen.dart';
 import 'package:ish_top/ui/tab/profile/scan/scanner_screen.dart';
 import 'package:ish_top/ui/tab/profile/widgets/list_tile_item.dart';
+import 'package:ish_top/utils/constants/app_constants.dart';
 import 'package:ish_top/utils/size/size_utils.dart';
 import 'package:ish_top/utils/utility_functions.dart';
 import 'package:page_transition/page_transition.dart';
@@ -41,6 +44,8 @@ class _ProfileScreenState extends State<ProfileScreen>
   String fcm = "";
 
   bool isOpen = false;
+  String errorText = "";
+  TextEditingController userName = TextEditingController();
 
   Future<void> init() async {
     setState(() {});
@@ -52,6 +57,7 @@ class _ProfileScreenState extends State<ProfileScreen>
   @override
   void initState() {
     context.read<AuthBloc>().add(GetCurrentUser());
+    userName.text = context.read<AuthBloc>().state.userModel.username;
     init();
     _controller = AnimationController(
       vsync: this,
@@ -73,6 +79,48 @@ class _ProfileScreenState extends State<ProfileScreen>
 
   void resetAnimation() async {
     _controller.reset();
+  }
+
+  void _onTextChanged(String query) {
+    if (_debounce?.isActive ?? false) _debounce?.cancel();
+    _debounce = Timer(const Duration(milliseconds: 500), () {
+      _sendRequest(query);
+    });
+  }
+
+  Timer? _debounce;
+
+  Future<void> _sendRequest(String query) async {
+    try {
+      await dio.get(
+        "https://ishgram-production.up.railway.app/api/v1/check-username",
+        queryParameters: {"username": userName.text},
+      );
+    } catch (e) {
+      debugPrint('Error: $e');
+    }
+  }
+
+  onDone() async {
+    if (userName.text.isNotEmpty) {
+      Response response = await dio.patch(
+        "https://ishgram-production.up.railway.app/api/v1/change-username",
+        queryParameters: {
+          "username": userName.text,
+          "user_id": context.read<AuthBloc>().state.userModel.docId
+        },
+      );
+      if (response.statusCode == 200) {
+        return;
+      }
+    } else {
+      Response response = await dio.patch(
+        "https://ishgram-production.up.railway.app/api/v1/user-remove-username/${context.read<AuthBloc>().state.userModel.docId}",
+      );
+      if (response.statusCode == 200) {
+        return;
+      }
+    }
   }
 
   @override
@@ -279,7 +327,7 @@ class _ProfileScreenState extends State<ProfileScreen>
                       pinned: true,
                       snap: true,
                       stretch: true,
-                      expandedHeight: 150.h,
+                      expandedHeight: 140.h,
                       scrolledUnderElevation: 0,
                       floating: true,
                       leading: IconButton(
@@ -328,54 +376,246 @@ class _ProfileScreenState extends State<ProfileScreen>
                     SliverList.list(
                       children: [
                         Center(
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              SelectableText(
-                                cursorColor: CupertinoColors.activeBlue,
-                                showCursor: false,
-                                onTap: () {
-                                  Clipboard.setData(ClipboardData(
-                                      text: state1.userModel.phone));
-                                  Fluttertoast.showToast(
-                                      backgroundColor:
-                                          CupertinoColors.systemGrey,
-                                      gravity: ToastGravity.BOTTOM,
-                                      msg: "copy".tr());
-                                },
-                                state1.userModel.phone,
-                                style: TextStyle(
-                                  fontWeight: FontWeight.w400,
-                                  fontSize: 14.sp,
-                                  color: Colors.black.withOpacity(.4),
+                          child: Padding(
+                            padding: EdgeInsets.symmetric(horizontal: 24.w),
+                            child: Wrap(
+                              crossAxisAlignment: WrapCrossAlignment.end,
+                              alignment: WrapAlignment.center,
+                              children: [
+                                SelectableText(
+                                  cursorColor: CupertinoColors.activeBlue,
+                                  showCursor: false,
+                                  onTap: () {
+                                    Clipboard.setData(ClipboardData(
+                                        text: state1.userModel.phone));
+                                    Fluttertoast.showToast(
+                                        backgroundColor:
+                                            CupertinoColors.systemGrey,
+                                        gravity: ToastGravity.BOTTOM,
+                                        msg: "copy".tr());
+                                  },
+                                  state1.userModel.phone,
+                                  style: TextStyle(
+                                      fontWeight: FontWeight.w400,
+                                      fontSize: 14.sp,
+                                      color: Colors.black.withOpacity(.4),
+                                      overflow: TextOverflow.ellipsis),
                                 ),
-                              ),
-                              state1.userModel.username.isNotEmpty
-                                  ? 5.getW()
-                                  : const SizedBox(),
-                              state1.userModel.username.isNotEmpty
-                                  ? SelectableText(
-                                      cursorColor: CupertinoColors.activeBlue,
-                                      showCursor: false,
-                                      onTap: () {
-                                        Clipboard.setData(ClipboardData(
-                                            text: state1.userModel.phone));
-                                        Fluttertoast.showToast(
+                                state1.userModel.username.isNotEmpty
+                                    ? 5.getW()
+                                    : const SizedBox(),
+                                state1.userModel.username.isNotEmpty
+                                    ? SelectableText(
+                                        cursorColor: CupertinoColors.activeBlue,
+                                        showCursor: false,
+                                        onTap: () {
+                                          userName.text = context
+                                              .read<AuthBloc>()
+                                              .state
+                                              .userModel
+                                              .username;
+
+                                          showModalBottomSheet(
+                                            useSafeArea: true,
                                             backgroundColor:
-                                                CupertinoColors.systemGrey,
-                                            gravity: ToastGravity.BOTTOM,
-                                            msg: "copy".tr());
-                                      },
-                                      "@${state1.userModel.username}",
-                                      style: TextStyle(
-                                        fontWeight: FontWeight.w400,
-                                        fontSize: 14.sp,
-                                        color: CupertinoColors.activeBlue
-                                            .withOpacity(.8),
-                                      ),
-                                    )
-                                  : const SizedBox(),
-                            ],
+                                                CupertinoColors.systemGrey5,
+                                            barrierColor: Colors.transparent,
+                                            isScrollControlled: true,
+                                            context: context,
+                                            builder: (context) {
+                                              return StatefulBuilder(
+                                                  builder: (context, setState) {
+                                                return Container(
+                                                  decoration: BoxDecoration(
+                                                      color: CupertinoColors
+                                                          .systemGrey5,
+                                                      borderRadius:
+                                                          BorderRadius.only(
+                                                              topLeft: Radius
+                                                                  .circular(
+                                                                      24.r),
+                                                              topRight: Radius
+                                                                  .circular(
+                                                                      24.r))),
+                                                  child: Column(
+                                                    crossAxisAlignment:
+                                                        CrossAxisAlignment
+                                                            .start,
+                                                    children: [
+                                                      Padding(
+                                                        padding: EdgeInsets
+                                                            .symmetric(
+                                                                horizontal:
+                                                                    0.w),
+                                                        child: Row(
+                                                          mainAxisAlignment:
+                                                              MainAxisAlignment
+                                                                  .spaceBetween,
+                                                          children: [
+                                                            CupertinoButton(
+                                                                child: Text(
+                                                                  "cancel".tr(),
+                                                                  style: TextStyle(
+                                                                      color: CupertinoColors
+                                                                          .activeBlue,
+                                                                      fontSize:
+                                                                          15.sp,
+                                                                      fontWeight:
+                                                                          FontWeight
+                                                                              .w400),
+                                                                ),
+                                                                onPressed: () {
+                                                                  userName.text = state1
+                                                                      .userModel
+                                                                      .username;
+                                                                  Navigator.pop(
+                                                                      context);
+                                                                }),
+                                                            Text(
+                                                              "username".tr(),
+                                                              style: TextStyle(
+                                                                  fontSize:
+                                                                      15.sp,
+                                                                  fontWeight:
+                                                                      FontWeight
+                                                                          .w600),
+                                                            ),
+                                                            CupertinoButton(
+                                                                child: Text(
+                                                                  "done".tr(),
+                                                                  style: TextStyle(
+                                                                      color: CupertinoColors
+                                                                          .activeBlue,
+                                                                      fontSize:
+                                                                          15.sp,
+                                                                      fontWeight:
+                                                                          FontWeight
+                                                                              .w500),
+                                                                ),
+                                                                onPressed:
+                                                                    () async {
+                                                                  await onDone();
+                                                                  if (!context.mounted) return;
+                                                                  Navigator.pop(
+                                                                      context);
+                                                                  context
+                                                                      .read<
+                                                                          AuthBloc>()
+                                                                      .add(
+                                                                          GetCurrentUser());
+                                                                }),
+                                                          ],
+                                                        ),
+                                                      ),
+                                                      20.getH(),
+                                                      Padding(
+                                                        padding: EdgeInsets
+                                                            .symmetric(
+                                                                horizontal:
+                                                                    14.w),
+                                                        child:
+                                                            CupertinoTextField(
+                                                          inputFormatters: [
+                                                            FilteringTextInputFormatter
+                                                                .allow(RegExp(
+                                                                    r'^[a-zA-Z][a-zA-Z0-9_]{0,31}$')),
+                                                          ],
+                                                          maxLength: 29,
+                                                          onTapOutside: (v) {
+                                                            setState(() {});
+                                                          },
+                                                          onChanged: (v) async {
+                                                            setState(() {});
+                                                            errorText =
+                                                                validateUsername(
+                                                                    v);
+                                                            if (v.isNotEmpty) {
+                                                              if (validateUsername(
+                                                                      v)
+                                                                  .isEmpty) {
+                                                                _onTextChanged(
+                                                                    v);
+                                                              }
+                                                            }
+                                                            setState(() {});
+                                                          },
+                                                          cursorColor:
+                                                              CupertinoColors
+                                                                  .activeBlue,
+                                                          placeholder:
+                                                              "username".tr(),
+                                                          padding:
+                                                              EdgeInsets.all(
+                                                                  10.sp),
+                                                          controller: userName,
+                                                          decoration: BoxDecoration(
+                                                              borderRadius:
+                                                                  BorderRadius
+                                                                      .circular(
+                                                                          12.r),
+                                                              color:
+                                                                  Colors.white),
+                                                        ),
+                                                      ),
+                                                      errorText.isNotEmpty
+                                                          ? Padding(
+                                                              padding: EdgeInsets
+                                                                  .symmetric(
+                                                                      horizontal:
+                                                                          24.w,
+                                                                      vertical:
+                                                                          5.h),
+                                                              child: Text(
+                                                                errorText,
+                                                                style: const TextStyle(
+                                                                    color: CupertinoColors
+                                                                        .destructiveRed,
+                                                                    fontSize:
+                                                                        12),
+                                                                overflow:
+                                                                    TextOverflow
+                                                                        .ellipsis,
+                                                              ),
+                                                            )
+                                                          : SizedBox(
+                                                              height: 10.h,
+                                                            ),
+                                                      Padding(
+                                                        padding: EdgeInsets
+                                                            .symmetric(
+                                                                horizontal:
+                                                                    24.w),
+                                                        child: Text(
+                                                          "username_description"
+                                                              .tr(),
+                                                          style: TextStyle(
+                                                              fontWeight:
+                                                                  FontWeight
+                                                                      .w400,
+                                                              fontSize: 12.sp,
+                                                              color:
+                                                                  Colors.black),
+                                                        ),
+                                                      )
+                                                    ],
+                                                  ),
+                                                );
+                                              });
+                                            },
+                                          );
+                                        },
+                                        "@${state1.userModel.username}",
+                                        style: TextStyle(
+                                          overflow: TextOverflow.ellipsis,
+                                          fontWeight: FontWeight.w400,
+                                          fontSize: 14.sp,
+                                          color: CupertinoColors.activeBlue
+                                              .withOpacity(.8),
+                                        ),
+                                      )
+                                    : const SizedBox(),
+                              ],
+                            ),
                           ),
                         ),
                         ListTileItem(

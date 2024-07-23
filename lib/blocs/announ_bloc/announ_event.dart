@@ -28,6 +28,7 @@ class AnnounRemoveEvent extends AnnounEvent {
 }
 
 class AnnounGetEvent extends AnnounEvent {}
+
 class AnnounGetUserIdEvent extends AnnounEvent {
   final String userId;
 
@@ -35,9 +36,3 @@ class AnnounGetUserIdEvent extends AnnounEvent {
 }
 
 class AnnounInitialEvent extends AnnounEvent {}
-
-class AnnounListGetEvent extends AnnounEvent {
-  final List<String> announcementDocs;
-
-  AnnounListGetEvent({required this.announcementDocs});
-}

@@ -6,6 +6,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:ish_top/blocs/announ_bloc/announ_bloc.dart';
 import 'package:ish_top/blocs/announ_bloc/announ_state.dart';
+import 'package:ish_top/blocs/comment/comment_bloc.dart';
+import 'package:ish_top/blocs/comment/comment_event.dart';
 import 'package:ish_top/data/local/local_storage.dart';
 import 'package:ish_top/data/models/announ_model.dart';
 import 'package:ish_top/ui/tab/announ/comment_screen/comment_screen.dart';
@@ -146,8 +148,8 @@ class _HiringItemState extends State<HiringItem> {
                                                 ),
                                               );
                                             },
-                                            imageUrl: widget
-                                                .hires.images[index],
+                                            imageUrl:
+                                                widget.hires.images[index],
                                             fit: BoxFit.cover,
                                             width: double.infinity,
                                           ),
@@ -249,7 +251,7 @@ class _HiringItemState extends State<HiringItem> {
                     Padding(
                       padding: EdgeInsets.only(left: 8.w, top: 3.h),
                       child: Text(
-                        widget.hires.money,
+                        widget.hires.money.toString(),
                         style: TextStyle(
                           fontSize: 19.sp,
                           fontWeight: FontWeight.w600,
@@ -318,6 +320,9 @@ class _HiringItemState extends State<HiringItem> {
               ),
               child: ScaleOnPress(
                 onTap: () {
+                  context
+                      .read<MessageBloc>()
+                      .add(MessageGetEvent(uuId: widget.hires.docId));
                   Navigator.push(
                     widget.context1,
                     CupertinoPageRoute(
@@ -334,7 +339,7 @@ class _HiringItemState extends State<HiringItem> {
                     Material(
                       color: Colors.transparent,
                       child: Text(
-                      "comments".tr(),
+                        "comments".tr(),
                         style: TextStyle(
                             color: CupertinoColors.activeBlue,
                             fontWeight: FontWeight.w400,

@@ -135,7 +135,6 @@ class ImageBloc extends Bloc<ImageEvent, ImageUploadState> {
     String temp = movedImages[event.currentIndex];
     movedImages[event.currentIndex] = movedImages[event.wantIndex];
     movedImages[event.wantIndex] = temp;
-
     emit(state.copyWith(images: movedImages));
   }
 }

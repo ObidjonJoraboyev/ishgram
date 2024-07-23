@@ -9,8 +9,7 @@ class AuthState extends Equatable {
       required this.formStatus,
       required this.userModel,
       required this.users,
-        required this.progress
-      });
+      required this.progress});
 
   final String errorMessage;
   final String statusMessage;
@@ -33,7 +32,7 @@ class AuthState extends Equatable {
       formStatus: formStatus ?? this.formStatus,
       userModel: userModel ?? this.userModel,
       users: users ?? this.users,
-      progress: progress?? this.progress,
+      progress: progress ?? this.progress,
     );
   }
 
@@ -44,6 +43,6 @@ class AuthState extends Equatable {
         formStatus,
         userModel,
         users,
-    progress,
+        progress,
       ];
 }

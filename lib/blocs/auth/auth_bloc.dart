@@ -14,6 +14,7 @@ import 'package:ish_top/ui/auth/register/get_number.dart';
 import 'package:ish_top/utils/utility_functions.dart';
 import 'auth_event.dart';
 import 'auth_state.dart';
+
 Dio dio = Dio();
 
 class AuthBloc extends Bloc<AuthEvent, AuthState> {
@@ -38,7 +39,6 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     on<AuthUpdateProfileUser>(updateProfile);
     on<AuthDeleteImage>(imageDelete);
   }
-
 
   imageDelete(AuthDeleteImage event, Emitter<AuthState> emit) async {
     try {

@@ -1,4 +1,3 @@
-import 'package:dio/dio.dart';
 import 'package:equatable/equatable.dart';
 
 class AnnounModel extends Equatable {
@@ -10,7 +9,7 @@ class AnnounModel extends Equatable {
   final String number;
   final String description;
   final WorkCategory category;
-  final String money;
+  final int money;
   final String location;
   final num lat;
   final num long;
@@ -47,7 +46,7 @@ class AnnounModel extends Equatable {
     String? ownerName,
     String? docId,
     String? description,
-    String? money,
+    int? money,
     String? timeInterval,
     List<String>? images,
     double? lat,
@@ -131,7 +130,7 @@ class AnnounModel extends Equatable {
     };
   }
 
-  FormData formData() => FormData.fromMap({
+  Map<String, dynamic> formData() => {
         "user_id": userId,
         "title": title,
         "owner_name": ownerName,
@@ -143,15 +142,15 @@ class AnnounModel extends Equatable {
         "lat": lat,
         "long": long,
         "time_interval": timeInterval,
-        "files": [],
-      });
+        "images": images.map((e) => e.toString()).toList,
+      };
 
   Map<String, dynamic> toJsonForPost() {
     return {
       "address": location,
       "category": category.name,
-      "descrioption": description,
-      "images": images.map((img) => img.toString()).toList,
+      "description": description,
+      "images": images,
       "lat": lat,
       "long": long,
       "money": money,
@@ -173,7 +172,7 @@ class AnnounModel extends Equatable {
       number: json["phone"] as String? ?? "",
       description: json["description"] as String? ?? "",
       category: enumFromString(json["category"] as String? ?? ""),
-      money: (json["money"] as int? ?? 0).toString(),
+      money: (json["money"] as int? ?? 0),
       location: json["address"] as String? ?? "",
       lat: json["location"]["lat"] as num? ?? 0.0,
       long: json["location"]["long"] as num? ?? 0.0,
@@ -203,7 +202,7 @@ class AnnounModel extends Equatable {
     ownerName: "",
     title: '',
     description: '',
-    money: "",
+    money: 0,
     timeInterval: '',
     images: [],
     lat: 0.0,

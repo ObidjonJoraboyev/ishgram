@@ -71,6 +71,5 @@ class AuthUpdateProfileUser extends AuthEvent {
 
   final XFile pickedFile;
 }
-class AuthDeleteImage extends AuthEvent{
 
-}
+class AuthDeleteImage extends AuthEvent {}

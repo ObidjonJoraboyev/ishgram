@@ -8,7 +8,7 @@ import 'package:ish_top/blocs/auth/auth_bloc.dart';
 import 'package:ish_top/blocs/auth/auth_event.dart';
 import 'package:ish_top/blocs/auth/auth_state.dart';
 import 'package:ish_top/data/forms/form_status.dart';
-import 'package:ish_top/ui/admins_panel/tab/announ/widgets/zoom_tap.dart';
+import 'package:ish_top/ui/tab/announ/widgets/zoom_tap.dart';
 import 'package:ish_top/ui/auth/auth_screen.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:ish_top/ui/auth/register/get_password_screen.dart';

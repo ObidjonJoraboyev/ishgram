@@ -5,13 +5,13 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:ish_top/blocs/notification/notification_bloc.dart';
 import 'package:ish_top/blocs/notification/notification_state.dart';
-import 'package:ish_top/ui/admins_panel/tab/announ/widgets/zoom_tap.dart';
+import 'package:ish_top/ui/tab/announ/widgets/search_item.dart';
+import 'package:ish_top/ui/tab/announ/widgets/zoom_tap.dart';
 import 'package:ish_top/ui/tab/announ/notification/notification_screen.dart';
 import 'package:ish_top/utils/size/size_utils.dart';
 import 'package:pull_down_button/pull_down_button.dart';
-import '../../../../blocs/notification/notification_bloc.dart';
-import '../../../admins_panel/tab/announ/widgets/search_item.dart';
 import 'page_first.dart';
 
 class PageControl extends StatefulWidget {

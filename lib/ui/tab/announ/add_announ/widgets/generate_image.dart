@@ -65,7 +65,7 @@ class _GenerateImageState extends State<GenerateImage> {
                         ? CupertinoContextMenuAction(
                             onPressed: () async {
                               Navigator.of(context, rootNavigator: true).pop();
-                              showModalBottomSheet(
+                              await showModalBottomSheet(
                                   context: context,
                                   useSafeArea: true,
                                   isScrollControlled: true,
@@ -89,7 +89,9 @@ class _GenerateImageState extends State<GenerateImage> {
                                         ],
                                       ),
                                     );
-                                  });
+                                  }).then((v) {
+                                setState(() {});
+                              });
                             },
                             isDestructiveAction: false,
                             trailingIcon: CupertinoIcons.arrow_swap,
@@ -113,7 +115,6 @@ class _GenerateImageState extends State<GenerateImage> {
                   ],
                   child: CachedNetworkImage(
                     width: MediaQuery.sizeOf(context).width,
-
                     imageUrl: widget.state.images[index],
                     fit: BoxFit.cover,
                     placeholder: (s, w) {

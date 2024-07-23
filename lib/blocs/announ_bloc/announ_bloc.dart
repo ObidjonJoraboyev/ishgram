@@ -12,7 +12,6 @@ import 'announ_state.dart';
 class AnnounBloc extends Bloc<AnnounEvent, AnnounState> {
   AnnounBloc() : super(AnnounState(allHires: [], myHires: [])) {
     on<AnnounAddEvent>(addAnnoun);
-    on<AnnounListGetEvent>(getAnnounList);
     on<AnnounGetEvent>(getAnnoun);
     on<AnnounRemoveEvent>(deleteAnnoun);
     on<AnnounUpdateEvent>(updateAnnoun);
@@ -26,30 +25,11 @@ class AnnounBloc extends Bloc<AnnounEvent, AnnounState> {
     try {
       Response response = await dio.post(
           "https://ishgram-production.up.railway.app/api/v1/announcement",
-          data: event.hireModel.formData());
-      if (response.statusCode == 200) {
+          data: event.hireModel.toJsonForPost());
+      if (response.statusCode == 201) {
       } else {}
-    } catch (error) {
-      debugPrint("ERROR CATCH $error");
-    }
-  }
-
-  getAnnounList(AnnounListGetEvent event, Emitter emit) async {
-    List<AnnounModel> announs = [];
-    try {
-      for (int i = 0; i < event.announcementDocs.length; i++) {
-        await firebaseFirestore
-            .collection("hires")
-            .doc(event.announcementDocs[i])
-            .get()
-            .then((v) {
-          announs.add(AnnounModel.fromJson(v.data()!));
-        });
-      }
-
-      emit(state.copyWith(myHires: announs));
-    } catch (error) {
-      debugPrint("ERROR CATCH $error");
+    } on DioException catch (error) {
+      debugPrint("ERROR CATCH ADD ANNOUN ${error.response}");
     }
   }
 
@@ -85,7 +65,7 @@ class AnnounBloc extends Bloc<AnnounEvent, AnnounState> {
   getAnnounByUserId(AnnounGetUserIdEvent event, Emitter emit) async {
     try {
       Response response = await dio.get(
-          "https://ishgram-production.up.railway.app/api/v1/announcements-by-user-id?user_id=${event.userId}");
+          "https://ishgram-production.up.railway.app/api/v1/announcements-by/${event.userId}");
       if (response.statusCode == 200) {
         emit(
           state.copyWith(

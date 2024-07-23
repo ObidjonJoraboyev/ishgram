@@ -54,7 +54,6 @@ class _PasswordTextInputState extends State<PasswordTextInput> {
         },
         maxLength: widget.maxLength,
         autovalidateMode: AutovalidateMode.onUserInteraction,
-
         decoration: InputDecoration(
           errorStyle: TextStyle(fontSize: 9.sp),
           helperText: widget.newPass == true ? "new_password".tr() : null,

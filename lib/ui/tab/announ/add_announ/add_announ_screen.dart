@@ -107,6 +107,11 @@ class _AddHireScreenState extends State<AddHireScreen> {
           extendBodyBehindAppBar: true,
           backgroundColor: CupertinoColors.systemGrey5,
           appBar: AppBar(
+            leading: IconButton(
+                onPressed: () {
+                  setState(() {});
+                },
+                icon: const Icon(Icons.add)),
             scrolledUnderElevation: 0,
             title: Text(
               "add_hire".tr(),
@@ -636,9 +641,9 @@ class _AddHireScreenState extends State<AddHireScreen> {
                         .images
                         .map((e) => e.toString())
                         .toList(),
-                    money: money.text,
+                    money: int.parse(money.text.replaceAll(RegExp(r'\D'), '')),
                     userId: context.read<AuthBloc>().state.userModel.docId,
-                    number: numberCtrl.text,
+                    number: replaceString(numberCtrl.text),
                     status: StatusAnnoun.waiting,
                     createdAt: DateTime.now().millisecondsSinceEpoch,
                   );
@@ -648,18 +653,17 @@ class _AddHireScreenState extends State<AddHireScreen> {
                       hireModel: hireModel,
                       context: widget.context,
                       userModel: authState.userModel));
-
-                  widget.voidCallback.call(() {
-                    t.showToast(child: toast);
-                    nameCtrl.clear();
-                    numberCtrl.clear();
-                    money.clear();
-                    ownerCtrl.clear();
-                    descriptionCtrl.clear();
-                    startWork = DateTime.now().millisecondsSinceEpoch;
-                    endWork = DateTime.now().millisecondsSinceEpoch;
-                  });
-                }
+//  widget.voidCallback.call(() {
+//                     t.showToast(child: toast);
+//                     nameCtrl.clear();
+//                     numberCtrl.clear();
+//                     money.clear();
+//                     ownerCtrl.clear();
+//                     descriptionCtrl.clear();
+//                     startWork = DateTime.now().millisecondsSinceEpoch;
+//                     endWork = DateTime.now().millisecondsSinceEpoch;
+//                   });
+                } else {}
               },
             ),
           ),

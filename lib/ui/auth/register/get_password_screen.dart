@@ -49,17 +49,17 @@ class _GetPasswordScreenState extends State<GetPasswordScreen> {
   void startTimer() {
     remainingSeconds = maxSeconds;
     timer = Timer.periodic(const Duration(seconds: 1), (Timer timer) {
-    if(mounted){
-      if (remainingSeconds == 0) {
-        setState(() {
-          timer.cancel();
-        });
-      } else {
-        setState(() {
-          remainingSeconds--;
-        });
+      if (mounted) {
+        if (remainingSeconds == 0) {
+          setState(() {
+            timer.cancel();
+          });
+        } else {
+          setState(() {
+            remainingSeconds--;
+          });
+        }
       }
-    }
     });
   }
 
@@ -225,18 +225,21 @@ class _GetPasswordScreenState extends State<GetPasswordScreen> {
                               controller: passwordCtrl,
                               focusNode: focusNode,
                               password: password,
-                              valueChanged: (v) async{
+                              valueChanged: (v) async {
                                 if (int.parse(v) == password) {
-                                  context.read<AuthBloc>().add(AuthResetEvent());
+                                  context
+                                      .read<AuthBloc>()
+                                      .add(AuthResetEvent());
                                   Navigator.pushReplacement(
                                     context,
                                     MaterialPageRoute(
                                       builder: (context) {
-                                        return  RegisterSecond(userNumber: widget.num,);
+                                        return RegisterSecond(
+                                          userNumber: widget.num,
+                                        );
                                       },
                                     ),
                                   );
-
                                 }
                               }),
                         )
@@ -264,10 +267,6 @@ class _GetPasswordScreenState extends State<GetPasswordScreen> {
         //             ),
         //           );
         //         }
-
-
-
-
       },
     );
   }

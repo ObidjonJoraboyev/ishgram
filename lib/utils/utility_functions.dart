@@ -609,6 +609,7 @@ String replaceString(String string) {
       .replaceAll(")", "")
       .replaceAll("-", "");
 }
+
 String formatPhoneNumber(String phoneNumber) {
   String cleaned = phoneNumber.replaceAll(RegExp(r'\D'), '');
   String countryCode = cleaned.substring(0, 3);
@@ -620,6 +621,7 @@ String formatPhoneNumber(String phoneNumber) {
 
   return formatted;
 }
+
 showDialogCustom(
     {required BuildContext context,
     String? title,

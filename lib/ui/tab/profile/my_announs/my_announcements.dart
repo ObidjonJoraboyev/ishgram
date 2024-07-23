@@ -23,7 +23,8 @@ class MyAnnouncements extends StatefulWidget {
 class _MyAnnouncementsState extends State<MyAnnouncements> {
   @override
   void initState() {
-    context.read<AnnounBloc>().add(AnnounGetUserIdEvent(userId: context.read<AuthBloc>().state.userModel.docId));
+    context.read<AnnounBloc>().add(AnnounGetUserIdEvent(
+        userId: context.read<AuthBloc>().state.userModel.docId));
     super.initState();
   }
 
@@ -76,7 +77,7 @@ class _MyAnnouncementsState extends State<MyAnnouncements> {
                         activeIndex = v;
                         setState(() {});
                       },
-                      indicatorSize: TabBarIndicatorSize.label,
+                      indicatorSize: TabBarIndicatorSize.tab,
                       indicatorColor: CupertinoColors.activeBlue,
                       splashBorderRadius: BorderRadius.circular(160),
                       physics: const BouncingScrollPhysics(),
@@ -114,7 +115,7 @@ class _MyAnnouncementsState extends State<MyAnnouncements> {
                           style: TextStyle(
                             color: CupertinoColors.systemYellow,
                             fontWeight: FontWeight.w500,
-                            fontSize: 16.sp,
+                            fontSize: 14.sp,
                           ),
                         ),
                       ],

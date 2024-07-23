@@ -9,8 +9,8 @@ import 'package:ish_top/blocs/image/formstatus.dart';
 import 'package:ish_top/blocs/image/image_bloc.dart';
 import 'package:ish_top/blocs/image/image_event.dart';
 import 'package:ish_top/blocs/image/image_state.dart';
-import 'package:ish_top/ui/admins_panel/tab/announ/widgets/zoom_tap.dart';
 import 'package:ish_top/ui/auth/widgets/button.dart';
+import 'package:ish_top/ui/tab/announ/widgets/zoom_tap.dart';
 
 class GenerateImageSheet extends StatefulWidget {
   const GenerateImageSheet({

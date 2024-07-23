@@ -9,7 +9,7 @@ import 'package:ish_top/blocs/notification/notification_bloc.dart';
 import 'package:ish_top/blocs/notification/notification_event.dart';
 import 'package:ish_top/blocs/notification/notification_state.dart';
 import 'package:ish_top/data/models/notification_model.dart';
-import 'package:ish_top/ui/admins_panel/tab/announ/widgets/zoom_tap.dart';
+import 'package:ish_top/ui/tab/announ/widgets/zoom_tap.dart';
 import 'package:ish_top/ui/tab/announ/notification/notification_detail.dart';
 import 'package:ish_top/utils/size/size_utils.dart';
 import 'package:timeago/timeago.dart';

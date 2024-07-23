@@ -72,19 +72,21 @@ class _ListTileItemState extends State<ListTileItem> {
             if (widget.isSwitch != null) {
               if (check) {
                 context.read<AuthBloc>().add(UpdateUser(
-                    userModel: context
-                        .read<AuthBloc>()
-                        .state
-                        .userModel
-                        .copyWith(isPrivate: true),));
+                      userModel: context
+                          .read<AuthBloc>()
+                          .state
+                          .userModel
+                          .copyWith(isPrivate: true),
+                    ));
               } else {
                 context.read<AuthBloc>().add(
                       UpdateUser(
-                          userModel: context
-                              .read<AuthBloc>()
-                              .state
-                              .userModel
-                              .copyWith(isPrivate: false),),
+                        userModel: context
+                            .read<AuthBloc>()
+                            .state
+                            .userModel
+                            .copyWith(isPrivate: false),
+                      ),
                     );
               }
               context.read<AuthBloc>().add(GetCurrentUser());

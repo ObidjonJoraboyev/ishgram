@@ -195,7 +195,9 @@ class _EditProfileScreenState extends State<EditProfileScreen>
                                     );
 
                                 setState(() {});
-                                widget.context.read<AuthBloc>().add(GetCurrentUser());
+                                widget.context
+                                    .read<AuthBloc>()
+                                    .add(GetCurrentUser());
                                 if (state1.formStatus == FormStatus.success &&
                                     state1.formStatus != FormStatus.loading) {
                                   Navigator.pop(context);

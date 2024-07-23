@@ -61,6 +61,7 @@ dependencies:
   flutter_chat_bubble: ^2.0.2
   qr_flutter: ^4.1.0
   qr_code_scanner: ^1.0.1
+  webview_flutter: ^4.8.0
 
 
 

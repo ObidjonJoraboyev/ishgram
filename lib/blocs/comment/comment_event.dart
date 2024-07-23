@@ -9,7 +9,11 @@ class MessageEvent extends Equatable {
 }
 
 class MessageGetEvent extends MessageEvent {
-  const MessageGetEvent();
+  const MessageGetEvent({
+    required this.uuId,
+  });
+
+  final String uuId;
 
   @override
   List<Object?> get props => [];
@@ -17,13 +21,16 @@ class MessageGetEvent extends MessageEvent {
 
 class MessageDeleteEvent extends MessageEvent {
   const MessageDeleteEvent({required this.docId});
+
   final String docId;
+
   @override
   List<Object?> get props => [];
 }
 
 class MessageAddEvent extends MessageEvent {
   final MessageModel messages;
+
   const MessageAddEvent({required this.messages});
 
   @override
