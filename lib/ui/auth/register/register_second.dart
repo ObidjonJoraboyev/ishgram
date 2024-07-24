@@ -6,6 +6,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:ish_top/blocs/auth/auth_bloc.dart';
 import 'package:ish_top/blocs/auth/auth_event.dart';
 import 'package:ish_top/blocs/auth/auth_state.dart';
+import 'package:ish_top/blocs/user_bloc.dart';
+import 'package:ish_top/blocs/user_event.dart';
 import 'package:ish_top/data/forms/form_status.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:ish_top/data/local/local_storage.dart';
@@ -331,7 +333,7 @@ class _RegisterSecondState extends State<RegisterSecond> {
           StorageRepository.setString(key: "userDoc", value: widget.userNumber);
           Navigator.pushAndRemoveUntil(context,
               MaterialPageRoute(builder: (context) {
-            context.read<AuthBloc>().add(GetCurrentUser());
+            context.read<UserBloc>().add(GetCurrentUser());
             return const TabScreen();
           }), (v) {
             return false;

@@ -5,7 +5,6 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:ish_top/blocs/announ_bloc/announ_bloc.dart';
 import 'package:ish_top/blocs/announ_bloc/announ_event.dart';
 import 'package:ish_top/blocs/auth/auth_bloc.dart';
-import 'package:ish_top/blocs/auth/auth_event.dart';
 import 'package:ish_top/blocs/connectivity/connectivity_bloc.dart';
 import 'package:ish_top/blocs/connectivity/connectivity_event.dart';
 import 'package:ish_top/blocs/image/image_bloc.dart';
@@ -14,6 +13,7 @@ import 'package:ish_top/blocs/map/map_event.dart';
 import 'package:ish_top/blocs/comment/comment_bloc.dart';
 import 'package:ish_top/blocs/notification/notification_bloc.dart';
 import 'package:ish_top/blocs/notification/notification_event.dart';
+import 'package:ish_top/blocs/user_bloc.dart';
 import 'package:ish_top/ui/splash/splash_screen.dart';
 import 'package:ish_top/utils/size/size_utils.dart';
 
@@ -27,7 +27,10 @@ class App extends StatelessWidget {
     return MultiBlocProvider(
       providers: [
         BlocProvider(
-          create: (context) => AuthBloc()..add(GetCurrentUser()),
+          create: (context) => AuthBloc(),
+        ),
+        BlocProvider(
+          create: (context) => UserBloc(),
         ),
         BlocProvider(
           create: (context) => MessageBloc(),

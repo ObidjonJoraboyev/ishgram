@@ -24,8 +24,8 @@ class MessageBloc extends Bloc<MessageEvent, MessageState> {
       if (response.statusCode == 200) {
         emit(state.copyWith(
             formStatus: FormStatus.success,
-            messages: (response.data as List?)
-                ?.map((toElement) => MessageModel.fromJson(toElement))
+            messages: (response.data["comments"] as List? ?? [])
+                .map((toElement) => MessageModel.fromJson(toElement))
                 .toList()));
       }
     } on DioException catch (error) {

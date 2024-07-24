@@ -1,26 +1,26 @@
-import 'dart:async';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:easy_image_viewer/easy_image_viewer.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:ish_top/blocs/auth/auth_bloc.dart';
-import 'package:ish_top/blocs/auth/auth_event.dart';
-import 'package:ish_top/blocs/auth/auth_state.dart';
+import 'package:ish_top/blocs/user_bloc.dart';
+import 'package:ish_top/blocs/user_event.dart';
+import 'package:ish_top/blocs/user_state.dart';
 import 'package:ish_top/data/forms/form_status.dart';
 import 'package:ish_top/data/models/user_model.dart';
-import 'package:ish_top/utils/constants/app_constants.dart';
+import 'package:ish_top/ui/tab/profile/edit_username_screen.dart';
 import 'package:ish_top/utils/size/size_utils.dart';
 import 'package:ish_top/utils/utility_functions.dart';
+import 'package:page_transition/page_transition.dart';
 import 'package:shimmer/shimmer.dart';
 
 class EditProfileScreen extends StatefulWidget {
   const EditProfileScreen({super.key, required this.context});
 
   final BuildContext context;
+
   @override
   State<EditProfileScreen> createState() => _EditProfileScreenState();
 }
@@ -36,7 +36,7 @@ class _EditProfileScreenState extends State<EditProfileScreen>
 
   @override
   void initState() {
-    userModel = context.read<AuthBloc>().state.userModel;
+    userModel = context.read<UserBloc>().state.userModel;
     nameCtrl.text = userModel.name;
     lastName.text = userModel.lastName;
     selectedFruit = userModel.age;
@@ -53,41 +53,12 @@ class _EditProfileScreenState extends State<EditProfileScreen>
   late AnimationController _controller;
   late Animation<double> _animation;
 
-  Timer? _debounce;
-
   @override
   void dispose() {
     _controller.dispose();
 
     userName.dispose();
-    _debounce?.cancel();
     super.dispose();
-  }
-
-  void _updateProgress(double progress) {
-    _controller.animateTo(progress);
-  }
-
-  void resetAnimation() async {
-    _controller.reset();
-  }
-
-  void _onTextChanged(String query) {
-    if (_debounce?.isActive ?? false) _debounce?.cancel();
-    _debounce = Timer(const Duration(milliseconds: 500), () {
-      _sendRequest(query);
-    });
-  }
-
-  Future<void> _sendRequest(String query) async {
-    try {
-      await dio.get(
-        "https://ishgram-production.up.railway.app/api/v1/check-username",
-        queryParameters: {"username": userName.text},
-      );
-    } catch (e) {
-      debugPrint('Error: $e');
-    }
   }
 
   int selectedFruit = 0;
@@ -96,7 +67,7 @@ class _EditProfileScreenState extends State<EditProfileScreen>
     showCupertinoModalPopup<void>(
       context: context,
       builder: (BuildContext context) => Container(
-        height: 216,
+        height: MediaQuery.of(context).size.height / 3.5,
         padding: const EdgeInsets.only(top: 6.0),
         margin: EdgeInsets.only(
           bottom: MediaQuery.of(context).viewInsets.bottom,
@@ -122,13 +93,13 @@ class _EditProfileScreenState extends State<EditProfileScreen>
       child: Container(
         color: CupertinoColors.systemGrey5,
         child: SafeArea(
-          child: BlocConsumer<AuthBloc, AuthState>(
+          child: BlocConsumer<UserBloc, UserState>(
             listener: (context, state1) {
               if (state1.formStatus == FormStatus.uploadingImage) {
-                _updateProgress(state1.progress);
+                _controller.animateTo(state1.progress);
               }
               if (state1.formStatus == FormStatus.successImage) {
-                resetAnimation();
+                _controller.reset();
               }
             },
             builder: (context, state1) {
@@ -138,11 +109,12 @@ class _EditProfileScreenState extends State<EditProfileScreen>
                 body: Column(
                   children: [
                     Padding(
-                      padding: EdgeInsets.symmetric(horizontal: 0.w),
+                      padding: EdgeInsets.symmetric(horizontal: 14.w),
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           CupertinoButton(
+                              padding: EdgeInsets.zero,
                               child: Text(
                                 "cancel".tr(),
                                 style: TextStyle(
@@ -174,6 +146,7 @@ class _EditProfileScreenState extends State<EditProfileScreen>
                                 }
                               }),
                           CupertinoButton(
+                              padding: EdgeInsets.zero,
                               child: Text(
                                 "done".tr(),
                                 style: TextStyle(
@@ -182,7 +155,7 @@ class _EditProfileScreenState extends State<EditProfileScreen>
                                     fontWeight: FontWeight.w500),
                               ),
                               onPressed: () {
-                                widget.context.read<AuthBloc>().add(
+                                widget.context.read<UserBloc>().add(
                                       UpdateUser(
                                         userModel: state1.userModel.copyWith(
                                             name: nameCtrl.text,
@@ -196,7 +169,7 @@ class _EditProfileScreenState extends State<EditProfileScreen>
 
                                 setState(() {});
                                 widget.context
-                                    .read<AuthBloc>()
+                                    .read<UserBloc>()
                                     .add(GetCurrentUser());
                                 if (state1.formStatus == FormStatus.success &&
                                     state1.formStatus != FormStatus.loading) {
@@ -328,7 +301,7 @@ class _EditProfileScreenState extends State<EditProfileScreen>
                                   onDelete: () {
                                     Navigator.of(context).pop();
                                     context
-                                        .read<AuthBloc>()
+                                        .read<UserBloc>()
                                         .add(AuthDeleteImage());
                                   },
                                   context,
@@ -402,150 +375,11 @@ class _EditProfileScreenState extends State<EditProfileScreen>
                               cursorColor: CupertinoColors.activeBlue,
                               placeholder: "username".tr(),
                               onTap: () {
-                                showModalBottomSheet(
-                                  useSafeArea: true,
-                                  backgroundColor: CupertinoColors.systemGrey5,
-                                  barrierColor: Colors.transparent,
-                                  isScrollControlled: true,
-                                  context: context,
-                                  builder: (context) {
-                                    return StatefulBuilder(
-                                        builder: (context, setState) {
-                                      return Container(
-                                        decoration: BoxDecoration(
-                                            color: CupertinoColors.systemGrey5,
-                                            borderRadius: BorderRadius.only(
-                                                topLeft: Radius.circular(24.r),
-                                                topRight:
-                                                    Radius.circular(24.r))),
-                                        child: Column(
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.start,
-                                          children: [
-                                            Padding(
-                                              padding: EdgeInsets.symmetric(
-                                                  horizontal: 0.w),
-                                              child: Row(
-                                                mainAxisAlignment:
-                                                    MainAxisAlignment
-                                                        .spaceBetween,
-                                                children: [
-                                                  CupertinoButton(
-                                                      child: Text(
-                                                        "cancel".tr(),
-                                                        style: TextStyle(
-                                                            color:
-                                                                CupertinoColors
-                                                                    .activeBlue,
-                                                            fontSize: 15.sp,
-                                                            fontWeight:
-                                                                FontWeight
-                                                                    .w400),
-                                                      ),
-                                                      onPressed: () {
-                                                        userName.text = state1
-                                                            .userModel.username;
-                                                        Navigator.pop(context);
-                                                      }),
-                                                  Text(
-                                                    "username".tr(),
-                                                    style: TextStyle(
-                                                        fontSize: 15.sp,
-                                                        fontWeight:
-                                                            FontWeight.w600),
-                                                  ),
-                                                  CupertinoButton(
-                                                      child: Text(
-                                                        "done".tr(),
-                                                        style: TextStyle(
-                                                            color:
-                                                                CupertinoColors
-                                                                    .activeBlue,
-                                                            fontSize: 15.sp,
-                                                            fontWeight:
-                                                                FontWeight
-                                                                    .w500),
-                                                      ),
-                                                      onPressed: () {
-                                                        Navigator.pop(context);
-                                                      }),
-                                                ],
-                                              ),
-                                            ),
-                                            20.getH(),
-                                            Padding(
-                                              padding: EdgeInsets.symmetric(
-                                                  horizontal: 14.w),
-                                              child: CupertinoTextField(
-                                                inputFormatters: [
-                                                  FilteringTextInputFormatter
-                                                      .allow(RegExp(
-                                                          r'^[a-zA-Z][a-zA-Z0-9_]{0,31}$')),
-                                                ],
-                                                maxLength: 29,
-                                                onTapOutside: (v) {
-                                                  setState(() {});
-                                                },
-                                                onChanged: (v) async {
-                                                  setState(() {});
-                                                  errorText =
-                                                      validateUsername(v);
-                                                  if (v.isNotEmpty) {
-                                                    if (validateUsername(v)
-                                                        .isEmpty) {
-                                                      _onTextChanged(v);
-                                                    }
-                                                  }
-                                                  setState(() {});
-                                                },
-                                                cursorColor:
-                                                    CupertinoColors.activeBlue,
-                                                placeholder: "username".tr(),
-                                                padding: EdgeInsets.all(10.sp),
-                                                controller: userName,
-                                                decoration: BoxDecoration(
-                                                    borderRadius:
-                                                        BorderRadius.circular(
-                                                            12.r),
-                                                    color: Colors.white),
-                                              ),
-                                            ),
-                                            errorText.isNotEmpty
-                                                ? Padding(
-                                                    padding:
-                                                        EdgeInsets.symmetric(
-                                                            horizontal: 24.w,
-                                                            vertical: 5.h),
-                                                    child: Text(
-                                                      errorText,
-                                                      style: const TextStyle(
-                                                          color: CupertinoColors
-                                                              .destructiveRed,
-                                                          fontSize: 12),
-                                                      overflow:
-                                                          TextOverflow.ellipsis,
-                                                    ),
-                                                  )
-                                                : SizedBox(
-                                                    height: 10.h,
-                                                  ),
-                                            Padding(
-                                              padding: EdgeInsets.symmetric(
-                                                  horizontal: 24.w),
-                                              child: Text(
-                                                "username_description".tr(),
-                                                style: TextStyle(
-                                                    fontWeight: FontWeight.w400,
-                                                    fontSize: 12.sp,
-                                                    color: Colors.black),
-                                              ),
-                                            )
-                                          ],
-                                        ),
-                                      );
-                                    });
-                                  },
-                                );
+                                Navigator.push(
+                                    context,
+                                    PageTransition(
+                                        child: const EditUsernameScreen(),
+                                        type: PageTransitionType.bottomToTop));
                               },
                               readOnly: true,
                               padding: EdgeInsets.all(10.sp),

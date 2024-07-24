@@ -1,5 +1,4 @@
 import 'dart:ui';
-
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -11,13 +10,13 @@ import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:ish_top/blocs/announ_bloc/announ_bloc.dart';
 import 'package:ish_top/blocs/announ_bloc/announ_event.dart';
-import 'package:ish_top/blocs/auth/auth_bloc.dart';
-import 'package:ish_top/blocs/auth/auth_event.dart';
-import 'package:ish_top/blocs/auth/auth_state.dart';
 import 'package:ish_top/blocs/image/image_bloc.dart';
 import 'package:ish_top/blocs/image/image_event.dart';
 import 'package:ish_top/blocs/image/image_state.dart';
 import 'package:ish_top/blocs/map/map_bloc.dart';
+import 'package:ish_top/blocs/user_bloc.dart';
+import 'package:ish_top/blocs/user_event.dart';
+import 'package:ish_top/blocs/user_state.dart';
 import 'package:ish_top/data/models/announ_model.dart';
 import 'package:ish_top/data/network/api_provider_location.dart';
 import 'package:ish_top/ui/tab/announ/add_announ/google_maps/google_maps_screen.dart';
@@ -100,7 +99,7 @@ class _AddHireScreenState extends State<AddHireScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return BlocConsumer<AuthBloc, AuthState>(
+    return BlocConsumer<UserBloc, UserState>(
       listener: (context, state) {},
       builder: (context, authState) {
         return Scaffold(
@@ -241,7 +240,7 @@ class _AddHireScreenState extends State<AddHireScreen> {
                             setState(() {});
 
                             if (v ==
-                                context.read<AuthBloc>().state.userModel.name) {
+                                context.read<UserBloc>().state.userModel.name) {
                               checkBoxName = true;
                             } else {
                               checkBoxName = false;
@@ -261,7 +260,7 @@ class _AddHireScreenState extends State<AddHireScreen> {
 
                               if (checkBoxName) {
                                 ownerCtrl.text = context
-                                    .read<AuthBloc>()
+                                    .read<UserBloc>()
                                     .state
                                     .userModel
                                     .name;
@@ -282,7 +281,7 @@ class _AddHireScreenState extends State<AddHireScreen> {
 
                                       if (checkBoxName) {
                                         ownerCtrl.text = context
-                                            .read<AuthBloc>()
+                                            .read<UserBloc>()
                                             .state
                                             .userModel
                                             .name;
@@ -314,7 +313,7 @@ class _AddHireScreenState extends State<AddHireScreen> {
 
                             if (v ==
                                 formatPhoneNumber(context
-                                    .read<AuthBloc>()
+                                    .read<UserBloc>()
                                     .state
                                     .userModel
                                     .phone)) {
@@ -338,7 +337,7 @@ class _AddHireScreenState extends State<AddHireScreen> {
 
                               if (checkBoxNum) {
                                 numberCtrl.text = formatPhoneNumber(context
-                                    .read<AuthBloc>()
+                                    .read<UserBloc>()
                                     .state
                                     .userModel
                                     .phone);
@@ -360,7 +359,7 @@ class _AddHireScreenState extends State<AddHireScreen> {
                                       if (checkBoxNum) {
                                         numberCtrl.text = formatPhoneNumber(
                                             context
-                                                .read<AuthBloc>()
+                                                .read<UserBloc>()
                                                 .state
                                                 .userModel
                                                 .phone);
@@ -642,12 +641,12 @@ class _AddHireScreenState extends State<AddHireScreen> {
                         .map((e) => e.toString())
                         .toList(),
                     money: int.parse(money.text.replaceAll(RegExp(r'\D'), '')),
-                    userId: context.read<AuthBloc>().state.userModel.docId,
+                    userId: context.read<UserBloc>().state.userModel.docId,
                     number: replaceString(numberCtrl.text),
                     status: StatusAnnoun.waiting,
                     createdAt: DateTime.now().millisecondsSinceEpoch,
                   );
-                  context.read<AuthBloc>().add(GetCurrentUser());
+                  context.read<UserBloc>().add(GetCurrentUser());
 
                   context.read<AnnounBloc>().add(AnnounAddEvent(
                       hireModel: hireModel,

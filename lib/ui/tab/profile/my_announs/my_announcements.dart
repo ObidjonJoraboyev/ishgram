@@ -9,6 +9,7 @@ import 'package:ish_top/blocs/announ_bloc/announ_event.dart';
 import 'package:ish_top/blocs/announ_bloc/announ_state.dart';
 import 'package:ish_top/blocs/auth/auth_bloc.dart';
 import 'package:ish_top/blocs/auth/auth_state.dart';
+import 'package:ish_top/blocs/user_bloc.dart';
 import 'package:ish_top/data/models/announ_model.dart';
 import 'package:ish_top/ui/tab/profile/my_announs/widgets/my_announs_item.dart';
 import 'package:ish_top/utils/size/size_utils.dart';
@@ -24,7 +25,7 @@ class _MyAnnouncementsState extends State<MyAnnouncements> {
   @override
   void initState() {
     context.read<AnnounBloc>().add(AnnounGetUserIdEvent(
-        userId: context.read<AuthBloc>().state.userModel.docId));
+        userId: context.read<UserBloc>().state.userModel.docId));
     super.initState();
   }
 

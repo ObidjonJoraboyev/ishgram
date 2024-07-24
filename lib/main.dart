@@ -7,13 +7,13 @@ import 'package:ish_top/app/app.dart';
 import 'package:ish_top/data/local/local_storage.dart';
 import 'package:ish_top/utils/utility_functions.dart';
 import 'firebase_options.dart';
-import 'package:timeago/timeago.dart' as timeago;
+import 'package:timeago/timeago.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await EasyLocalization.ensureInitialized();
   await Alarm.init();
-  timeago.setLocaleMessages('uz', UzbekMessages());
+  setLocaleMessages('uz', UzbekMessages());
   await Firebase.initializeApp(
       options: Platform.isIOS ? DefaultFirebaseOptions.currentPlatform : null);
   StorageRepository.instance;

@@ -10,16 +10,16 @@ import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:image_picker/image_picker.dart';
 import 'package:ish_top/blocs/auth/auth_bloc.dart';
 import 'package:ish_top/blocs/auth/auth_event.dart';
-import 'package:ish_top/blocs/auth/auth_state.dart';
+import 'package:ish_top/blocs/user_bloc.dart';
+import 'package:ish_top/blocs/user_event.dart';
+import 'package:ish_top/blocs/user_state.dart';
 import 'package:ish_top/ui/tab/profile/edit/edit_profile_screen.dart';
 import 'package:ish_top/ui/tab/profile/my_announs/my_announcements.dart';
 import 'package:ish_top/ui/tab/profile/my_profile/my_profile_screen.dart';
 import 'package:ish_top/ui/tab/profile/scan/scanner_screen.dart';
 import 'package:ish_top/ui/tab/profile/widgets/list_tile_item.dart';
-import 'package:ish_top/utils/constants/app_constants.dart';
 import 'package:ish_top/utils/size/size_utils.dart';
 import 'package:ish_top/utils/utility_functions.dart';
 import 'package:page_transition/page_transition.dart';
@@ -38,89 +38,14 @@ class ProfileScreen extends StatefulWidget {
 
 class _ProfileScreenState extends State<ProfileScreen>
     with SingleTickerProviderStateMixin {
-  final ImagePicker picker = ImagePicker();
-  String imageUrl = "";
-  String storagePath = "";
-  String fcm = "";
-
   bool isOpen = false;
   String errorText = "";
   TextEditingController userName = TextEditingController();
-
-  Future<void> init() async {
-    setState(() {});
-  }
-
   late AnimationController _controller;
   late Animation<double> _animation;
 
-  @override
-  void initState() {
-    context.read<AuthBloc>().add(GetCurrentUser());
-    userName.text = context.read<AuthBloc>().state.userModel.username;
-    init();
-    _controller = AnimationController(
-      vsync: this,
-      duration: const Duration(milliseconds: 500),
-    );
-    _animation = Tween<double>(begin: 0.0, end: 1.0).animate(_controller);
-    super.initState();
-  }
-
-  @override
-  void dispose() {
-    _controller.dispose();
-    super.dispose();
-  }
-
-  void _updateProgress(double progress) {
-    _controller.animateTo(progress);
-  }
-
-  void resetAnimation() async {
-    _controller.reset();
-  }
-
-  void _onTextChanged(String query) {
-    if (_debounce?.isActive ?? false) _debounce?.cancel();
-    _debounce = Timer(const Duration(milliseconds: 500), () {
-      _sendRequest(query);
-    });
-  }
-
-  Timer? _debounce;
-
-  Future<void> _sendRequest(String query) async {
-    try {
-      await dio.get(
-        "https://ishgram-production.up.railway.app/api/v1/check-username",
-        queryParameters: {"username": userName.text},
-      );
-    } catch (e) {
-      debugPrint('Error: $e');
-    }
-  }
-
-  onDone() async {
-    if (userName.text.isNotEmpty) {
-      Response response = await dio.patch(
-        "https://ishgram-production.up.railway.app/api/v1/change-username",
-        queryParameters: {
-          "username": userName.text,
-          "user_id": context.read<AuthBloc>().state.userModel.docId
-        },
-      );
-      if (response.statusCode == 200) {
-        return;
-      }
-    } else {
-      Response response = await dio.patch(
-        "https://ishgram-production.up.railway.app/api/v1/user-remove-username/${context.read<AuthBloc>().state.userModel.docId}",
-      );
-      if (response.statusCode == 200) {
-        return;
-      }
-    }
+  Future<void> init() async {
+    setState(() {});
   }
 
   @override
@@ -130,7 +55,7 @@ class _ProfileScreenState extends State<ProfileScreen>
       supportedLocales: context.supportedLocales,
       locale: context.locale,
       debugShowCheckedModeBanner: false,
-      home: BlocConsumer<AuthBloc, AuthState>(
+      home: BlocConsumer<UserBloc, UserState>(
         listener: (context, state1) {
           if (state1.formStatus == FormStatus.uploadingImage) {
             _updateProgress(state1.progress);
@@ -364,7 +289,7 @@ class _ProfileScreenState extends State<ProfileScreen>
                                         type: PageTransitionType.fade))
                                 .then((b) {
                               contextState
-                                  .read<AuthBloc>()
+                                  .read<UserBloc>()
                                   .add(GetCurrentUser());
                               setState(() {});
                             });
@@ -410,199 +335,10 @@ class _ProfileScreenState extends State<ProfileScreen>
                                         showCursor: false,
                                         onTap: () {
                                           userName.text = context
-                                              .read<AuthBloc>()
+                                              .read<UserBloc>()
                                               .state
                                               .userModel
                                               .username;
-
-                                          showModalBottomSheet(
-                                            useSafeArea: true,
-                                            backgroundColor:
-                                                CupertinoColors.systemGrey5,
-                                            barrierColor: Colors.transparent,
-                                            isScrollControlled: true,
-                                            context: context,
-                                            builder: (context) {
-                                              return StatefulBuilder(
-                                                  builder: (context, setState) {
-                                                return Container(
-                                                  decoration: BoxDecoration(
-                                                      color: CupertinoColors
-                                                          .systemGrey5,
-                                                      borderRadius:
-                                                          BorderRadius.only(
-                                                              topLeft: Radius
-                                                                  .circular(
-                                                                      24.r),
-                                                              topRight: Radius
-                                                                  .circular(
-                                                                      24.r))),
-                                                  child: Column(
-                                                    crossAxisAlignment:
-                                                        CrossAxisAlignment
-                                                            .start,
-                                                    children: [
-                                                      Padding(
-                                                        padding: EdgeInsets
-                                                            .symmetric(
-                                                                horizontal:
-                                                                    0.w),
-                                                        child: Row(
-                                                          mainAxisAlignment:
-                                                              MainAxisAlignment
-                                                                  .spaceBetween,
-                                                          children: [
-                                                            CupertinoButton(
-                                                                child: Text(
-                                                                  "cancel".tr(),
-                                                                  style: TextStyle(
-                                                                      color: CupertinoColors
-                                                                          .activeBlue,
-                                                                      fontSize:
-                                                                          15.sp,
-                                                                      fontWeight:
-                                                                          FontWeight
-                                                                              .w400),
-                                                                ),
-                                                                onPressed: () {
-                                                                  userName.text = state1
-                                                                      .userModel
-                                                                      .username;
-                                                                  Navigator.pop(
-                                                                      context);
-                                                                }),
-                                                            Text(
-                                                              "username".tr(),
-                                                              style: TextStyle(
-                                                                  fontSize:
-                                                                      15.sp,
-                                                                  fontWeight:
-                                                                      FontWeight
-                                                                          .w600),
-                                                            ),
-                                                            CupertinoButton(
-                                                                child: Text(
-                                                                  "done".tr(),
-                                                                  style: TextStyle(
-                                                                      color: CupertinoColors
-                                                                          .activeBlue,
-                                                                      fontSize:
-                                                                          15.sp,
-                                                                      fontWeight:
-                                                                          FontWeight
-                                                                              .w500),
-                                                                ),
-                                                                onPressed:
-                                                                    () async {
-                                                                  await onDone();
-                                                                  if (!context.mounted) return;
-                                                                  Navigator.pop(
-                                                                      context);
-                                                                  context
-                                                                      .read<
-                                                                          AuthBloc>()
-                                                                      .add(
-                                                                          GetCurrentUser());
-                                                                }),
-                                                          ],
-                                                        ),
-                                                      ),
-                                                      20.getH(),
-                                                      Padding(
-                                                        padding: EdgeInsets
-                                                            .symmetric(
-                                                                horizontal:
-                                                                    14.w),
-                                                        child:
-                                                            CupertinoTextField(
-                                                          inputFormatters: [
-                                                            FilteringTextInputFormatter
-                                                                .allow(RegExp(
-                                                                    r'^[a-zA-Z][a-zA-Z0-9_]{0,31}$')),
-                                                          ],
-                                                          maxLength: 29,
-                                                          onTapOutside: (v) {
-                                                            setState(() {});
-                                                          },
-                                                          onChanged: (v) async {
-                                                            setState(() {});
-                                                            errorText =
-                                                                validateUsername(
-                                                                    v);
-                                                            if (v.isNotEmpty) {
-                                                              if (validateUsername(
-                                                                      v)
-                                                                  .isEmpty) {
-                                                                _onTextChanged(
-                                                                    v);
-                                                              }
-                                                            }
-                                                            setState(() {});
-                                                          },
-                                                          cursorColor:
-                                                              CupertinoColors
-                                                                  .activeBlue,
-                                                          placeholder:
-                                                              "username".tr(),
-                                                          padding:
-                                                              EdgeInsets.all(
-                                                                  10.sp),
-                                                          controller: userName,
-                                                          decoration: BoxDecoration(
-                                                              borderRadius:
-                                                                  BorderRadius
-                                                                      .circular(
-                                                                          12.r),
-                                                              color:
-                                                                  Colors.white),
-                                                        ),
-                                                      ),
-                                                      errorText.isNotEmpty
-                                                          ? Padding(
-                                                              padding: EdgeInsets
-                                                                  .symmetric(
-                                                                      horizontal:
-                                                                          24.w,
-                                                                      vertical:
-                                                                          5.h),
-                                                              child: Text(
-                                                                errorText,
-                                                                style: const TextStyle(
-                                                                    color: CupertinoColors
-                                                                        .destructiveRed,
-                                                                    fontSize:
-                                                                        12),
-                                                                overflow:
-                                                                    TextOverflow
-                                                                        .ellipsis,
-                                                              ),
-                                                            )
-                                                          : SizedBox(
-                                                              height: 10.h,
-                                                            ),
-                                                      Padding(
-                                                        padding: EdgeInsets
-                                                            .symmetric(
-                                                                horizontal:
-                                                                    24.w),
-                                                        child: Text(
-                                                          "username_description"
-                                                              .tr(),
-                                                          style: TextStyle(
-                                                              fontWeight:
-                                                                  FontWeight
-                                                                      .w400,
-                                                              fontSize: 12.sp,
-                                                              color:
-                                                                  Colors.black),
-                                                        ),
-                                                      )
-                                                    ],
-                                                  ),
-                                                );
-                                              });
-                                            },
-                                          );
                                         },
                                         "@${state1.userModel.username}",
                                         style: TextStyle(
@@ -656,7 +392,7 @@ class _ProfileScreenState extends State<ProfileScreen>
                                             onPressed: () async {
                                               Navigator.pop(context);
                                               context
-                                                  .read<AuthBloc>()
+                                                  .read<UserBloc>()
                                                   .add(AuthDeleteImage());
                                             },
                                             child: const Text(
@@ -847,5 +583,54 @@ class _ProfileScreenState extends State<ProfileScreen>
         },
       ),
     );
+  }
+
+  @override
+  void initState() {
+    context.read<UserBloc>().add(GetCurrentUser());
+    userName.text = context.read<UserBloc>().state.userModel.username;
+    init();
+    _controller = AnimationController(
+      vsync: this,
+      duration: const Duration(milliseconds: 500),
+    );
+    _animation = Tween<double>(begin: 0.0, end: 1.0).animate(_controller);
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
+
+  void _updateProgress(double progress) {
+    _controller.animateTo(progress);
+  }
+
+  void resetAnimation() async {
+    _controller.reset();
+  }
+
+  onDone() async {
+    if (userName.text.isNotEmpty) {
+      Response response = await dio.patch(
+        "https://ishgram-production.up.railway.app/api/v1/change-username",
+        queryParameters: {
+          "username": userName.text,
+          "user_id": context.read<UserBloc>().state.userModel.docId
+        },
+      );
+      if (response.statusCode == 200) {
+        return;
+      }
+    } else {
+      Response response = await dio.patch(
+        "https://ishgram-production.up.railway.app/api/v1/user-remove-username/${context.read<UserBloc>().state.userModel.docId}",
+      );
+      if (response.statusCode == 200) {
+        return;
+      }
+    }
   }
 }

@@ -1,8 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:ish_top/blocs/auth/auth_bloc.dart';
-import 'package:ish_top/blocs/auth/auth_event.dart';
+import 'package:ish_top/blocs/user_bloc.dart';
+import 'package:ish_top/blocs/user_event.dart';
 import 'package:ish_top/data/local/local_storage.dart';
 import 'package:ish_top/ui/auth/register/get_number.dart';
 import 'package:ish_top/ui/tab/tab/tab_screen.dart';
@@ -21,7 +21,7 @@ class _SplashScreenState extends State<SplashScreen> {
     String userNumber = StorageRepository.getString(key: "userNum");
 
     Future.delayed(const Duration(seconds: 1), () {
-      context.read<AuthBloc>().add(GetCurrentUser());
+      context.read<UserBloc>().add(GetCurrentUser());
       setState(() {});
       Navigator.pushReplacement(
         context,

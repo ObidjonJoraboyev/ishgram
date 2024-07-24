@@ -2,9 +2,9 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:ish_top/blocs/auth/auth_bloc.dart';
-import 'package:ish_top/blocs/auth/auth_event.dart';
-import 'package:ish_top/blocs/auth/auth_state.dart';
+import 'package:ish_top/blocs/user_bloc.dart';
+import 'package:ish_top/blocs/user_event.dart';
+import 'package:ish_top/blocs/user_state.dart';
 
 class ListTileItem extends StatefulWidget {
   const ListTileItem({
@@ -44,7 +44,7 @@ class _ListTileItemState extends State<ListTileItem> {
                   size: 14.sp,
                   color: Colors.grey,
                 )
-              : BlocConsumer<AuthBloc, AuthState>(
+              : BlocConsumer<UserBloc, UserState>(
                   listener: (context, state) {},
                   builder: (context, state) {
                     return SizedBox(
@@ -53,14 +53,14 @@ class _ListTileItemState extends State<ListTileItem> {
                         value: state.userModel.isPrivate,
                         onChanged: (v) {
                           check = v;
-                          context.read<AuthBloc>().add(
+                          context.read<UserBloc>().add(
                                 UpdateUser(
                                   userModel:
                                       state.userModel.copyWith(isPrivate: v),
                                 ),
                               );
 
-                          context.read<AuthBloc>().add(GetCurrentUser());
+                          context.read<UserBloc>().add(GetCurrentUser());
                         },
                       ),
                     );
@@ -71,25 +71,25 @@ class _ListTileItemState extends State<ListTileItem> {
             widget.isSwitch != null ? check = !check : null;
             if (widget.isSwitch != null) {
               if (check) {
-                context.read<AuthBloc>().add(UpdateUser(
+                context.read<UserBloc>().add(UpdateUser(
                       userModel: context
-                          .read<AuthBloc>()
+                          .read<UserBloc>()
                           .state
                           .userModel
                           .copyWith(isPrivate: true),
                     ));
               } else {
-                context.read<AuthBloc>().add(
+                context.read<UserBloc>().add(
                       UpdateUser(
                         userModel: context
-                            .read<AuthBloc>()
+                            .read<UserBloc>()
                             .state
                             .userModel
                             .copyWith(isPrivate: false),
                       ),
                     );
               }
-              context.read<AuthBloc>().add(GetCurrentUser());
+              context.read<UserBloc>().add(GetCurrentUser());
             }
             setState(() {});
           },

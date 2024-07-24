@@ -3,9 +3,10 @@ import 'package:equatable/equatable.dart';
 class MessageModel extends Equatable {
   final String messageId;
   final String messageText;
-  final String createdTime;
+  final int createdTime;
   final String idFrom;
   final String idTo;
+  final bool isEdited;
 
   const MessageModel({
     required this.idFrom,
@@ -13,6 +14,7 @@ class MessageModel extends Equatable {
     required this.messageText,
     required this.messageId,
     required this.createdTime,
+    required this.isEdited,
   });
 
   Map<String, dynamic> toJson() => {
@@ -33,30 +35,37 @@ class MessageModel extends Equatable {
   factory MessageModel.fromJson(Map<String, dynamic> json) {
     return MessageModel(
       idFrom: json["id_from"] as String? ?? "",
-      idTo: json["id_to"] as String? ?? "",
-      messageText: json["message_text"] as String? ?? "",
-      messageId: json["doc_id"] as String? ?? "",
-      createdTime: json["updated_time"] as String? ?? "",
+      idTo: json["ann_id"] as String? ?? "",
+      messageText: json["text"] as String? ?? "",
+      messageId: json["id"] as String? ?? "",
+      createdTime: json["created_at"] as int? ?? 0,
+      isEdited: json["is_edited"] as bool? ?? false,
     );
   }
+
+  //   "id": "c256cf35-872b-4a18-b618-e37cde5b8f79",
+  //       "ann_id": "31e76a1b-35c6-4217-8004-c3c09c91136e",
+  //       "id_from": "dfd7f911-f5e3-4d52-a730-04c9fe367980",
+  //       "text": "sdasdfasdf",
+  //       "created_at": 1721762165466,
+  //       "is_edited": false
 
   static MessageModel initialValue = const MessageModel(
     idFrom: "",
     idTo: "",
     messageText: "",
     messageId: "",
-    createdTime: "",
+    createdTime: 0,
+    isEdited: false,
   );
 
   MessageModel copyWith({
     String? messageId,
     String? messageText,
-    String? createdTime,
-    String? updatedTime,
+    int? createdTime,
     String? idFrom,
     String? idTo,
-    bool? isSupport,
-    String? image,
+    bool? isEdited,
   }) {
     return MessageModel(
       idFrom: idFrom ?? this.idFrom,
@@ -64,6 +73,7 @@ class MessageModel extends Equatable {
       messageText: messageText ?? this.messageText,
       messageId: messageId ?? this.messageId,
       createdTime: createdTime ?? this.createdTime,
+      isEdited: isEdited ?? this.isEdited,
     );
   }
 
@@ -74,5 +84,6 @@ class MessageModel extends Equatable {
         idTo,
         idFrom,
         createdTime,
+        isEdited,
       ];
 }

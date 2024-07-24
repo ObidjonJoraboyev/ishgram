@@ -6,10 +6,10 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:ish_top/blocs/auth/auth_bloc.dart';
 import 'package:ish_top/blocs/comment/comment_bloc.dart';
 import 'package:ish_top/blocs/comment/comment_event.dart';
 import 'package:ish_top/blocs/comment/comment_state.dart';
+import 'package:ish_top/blocs/user_bloc.dart';
 import 'package:ish_top/data/local/local_storage.dart';
 import 'package:ish_top/data/models/announ_model.dart';
 import 'package:ish_top/data/models/message_model.dart';
@@ -300,9 +300,9 @@ class _CommentScreenState extends State<CommentScreen> {
                           controller.clear();
                           messageModel = messageModel.copyWith(
                             messageText: controllerTemp,
-                            isSupport: false,
+                            isEdited: false,
                             idFrom:
-                                context.read<AuthBloc>().state.userModel.docId,
+                                context.read<UserBloc>().state.userModel.docId,
                             idTo: widget.announcementModel.docId,
                           );
 

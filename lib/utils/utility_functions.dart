@@ -3,12 +3,13 @@ import 'package:alarm/alarm.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:ish_top/blocs/auth/auth_bloc.dart';
-import 'package:ish_top/blocs/auth/auth_event.dart';
+import 'package:ish_top/blocs/user_bloc.dart';
+import 'package:ish_top/blocs/user_event.dart';
 import 'package:ish_top/ui/tab/announ/widgets/zoom_tap.dart';
 import 'package:ish_top/utils/size/size_utils.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -39,7 +40,7 @@ Future<void> _getImageFromGallery(BuildContext context,
             .read<ImageBloc>()
             .add(ImageSetEvent(pickedFile: image, images: images))
         : context
-            .read<AuthBloc>()
+            .read<UserBloc>()
             .add(AuthUpdateProfileUser(pickedFile: image[0]));
   } else {
     XFile? image = await picker.pickImage(
@@ -58,7 +59,7 @@ Future<void> _getImageFromGallery(BuildContext context,
           ? context
               .read<ImageBloc>()
               .add(ImageSetEvent(pickedFile: [image!], images: images))
-          : context.read<AuthBloc>().add(AuthUpdateProfileUser(
+          : context.read<UserBloc>().add(AuthUpdateProfileUser(
                 pickedFile: image!,
               ));
     }
@@ -89,7 +90,7 @@ Future<void> _getImageFromCamera(BuildContext context,
         ? context
             .read<ImageBloc>()
             .add(ImageSetEvent(pickedFile: [image!], images: images))
-        : context.read<AuthBloc>().add(AuthUpdateProfileUser(
+        : context.read<UserBloc>().add(AuthUpdateProfileUser(
               pickedFile: image!,
             ));
   }
@@ -660,4 +661,18 @@ showDialogCustom(
           ],
         );
       });
+}
+
+class UsernameTextInputFormatter extends TextInputFormatter {
+  @override
+  TextEditingValue formatEditUpdate(
+    TextEditingValue oldValue,
+    TextEditingValue newValue,
+  ) {
+    if (newValue.text.isNotEmpty &&
+        !RegExp(r'^[a-zA-Z]').hasMatch(newValue.text[0])) {
+      return oldValue;
+    }
+    return newValue;
+  }
 }

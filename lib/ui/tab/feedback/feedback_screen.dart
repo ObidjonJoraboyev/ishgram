@@ -407,10 +407,8 @@ class _FeedbackScreenState extends State<FeedbackScreen> {
                                     controller.clear();
 
                                     messageModel = messageModel.copyWith(
-                                      isSupport: true,
-                                      createdTime: DateTime.now()
-                                          .millisecondsSinceEpoch
-                                          .toString(),
+                                      createdTime:
+                                          DateTime.now().millisecondsSinceEpoch,
                                       messageText: controllerTemp,
                                       messageId: "",
                                       idFrom: StorageRepository.getString(

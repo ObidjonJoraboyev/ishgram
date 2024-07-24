@@ -7,6 +7,8 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:ish_top/blocs/auth/auth_bloc.dart';
 import 'package:ish_top/blocs/auth/auth_event.dart';
 import 'package:ish_top/blocs/auth/auth_state.dart';
+import 'package:ish_top/blocs/user_bloc.dart';
+import 'package:ish_top/blocs/user_event.dart';
 import 'package:ish_top/data/forms/form_status.dart';
 import 'package:ish_top/ui/auth/widgets/button.dart';
 import 'package:ish_top/ui/auth/widgets/textfielad.dart';
@@ -42,7 +44,7 @@ class _AuthScreenState extends State<AuthScreen> {
           if (state.formStatus == FormStatus.success) {
             Navigator.pushAndRemoveUntil(context,
                 MaterialPageRoute(builder: (context) {
-              context.read<AuthBloc>().add(GetCurrentUser());
+              context.read<UserBloc>().add(GetCurrentUser());
               return const TabScreen(
                 index: 0,
               );
