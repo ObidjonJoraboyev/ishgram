@@ -111,7 +111,16 @@
   "click_discard": "Agar siz ushbu oynadan chiqish tugmasini bossangiz, o'zgartirmoqchi bo'lgan barcha ma'lumotlar o'zgarmaydi.",
   "delete":"O'chirish",
   "valid_username": "Ushbu foydalanuvchi nom ishlatishga yaroqli",
-  "invalid_username": "Ushbu foydalanuvchi nomi band"
+  "invalid_username": "Ushbu foydalanuvchi nomi band",
+  "invalid": "Yaroqsiz",
+  "searching": "Qidirilmoqda",
+  "about_user": "Foydalanuvchi haqida",
+  "start_chat": "Suhbatni boshlang",
+  "to_copy": "Nusxalash",
+  "make_call": "Qo'ng'iroq qilish",
+  "send_sms": "SMS yuborish",
+  "help": "Yordam",
+  "work": "Ish"
 
 
 }

@@ -3,11 +3,12 @@ import 'package:easy_image_viewer/easy_image_viewer.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:ish_top/blocs/user_bloc.dart';
-import 'package:ish_top/blocs/user_event.dart';
-import 'package:ish_top/blocs/user_state.dart';
+import 'package:ish_top/blocs/user/user_bloc.dart';
+import 'package:ish_top/blocs/user/user_event.dart';
+import 'package:ish_top/blocs/user/user_state.dart';
 import 'package:ish_top/data/forms/form_status.dart';
 import 'package:ish_top/data/models/user_model.dart';
 import 'package:ish_top/ui/tab/profile/edit_username_screen.dart';
@@ -33,6 +34,7 @@ class _EditProfileScreenState extends State<EditProfileScreen>
   final TextEditingController bioCtrl = TextEditingController();
   UserModel userModel = UserModel.initial;
   bool isWorker = false;
+  bool canPop = true;
 
   @override
   void initState() {
@@ -41,6 +43,7 @@ class _EditProfileScreenState extends State<EditProfileScreen>
     lastName.text = userModel.lastName;
     selectedFruit = userModel.age;
     userName.text = userModel.username;
+    bioCtrl.text = userModel.bio;
     isWorker = userModel.isPrivate;
     _controller = AnimationController(
       vsync: this,
@@ -147,35 +150,40 @@ class _EditProfileScreenState extends State<EditProfileScreen>
                               }),
                           CupertinoButton(
                               padding: EdgeInsets.zero,
+                              onPressed: canPop
+                                  ? () {
+                                      widget.context.read<UserBloc>().add(
+                                            UpdateUser(
+                                              userModel:
+                                                  state1.userModel.copyWith(
+                                                name: nameCtrl.text,
+                                                lastName: lastName.text,
+                                                age: selectedFruit,
+                                                username: userName.text,
+                                                bio: bioCtrl.text,
+                                                isPrivate: isWorker,
+                                              ),
+                                            ),
+                                          );
+
+                                      if (state1.formStatus ==
+                                              FormStatus.success &&
+                                          state1.formStatus !=
+                                              FormStatus.loading) {
+                                        Navigator.pop(context);
+                                      }
+                                    }
+                                  : () {},
                               child: Text(
                                 "done".tr(),
                                 style: TextStyle(
-                                    color: CupertinoColors.activeBlue,
+                                    color: canPop
+                                        ? CupertinoColors.activeBlue
+                                        : CupertinoColors.activeBlue
+                                            .withOpacity(.6),
                                     fontSize: 15.sp,
                                     fontWeight: FontWeight.w500),
-                              ),
-                              onPressed: () {
-                                widget.context.read<UserBloc>().add(
-                                      UpdateUser(
-                                        userModel: state1.userModel.copyWith(
-                                            name: nameCtrl.text,
-                                            lastName: lastName.text,
-                                            age: selectedFruit,
-                                            username: userName.text,
-                                            bio: bioCtrl.text,
-                                            isPrivate: isWorker),
-                                      ),
-                                    );
-
-                                setState(() {});
-                                widget.context
-                                    .read<UserBloc>()
-                                    .add(GetCurrentUser());
-                                if (state1.formStatus == FormStatus.success &&
-                                    state1.formStatus != FormStatus.loading) {
-                                  Navigator.pop(context);
-                                }
-                              }),
+                              )),
                         ],
                       ),
                     ),
@@ -302,7 +310,7 @@ class _EditProfileScreenState extends State<EditProfileScreen>
                                     Navigator.of(context).pop();
                                     context
                                         .read<UserBloc>()
-                                        .add(AuthDeleteImage());
+                                        .add(UserDeleteImage());
                                   },
                                   context,
                                   limit: 1,
@@ -318,8 +326,21 @@ class _EditProfileScreenState extends State<EditProfileScreen>
                                 CupertinoTextField(
                                   maxLength: 30,
                                   placeholder: "name".tr(),
+                                  inputFormatters: [
+                                    FilteringTextInputFormatter.allow(
+                                        RegExp(r'[a-zA-Z]'))
+                                  ],
                                   cursorColor: CupertinoColors.activeBlue,
                                   padding: EdgeInsets.all(10.sp),
+                                  onChanged: (v) {
+                                    if (v.length < 4) {
+                                      canPop = false;
+                                      setState(() {});
+                                    } else {
+                                      canPop = true;
+                                      setState(() {});
+                                    }
+                                  },
                                   controller: nameCtrl,
                                   decoration: BoxDecoration(
                                       borderRadius: BorderRadius.only(
@@ -378,7 +399,12 @@ class _EditProfileScreenState extends State<EditProfileScreen>
                                 Navigator.push(
                                     context,
                                     PageTransition(
-                                        child: const EditUsernameScreen(),
+                                        child: EditUsernameScreen(
+                                          voidCallback: (v) {
+                                            userName.text = v;
+                                          },
+                                          username: userName.text,
+                                        ),
                                         type: PageTransitionType.bottomToTop));
                               },
                               readOnly: true,

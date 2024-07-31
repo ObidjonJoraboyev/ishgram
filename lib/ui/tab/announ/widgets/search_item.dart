@@ -1,6 +1,7 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:ish_top/ui/tab/announ/widgets/zoom_tap.dart';
 
 class SearchItem extends StatefulWidget {
@@ -32,7 +33,7 @@ class _SearchItemState extends State<SearchItem>
       duration: const Duration(milliseconds: 80),
     );
 
-    animation = Tween<double>(begin: 0, end: 16).animate(
+    animation = Tween<double>(begin: 0, end: 14).animate(
       CurvedAnimation(
         parent: animationController,
         curve: Curves.linear,
@@ -68,19 +69,22 @@ class _SearchItemState extends State<SearchItem>
       children: [
         Expanded(
           child: Padding(
-            padding:
-                const EdgeInsets.only(top: 14, left: 12, bottom: 8, right: 12),
+            padding: EdgeInsets.only(top: 0, left: 3.w, bottom: 0, right: 11.w),
             child: Container(
               decoration: BoxDecoration(
                 boxShadow: [
                   BoxShadow(
                     spreadRadius: 1,
                     blurRadius: 16,
-                    color: CupertinoColors.systemGrey4.withOpacity(.5),
+                    color: CupertinoColors.white.withOpacity(.2),
                   )
                 ],
               ),
               child: CupertinoTextField(
+                onTapOutside: (v) {
+                  widget.focus.unfocus();
+                  setState(() {});
+                },
                 controller: widget.controller,
                 onChanged: widget.valueChanged,
                 prefix: const Padding(
@@ -109,7 +113,7 @@ class _SearchItemState extends State<SearchItem>
                     ]),
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(12),
-                  color: CupertinoColors.systemGrey4,
+                  color: CupertinoColors.systemGrey5,
                 ),
               ),
             ),
@@ -126,7 +130,10 @@ class _SearchItemState extends State<SearchItem>
           },
           child: Text(
             "cancel".tr(),
-            style: TextStyle(color: Colors.blue, fontSize: animation.value),
+            style: TextStyle(
+              color: Colors.blue,
+              fontSize: animation.value.sp,
+            ),
           ),
         ),
         Padding(padding: EdgeInsets.only(right: widget.focus.hasFocus ? 12 : 0))

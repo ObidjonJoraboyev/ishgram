@@ -1,8 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:ish_top/blocs/user_bloc.dart';
-import 'package:ish_top/blocs/user_event.dart';
+import 'package:ish_top/blocs/user/user_bloc.dart';
+import 'package:ish_top/blocs/user/user_event.dart';
 import 'package:ish_top/data/local/local_storage.dart';
 import 'package:ish_top/ui/auth/register/get_number.dart';
 import 'package:ish_top/ui/tab/tab/tab_screen.dart';
@@ -28,7 +28,15 @@ class _SplashScreenState extends State<SplashScreen> {
         MaterialPageRoute(
             builder: (context) => userNumber.isEmpty
                 ? const RegisterScreen()
-                : const TabScreen()),
+                : const CupertinoApp(
+                    theme: CupertinoThemeData(
+                      textTheme: CupertinoTextThemeData(
+                        tabLabelTextStyle: TextStyle(
+                            fontSize: 200.0), // Customize the text size here
+                      ),
+                    ),
+                    home: TabScreen(),
+                  )),
       );
     });
     super.initState();
@@ -37,7 +45,7 @@ class _SplashScreenState extends State<SplashScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: CupertinoColors.systemGrey5,
+      backgroundColor: CupertinoColors.systemGrey6,
       body: Center(
         child: Lottie.asset("assets/lotties/splash_2.json"),
       ),

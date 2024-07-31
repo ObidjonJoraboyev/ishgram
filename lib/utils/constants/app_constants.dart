@@ -3,14 +3,12 @@ import 'package:easy_localization/easy_localization.dart';
 class AppConstants {
   static RegExp passwordRegExp = RegExp(r'^.{6,}$');
   static RegExp textRegExp = RegExp("[a-zA-Z]");
-  static RegExp phoneRegExp = RegExp(r'(^^\d{9}$)');
+  static RegExp phoneRegExp = RegExp(r'(^\d{9}$)');
 }
 
-String validateUsername(String username, {required String errorText}) {
-  if (username.isNotEmpty) {
-    return errorText;
-  }
-
+String validateUsername(
+  String username,
+) {
   if (username.isNotEmpty) {
     if (username.length < 5) {
       return "min_five".tr();

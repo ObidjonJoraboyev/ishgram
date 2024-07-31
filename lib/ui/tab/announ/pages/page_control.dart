@@ -5,12 +5,13 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:ish_top/blocs/announ_bloc/announ_bloc.dart';
+import 'package:ish_top/blocs/announ_bloc/announ_event.dart';
 import 'package:ish_top/blocs/notification/notification_bloc.dart';
 import 'package:ish_top/blocs/notification/notification_state.dart';
-import 'package:ish_top/ui/tab/announ/widgets/search_item.dart';
+import 'package:ish_top/ui/tab/announ/search_screen.dart';
 import 'package:ish_top/ui/tab/announ/widgets/zoom_tap.dart';
 import 'package:ish_top/ui/tab/announ/notification/notification_screen.dart';
-import 'package:ish_top/utils/size/size_utils.dart';
 import 'package:pull_down_button/pull_down_button.dart';
 import 'page_first.dart';
 
@@ -48,45 +49,34 @@ class _PageControlState extends State<PageControl>
         return Scaffold(
           extendBodyBehindAppBar: true,
           appBar: AppBar(
-            flexibleSpace: ClipRect(
-              child: BackdropFilter(
-                filter: ImageFilter.blur(sigmaX: 10.0, sigmaY: 10.0),
-                child: Container(
-                  color: Colors.transparent,
-                ),
-              ),
-            ),
-            backgroundColor: Colors.white.withOpacity(.8),
-            elevation: 0,
-            bottom: PreferredSize(
-              preferredSize: Size(width, 30.h),
-              child: Column(
-                children: [
-                  SearchItem(
-                      controller: controller,
-                      focus: focus,
-                      valueChanged: (b) {}),
-                  10.getH(),
-                  Container(
-                    height: 0.6.h,
-                    width: double.infinity,
-                    color: CupertinoColors.systemGrey,
-                  ),
-                ],
-              ),
-            ),
             scrolledUnderElevation: 0,
             title: Text(
               "global".tr(),
               style: TextStyle(
-                  color: Colors.black,
-                  fontWeight: FontWeight.w400,
-                  fontSize: 19.sp),
+                color: Colors.black,
+                fontWeight: FontWeight.w400,
+                fontSize: 18.sp,
+              ),
             ),
-            centerTitle: true,
             actions: [
               PullDownButton(
                 itemBuilder: (context) => [
+                  PullDownMenuItem(
+                    onTap: () async {
+                      await Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => const SearchScreen(),
+                        ),
+                      ).then((c) {
+                        setState(() {
+                          context.read<AnnounBloc>().add(AnnounGetEvent());
+                        });
+                      });
+                    },
+                    title: "search".tr(),
+                    icon: CupertinoIcons.search,
+                  ),
                   PullDownMenuItem(
                     onTap: () {
                       Navigator.push(
@@ -97,12 +87,12 @@ class _PageControlState extends State<PageControl>
                       );
                     },
                     title: "notifications".tr(),
-                    icon: Icons.notifications_active_outlined,
+                    icon: CupertinoIcons.bell,
                   ),
                   PullDownMenuItem(
                     onTap: () {},
                     title: "Filter",
-                    icon: Icons.filter_alt_outlined,
+                    icon: CupertinoIcons.slider_horizontal_3,
                   ),
                 ],
                 buttonBuilder: (w, d) {
@@ -118,6 +108,27 @@ class _PageControlState extends State<PageControl>
                 },
               ),
             ],
+            elevation: 0,
+            bottom: PreferredSize(
+              preferredSize: Size(
+                MediaQuery.sizeOf(context).width,
+                0.6.h,
+              ),
+              child: Container(
+                height: 0.6.h,
+                width: double.infinity,
+                color: CupertinoColors.systemGrey,
+              ),
+            ),
+            flexibleSpace: ClipRect(
+              child: BackdropFilter(
+                filter: ImageFilter.blur(sigmaX: 10.0, sigmaY: 10.0),
+                child: Container(
+                  color: Colors.transparent,
+                ),
+              ),
+            ),
+            backgroundColor: Colors.white.withOpacity(.9),
           ),
           backgroundColor: CupertinoColors.systemGrey5,
           body: HireScreen(

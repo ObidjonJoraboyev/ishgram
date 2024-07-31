@@ -10,5 +10,9 @@ enum FormStatus {
   firstAuth,
   uploadingImage,
   errorImage,
-  successImage
+  successImage,
+  loadingQrGet,
+  errorQr,
+  successQr,
+  updating
 }

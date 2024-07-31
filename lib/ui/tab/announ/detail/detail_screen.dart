@@ -9,7 +9,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:ish_top/blocs/announ_bloc/announ_bloc.dart';
 import 'package:ish_top/blocs/announ_bloc/announ_event.dart';
-import 'package:ish_top/blocs/user_bloc.dart';
+import 'package:ish_top/blocs/user/user_bloc.dart';
 import 'package:ish_top/data/local/local_storage.dart';
 import 'package:ish_top/data/models/announ_model.dart';
 import 'package:shimmer/shimmer.dart';

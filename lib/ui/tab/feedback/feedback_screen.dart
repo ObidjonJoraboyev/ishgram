@@ -6,16 +6,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_chat_bubble/chat_bubble.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:image_picker/image_picker.dart';
 import 'package:ish_top/blocs/comment/comment_bloc.dart';
-import 'package:ish_top/blocs/comment/comment_event.dart';
 import 'package:ish_top/blocs/comment/comment_state.dart';
-import 'package:ish_top/data/local/local_storage.dart';
 import 'package:ish_top/data/models/message_model.dart';
 import 'package:ish_top/data/models/user_model.dart';
 import 'package:ish_top/ui/tab/announ/widgets/zoom_tap.dart';
+import 'package:ish_top/utils/size/size_utils.dart';
 import 'package:ish_top/utils/utility_functions.dart';
-import 'package:pull_down_button/pull_down_button.dart';
 
 class FeedbackScreen extends StatefulWidget {
   const FeedbackScreen({super.key, required this.userModel});
@@ -28,27 +25,10 @@ class FeedbackScreen extends StatefulWidget {
 
 class _FeedbackScreenState extends State<FeedbackScreen> {
   final FocusNode focus = FocusNode();
-
   final TextEditingController controller = TextEditingController();
-
   final ScrollController scrollController = ScrollController();
-
-  List<MessageModel> selectMessages = [];
-  String userNumber = StorageRepository.getString(key: "userNumber");
-
-  String fcm = "";
-  bool check = false;
-
-  final ImagePicker picker = ImagePicker();
-  String imageUrl = "";
-  String storagePath = "";
   bool bottomVisibility = false;
-
   List<MessageModel> list = [];
-
-  MessageModel messageModel = MessageModel.initialValue;
-
-  init() async {}
 
   @override
   void initState() {
@@ -70,18 +50,14 @@ class _FeedbackScreenState extends State<FeedbackScreen> {
       },
     );
 
-    init();
     super.initState();
   }
-
-  bool isOnline = false;
-  String lastOnline = "";
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       extendBodyBehindAppBar: 1 == 1,
-      backgroundColor: CupertinoColors.systemGrey5,
+      backgroundColor: CupertinoColors.systemGrey6,
       appBar: PreferredSize(
         preferredSize: const Size(double.infinity, 65),
         child: Container(
@@ -93,82 +69,36 @@ class _FeedbackScreenState extends State<FeedbackScreen> {
           child: AppBar(
             scrolledUnderElevation: 0,
             elevation: 0,
-            backgroundColor: CupertinoColors.systemGrey6,
+            backgroundColor: CupertinoColors.white,
             actions: [
-              (selectMessages.isEmpty
-                  ? ClipRRect(
-                      borderRadius: BorderRadius.circular(1000),
-                      child: "s" == "h"
-                          ? ClipRRect(
-                              borderRadius: BorderRadius.circular(1000),
-                              child: Container(
-                                width: 50,
-                                height: 50,
-                                color: Colors.blue,
-                              ))
-                          : Padding(
-                              padding: const EdgeInsets.only(right: 8),
-                              child: Container(
-                                width: 50,
-                                height: 50,
-                                decoration: BoxDecoration(
-                                  shape: BoxShape.circle,
-                                  gradient: LinearGradient(
-                                    begin: Alignment.topCenter,
-                                    end: Alignment.bottomCenter,
-                                    colors: [
-                                      CupertinoColors.activeBlue
-                                          .withOpacity(.6),
-                                      CupertinoColors.activeBlue
-                                          .withOpacity(.99),
-                                    ],
-                                  ),
-                                ),
-                                child: const Center(
-                                    child: Icon(
-                                  Icons.support,
-                                  color: Colors.white,
-                                )),
-                              ),
-                            ),
-                    )
-                  : IconButton(
-                      onPressed: () async {
-                        for (var e in selectMessages) {
-                          context
-                              .read<MessageBloc>()
-                              .add(MessageDeleteEvent(docId: e.messageId));
-                        }
-                        bottomVisibility = false;
-
-                        selectMessages = [];
-                        setState(() {});
-                      },
-                      icon: const Icon(
-                        CupertinoIcons.delete,
-                        color: Colors.red,
+              ClipRRect(
+                borderRadius: BorderRadius.circular(1000),
+                child: Padding(
+                  padding: const EdgeInsets.only(right: 8),
+                  child: Container(
+                    width: 50.spMin,
+                    height: 50.spMin,
+                    decoration: BoxDecoration(
+                      shape: BoxShape.circle,
+                      gradient: LinearGradient(
+                        begin: Alignment.topCenter,
+                        end: Alignment.bottomCenter,
+                        colors: [
+                          CupertinoColors.activeOrange.withOpacity(.6),
+                          CupertinoColors.activeOrange,
+                        ],
                       ),
-                    ))
-            ],
-            leading: selectMessages.isEmpty
-                ? const SizedBox()
-                : IconButton(
-                    onPressed: () {
-                      if (selectMessages.length == list.length) {
-                        selectMessages = [];
-                        setState(() {});
-                      } else {
-                        selectMessages = list;
-                        setState(() {});
-                      }
-                    },
-                    icon: Icon(
-                      selectMessages.length != list.length
-                          ? CupertinoIcons.check_mark_circled
-                          : CupertinoIcons.check_mark_circled_solid,
-                      color: CupertinoColors.activeBlue,
                     ),
+                    child: Center(
+                        child: Icon(
+                      Icons.support_agent_sharp,
+                      color: Colors.white,
+                      size: 22.sp,
+                    )),
                   ),
+                ),
+              )
+            ],
             centerTitle: true,
             title: Column(
               children: [
@@ -176,11 +106,12 @@ class _FeedbackScreenState extends State<FeedbackScreen> {
                   "support".tr(),
                   style: const TextStyle(fontWeight: FontWeight.w600),
                 ),
-                const Text(
+                Text(
                   "Online",
                   style: TextStyle(
                     fontWeight: FontWeight.w400,
-                    fontSize: 16,
+                    fontSize: 14.sp,
+                    letterSpacing: 1,
                     color: CupertinoColors.activeBlue,
                   ),
                 )
@@ -191,11 +122,6 @@ class _FeedbackScreenState extends State<FeedbackScreen> {
       ),
       body: BlocBuilder<MessageBloc, MessageState>(
         builder: (context, snapshot) {
-          list = snapshot.messages
-              .where((e) =>
-                  (e.idFrom == StorageRepository.getString(key: "userNumber")))
-              .toList();
-
           if (list.isEmpty) {
             bottomVisibility = false;
           }
@@ -214,240 +140,95 @@ class _FeedbackScreenState extends State<FeedbackScreen> {
                       ...List.generate(
                         list.length,
                         (index) {
-                          return PullDownButton(
-                              itemBuilder: (context) => [
-                                    PullDownMenuItem(
-                                      onTap: () {},
-                                      title: 'Pin',
-                                      icon: CupertinoIcons.pin,
+                          return ScaleOnPress(
+                            scaleValue: 0.99,
+                            child: Row(
+                              children: [
+                                ChatBubble(
+                                  margin: EdgeInsets.symmetric(
+                                      vertical: 4.h, horizontal: 3.w),
+                                  clipper: ChatBubbleClipper3(
+                                      type: BubbleType.receiverBubble),
+                                  child: Text(
+                                    list[index].messageText,
+                                    style: const TextStyle(
+                                      overflow: TextOverflow.ellipsis,
+                                      color: Colors.white,
+                                      fontWeight: FontWeight.w400,
+                                      fontSize: 16,
+                                      letterSpacing: 1,
                                     ),
-                                    PullDownMenuItem(
-                                      title: 'Forward',
-                                      subtitle: 'Share in different channel',
-                                      onTap: () {},
-                                      icon: CupertinoIcons
-                                          .arrowshape_turn_up_right,
-                                    ),
-                                    PullDownMenuItem(
-                                      onTap: () {},
-                                      title: 'Delete',
-                                      isDestructive: true,
-                                      icon: CupertinoIcons.delete,
-                                    ),
-                                  ],
-                              buttonBuilder: (context, showMenu) =>
-                                  ScaleOnPress(
-                                    scaleValue: 0.99,
-                                    onLongPressed: showMenu,
-                                    child: Row(
-                                      mainAxisAlignment: list[index].idTo ==
-                                              "ibodulla@gmail.com"
-                                          ? MainAxisAlignment.end
-                                          : MainAxisAlignment.start,
-                                      children: [
-                                        1 == 1
-                                            ? ChatBubble(
-                                                margin: EdgeInsets.symmetric(
-                                                    vertical: 4.h,
-                                                    horizontal: 3.w),
-                                                clipper: ChatBubbleClipper3(
-                                                    type: BubbleType
-                                                        .receiverBubble),
-                                                child: Text(
-                                                  list[index].messageText,
-                                                  style: const TextStyle(
-                                                    overflow:
-                                                        TextOverflow.ellipsis,
-                                                    color: Colors.white,
-                                                    fontWeight: FontWeight.w400,
-                                                    fontSize: 16,
-                                                    letterSpacing: 1,
-                                                  ),
-                                                  maxLines: 1,
-                                                ),
-                                              )
-                                            : Container(
-                                                margin:
-                                                    const EdgeInsets.symmetric(
-                                                        horizontal: 10,
-                                                        vertical: 8),
-                                                decoration: BoxDecoration(
-                                                  border: Border.all(
-                                                      width: 2,
-                                                      color: selectMessages
-                                                              .contains(
-                                                                  list[index])
-                                                          ? Colors.black
-                                                          : Colors.white),
-                                                  borderRadius: BorderRadius.only(
-                                                      topLeft:
-                                                          const Radius.circular(
-                                                              12),
-                                                      topRight:
-                                                          const Radius.circular(
-                                                              12),
-                                                      bottomRight: list[index]
-                                                                  .idTo !=
-                                                              widget.userModel
-                                                                  .phone
-                                                          ? const Radius.circular(
-                                                              12)
-                                                          : const Radius.circular(
-                                                              0),
-                                                      bottomLeft: list[index]
-                                                                  .idTo ==
-                                                              widget.userModel
-                                                                  .phone
-                                                          ? const Radius.circular(12)
-                                                          : const Radius.circular(0)),
-                                                ),
-                                                child: ClipRRect(
-                                                  borderRadius: BorderRadius.only(
-                                                      topLeft:
-                                                          const Radius.circular(
-                                                              10),
-                                                      topRight:
-                                                          const Radius.circular(
-                                                              10),
-                                                      bottomRight: list[index]
-                                                                  .idTo !=
-                                                              widget.userModel
-                                                                  .phone
-                                                          ? const Radius.circular(
-                                                              10)
-                                                          : const Radius.circular(
-                                                              0),
-                                                      bottomLeft: list[index]
-                                                                  .idTo ==
-                                                              widget.userModel
-                                                                  .phone
-                                                          ? const Radius.circular(10)
-                                                          : const Radius.circular(0)),
-                                                  child: Stack(
-                                                    children: [
-                                                      Image.network(
-                                                        list[index].messageText,
-                                                        width: 200,
-                                                        height: 200,
-                                                        fit: BoxFit.cover,
-                                                      ),
-                                                      selectMessages.contains(
-                                                              list[index])
-                                                          ? Container(
-                                                              width: 200,
-                                                              height: 200,
-                                                              color: Colors
-                                                                  .black
-                                                                  .withOpacity(
-                                                                      .5),
-                                                            )
-                                                          : const SizedBox()
-                                                    ],
-                                                  ),
-                                                ),
-                                              ),
-                                      ],
-                                    ),
-                                  ));
+                                    maxLines: 1,
+                                  ),
+                                )
+                              ],
+                            ),
+                          );
                         },
-                      )
+                      ),
                     ],
                   ),
                 ),
                 Container(
-                  color: CupertinoColors.systemGrey5,
-                  height: Platform.isIOS ? 75 : null,
+                  color: CupertinoColors.systemGrey6,
                   alignment: Alignment.topCenter,
                   child: Row(
                     children: [
                       Transform.rotate(
                         angle: 45 * (pi / 180),
-                        child: Padding(
-                          padding: const EdgeInsets.only(left: 0),
-                          child: IconButton(
-                            onPressed: () {
-                              takeAnImage(
-                                context,
-                                images: [],
-                                limit: 1,
-                              );
-                            },
-                            icon: Icon(
-                              Icons.attach_file,
-                              size: 26,
-                              color: Colors.grey.withOpacity(.8),
-                            ),
+                        child: IconButton(
+                          onPressed: () {
+                            takeAnImage(
+                              context,
+                              images: [],
+                              limit: 1,
+                            );
+                          },
+                          icon: const Icon(
+                            Icons.attach_file,
+                            size: 26,
+                            color: CupertinoColors.systemGrey2,
                           ),
                         ),
                       ),
                       Expanded(
-                        child: Padding(
-                          padding: EdgeInsets.only(
-                              top: 10,
-                              left: 0,
-                              bottom: 10,
-                              right: focus.hasFocus ? 0 : 0),
-                          child: SizedBox(
-                            height: 35,
-                            child: CupertinoTextField(
-                              textInputAction: TextInputAction.done,
-                              maxLines: null,
-                              controller: controller,
-                              onChanged: (v) {},
-                              onTap: () {
-                                focus.requestFocus();
-                              },
-                              cursorColor: const Color(0xff30A3E6),
-                              focusNode: focus,
-                              suffix: IconButton(
-                                onPressed: () async {
-                                  if (controller.text.isNotEmpty) {
-                                    if (!context.mounted) return;
-                                    String controllerTemp = controller.text;
-                                    controller.clear();
-
-                                    messageModel = messageModel.copyWith(
-                                      createdTime:
-                                          DateTime.now().millisecondsSinceEpoch,
-                                      messageText: controllerTemp,
-                                      messageId: "",
-                                      idFrom: StorageRepository.getString(
-                                          key: "userNumber"),
-                                      idTo: "toSupport",
-                                    );
-
-                                    context.read<MessageBloc>().add(
-                                        MessageAddEvent(
-                                            messages: messageModel));
-                                    scrollController.position.animateTo(
-                                        scrollController
-                                            .position.minScrollExtent,
-                                        duration: const Duration(seconds: 1),
-                                        curve: Curves.linear);
-                                    bottomVisibility = false;
-                                  }
-                                },
-                                icon: const Padding(
-                                  padding: EdgeInsets.only(left: 6),
-                                  child: Icon(
-                                    CupertinoIcons.paperplane,
-                                    color: Colors.white,
-                                  ),
-                                ),
-                              ),
-                              clearButtonMode: OverlayVisibilityMode.editing,
-                              placeholder: " Message",
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(120),
-                                color: Colors.grey.withOpacity(.6),
-                              ),
-                            ),
+                        child: CupertinoTextField(
+                          onTapOutside: (v) {
+                            FocusScope.of(context).unfocus();
+                          },
+                          textInputAction: TextInputAction.done,
+                          maxLength: 400,
+                          maxLines: null,
+                          controller: controller,
+                          onChanged: (v) {
+                            setState(() {});
+                          },
+                          onTap: () {},
+                          cursorColor: CupertinoColors.activeBlue,
+                          focusNode: focus,
+                          clearButtonMode: OverlayVisibilityMode.editing,
+                          placeholder: "Message",
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(16.r),
+                            color: CupertinoColors.systemGrey3.withOpacity(.8),
+                          ),
+                        ),
+                      ),
+                      CupertinoButton(
+                        padding: EdgeInsets.only(right: 5.w),
+                        onPressed: () async {},
+                        child: const Padding(
+                          padding: EdgeInsets.only(left: 6),
+                          child: Icon(
+                            CupertinoIcons.paperplane,
+                            color: CupertinoColors.systemGrey2,
                           ),
                         ),
                       ),
                     ],
                   ),
                 ),
+                10.getH(),
               ],
             ),
           );

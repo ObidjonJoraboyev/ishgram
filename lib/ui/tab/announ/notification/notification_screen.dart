@@ -7,7 +7,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:ish_top/blocs/notification/notification_bloc.dart';
 import 'package:ish_top/blocs/notification/notification_event.dart';
 import 'package:ish_top/blocs/notification/notification_state.dart';
-import 'package:ish_top/blocs/user_bloc.dart';
+import 'package:ish_top/blocs/user/user_bloc.dart';
 import 'package:ish_top/data/models/notification_model.dart';
 import 'package:ish_top/ui/tab/announ/widgets/zoom_tap.dart';
 import 'package:ish_top/ui/tab/announ/notification/notification_detail.dart';

@@ -150,7 +150,7 @@ class UserModel extends Equatable {
       long: json["location"]["long"] as num? ?? 0,
       isPrivate: json["is_private"] as bool? ?? false,
       createdAt: json["created_at"] as int? ?? 0,
-      likedAnnouns: (json["likedHiring"] as List? ?? [])
+      likedAnnouns: (json["liked_announcements"] as List? ?? [])
           .map((e) => e.toString())
           .toList(),
       password: json["password"] as String? ?? "",

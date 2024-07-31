@@ -8,8 +8,9 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:ish_top/blocs/user_bloc.dart';
-import 'package:ish_top/blocs/user_event.dart';
+import 'package:ish_top/blocs/user/user_bloc.dart';
+import 'package:ish_top/blocs/user/user_event.dart';
+import 'package:ish_top/data/models/user_model.dart';
 import 'package:ish_top/ui/tab/announ/widgets/zoom_tap.dart';
 import 'package:ish_top/utils/size/size_utils.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -41,7 +42,7 @@ Future<void> _getImageFromGallery(BuildContext context,
             .add(ImageSetEvent(pickedFile: image, images: images))
         : context
             .read<UserBloc>()
-            .add(AuthUpdateProfileUser(pickedFile: image[0]));
+            .add(UserUpdateProfileUser(pickedFile: image[0]));
   } else {
     XFile? image = await picker.pickImage(
       maxHeight: 1024,
@@ -59,7 +60,7 @@ Future<void> _getImageFromGallery(BuildContext context,
           ? context
               .read<ImageBloc>()
               .add(ImageSetEvent(pickedFile: [image!], images: images))
-          : context.read<UserBloc>().add(AuthUpdateProfileUser(
+          : context.read<UserBloc>().add(UserUpdateProfileUser(
                 pickedFile: image!,
               ));
     }
@@ -90,9 +91,11 @@ Future<void> _getImageFromCamera(BuildContext context,
         ? context
             .read<ImageBloc>()
             .add(ImageSetEvent(pickedFile: [image!], images: images))
-        : context.read<UserBloc>().add(AuthUpdateProfileUser(
-              pickedFile: image!,
-            ));
+        : context.read<UserBloc>().add(
+              UserUpdateProfileUser(
+                pickedFile: image!,
+              ),
+            );
   }
 }
 
@@ -675,4 +678,42 @@ class UsernameTextInputFormatter extends TextInputFormatter {
     }
     return newValue;
   }
+}
+
+bool validPhone({required String phoneNumber}) {
+  final RegExp phoneRegex = RegExp(r'^\+998\d{9}$');
+  bool isValid = phoneRegex.hasMatch(phoneNumber);
+  if (isValid) {
+    return true;
+  } else {
+    return false;
+  }
+}
+
+String returnCenterText(UserModel userModel) {
+  String text = "";
+
+  text = userModel.name.isNotEmpty ? userModel.name[0] : "";
+  text += userModel.lastName.isNotEmpty ? userModel.lastName[0] : "";
+  return text.toUpperCase();
+}
+
+TextSpan buildTextSpan(String text) {
+  const TextStyle defaultStyle = TextStyle(color: Colors.black, fontSize: 17);
+  const TextStyle usernameStyle = TextStyle(color: Colors.blue, fontSize: 17);
+
+  List<TextSpan> spans = [];
+  text.splitMapJoin(
+    RegExp(r'@\w+'),
+    onMatch: (Match match) {
+      spans.add(TextSpan(text: match.group(0), style: usernameStyle));
+      return '';
+    },
+    onNonMatch: (String nonMatch) {
+      spans.add(TextSpan(text: nonMatch, style: defaultStyle));
+      return '';
+    },
+  );
+
+  return TextSpan(children: spans);
 }

@@ -7,6 +7,7 @@ import 'package:ish_top/blocs/announ_bloc/announ_bloc.dart';
 import 'package:ish_top/blocs/announ_bloc/announ_state.dart';
 import 'package:ish_top/blocs/connectivity/connectivity_bloc.dart';
 import 'package:ish_top/blocs/connectivity/connectivity_state.dart';
+import 'package:ish_top/data/forms/form_status.dart';
 import 'package:ish_top/data/models/announ_model.dart';
 import 'package:ish_top/ui/tab/announ/widgets/announ_item.dart';
 
@@ -43,48 +44,71 @@ class _HireScreenState extends State<HireScreen> {
       debugShowCheckedModeBanner: false,
       home: Scaffold(
         extendBodyBehindAppBar: true,
-        backgroundColor: CupertinoColors.systemGrey5,
+        backgroundColor: CupertinoColors.systemGrey6,
         body: BlocConsumer<ConnectBloc, ConnectState>(
           listener: (context, state) {},
           builder: (context, state) {
-            return BlocBuilder<AnnounBloc, AnnounState>(
+            return BlocConsumer<AnnounBloc, AnnounState>(
+              listener: (BuildContext context, AnnounState state) {},
               builder: (BuildContext context, AnnounState state) {
                 List<AnnounModel> hires = state.allHires;
-                return hires.isNotEmpty
-                    ? Padding(
-                        padding: EdgeInsets.symmetric(horizontal: 14.w),
-                        child: ListView(
-                          children: [
-                            ...List.generate(
-                              hires.length,
-                              (index) {
-                                return HiringItem(
-                                  context1: widget.context,
-                                  voidCallback: () {
-                                    widget.focus.unfocus();
-                                    setState(() {});
-                                  },
-                                  hires: hires[index],
-                                  scrollController: scrollController,
-                                );
-                              },
-                            )
-                          ],
+                return state.status == FormStatus.loading &&
+                        state.allHires.isEmpty
+                    ? const Center(
+                        child: CircularProgressIndicator(
+                          strokeCap: StrokeCap.round,
+                          color: CupertinoColors.systemGrey,
                         ),
                       )
-                    : Center(
-                        child: Padding(
-                          padding: EdgeInsets.symmetric(horizontal: 14.w),
-                          child: Text(
-                            "no_hire_yet".tr(),
-                            style: TextStyle(
-                                fontSize: 22.sp,
-                                fontWeight: FontWeight.w600,
-                                color: Colors.black.withOpacity(.7)),
-                            textAlign: TextAlign.center,
-                          ),
-                        ),
-                      );
+                    : hires.isNotEmpty && state.status == FormStatus.success
+                        ? Padding(
+                            padding: EdgeInsets.symmetric(horizontal: 14.w),
+                            child: ListView(
+                              children: [
+                                ...List.generate(
+                                  hires.length,
+                                  (index) {
+                                    return HiringItem(
+                                      context1: widget.context,
+                                      voidCallback: () {
+                                        widget.focus.unfocus();
+                                        setState(() {});
+                                      },
+                                      hires: hires[index],
+                                      scrollController: scrollController,
+                                    );
+                                  },
+                                )
+                              ],
+                            ),
+                          )
+                        : state.allHires.isEmpty &&
+                                state.status == FormStatus.success
+                            ? Center(
+                                child: Padding(
+                                  padding:
+                                      EdgeInsets.symmetric(horizontal: 14.w),
+                                  child: Text(
+                                    "no_hire_yet".tr(),
+                                    style: TextStyle(
+                                        fontSize: 22.sp,
+                                        fontWeight: FontWeight.w600,
+                                        color: Colors.black.withOpacity(.7)),
+                                    textAlign: TextAlign.center,
+                                  ),
+                                ),
+                              )
+                            : Padding(
+                                padding: EdgeInsets.symmetric(horizontal: 14.w),
+                                child: Text(
+                                  "error".tr(),
+                                  style: TextStyle(
+                                      fontSize: 22.sp,
+                                      fontWeight: FontWeight.w600,
+                                      color: Colors.black.withOpacity(.7)),
+                                  textAlign: TextAlign.center,
+                                ),
+                              );
               },
             );
           },

@@ -13,7 +13,7 @@ import 'package:ish_top/blocs/map/map_event.dart';
 import 'package:ish_top/blocs/comment/comment_bloc.dart';
 import 'package:ish_top/blocs/notification/notification_bloc.dart';
 import 'package:ish_top/blocs/notification/notification_event.dart';
-import 'package:ish_top/blocs/user_bloc.dart';
+import 'package:ish_top/blocs/user/user_bloc.dart';
 import 'package:ish_top/ui/splash/splash_screen.dart';
 import 'package:ish_top/utils/size/size_utils.dart';
 

@@ -9,7 +9,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:ish_top/blocs/comment/comment_bloc.dart';
 import 'package:ish_top/blocs/comment/comment_event.dart';
 import 'package:ish_top/blocs/comment/comment_state.dart';
-import 'package:ish_top/blocs/user_bloc.dart';
+import 'package:ish_top/blocs/user/user_bloc.dart';
 import 'package:ish_top/data/local/local_storage.dart';
 import 'package:ish_top/data/models/announ_model.dart';
 import 'package:ish_top/data/models/message_model.dart';
@@ -65,7 +65,7 @@ class _CommentScreenState extends State<CommentScreen> {
         ),
         backgroundColor: CupertinoColors.systemGrey6,
       ),
-      backgroundColor: CupertinoColors.systemGrey5,
+      backgroundColor: CupertinoColors.systemGrey6,
       body: BlocConsumer<MessageBloc, MessageState>(
         listener: (context, state) {},
         builder: (context, state) {
@@ -259,16 +259,14 @@ class _CommentScreenState extends State<CommentScreen> {
                             boxShadow: [
                               BoxShadow(
                                   color: CupertinoColors.systemGrey
-                                      .withOpacity(.3),
+                                      .withOpacity(.1),
                                   spreadRadius: 0,
                                   blurRadius: 10)
                             ],
                             borderRadius: BorderRadius.circular(16.r)),
                         child: CupertinoTextField(
                           style: const TextStyle(color: Colors.black),
-                          onTapOutside: (v) {
-                            focus.unfocus();
-                          },
+                          onTapOutside: (v) {},
                           textInputAction: TextInputAction.done,
                           maxLines: null,
                           controller: controller,
@@ -331,6 +329,7 @@ class _CommentScreenState extends State<CommentScreen> {
                   ],
                 ),
               ),
+              if (focus.hasFocus) 10.getH(),
               SizedBox(
                 height: MediaQuery.of(context).padding.bottom,
               )

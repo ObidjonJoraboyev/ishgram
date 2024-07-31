@@ -9,12 +9,14 @@ class UserState extends Equatable {
       required this.formStatus,
       required this.userModel,
       required this.users,
+      required this.qrUserModel,
       required this.progress});
 
   final String errorMessage;
   final String statusMessage;
   final FormStatus formStatus;
   final UserModel userModel;
+  final UserModel qrUserModel;
   final double progress;
   final List<UserModel> users;
 
@@ -25,6 +27,7 @@ class UserState extends Equatable {
     UserModel? userModel,
     double? progress,
     List<UserModel>? users,
+    UserModel? qrUserModel,
   }) {
     return UserState(
       errorMessage: errorMessage ?? this.errorMessage,
@@ -33,6 +36,7 @@ class UserState extends Equatable {
       userModel: userModel ?? this.userModel,
       users: users ?? this.users,
       progress: progress ?? this.progress,
+      qrUserModel: qrUserModel ?? this.qrUserModel,
     );
   }
 
@@ -44,5 +48,6 @@ class UserState extends Equatable {
         userModel,
         users,
         progress,
+        qrUserModel,
       ];
 }

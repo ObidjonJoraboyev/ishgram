@@ -14,7 +14,6 @@ import 'package:ish_top/ui/tab/announ/comment_screen/comment_screen.dart';
 import 'package:ish_top/ui/tab/announ/detail/detail_screen.dart';
 import 'package:ish_top/ui/tab/announ/widgets/zoom_tap.dart';
 import 'package:ish_top/utils/size/size_utils.dart';
-import 'package:page_transition/page_transition.dart';
 import 'package:shimmer/shimmer.dart';
 import 'package:timeago/timeago.dart' as timeago;
 
@@ -62,18 +61,13 @@ class _MyAnnounItemState extends State<MyAnnounItem> {
           children: [
             GestureDetector(
               onTap: () async {
-                Navigator.push(
-                  widget.context1,
-                  PageTransition(
-                    type: PageTransitionType.rightToLeftJoined,
-                    alignment: Alignment.topRight,
-                    childCurrent: const SizedBox(),
-                    child: DetailScreen(
-                      hireModel: widget.hires,
-                      defaultImageIndex: 0,
-                    ),
-                  ),
-                );
+                Navigator.push(widget.context1,
+                    MaterialPageRoute(builder: (context) {
+                  return DetailScreen(
+                    hireModel: widget.hires,
+                    defaultImageIndex: 0,
+                  );
+                }));
               },
               child: Container(
                 margin: EdgeInsets.only(top: 20.h),
@@ -350,21 +344,24 @@ class _MyAnnounItemState extends State<MyAnnounItem> {
                         overflow: TextOverflow.ellipsis,
                       ),
                     ),
-                    Padding(
-                      padding: EdgeInsets.only(left: 8.w, top: 3.h),
-                      child: Text(
-                        widget.hires.money.toString(),
-                        style: TextStyle(
-                          fontSize: 19.sp,
-                          fontWeight: FontWeight.w600,
-                        ),
-                        maxLines: 1,
-                        overflow: TextOverflow.ellipsis,
-                      ),
-                    ),
+                    10.getH(),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.end,
                       children: [
+                        Padding(
+                          padding: EdgeInsets.only(left: 8.w, top: 3.h),
+                          child: Text(
+                            widget.hires.money.toString(),
+                            style: TextStyle(
+                              fontSize: 19.sp,
+                              color: CupertinoColors.black,
+                              fontWeight: FontWeight.w500,
+                            ),
+                            maxLines: 1,
+                            overflow: TextOverflow.ellipsis,
+                          ),
+                        ),
+                        const Spacer(),
                         Text(
                           widget.hires.viewedUsers.length.toString(),
                           style: TextStyle(

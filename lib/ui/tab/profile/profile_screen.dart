@@ -1,7 +1,7 @@
 import 'dart:async';
+import 'dart:convert';
 import 'dart:ui';
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:dio/dio.dart';
 import 'package:easy_image_viewer/easy_image_viewer.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/cupertino.dart';
@@ -12,11 +12,12 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:ish_top/blocs/auth/auth_bloc.dart';
 import 'package:ish_top/blocs/auth/auth_event.dart';
-import 'package:ish_top/blocs/user_bloc.dart';
-import 'package:ish_top/blocs/user_event.dart';
-import 'package:ish_top/blocs/user_state.dart';
+import 'package:ish_top/blocs/user/user_bloc.dart';
+import 'package:ish_top/blocs/user/user_event.dart';
+import 'package:ish_top/blocs/user/user_state.dart';
 import 'package:ish_top/ui/tab/profile/edit/edit_profile_screen.dart';
-import 'package:ish_top/ui/tab/profile/my_announs/my_announcements.dart';
+import 'package:ish_top/ui/tab/profile/edit_username_screen.dart';
+import 'package:ish_top/ui/tab/profile/scan/categories.dart';
 import 'package:ish_top/ui/tab/profile/my_profile/my_profile_screen.dart';
 import 'package:ish_top/ui/tab/profile/scan/scanner_screen.dart';
 import 'package:ish_top/ui/tab/profile/widgets/list_tile_item.dart';
@@ -58,16 +59,16 @@ class _ProfileScreenState extends State<ProfileScreen>
       home: BlocConsumer<UserBloc, UserState>(
         listener: (context, state1) {
           if (state1.formStatus == FormStatus.uploadingImage) {
-            _updateProgress(state1.progress);
+            _controller.animateTo(state1.progress);
           }
           if (state1.formStatus == FormStatus.successImage) {
-            resetAnimation();
+            _controller.reset();
           }
         },
         builder: (contextState, state1) {
           return Scaffold(
             extendBodyBehindAppBar: true,
-            backgroundColor: CupertinoColors.systemGrey5,
+            backgroundColor: CupertinoColors.systemGrey6,
             body: Stack(
               children: [
                 CustomScrollView(
@@ -209,22 +210,23 @@ class _ProfileScreenState extends State<ProfileScreen>
                                       if (state1.formStatus ==
                                           FormStatus.uploadingImage)
                                         Positioned(
-                                            bottom: 0,
-                                            left: 0,
-                                            right: 0,
-                                            top: 0,
-                                            child: AnimatedBuilder(
-                                              animation: _controller,
-                                              builder: (context, child) {
-                                                return CircularProgressIndicator(
-                                                  strokeWidth: 4.sp,
-                                                  value: _animation.value,
-                                                  strokeCap: StrokeCap.round,
-                                                  color: CupertinoColors
-                                                      .activeGreen,
-                                                );
-                                              },
-                                            )),
+                                          bottom: 0,
+                                          left: 0,
+                                          right: 0,
+                                          top: 0,
+                                          child: AnimatedBuilder(
+                                            animation: _controller,
+                                            builder: (context, child) {
+                                              return CircularProgressIndicator(
+                                                strokeWidth: 4.sp,
+                                                value: _animation.value,
+                                                strokeCap: StrokeCap.round,
+                                                color:
+                                                    CupertinoColors.activeGreen,
+                                              );
+                                            },
+                                          ),
+                                        ),
                                     ],
                                   ),
                                   10.getH(),
@@ -271,31 +273,31 @@ class _ProfileScreenState extends State<ProfileScreen>
                       backgroundColor:
                           CupertinoColors.systemGrey5.withOpacity(.1),
                       actions: [
-                        CupertinoButton(
-                          child: const Text(
-                            "Edit",
-                            style: TextStyle(
-                                color: CupertinoColors.activeBlue,
-                                fontWeight: FontWeight.w500,
-                                fontSize: 18),
-                          ),
-                          onPressed: () async {
-                            await Navigator.push(
-                                    widget.context,
-                                    PageTransition(
-                                        child: EditProfileScreen(
-                                          context: contextState,
-                                        ),
-                                        type: PageTransitionType.fade))
-                                .then((b) {
-                              contextState
-                                  .read<UserBloc>()
-                                  .add(GetCurrentUser());
-                              setState(() {});
-                            });
-                            setState(() {});
-                          },
-                        )
+                        state1.formStatus == FormStatus.updating
+                            ? Padding(
+                                padding: EdgeInsets.only(right: 14.w),
+                                child:
+                                    const CircularProgressIndicator.adaptive(),
+                              )
+                            : CupertinoButton(
+                                child: const Text(
+                                  "Edit",
+                                  style: TextStyle(
+                                      color: CupertinoColors.activeBlue,
+                                      fontWeight: FontWeight.w500,
+                                      fontSize: 18),
+                                ),
+                                onPressed: () async {
+                                  await Navigator.push(
+                                      widget.context,
+                                      PageTransition(
+                                          child: EditProfileScreen(
+                                            context: contextState,
+                                          ),
+                                          type: PageTransitionType.fade));
+                                  setState(() {});
+                                },
+                              )
                       ],
                     ),
                     SliverList.list(
@@ -334,11 +336,39 @@ class _ProfileScreenState extends State<ProfileScreen>
                                         cursorColor: CupertinoColors.activeBlue,
                                         showCursor: false,
                                         onTap: () {
-                                          userName.text = context
-                                              .read<UserBloc>()
-                                              .state
-                                              .userModel
-                                              .username;
+                                          Navigator.push(
+                                              context,
+                                              PageTransition(
+                                                  child: EditUsernameScreen(
+                                                    voidCallback: (value) {
+                                                      userName.text = value;
+                                                      setState(() {});
+                                                      if (value
+                                                          .toString()
+                                                          .isEmpty) {
+                                                        context
+                                                            .read<UserBloc>()
+                                                            .add(
+                                                                UserRemoveUsername());
+                                                      } else if (value !=
+                                                          state1.userModel
+                                                              .username) {
+                                                        context
+                                                            .read<UserBloc>()
+                                                            .add(
+                                                                UserUpdateUsername(
+                                                              username: value,
+                                                            ));
+                                                      }
+                                                    },
+                                                    username: context
+                                                        .read<UserBloc>()
+                                                        .state
+                                                        .userModel
+                                                        .username,
+                                                  ),
+                                                  type: PageTransitionType
+                                                      .bottomToTop));
                                         },
                                         "@${state1.userModel.username}",
                                         style: TextStyle(
@@ -387,13 +417,13 @@ class _ProfileScreenState extends State<ProfileScreen>
                                             fontWeight: FontWeight.w500),
                                       ),
                                     ),
-                                    state1.userModel.image.length > 20
+                                    state1.userModel.image.isNotEmpty
                                         ? CupertinoActionSheetAction(
                                             onPressed: () async {
                                               Navigator.pop(context);
                                               context
                                                   .read<UserBloc>()
-                                                  .add(AuthDeleteImage());
+                                                  .add(UserDeleteImage());
                                             },
                                             child: const Text(
                                               "Delete",
@@ -443,11 +473,15 @@ class _ProfileScreenState extends State<ProfileScreen>
                           color: CupertinoColors.systemOrange,
                         ),
                         ListTileItem(
-                          voidCallback: () {
-                            Navigator.push(contextState,
-                                MaterialPageRoute(builder: (context) {
-                              return ScanScreen(barcode: (v) {});
-                            }));
+                          voidCallback: () async {
+                            await Navigator.push(
+                              widget.context,
+                              MaterialPageRoute(
+                                builder: (context) {
+                                  return ScanScreen(barcode: (v) {});
+                                },
+                              ),
+                            );
                           },
                           title: "scan".tr(),
                           icon: const Icon(
@@ -459,10 +493,13 @@ class _ProfileScreenState extends State<ProfileScreen>
                         ListTileItem(
                           voidCallback: () {
                             Navigator.push(
-                                contextState,
-                                MaterialPageRoute(
-                                    builder: (context) =>
-                                        const MyAnnouncements()));
+                              contextState,
+                              MaterialPageRoute(
+                                builder: (context) => CategoriesScreen(
+                                  context: widget.context,
+                                ),
+                              ),
+                            );
                           },
                           title: "my_announcements".tr(),
                           icon: const Icon(
@@ -565,13 +602,88 @@ class _ProfileScreenState extends State<ProfileScreen>
                       ),
                       Center(
                         child: Container(
+                          margin: EdgeInsets.symmetric(horizontal: 24.w),
+                          width: double.infinity,
                           decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(8.r),
+                            borderRadius: BorderRadius.circular(16.r),
                             color: Colors.white,
                           ),
-                          child: QrImageView(
-                            data: state1.userModel.phone,
-                            size: 200,
+                          child: Column(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              20.getH(),
+                              state1.userModel.image.isNotEmpty
+                                  ? ClipRRect(
+                                      borderRadius:
+                                          BorderRadius.circular(10000.r),
+                                      child: CachedNetworkImage(
+                                        imageUrl: state1.userModel.image,
+                                        width: 80.sp,
+                                        fit: BoxFit.cover,
+                                        height: 80.sp,
+                                      ),
+                                    )
+                                  : Container(
+                                      width: 80.sp,
+                                      height: 80.sp,
+                                      decoration: BoxDecoration(
+                                        shape: BoxShape.circle,
+                                        gradient: LinearGradient(
+                                          begin: Alignment.topCenter,
+                                          end: Alignment.bottomCenter,
+                                          colors: [
+                                            Color(
+                                              int.tryParse(
+                                                          state1.userModel
+                                                              .color) !=
+                                                      null
+                                                  ? int.parse(
+                                                      state1.userModel.color)
+                                                  : CupertinoColors
+                                                      .activeBlue.value,
+                                            ).withOpacity(.6),
+                                            Color(
+                                              int.tryParse(
+                                                          state1.userModel
+                                                              .color) !=
+                                                      null
+                                                  ? int.parse(
+                                                      state1.userModel.color)
+                                                  : CupertinoColors
+                                                      .activeBlue.value,
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                      child: state1.userModel.name.isNotEmpty
+                                          ? Center(
+                                              child: Text(
+                                                state1.userModel.name[0]
+                                                    .toUpperCase(),
+                                                style: TextStyle(
+                                                    fontWeight: FontWeight.w700,
+                                                    fontSize: 36.sp,
+                                                    color: Colors.white),
+                                              ),
+                                            )
+                                          : const SizedBox(),
+                                    ),
+                              5.getH(),
+                              Text(
+                                state1.userModel.phone,
+                                style: TextStyle(
+                                    color: Colors.black,
+                                    fontWeight: FontWeight.w600,
+                                    fontSize: 16.sp),
+                              ),
+                              10.getH(),
+                              QrImageView(
+                                data: base64Encode(
+                                    utf8.encode(state1.userModel.phone)),
+                                size: 200,
+                              ),
+                              20.getH(),
+                            ],
                           ),
                         ),
                       ),
@@ -602,35 +714,5 @@ class _ProfileScreenState extends State<ProfileScreen>
   void dispose() {
     _controller.dispose();
     super.dispose();
-  }
-
-  void _updateProgress(double progress) {
-    _controller.animateTo(progress);
-  }
-
-  void resetAnimation() async {
-    _controller.reset();
-  }
-
-  onDone() async {
-    if (userName.text.isNotEmpty) {
-      Response response = await dio.patch(
-        "https://ishgram-production.up.railway.app/api/v1/change-username",
-        queryParameters: {
-          "username": userName.text,
-          "user_id": context.read<UserBloc>().state.userModel.docId
-        },
-      );
-      if (response.statusCode == 200) {
-        return;
-      }
-    } else {
-      Response response = await dio.patch(
-        "https://ishgram-production.up.railway.app/api/v1/user-remove-username/${context.read<UserBloc>().state.userModel.docId}",
-      );
-      if (response.statusCode == 200) {
-        return;
-      }
-    }
   }
 }

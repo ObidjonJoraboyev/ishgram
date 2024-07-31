@@ -36,7 +36,7 @@ class MapBloc extends Bloc<MapEvent, MapState> {
       ChangeCurrentCameraPositionEvent event, Emitter<MapState> emit) async {
     final GoogleMapController mapController = await state.controller.future;
     await mapController
-        .animateCamera(CameraUpdate.newCameraPosition(event.cameraPosition));
+        .moveCamera(CameraUpdate.newCameraPosition(event.cameraPosition));
     emit(state.copyWith(currentCameraPosition: event.cameraPosition));
   }
 

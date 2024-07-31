@@ -32,6 +32,12 @@ class _GoogleMapsScreenState extends State<GoogleMapsScreen> {
   GoogleMapController? mapController;
 
   bool open = true;
+  @override
+  void initState() {
+    context.read<MapBloc>().add(GetUserLocation());
+
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {

@@ -14,9 +14,9 @@ import 'package:ish_top/blocs/image/image_bloc.dart';
 import 'package:ish_top/blocs/image/image_event.dart';
 import 'package:ish_top/blocs/image/image_state.dart';
 import 'package:ish_top/blocs/map/map_bloc.dart';
-import 'package:ish_top/blocs/user_bloc.dart';
-import 'package:ish_top/blocs/user_event.dart';
-import 'package:ish_top/blocs/user_state.dart';
+import 'package:ish_top/blocs/user/user_bloc.dart';
+import 'package:ish_top/blocs/user/user_event.dart';
+import 'package:ish_top/blocs/user/user_state.dart';
 import 'package:ish_top/data/models/announ_model.dart';
 import 'package:ish_top/data/network/api_provider_location.dart';
 import 'package:ish_top/ui/tab/announ/add_announ/google_maps/google_maps_screen.dart';
@@ -74,6 +74,7 @@ class _AddHireScreenState extends State<AddHireScreen> {
 
   @override
   void initState() {
+    numberCtrl.text = "+998";
     init();
     setState(() {});
     t.init(context);
@@ -104,13 +105,8 @@ class _AddHireScreenState extends State<AddHireScreen> {
       builder: (context, authState) {
         return Scaffold(
           extendBodyBehindAppBar: true,
-          backgroundColor: CupertinoColors.systemGrey5,
+          backgroundColor: CupertinoColors.systemGrey6,
           appBar: AppBar(
-            leading: IconButton(
-                onPressed: () {
-                  setState(() {});
-                },
-                icon: const Icon(Icons.add)),
             scrolledUnderElevation: 0,
             title: Text(
               "add_hire".tr(),
@@ -124,7 +120,8 @@ class _AddHireScreenState extends State<AddHireScreen> {
                 builder: (context, state) {
                   return Visibility(
                     visible: nameCtrl.text.isNotEmpty ||
-                        numberCtrl.text.isNotEmpty ||
+                        numberCtrl.text != "+998" ||
+                        numberCtrl.text.isEmpty ||
                         money.text.isNotEmpty ||
                         ownerCtrl.text.isNotEmpty ||
                         descriptionCtrl.text.isNotEmpty ||
@@ -132,12 +129,13 @@ class _AddHireScreenState extends State<AddHireScreen> {
                     child: ScaleOnPress(
                       onTap: () {
                         nameCtrl.clear();
-                        numberCtrl.clear();
+                        numberCtrl.text = "+998";
                         money.clear();
                         checkBoxName = false;
                         checkBoxNum = false;
                         ownerCtrl.clear();
                         descriptionCtrl.clear();
+                        FocusScope.of(context).unfocus();
                         for (int i = 0; i < state.images.length; i++) {
                           context.read<ImageBloc>().add(ImageRemoveEvent(
                               docId: state.images[i], context));

@@ -36,3 +36,8 @@ class AnnounGetUserIdEvent extends AnnounEvent {
 }
 
 class AnnounInitialEvent extends AnnounEvent {}
+
+class AnnounGetQREvent extends AnnounEvent {
+  final String userIdQr;
+  AnnounGetQREvent({required this.userIdQr});
+}

@@ -1,6 +1,7 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:ish_top/blocs/connectivity/connectivity_bloc.dart';
@@ -36,6 +37,12 @@ class _TabScreenState extends State<TabScreen> {
 
   @override
   Widget build(BuildContext context) {
+    SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(
+        statusBarColor: Colors.black,
+        statusBarIconBrightness: Brightness.light,
+        statusBarBrightness: Brightness.light,
+        systemNavigationBarIconBrightness: Brightness.dark,
+        systemNavigationBarColor: Colors.black));
     List<Widget> screens = [
       const PageControl(),
       AddHireScreen(
@@ -47,9 +54,7 @@ class _TabScreenState extends State<TabScreen> {
         },
       ),
       FeedbackScreen(userModel: UserModel.initial),
-      ProfileScreen(
-        context: context,
-      ),
+      ProfileScreen(context: context),
     ];
     return MaterialApp(
       localizationsDelegates: context.localizationDelegates,
@@ -61,62 +66,53 @@ class _TabScreenState extends State<TabScreen> {
           hasInternet = state.hasInternet;
         },
         builder: (context, state) {
-          return Scaffold(
-            body: AnimatedSwitcher(
-              duration: const Duration(milliseconds: 250),
-              child: screens[activeIndex],
-              transitionBuilder: (ctx, d) {
-                return FadeTransition(
-                  opacity: d,
-                  child: ctx,
-                );
-              },
-            ),
-            bottomNavigationBar: BottomNavigationBar(
-              backgroundColor: CupertinoColors.systemGrey6,
-              selectedItemColor: CupertinoColors.activeBlue,
-              selectedFontSize: 13.sp,
-              unselectedFontSize: 12.sp,
-              currentIndex: activeIndex,
-              type: BottomNavigationBarType.fixed,
-              onTap: (v) {
-                activeIndex = v;
-                setState(() {});
-              },
-              items: [
-                BottomNavigationBarItem(
-                  label: "hires".tr(),
-                  icon: Icon(
-                    CupertinoIcons.house_fill,
-                    size: 20.sp,
+          return CupertinoTabScaffold(
+            tabBuilder: (c, v) {
+              return screens[activeIndex];
+            },
+            resizeToAvoidBottomInset: true,
+            tabBar: CupertinoTabBar(
+                height: 55.h,
+                backgroundColor: CupertinoColors.white.withOpacity(.9),
+                activeColor: CupertinoColors.activeBlue,
+                currentIndex: activeIndex,
+                inactiveColor: CupertinoColors.systemGrey,
+                border: Border.symmetric(
+                  horizontal: BorderSide(
+                      color: CupertinoColors.systemGrey, width: 0.3.h),
+                ),
+                onTap: (v) {
+                  activeIndex = v;
+                  setState(() {});
+                },
+                items: [
+                  BottomNavigationBarItem(
+                    tooltip: "rgf",
+                    label: "hires".tr(),
+                    icon: Icon(
+                      CupertinoIcons.house_fill,
+                      size: 20.sp,
+                    ),
                   ),
-                ),
-                BottomNavigationBarItem(
-                  label: "add_hire".tr(),
-                  icon: Icon(CupertinoIcons.add_circled, size: 20.sp),
-                ),
-                BottomNavigationBarItem(
-                  label: "feedback".tr(),
-                  icon: Icon(
-                    CupertinoIcons.chat_bubble_2_fill,
-                    size: 20.sp,
+                  BottomNavigationBarItem(
+                    label: "add_hire".tr(),
+                    icon: Icon(CupertinoIcons.add_circled, size: 20.sp),
                   ),
-                ),
-                BottomNavigationBarItem(
-                  label: "profile".tr(),
-                  icon: Icon(
-                    CupertinoIcons.profile_circled,
-                    size: 20.sp,
+                  BottomNavigationBarItem(
+                    label: "help".tr(),
+                    icon: Icon(
+                      CupertinoIcons.question_circle,
+                      size: 20.sp,
+                    ),
                   ),
-                ),
-              ],
-            ),
-            floatingActionButton: !state.hasInternet
-                ? const Text(
-                    "Internet mavjud emas",
-                    style: TextStyle(fontSize: 24, color: Colors.red),
-                  )
-                : const SizedBox(),
+                  BottomNavigationBarItem(
+                    label: "profile".tr(),
+                    icon: Icon(
+                      CupertinoIcons.profile_circled,
+                      size: 20.sp,
+                    ),
+                  ),
+                ]),
           );
         },
       ),
