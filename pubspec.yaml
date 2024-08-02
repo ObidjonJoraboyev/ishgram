@@ -42,9 +42,7 @@ dependencies:
   social_media_recorder: ^1.1.13
   google_maps_flutter: ^2.7.0
   alarm: ^3.1.4
-  rive: ^0.13.8
   page_transition: ^2.1.0
-  video_player: ^2.8.7
   pinput: ^5.0.0
   photo_view: ^0.15.0
   timeago: ^3.6.1
@@ -61,7 +59,7 @@ dependencies:
   flutter_chat_bubble: ^2.0.2
   qr_flutter: ^4.1.0
   qr_code_scanner: ^1.0.1
-  webview_flutter: ^4.8.0
+  rive: ^0.13.12
 
 
 
@@ -79,7 +77,10 @@ flutter:
     - assets/images/
     - assets/icons/
     - assets/audios/
-    - assets/rives/
+    - assets/rives/question_last.riv
+    - assets/rives/plus.riv
+    - assets/rives/home.riv
+    - assets/rives/user.riv
     - assets/translations/
   fonts:
     - family: My

@@ -88,7 +88,8 @@ class _GlobalTextFiledState extends State<GlobalTextFiled> {
                   fontSize: 15.sp,
                 ),
                 counterText: widget.maxLength == 50 ? "" : null,
-                contentPadding: EdgeInsets.all(10.sp),
+                contentPadding:
+                    EdgeInsets.symmetric(horizontal: 10.w, vertical: 8.h),
                 fillColor: widget.isLogin == null ? Colors.white : Colors.white,
                 filled: true,
                 focusedBorder: OutlineInputBorder(
@@ -113,7 +114,8 @@ class _GlobalTextFiledState extends State<GlobalTextFiled> {
                   shadows: [
                     Shadow(color: Colors.white.withOpacity(.4), blurRadius: 10)
                   ],
-                  fontSize: 13.sp),
+                  fontSize: 13.sp,
+                  fontWeight: FontWeight.w500),
               maxLength: widget.maxLength,
               maxLines: widget.maxLines,
             );

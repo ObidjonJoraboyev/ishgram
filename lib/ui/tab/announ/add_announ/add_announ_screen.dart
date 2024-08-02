@@ -178,7 +178,7 @@ class _AddHireScreenState extends State<AddHireScreen> {
                 ),
               ),
             ),
-            backgroundColor: Colors.white.withOpacity(.8),
+            backgroundColor: Colors.white.withOpacity(.9),
           ),
           body: BlocConsumer<ImageBloc, ImageUploadState>(
             listener: (context, state) {},
@@ -440,11 +440,11 @@ class _AddHireScreenState extends State<AddHireScreen> {
                           height: 0.6,
                           color: Colors.grey,
                         ),
-                        SizedBox(
+                        Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 14),
                           child: CupertinoPageScaffold(
-                            backgroundColor: Colors.transparent,
                             navigationBar: CupertinoNavigationBar(
-                              backgroundColor: CupertinoColors.systemGrey5,
+                              backgroundColor: CupertinoColors.systemGrey6,
                               middle: CupertinoSlidingSegmentedControl<Sky>(
                                 backgroundColor: CupertinoColors.systemGrey2,
                                 thumbColor: skyColors[_selectedSegment]!,
@@ -585,7 +585,7 @@ class _AddHireScreenState extends State<AddHireScreen> {
                                       zoomControlsEnabled: false,
                                       myLocationButtonEnabled: false,
                                       onTap: (v) {},
-                                      mapType: MapType.normal,
+                                      mapType: MapType.none,
                                       initialCameraPosition: CameraPosition(
                                         target: LatLng(position?.latitude ?? 0,
                                             position?.longitude ?? 0),
@@ -615,7 +615,7 @@ class _AddHireScreenState extends State<AddHireScreen> {
           floatingActionButtonLocation:
               FloatingActionButtonLocation.centerDocked,
           floatingActionButton: Padding(
-            padding: EdgeInsets.only(bottom: 5.h, left: 14.w, right: 14.w),
+            padding: EdgeInsets.only(bottom: 0.h, left: 14.w, right: 14.w),
             child: GlobalButton(
               title: "add".tr(),
               color: isValid() ? Colors.green : Colors.grey,

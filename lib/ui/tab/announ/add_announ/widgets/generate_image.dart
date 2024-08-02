@@ -162,7 +162,6 @@ class _GenerateImageState extends State<GenerateImage> {
                           spreadRadius: 0, blurRadius: 10, color: Colors.black)
                     ],
                   ),
-                  width: 150.w,
                   child:
                       (widget.state.formStatus == FormStatusImage.uploading) &&
                               (index == 0)

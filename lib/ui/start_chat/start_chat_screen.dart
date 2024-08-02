@@ -206,6 +206,12 @@ class _StartChatScreenState extends State<StartChatScreen> {
                                           children: [
                                             widget.userModel.username.isNotEmpty
                                                 ? CupertinoListTile(
+                                                    padding:
+                                                        EdgeInsets.symmetric(
+                                                            horizontal: 14.w,
+                                                            vertical: 10.h),
+                                                    subtitle:
+                                                        Text("username".tr()),
                                                     onTap: () {},
                                                     title: Text(
                                                       "@${widget.userModel.username}",
@@ -564,15 +570,18 @@ class _StartChatScreenState extends State<StartChatScreen> {
                                   ],
                                 ),
                               ),
-                              Padding(
-                                padding: EdgeInsets.symmetric(horizontal: 14.w),
-                                child: LoginButtonItems(
-                                  onTap: () {},
-                                  isLoading: false,
-                                  active: true,
-                                  title: "start_chat".tr(),
-                                ),
-                              )
+                              state.userModel.phone != widget.userModel.phone
+                                  ? Padding(
+                                      padding: EdgeInsets.symmetric(
+                                          horizontal: 14.w),
+                                      child: LoginButtonItems(
+                                        onTap: () {},
+                                        isLoading: false,
+                                        active: true,
+                                        title: "start_chat".tr(),
+                                      ),
+                                    )
+                                  : const SizedBox()
                             ],
                           ),
                         ),

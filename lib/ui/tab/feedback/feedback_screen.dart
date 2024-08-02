@@ -3,6 +3,7 @@ import 'dart:math';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/material.dart' as mat;
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_chat_bubble/chat_bubble.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -57,7 +58,7 @@ class _FeedbackScreenState extends State<FeedbackScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       extendBodyBehindAppBar: 1 == 1,
-      backgroundColor: CupertinoColors.systemGrey6,
+      backgroundColor: CupertinoColors.destructiveRed,
       appBar: PreferredSize(
         preferredSize: const Size(double.infinity, 65),
         child: Container(
@@ -80,7 +81,7 @@ class _FeedbackScreenState extends State<FeedbackScreen> {
                     height: 50.spMin,
                     decoration: BoxDecoration(
                       shape: BoxShape.circle,
-                      gradient: LinearGradient(
+                      gradient: mat.LinearGradient(
                         begin: Alignment.topCenter,
                         end: Alignment.bottomCenter,
                         colors: [
@@ -131,6 +132,18 @@ class _FeedbackScreenState extends State<FeedbackScreen> {
             height: MediaQuery.sizeOf(context).height,
             child: Column(
               children: [
+                100.getH(),
+                100.getH(),
+                Container(
+                  decoration: const BoxDecoration(
+                    color: CupertinoColors.white,
+                  ),
+                  child: const Icon(
+                    CupertinoIcons.house_fill,
+                    size: 300,
+                    color: CupertinoColors.activeBlue,
+                  ),
+                ),
                 Expanded(
                   child: ListView(
                     controller: scrollController,

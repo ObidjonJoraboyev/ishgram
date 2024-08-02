@@ -134,12 +134,18 @@ class AnnounBloc extends Bloc<AnnounEvent, AnnounState> {
     debugPrint("deleting announ");
 
     emit(state.copyWith(status: FormStatus.loading));
-
     try {
       Response response = await dio.delete(
           "https://ishgram-production.up.railway.app/api/v1/announcement/${event.docId}");
       if (response.statusCode == 200) {
-        emit(state.copyWith(status: FormStatus.success));
+        emit(
+          state.copyWith(
+            status: FormStatus.success,
+            myHires: (response.data["announcements"] as List? ?? [])
+                .map((toElement) => AnnounModel.fromJson(toElement))
+                .toList(),
+          ),
+        );
       } else {
         emit(state.copyWith(status: FormStatus.error));
       }

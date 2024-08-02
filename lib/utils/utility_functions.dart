@@ -653,14 +653,15 @@ showDialogCustom(
                   Navigator.pop(context);
                 }),
             CupertinoButton(
-                onPressed: onAction,
-                child: Text(
-                  actionSecond.tr(),
-                  style: TextStyle(
-                      fontWeight: FontWeight.w500,
-                      fontSize: 14.sp,
-                      color: isRed ? Colors.red : CupertinoColors.activeBlue),
-                )),
+              onPressed: onAction,
+              child: Text(
+                actionSecond.tr(),
+                style: TextStyle(
+                    fontWeight: FontWeight.w500,
+                    fontSize: 14.sp,
+                    color: isRed ? Colors.red : CupertinoColors.activeBlue),
+              ),
+            ),
           ],
         );
       });

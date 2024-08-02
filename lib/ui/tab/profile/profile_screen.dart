@@ -15,10 +15,10 @@ import 'package:ish_top/blocs/auth/auth_event.dart';
 import 'package:ish_top/blocs/user/user_bloc.dart';
 import 'package:ish_top/blocs/user/user_event.dart';
 import 'package:ish_top/blocs/user/user_state.dart';
+import 'package:ish_top/ui/start_chat/start_chat_screen.dart';
 import 'package:ish_top/ui/tab/profile/edit/edit_profile_screen.dart';
 import 'package:ish_top/ui/tab/profile/edit_username_screen.dart';
 import 'package:ish_top/ui/tab/profile/scan/categories.dart';
-import 'package:ish_top/ui/tab/profile/my_profile/my_profile_screen.dart';
 import 'package:ish_top/ui/tab/profile/scan/scanner_screen.dart';
 import 'package:ish_top/ui/tab/profile/widgets/list_tile_item.dart';
 import 'package:ish_top/utils/size/size_utils.dart';
@@ -254,7 +254,9 @@ class _ProfileScreenState extends State<ProfileScreen>
                       pinned: true,
                       snap: true,
                       stretch: true,
-                      expandedHeight: 140.h,
+                      expandedHeight: MediaQuery.sizeOf(context).height > 700
+                          ? 140.h
+                          : 170.h,
                       scrolledUnderElevation: 0,
                       floating: true,
                       leading: IconButton(
@@ -451,10 +453,13 @@ class _ProfileScreenState extends State<ProfileScreen>
                         ListTileItem(
                             voidCallback: () {
                               Navigator.push(
-                                  contextState,
-                                  MaterialPageRoute(
-                                      builder: (context) =>
-                                          const MyProfileScreen()));
+                                contextState,
+                                MaterialPageRoute(
+                                  builder: (context) => StartChatScreen(
+                                    userModel: state1.userModel,
+                                  ),
+                                ),
+                              );
                             },
                             title: "my_profile".tr(),
                             icon: const Icon(

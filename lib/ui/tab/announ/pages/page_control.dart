@@ -130,7 +130,7 @@ class _PageControlState extends State<PageControl>
             ),
             backgroundColor: Colors.white.withOpacity(.9),
           ),
-          backgroundColor: CupertinoColors.systemGrey5,
+          backgroundColor: CupertinoColors.white,
           body: HireScreen(
               context: context, focus: focus, controller: controller),
         );

@@ -13,6 +13,7 @@ import 'package:ish_top/ui/tab/announ/add_announ/add_announ_screen.dart';
 import 'package:ish_top/ui/tab/announ/pages/page_control.dart';
 import 'package:ish_top/ui/tab/feedback/feedback_screen.dart';
 import 'package:ish_top/ui/tab/profile/profile_screen.dart';
+import 'package:rive/rive.dart';
 
 class TabScreen extends StatefulWidget {
   const TabScreen({super.key, this.index = 0});
@@ -35,6 +36,28 @@ class _TabScreenState extends State<TabScreen> {
     super.initState();
   }
 
+  late SMITrigger tapThisPlus;
+  late SMITrigger tapOtherPlus;
+
+  late SMITrigger tapThisHome;
+  late SMITrigger tapOtherHome;
+
+  late SMITrigger tapThisUser;
+  late SMITrigger tapOtherUser;
+
+  late SMITrigger tapThisQuestion;
+  late SMITrigger tapOtherQuestion;
+
+  StateMachineController getRiveController(Artboard artBoard) {
+    StateMachineController? stateMachineController =
+        StateMachineController.fromArtboard(artBoard, "State Machine 1");
+
+    artBoard.addController(stateMachineController!);
+    return stateMachineController;
+  }
+
+  bool isFirst = false;
+
   @override
   Widget build(BuildContext context) {
     SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(
@@ -43,19 +66,21 @@ class _TabScreenState extends State<TabScreen> {
         statusBarBrightness: Brightness.light,
         systemNavigationBarIconBrightness: Brightness.dark,
         systemNavigationBarColor: Colors.black));
+
     List<Widget> screens = [
-      const PageControl(),
+      const PageControl(key: ValueKey(0)),
       AddHireScreen(
+        key: const ValueKey(1),
         context: context,
         voidCallback: (v) {
-          activeIndex = 0;
           context.read<ImageBloc>().add(ImageCleanEvent());
           setState(() {});
         },
       ),
-      FeedbackScreen(userModel: UserModel.initial),
-      ProfileScreen(context: context),
+      FeedbackScreen(key: const ValueKey(2), userModel: UserModel.initial),
+      ProfileScreen(key: const ValueKey(3), context: context),
     ];
+
     return MaterialApp(
       localizationsDelegates: context.localizationDelegates,
       supportedLocales: context.supportedLocales,
@@ -66,53 +91,166 @@ class _TabScreenState extends State<TabScreen> {
           hasInternet = state.hasInternet;
         },
         builder: (context, state) {
-          return CupertinoTabScaffold(
-            tabBuilder: (c, v) {
-              return screens[activeIndex];
-            },
+          return Scaffold(
+            body: AnimatedSwitcher(
+              duration: const Duration(milliseconds: 250),
+              transitionBuilder: (Widget child, Animation<double> animation) {
+                return FadeTransition(opacity: animation, child: child);
+              },
+              child: screens[activeIndex],
+            ),
             resizeToAvoidBottomInset: true,
-            tabBar: CupertinoTabBar(
-                height: 55.h,
-                backgroundColor: CupertinoColors.white.withOpacity(.9),
-                activeColor: CupertinoColors.activeBlue,
+            bottomNavigationBar: Theme(
+              data: Theme.of(context).copyWith(
+                highlightColor: Colors.transparent,
+                splashColor: Colors.transparent,
+              ),
+              child: BottomNavigationBar(
+                type: BottomNavigationBarType.fixed,
+                unselectedItemColor: CupertinoColors.systemGrey,
+                selectedFontSize: 10.sp,
+                unselectedFontSize: 10.sp,
+                selectedItemColor: CupertinoColors.activeBlue,
+                backgroundColor: CupertinoColors.white,
                 currentIndex: activeIndex,
-                inactiveColor: CupertinoColors.systemGrey,
-                border: Border.symmetric(
-                  horizontal: BorderSide(
-                      color: CupertinoColors.systemGrey, width: 0.3.h),
-                ),
-                onTap: (v) {
-                  activeIndex = v;
-                  setState(() {});
+                useLegacyColorScheme: true,
+                onTap: (v) async {
+                  if (v != 3) {
+                    tapOtherUser.fire();
+                  } else if (v == 3) {
+                    tapThisUser.fire();
+                  }
+                  if (v != 2) {
+                    tapOtherQuestion.fire();
+                  } else if (v == 2) {
+                    tapThisQuestion.fire();
+                  }
+
+                  if (v != 0) {
+                    tapOtherHome.fire();
+                  } else if (v == 0) {
+                    tapThisHome.fire();
+                  }
+                  if (v != 1) {
+                    tapOtherPlus.fire();
+                  } else if (v == 1) {
+                    tapThisPlus.fire();
+                  }
+                  setState(() {
+                    activeIndex = v;
+                  });
                 },
                 items: [
                   BottomNavigationBarItem(
-                    tooltip: "rgf",
                     label: "hires".tr(),
-                    icon: Icon(
-                      CupertinoIcons.house_fill,
-                      size: 20.sp,
+                    icon: Transform.scale(
+                      scale: 1.05,
+                      child: SizedBox(
+                        width: 20.sp,
+                        height: 20.sp,
+                        child: ClipRRect(
+                          borderRadius: BorderRadius.circular(100),
+                          child: Transform.scale(
+                            scale: 1.2,
+                            child: RiveAnimation.asset(
+                              "assets/rives/home.riv",
+                              useArtboardSize: false,
+                              onInit: (artboard) {
+                                StateMachineController controller =
+                                    getRiveController(artboard);
+                                tapThisHome = controller.findSMI("tap_this")
+                                    as SMITrigger;
+                                tapOtherHome = controller.findSMI("tap_other")
+                                    as SMITrigger;
+                              },
+                            ),
+                          ),
+                        ),
+                      ),
                     ),
                   ),
                   BottomNavigationBarItem(
                     label: "add_hire".tr(),
-                    icon: Icon(CupertinoIcons.add_circled, size: 20.sp),
+                    icon: SizedBox(
+                      width: 20.sp,
+                      height: 20.sp,
+                      child: ClipRRect(
+                        borderRadius: BorderRadius.circular(100),
+                        child: RiveAnimation.asset(
+                          "assets/rives/plus.riv",
+                          useArtboardSize: true,
+                          onInit: (artboard) {
+                            StateMachineController controller =
+                                getRiveController(artboard);
+                            tapThisPlus =
+                                controller.findSMI("tap_this") as SMITrigger;
+                            tapOtherPlus =
+                                controller.findSMI("tap_other") as SMITrigger;
+                          },
+                        ),
+                      ),
+                    ),
                   ),
                   BottomNavigationBarItem(
                     label: "help".tr(),
-                    icon: Icon(
-                      CupertinoIcons.question_circle,
-                      size: 20.sp,
+                    icon: SizedBox(
+                      width: 20.sp,
+                      height: 20.sp,
+                      child: ClipRRect(
+                        borderRadius: BorderRadius.circular(100),
+                        child: RiveAnimation.asset(
+                          "assets/rives/question_last.riv",
+                          useArtboardSize: true,
+                          onInit: (artboard) {
+                            StateMachineController controller =
+                                getRiveController(artboard);
+                            tapThisQuestion =
+                                controller.findSMI("tap_this") as SMITrigger;
+                            tapOtherQuestion =
+                                controller.findSMI("tap_other") as SMITrigger;
+                          },
+                        ),
+                      ),
                     ),
                   ),
                   BottomNavigationBarItem(
                     label: "profile".tr(),
-                    icon: Icon(
-                      CupertinoIcons.profile_circled,
-                      size: 20.sp,
+                    icon: ClipRRect(
+                      borderRadius: BorderRadius.circular(100),
+                      child: Container(
+                        height: 20.sp,
+                        width: 20.sp,
+                        alignment: Alignment.center,
+                        decoration: BoxDecoration(
+                          color: activeIndex == 3
+                              ? CupertinoColors.activeBlue
+                              : CupertinoColors.systemGrey,
+                        ),
+                        child: Center(
+                          child: SizedBox(
+                            width: 16.sp,
+                            height: 16.sp,
+                            child: RiveAnimation.asset(
+                              "assets/rives/user.riv",
+                              useArtboardSize: true,
+                              onInit: (artboard) {
+                                StateMachineController controller =
+                                    getRiveController(artboard);
+                                tapThisUser = controller.findSMI("tap_this")
+                                    as SMITrigger;
+                                tapOtherUser = controller.findSMI("tap_other")
+                                    as SMITrigger;
+                                setState(() {});
+                              },
+                            ),
+                          ),
+                        ),
+                      ),
                     ),
                   ),
-                ]),
+                ],
+              ),
+            ),
           );
         },
       ),

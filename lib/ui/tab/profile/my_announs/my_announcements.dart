@@ -29,60 +29,76 @@ class _MyAnnouncementsState extends State<MyAnnouncements> {
         return BlocConsumer<AuthBloc, AuthState>(
           listener: (context, authState) {},
           builder: (context, authState) {
-            return Scaffold(
-              backgroundColor: CupertinoColors.systemGrey5,
-              appBar: AppBar(
-                elevation: 0,
-                bottom: PreferredSize(
-                  preferredSize: Size(
-                    MediaQuery.sizeOf(context).width,
-                    0.6.h,
+            return MaterialApp(
+              localizationsDelegates: context.localizationDelegates,
+              supportedLocales: context.supportedLocales,
+              locale: context.locale,
+              debugShowCheckedModeBanner: false,
+              home: Scaffold(
+                backgroundColor: CupertinoColors.systemGrey6,
+                extendBodyBehindAppBar: true,
+                appBar: AppBar(
+                  leading: CupertinoButton(
+                    child: const Icon(
+                      Icons.arrow_back_ios_new,
+                      color: Colors.black,
+                    ),
+                    onPressed: () {
+                      Navigator.pop(context);
+                    },
                   ),
-                  child: Container(
-                    height: 0.6.h,
-                    width: double.infinity,
-                    color: CupertinoColors.systemGrey,
-                  ),
-                ),
-                scrolledUnderElevation: 0,
-                flexibleSpace: ClipRect(
-                  child: BackdropFilter(
-                    filter: ImageFilter.blur(sigmaX: 10.0, sigmaY: 10.0),
+                  elevation: 0,
+                  bottom: PreferredSize(
+                    preferredSize: Size(
+                      MediaQuery.sizeOf(context).width,
+                      0.6.h,
+                    ),
                     child: Container(
-                      color: Colors.transparent,
+                      height: 0.6.h,
+                      width: double.infinity,
+                      color: CupertinoColors.systemGrey,
                     ),
                   ),
-                ),
-                backgroundColor: Colors.white.withOpacity(.9),
-                title: Text("my_announcements".tr()),
-              ),
-              body: Column(
-                children: [
-                  Expanded(
-                    child: Padding(
-                      padding: EdgeInsets.symmetric(horizontal: 16.w),
-                      child: ListView(
-                        children: [
-                          ...List.generate(
-                              announState.myHires
-                                  .where((test) =>
-                                      test.status == widget.statusAnnoun)
-                                  .toList()
-                                  .length, (index) {
-                            return MyAnnounItem(
-                                hires: announState.myHires
-                                    .where(
-                                        (v) => v.status == widget.statusAnnoun)
-                                    .toList()[index],
-                                voidCallback: () {},
-                                scrollController: ScrollController(),
-                                context1: context);
-                          })
-                        ],
+                  scrolledUnderElevation: 0,
+                  flexibleSpace: ClipRect(
+                    child: BackdropFilter(
+                      filter: ImageFilter.blur(sigmaX: 10.0, sigmaY: 10.0),
+                      child: Container(
+                        color: Colors.transparent,
                       ),
                     ),
                   ),
-                ],
+                  backgroundColor: Colors.white.withOpacity(.9),
+                  title: Text("my_announcements".tr()),
+                ),
+                body: Column(
+                  children: [
+                    Expanded(
+                      child: Padding(
+                        padding: EdgeInsets.symmetric(horizontal: 16.w),
+                        child: ListView(
+                          children: [
+                            ...List.generate(
+                                announState.myHires
+                                    .where((test) =>
+                                        test.status == widget.statusAnnoun)
+                                    .toList()
+                                    .length, (index) {
+                              return MyAnnounItem(
+                                  hires: announState.myHires
+                                      .where((v) =>
+                                          v.status == widget.statusAnnoun)
+                                      .toList()[index],
+                                  voidCallback: () {},
+                                  scrollController: ScrollController(),
+                                  context1: context);
+                            })
+                          ],
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
               ),
             );
           },

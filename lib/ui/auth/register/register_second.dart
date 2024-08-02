@@ -133,7 +133,6 @@ class _RegisterSecondState extends State<RegisterSecond> {
                           key: formKey,
                           child: Column(
                             children: [
-                              0.getH(),
                               Text(
                                 "🔏",
                                 style: TextStyle(
@@ -294,7 +293,7 @@ class _RegisterSecondState extends State<RegisterSecond> {
                                   ],
                                 ),
                               ),
-                              10.getH(),
+                              30.getH(),
                             ],
                           ),
                         ),

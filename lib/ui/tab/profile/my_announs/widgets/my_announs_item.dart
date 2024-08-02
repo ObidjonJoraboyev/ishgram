@@ -4,16 +4,21 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:ish_top/blocs/announ_bloc/announ_bloc.dart';
+import 'package:ish_top/blocs/announ_bloc/announ_event.dart';
 import 'package:ish_top/blocs/announ_bloc/announ_state.dart';
 import 'package:ish_top/blocs/comment/comment_bloc.dart';
 import 'package:ish_top/blocs/comment/comment_event.dart';
+import 'package:ish_top/data/forms/form_status.dart';
 import 'package:ish_top/data/local/local_storage.dart';
 import 'package:ish_top/data/models/announ_model.dart';
 import 'package:ish_top/ui/tab/announ/comment_screen/comment_screen.dart';
 import 'package:ish_top/ui/tab/announ/detail/detail_screen.dart';
 import 'package:ish_top/ui/tab/announ/widgets/zoom_tap.dart';
 import 'package:ish_top/utils/size/size_utils.dart';
+import 'package:ish_top/utils/utility_functions.dart';
+import 'package:pull_down_button/pull_down_button.dart';
 import 'package:shimmer/shimmer.dart';
 import 'package:timeago/timeago.dart' as timeago;
 
@@ -71,7 +76,6 @@ class _MyAnnounItemState extends State<MyAnnounItem> {
               },
               child: Container(
                 margin: EdgeInsets.only(top: 20.h),
-                padding: EdgeInsets.all(7.sp),
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.only(
                       topRight: Radius.circular(16.r),
@@ -89,11 +93,9 @@ class _MyAnnounItemState extends State<MyAnnounItem> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    0.getH(),
                     Padding(
-                      padding: EdgeInsets.only(
-                        left: 8.w,
-                      ),
+                      padding:
+                          EdgeInsets.only(left: 12.w, top: 5.h, right: 5.w),
                       child: Row(
                         children: [
                           Text(
@@ -106,234 +108,206 @@ class _MyAnnounItemState extends State<MyAnnounItem> {
                                 fontSize: 15.sp),
                           ),
                           const Spacer(),
-                          PopupMenuButton(
-                            padding: EdgeInsets.zero,
-                            onSelected: (v) {},
-                            splashRadius: 500,
-                            color: Colors.white,
-                            icon: const Icon(Icons.more_vert,
-                                color: Colors.black),
-                            itemBuilder: (context) {
-                              return [
-                                PopupMenuItem(
-                                  child: Row(
-                                    children: [
-                                      const Icon(
-                                        CupertinoIcons.pen,
-                                        color: Colors.black,
-                                      ),
-                                      10.getW(),
-                                      Text(
-                                        "Update",
-                                        style: TextStyle(
-                                            color: Colors.black,
-                                            fontWeight: FontWeight.w500,
-                                            fontSize: 14.sp),
-                                      ),
-                                    ],
-                                  ),
+                          Padding(
+                            padding: EdgeInsets.symmetric(
+                                horizontal: 2.w, vertical: 8.h),
+                            child: PullDownButton(
+                              buttonAnchor: PullDownMenuAnchor.center,
+                              itemBuilder: (context) => [
+                                PullDownMenuItem(
+                                  onTap: () async {},
+                                  title: "edit".tr(),
+                                  icon: CupertinoIcons.pen,
+                                ),
+                                PullDownMenuItem(
+                                  isDestructive: false,
                                   onTap: () {},
+                                  title: "deactivate_ann".tr(),
+                                  icon: CupertinoIcons.power,
                                 ),
-                                PopupMenuItem(
-                                  child: Row(
-                                    children: [
-                                      const Icon(
-                                        CupertinoIcons.delete,
-                                        color: Colors.red,
-                                      ),
-                                      10.getW(),
-                                      Text(
-                                        "Delete",
-                                        style: TextStyle(
-                                          color: Colors.red,
-                                          fontWeight: FontWeight.w500,
-                                          fontSize: 14.sp,
-                                        ),
-                                      ),
-                                    ],
-                                  ),
+                                PullDownMenuItem(
+                                  isDestructive: true,
                                   onTap: () {
-                                    showDialog(
-                                        context: context,
-                                        builder: (con) {
-                                          return CupertinoAlertDialog(
-                                            title: Text(
-                                              "Delete",
-                                              style: TextStyle(
-                                                  fontSize: 16.sp,
-                                                  fontWeight: FontWeight.w600,
-                                                  color: Colors.black),
-                                            ),
-                                            content: Text(
-                                              "remove_announ".tr(),
-                                              style: TextStyle(
-                                                  fontWeight: FontWeight.w400,
-                                                  fontSize: 12.sp),
-                                            ),
-                                            actions: [
-                                              CupertinoButton(
-                                                  child: Text(
-                                                    "Cancel",
-                                                    style: TextStyle(
-                                                        fontSize: 14.sp,
-                                                        fontWeight:
-                                                            FontWeight.w400,
-                                                        color: CupertinoColors
-                                                            .activeBlue),
-                                                  ),
-                                                  onPressed: () {
-                                                    Navigator.pop(con);
-                                                  }),
-                                              CupertinoButton(
-                                                  child: Text(
-                                                    "Delete",
-                                                    style: TextStyle(
-                                                        fontSize: 14.sp,
-                                                        fontWeight:
-                                                            FontWeight.w500,
-                                                        color: CupertinoColors
-                                                            .destructiveRed),
-                                                  ),
-                                                  onPressed: () {}),
-                                            ],
+                                    showDialogCustom(
+                                      context: context,
+                                      content: "if_you_delete_ann",
+                                      actionFirst: "cancel",
+                                      onAction: () {
+                                        context.read<AnnounBloc>().add(
+                                            AnnounRemoveEvent(
+                                                docId: widget.hires.docId));
+                                        Navigator.of(context,
+                                                rootNavigator: true)
+                                            .pop();
+                                        if (state.status ==
+                                            FormStatus.success) {
+                                          Fluttertoast.showToast(
+                                            msg: "deleted".tr(),
+                                            backgroundColor:
+                                                CupertinoColors.destructiveRed,
                                           );
-                                        });
+                                        }
+                                      },
+                                      isRed: true,
+                                      actionSecond: "delete",
+                                    );
                                   },
+                                  title: "delete".tr(),
+                                  icon: CupertinoIcons.delete,
                                 ),
-                              ];
-                            },
+                              ],
+                              buttonBuilder: (w, d) {
+                                return ScaleOnPress(
+                                  onLongPressed: d,
+                                  onTap: () async {
+                                    d();
+                                  },
+                                  child: Padding(
+                                    padding:
+                                        EdgeInsets.symmetric(horizontal: 3.w),
+                                    child: const Icon(Icons.more_vert),
+                                  ),
+                                );
+                              },
+                            ),
                           ),
                         ],
                       ),
                     ),
-                    Stack(
-                      children: [
-                        SizedBox(
-                          height: 200.h,
-                          child: widget.hires.images.isNotEmpty
-                              ? PageView(
-                                  onPageChanged: (index) {
-                                    setState(() {
-                                      activeIndex = index;
-                                    });
-                                  },
-                                  scrollDirection: Axis.horizontal,
-                                  children: [
-                                    ...List.generate(
-                                      widget.hires.images.length,
-                                      (index) => Padding(
-                                        padding: EdgeInsets.symmetric(
-                                            horizontal: 8.w),
-                                        child: ClipRRect(
-                                          borderRadius:
-                                              BorderRadius.circular(16),
-                                          child: CachedNetworkImage(
-                                            placeholder: (context, st) {
-                                              return Shimmer.fromColors(
-                                                baseColor: Colors.white,
-                                                highlightColor: Colors.grey,
-                                                child: Container(
-                                                  height: 80.h,
-                                                  decoration: BoxDecoration(
-                                                    color: Colors.white,
-                                                    borderRadius:
-                                                        BorderRadius.circular(
-                                                            16),
-                                                  ),
-                                                ),
-                                              );
-                                            },
-                                            errorWidget: (BuildContext context,
-                                                String st, a) {
-                                              return Shimmer.fromColors(
-                                                baseColor: Colors.white,
-                                                highlightColor: Colors.grey,
-                                                child: Container(
-                                                  height: 80.h,
-                                                  decoration: BoxDecoration(
-                                                    color: Colors.white,
-                                                    borderRadius:
-                                                        BorderRadius.circular(
-                                                            16),
-                                                  ),
-                                                ),
-                                              );
-                                            },
-                                            imageUrl:
-                                                widget.hires.images[index],
-                                            fit: BoxFit.cover,
-                                            width: double.infinity,
-                                          ),
-                                        ),
-                                      ),
-                                    ),
-                                  ],
-                                )
-                              : Center(
-                                  child: Container(
-                                  width: double.infinity,
-                                  height: double.infinity,
-                                  margin: EdgeInsets.all(8.sp),
-                                  decoration: BoxDecoration(
-                                      color: CupertinoColors.activeBlue,
-                                      borderRadius:
-                                          BorderRadius.circular(12.r)),
-                                  child: Center(
-                                    child: Text(
-                                      "No Image",
-                                      style: TextStyle(
-                                          color: Colors.white,
-                                          fontSize: 30.sp,
-                                          fontWeight: FontWeight.w700),
-                                    ),
-                                  ),
-                                )),
-                        ),
-                        widget.hires.images.length > 1
-                            ? Positioned(
-                                bottom: 10.h,
-                                right: 18.w,
-                                child: Container(
-                                  padding: EdgeInsets.symmetric(
-                                      horizontal: 2.w, vertical: 2.w),
-                                  decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(100),
-                                    color: CupertinoColors.systemGrey6,
-                                  ),
-                                  child: Row(
+                    const Divider(),
+                    Padding(
+                      padding: EdgeInsets.symmetric(horizontal: 8.w),
+                      child: Stack(
+                        children: [
+                          SizedBox(
+                            height: 200.h,
+                            child: widget.hires.images.isNotEmpty
+                                ? PageView(
+                                    onPageChanged: (index) {
+                                      setState(() {
+                                        activeIndex = index;
+                                      });
+                                    },
+                                    scrollDirection: Axis.horizontal,
                                     children: [
                                       ...List.generate(
                                         widget.hires.images.length,
-                                        (index) {
-                                          return AnimatedContainer(
-                                            curve: Curves.linear,
-                                            duration: const Duration(
-                                                milliseconds: 200),
-                                            margin: EdgeInsets.all(1.sp),
-                                            width: activeIndex != index
-                                                ? 6.sp
-                                                : 7.sp,
-                                            height: activeIndex != index
-                                                ? 6.sp
-                                                : 7.sp,
-                                            decoration: BoxDecoration(
-                                                shape: BoxShape.circle,
-                                                color: activeIndex != index
-                                                    ? Colors.grey
-                                                    : CupertinoColors
-                                                        .activeBlue),
-                                          );
-                                        },
-                                      )
+                                        (index) => Padding(
+                                          padding: EdgeInsets.symmetric(
+                                              horizontal: 8.w),
+                                          child: ClipRRect(
+                                            borderRadius:
+                                                BorderRadius.circular(16.r),
+                                            child: CachedNetworkImage(
+                                              placeholder: (context, st) {
+                                                return Shimmer.fromColors(
+                                                  baseColor: Colors.white,
+                                                  highlightColor: Colors.grey,
+                                                  child: Container(
+                                                    height: 80.h,
+                                                    decoration: BoxDecoration(
+                                                      color: Colors.white,
+                                                      borderRadius:
+                                                          BorderRadius.circular(
+                                                              16.r),
+                                                    ),
+                                                  ),
+                                                );
+                                              },
+                                              errorWidget:
+                                                  (BuildContext context,
+                                                      String st, a) {
+                                                return Shimmer.fromColors(
+                                                  baseColor: Colors.white,
+                                                  highlightColor: Colors.grey,
+                                                  child: Container(
+                                                    height: 80.h,
+                                                    decoration: BoxDecoration(
+                                                      color: Colors.white,
+                                                      borderRadius:
+                                                          BorderRadius.circular(
+                                                              16.r),
+                                                    ),
+                                                  ),
+                                                );
+                                              },
+                                              imageUrl:
+                                                  widget.hires.images[index],
+                                              fit: BoxFit.cover,
+                                              width: double.infinity,
+                                            ),
+                                          ),
+                                        ),
+                                      ),
                                     ],
+                                  )
+                                : Center(
+                                    child: Container(
+                                    width: double.infinity,
+                                    height: double.infinity,
+                                    margin: EdgeInsets.all(8.sp),
+                                    decoration: BoxDecoration(
+                                        color: CupertinoColors.activeBlue,
+                                        borderRadius:
+                                            BorderRadius.circular(12.r)),
+                                    child: Center(
+                                      child: Text(
+                                        "No Image",
+                                        style: TextStyle(
+                                            color: Colors.white,
+                                            fontSize: 30.sp,
+                                            fontWeight: FontWeight.w700),
+                                      ),
+                                    ),
+                                  )),
+                          ),
+                          widget.hires.images.length > 1
+                              ? Positioned(
+                                  bottom: 10.h,
+                                  right: 18.w,
+                                  child: Container(
+                                    padding: EdgeInsets.symmetric(
+                                        horizontal: 2.w, vertical: 2.w),
+                                    decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(100),
+                                      color: CupertinoColors.systemGrey6,
+                                    ),
+                                    child: Row(
+                                      children: [
+                                        ...List.generate(
+                                          widget.hires.images.length,
+                                          (index) {
+                                            return AnimatedContainer(
+                                              curve: Curves.linear,
+                                              duration: const Duration(
+                                                  milliseconds: 200),
+                                              margin: EdgeInsets.all(1.sp),
+                                              width: activeIndex != index
+                                                  ? 6.sp
+                                                  : 7.sp,
+                                              height: activeIndex != index
+                                                  ? 6.sp
+                                                  : 7.sp,
+                                              decoration: BoxDecoration(
+                                                  shape: BoxShape.circle,
+                                                  color: activeIndex != index
+                                                      ? Colors.grey
+                                                      : CupertinoColors
+                                                          .activeBlue),
+                                            );
+                                          },
+                                        )
+                                      ],
+                                    ),
                                   ),
-                                ),
-                              )
-                            : const SizedBox()
-                      ],
+                                )
+                              : const SizedBox()
+                        ],
+                      ),
                     ),
+                    10.getH(),
                     Padding(
-                      padding: EdgeInsets.only(left: 8.w),
+                      padding: EdgeInsets.symmetric(horizontal: 15.w),
                       child: Text(
                         widget.hires.title,
                         style: TextStyle(
@@ -345,48 +319,39 @@ class _MyAnnounItemState extends State<MyAnnounItem> {
                       ),
                     ),
                     10.getH(),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.end,
-                      children: [
-                        Padding(
-                          padding: EdgeInsets.only(left: 8.w, top: 3.h),
-                          child: Text(
-                            widget.hires.money.toString(),
+                    Padding(
+                      padding:
+                          EdgeInsets.symmetric(horizontal: 8.w, vertical: 5.h),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.end,
+                        children: [
+                          const Spacer(),
+                          Text(
+                            widget.hires.viewedUsers.length.toString(),
                             style: TextStyle(
-                              fontSize: 19.sp,
-                              color: CupertinoColors.black,
                               fontWeight: FontWeight.w500,
+                              color: CupertinoColors.black.withOpacity(.6),
                             ),
-                            maxLines: 1,
-                            overflow: TextOverflow.ellipsis,
                           ),
-                        ),
-                        const Spacer(),
-                        Text(
-                          widget.hires.viewedUsers.length.toString(),
-                          style: TextStyle(
-                            fontWeight: FontWeight.w500,
+                          5.getW(),
+                          Icon(
+                            CupertinoIcons.eye_solid,
                             color: CupertinoColors.black.withOpacity(.6),
                           ),
-                        ),
-                        5.getW(),
-                        Icon(
-                          CupertinoIcons.eye_solid,
-                          color: CupertinoColors.black.withOpacity(.6),
-                        ),
-                        12.getW(),
-                        Text(
-                          timeago.format(
-                              DateTime.fromMillisecondsSinceEpoch(
-                                int.parse(widget.hires.createdAt.toString()),
-                              ),
-                              locale: "uz"),
-                          style: TextStyle(
-                              color: CupertinoColors.black.withOpacity(.6),
-                              fontWeight: FontWeight.w500),
-                        ),
-                        8.getW()
-                      ],
+                          12.getW(),
+                          Text(
+                            timeago.format(
+                                DateTime.fromMillisecondsSinceEpoch(
+                                  int.parse(widget.hires.createdAt.toString()),
+                                ),
+                                locale: "uz"),
+                            style: TextStyle(
+                                color: CupertinoColors.black.withOpacity(.6),
+                                fontWeight: FontWeight.w500),
+                          ),
+                          8.getW()
+                        ],
+                      ),
                     ),
                   ],
                 ),

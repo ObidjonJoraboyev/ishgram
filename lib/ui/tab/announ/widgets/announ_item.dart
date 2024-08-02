@@ -15,7 +15,6 @@ import 'package:ish_top/ui/tab/announ/detail/detail_screen.dart';
 import 'package:ish_top/utils/size/size_utils.dart';
 import 'package:shimmer/shimmer.dart';
 import 'package:timeago/timeago.dart' as timeago;
-import 'zoom_tap.dart';
 
 class HiringItem extends StatefulWidget {
   const HiringItem({
@@ -303,7 +302,7 @@ class _HiringItemState extends State<HiringItem> {
             ),
             Container(
               margin: EdgeInsets.symmetric(vertical: 0.h),
-              padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 8.h),
+              padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 2.h),
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.only(
                     bottomLeft: Radius.circular(16.r),
@@ -318,8 +317,9 @@ class _HiringItemState extends State<HiringItem> {
                 ],
                 color: CupertinoColors.white.withOpacity(.9),
               ),
-              child: ScaleOnPress(
-                onTap: () {
+              child: CupertinoButton(
+                padding: EdgeInsets.zero,
+                onPressed: () {
                   context
                       .read<MessageBloc>()
                       .add(MessageGetEvent(uuId: widget.hires.docId));
@@ -332,7 +332,6 @@ class _HiringItemState extends State<HiringItem> {
                     ),
                   );
                 },
-                scaleValue: 0.98,
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
@@ -342,8 +341,8 @@ class _HiringItemState extends State<HiringItem> {
                         "comments".tr(),
                         style: TextStyle(
                             color: CupertinoColors.activeBlue,
-                            fontWeight: FontWeight.w400,
-                            fontSize: 18.sp),
+                            fontWeight: FontWeight.w500,
+                            fontSize: 16.sp),
                       ),
                     ),
                     const Icon(

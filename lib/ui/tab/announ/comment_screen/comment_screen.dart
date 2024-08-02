@@ -63,7 +63,7 @@ class _CommentScreenState extends State<CommentScreen> {
             color: CupertinoColors.systemGrey,
           ),
         ),
-        backgroundColor: CupertinoColors.systemGrey6,
+        backgroundColor: CupertinoColors.white,
       ),
       backgroundColor: CupertinoColors.systemGrey6,
       body: BlocConsumer<MessageBloc, MessageState>(

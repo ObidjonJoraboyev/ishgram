@@ -120,7 +120,11 @@
   "make_call": "Qo'ng'iroq qilish",
   "send_sms": "SMS yuborish",
   "help": "Yordam",
-  "work": "Ish"
-
+  "work": "Ish",
+  "finish": "Tugatish",
+  "if_you_delete_ann": "Agar siz ushbu e'lonni o'chirib tashlasangiz, uni qaytarib bo'lmaydi."
+,
+  "deleted": "O'chirildi",
+  "deactivate_ann": "E'lonni faolsizlashtirish"
 
 }

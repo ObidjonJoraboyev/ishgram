@@ -80,222 +80,227 @@ class _CategoriesScreenState extends State<CategoriesScreen> {
                   ),
                   backgroundColor: Colors.white.withOpacity(.9),
                 ),
-                body: ListView(
-                  children: [
-                    10.getH(),
-                    Padding(
-                      padding: EdgeInsets.symmetric(horizontal: 6.w),
-                      child: Row(
-                        children: [
-                          Expanded(
-                              child: CupertinoButton(
-                            padding: EdgeInsets.zero,
-                            onPressed: () {
-                              Navigator.push(
-                                widget.context,
-                                MaterialPageRoute(
-                                  builder: (context) => const MyAnnouncements(
-                                      statusAnnoun: StatusAnnoun.active),
+                body: RefreshIndicator(
+                  onRefresh: () async {
+                    context.read<AnnounBloc>().add(AnnounGetEvent());
+                  },
+                  child: ListView(
+                    children: [
+                      10.getH(),
+                      Padding(
+                        padding: EdgeInsets.symmetric(horizontal: 6.w),
+                        child: Row(
+                          children: [
+                            Expanded(
+                                child: CupertinoButton(
+                              padding: EdgeInsets.zero,
+                              onPressed: () {
+                                Navigator.push(
+                                  widget.context,
+                                  MaterialPageRoute(
+                                    builder: (context) => const MyAnnouncements(
+                                        statusAnnoun: StatusAnnoun.active),
+                                  ),
+                                );
+                              },
+                              child: Container(
+                                width: double.infinity,
+                                padding: EdgeInsets.only(
+                                    left: 15.w, bottom: 8.h, top: 8.h),
+                                margin: EdgeInsets.symmetric(horizontal: 8.w),
+                                decoration: BoxDecoration(
+                                    color: CupertinoColors.activeBlue,
+                                    borderRadius: BorderRadius.circular(16.r)),
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text(
+                                      state.myHires
+                                          .where((toElement) =>
+                                              toElement.status ==
+                                              StatusAnnoun.active)
+                                          .toList()
+                                          .length
+                                          .toString(),
+                                      style: TextStyle(
+                                          color: Colors.white,
+                                          fontSize: 30.sp,
+                                          fontWeight: FontWeight.w600),
+                                    ),
+                                    10.getH(),
+                                    Text(
+                                      "Active",
+                                      style: TextStyle(
+                                          color: Colors.white,
+                                          fontSize: 20.sp,
+                                          fontWeight: FontWeight.w600),
+                                    )
+                                  ],
                                 ),
-                              );
-                            },
-                            child: Container(
-                              width: double.infinity,
-                              padding: EdgeInsets.only(
-                                  left: 15.w, bottom: 8.h, top: 8.h),
-                              margin: EdgeInsets.symmetric(horizontal: 8.w),
-                              decoration: BoxDecoration(
-                                  color: CupertinoColors.activeBlue,
-                                  borderRadius: BorderRadius.circular(16.r)),
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Text(
-                                    state.myHires
-                                        .where((toElement) =>
-                                            toElement.status ==
-                                            StatusAnnoun.active)
-                                        .toList()
-                                        .length
-                                        .toString(),
-                                    style: TextStyle(
-                                        color: Colors.white,
-                                        fontSize: 30.sp,
-                                        fontWeight: FontWeight.w600),
-                                  ),
-                                  10.getH(),
-                                  Text(
-                                    "Active",
-                                    style: TextStyle(
-                                        color: Colors.white,
-                                        fontSize: 20.sp,
-                                        fontWeight: FontWeight.w600),
-                                  )
-                                ],
                               ),
-                            ),
-                          )),
-                          Expanded(
-                              child: CupertinoButton(
-                            padding: EdgeInsets.zero,
-                            onPressed: () {
-                              Navigator.push(
-                                  widget.context,
-                                  MaterialPageRoute(
-                                      builder: (context) =>
-                                          const MyAnnouncements(
-                                              statusAnnoun:
-                                                  StatusAnnoun.waiting)));
-                            },
-                            child: Container(
-                              width: double.infinity,
-                              padding: EdgeInsets.only(
-                                  left: 15.w, bottom: 8.h, top: 8.h),
-                              margin: EdgeInsets.symmetric(horizontal: 8.w),
-                              decoration: BoxDecoration(
-                                  color: CupertinoColors.systemOrange,
-                                  borderRadius: BorderRadius.circular(16.r)),
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Text(
-                                    state.myHires
-                                        .where((toElement) =>
-                                            toElement.status ==
-                                            StatusAnnoun.waiting)
-                                        .toList()
-                                        .length
-                                        .toString(),
-                                    style: TextStyle(
-                                        color: Colors.white,
-                                        fontSize: 30.sp,
-                                        fontWeight: FontWeight.w600),
-                                  ),
-                                  10.getH(),
-                                  Text(
-                                    "waiting".tr(),
-                                    style: TextStyle(
-                                      color: Colors.white,
-                                      fontSize: 20.sp,
-                                      overflow: TextOverflow.ellipsis,
-                                      fontWeight: FontWeight.w600,
+                            )),
+                            Expanded(
+                                child: CupertinoButton(
+                              padding: EdgeInsets.zero,
+                              onPressed: () {
+                                Navigator.push(
+                                    widget.context,
+                                    MaterialPageRoute(
+                                        builder: (context) =>
+                                            const MyAnnouncements(
+                                                statusAnnoun:
+                                                    StatusAnnoun.waiting)));
+                              },
+                              child: Container(
+                                width: double.infinity,
+                                padding: EdgeInsets.only(
+                                    left: 15.w, bottom: 8.h, top: 8.h),
+                                margin: EdgeInsets.symmetric(horizontal: 8.w),
+                                decoration: BoxDecoration(
+                                    color: CupertinoColors.systemOrange,
+                                    borderRadius: BorderRadius.circular(16.r)),
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text(
+                                      state.myHires
+                                          .where((toElement) =>
+                                              toElement.status ==
+                                              StatusAnnoun.waiting)
+                                          .toList()
+                                          .length
+                                          .toString(),
+                                      style: TextStyle(
+                                          color: Colors.white,
+                                          fontSize: 30.sp,
+                                          fontWeight: FontWeight.w600),
                                     ),
-                                  )
-                                ],
-                              ),
-                            ),
-                          )),
-                        ],
-                      ),
-                    ),
-                    10.getH(),
-                    Padding(
-                      padding: EdgeInsets.symmetric(horizontal: 6.w),
-                      child: Row(
-                        children: [
-                          Expanded(
-                              child: CupertinoButton(
-                            padding: EdgeInsets.zero,
-                            onPressed: () {
-                              Navigator.push(
-                                  widget.context,
-                                  MaterialPageRoute(
-                                      builder: (context) =>
-                                          const MyAnnouncements(
-                                              statusAnnoun:
-                                                  StatusAnnoun.done)));
-                            },
-                            child: Container(
-                              width: double.infinity,
-                              padding: EdgeInsets.only(
-                                  left: 15.w, bottom: 8.h, top: 8.h),
-                              margin: EdgeInsets.symmetric(horizontal: 8.w),
-                              decoration: BoxDecoration(
-                                  color: CupertinoColors.systemGrey,
-                                  borderRadius: BorderRadius.circular(16.r)),
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Text(
-                                    state.myHires
-                                        .where((toElement) =>
-                                            toElement.status ==
-                                            StatusAnnoun.done)
-                                        .toList()
-                                        .length
-                                        .toString(),
-                                    style: TextStyle(
-                                        color: Colors.white,
-                                        fontSize: 30.sp,
-                                        fontWeight: FontWeight.w600),
-                                  ),
-                                  10.getH(),
-                                  Text(
-                                    "Finished",
-                                    style: TextStyle(
-                                        color: Colors.white,
-                                        fontSize: 20.sp,
-                                        fontWeight: FontWeight.w600),
-                                  )
-                                ],
-                              ),
-                            ),
-                          )),
-                          Expanded(
-                              child: CupertinoButton(
-                            padding: EdgeInsets.zero,
-                            onPressed: () {
-                              Navigator.push(
-                                  widget.context,
-                                  MaterialPageRoute(
-                                      builder: (context) =>
-                                          const MyAnnouncements(
-                                              statusAnnoun:
-                                                  StatusAnnoun.returned)));
-                            },
-                            child: Container(
-                              width: double.infinity,
-                              padding: EdgeInsets.only(
-                                  left: 15.w, bottom: 8.h, top: 8.h),
-                              margin: EdgeInsets.symmetric(horizontal: 8.w),
-                              decoration: BoxDecoration(
-                                color: CupertinoColors.destructiveRed,
-                                borderRadius: BorderRadius.circular(16.r),
-                              ),
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Text(
-                                    state.myHires
-                                        .where((toElement) =>
-                                            toElement.status ==
-                                            StatusAnnoun.returned)
-                                        .toList()
-                                        .length
-                                        .toString(),
-                                    style: TextStyle(
-                                      color: Colors.white,
-                                      fontSize: 30.sp,
-                                      fontWeight: FontWeight.w600,
-                                    ),
-                                  ),
-                                  10.getH(),
-                                  Text(
-                                    "Returned",
-                                    style: TextStyle(
+                                    10.getH(),
+                                    Text(
+                                      "waiting".tr(),
+                                      style: TextStyle(
                                         color: Colors.white,
                                         fontSize: 20.sp,
                                         overflow: TextOverflow.ellipsis,
-                                        fontWeight: FontWeight.w600),
-                                  )
-                                ],
+                                        fontWeight: FontWeight.w600,
+                                      ),
+                                    )
+                                  ],
+                                ),
                               ),
-                            ),
-                          )),
-                        ],
+                            )),
+                          ],
+                        ),
                       ),
-                    )
-                  ],
+                      10.getH(),
+                      Padding(
+                        padding: EdgeInsets.symmetric(horizontal: 6.w),
+                        child: Row(
+                          children: [
+                            Expanded(
+                                child: CupertinoButton(
+                              padding: EdgeInsets.zero,
+                              onPressed: () {
+                                Navigator.push(
+                                    widget.context,
+                                    MaterialPageRoute(
+                                        builder: (context) =>
+                                            const MyAnnouncements(
+                                                statusAnnoun:
+                                                    StatusAnnoun.done)));
+                              },
+                              child: Container(
+                                width: double.infinity,
+                                padding: EdgeInsets.only(
+                                    left: 15.w, bottom: 8.h, top: 8.h),
+                                margin: EdgeInsets.symmetric(horizontal: 8.w),
+                                decoration: BoxDecoration(
+                                    color: CupertinoColors.systemGrey,
+                                    borderRadius: BorderRadius.circular(16.r)),
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text(
+                                      state.myHires
+                                          .where((toElement) =>
+                                              toElement.status ==
+                                              StatusAnnoun.done)
+                                          .toList()
+                                          .length
+                                          .toString(),
+                                      style: TextStyle(
+                                          color: Colors.white,
+                                          fontSize: 30.sp,
+                                          fontWeight: FontWeight.w600),
+                                    ),
+                                    10.getH(),
+                                    Text(
+                                      "Finished",
+                                      style: TextStyle(
+                                          color: Colors.white,
+                                          fontSize: 20.sp,
+                                          fontWeight: FontWeight.w600),
+                                    )
+                                  ],
+                                ),
+                              ),
+                            )),
+                            Expanded(
+                                child: CupertinoButton(
+                              padding: EdgeInsets.zero,
+                              onPressed: () {
+                                Navigator.push(
+                                    widget.context,
+                                    MaterialPageRoute(
+                                        builder: (context) =>
+                                            const MyAnnouncements(
+                                                statusAnnoun:
+                                                    StatusAnnoun.returned)));
+                              },
+                              child: Container(
+                                width: double.infinity,
+                                padding: EdgeInsets.only(
+                                    left: 15.w, bottom: 8.h, top: 8.h),
+                                margin: EdgeInsets.symmetric(horizontal: 8.w),
+                                decoration: BoxDecoration(
+                                  color: CupertinoColors.destructiveRed,
+                                  borderRadius: BorderRadius.circular(16.r),
+                                ),
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text(
+                                      state.myHires
+                                          .where((toElement) =>
+                                              toElement.status ==
+                                              StatusAnnoun.returned)
+                                          .toList()
+                                          .length
+                                          .toString(),
+                                      style: TextStyle(
+                                        color: Colors.white,
+                                        fontSize: 30.sp,
+                                        fontWeight: FontWeight.w600,
+                                      ),
+                                    ),
+                                    10.getH(),
+                                    Text(
+                                      "Returned",
+                                      style: TextStyle(
+                                          color: Colors.white,
+                                          fontSize: 20.sp,
+                                          overflow: TextOverflow.ellipsis,
+                                          fontWeight: FontWeight.w600),
+                                    )
+                                  ],
+                                ),
+                              ),
+                            )),
+                          ],
+                        ),
+                      )
+                    ],
+                  ),
                 )),
             if (state.status == FormStatus.loading)
               Stack(
