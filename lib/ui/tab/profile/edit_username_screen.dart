@@ -186,9 +186,9 @@ class _EditUsernameScreenState extends State<EditUsernameScreen> {
                                 horizontal: 24.w, vertical: 5.h),
                             child: Text(
                               errorText,
-                              style: const TextStyle(
+                              style: TextStyle(
                                   color: CupertinoColors.destructiveRed,
-                                  fontSize: 12),
+                                  fontSize: 12.sp),
                             ),
                           )
                         : userName.text.isNotEmpty
@@ -197,9 +197,9 @@ class _EditUsernameScreenState extends State<EditUsernameScreen> {
                                     horizontal: 24.w, vertical: 5.h),
                                 child: Text(
                                   "valid_username".tr(),
-                                  style: const TextStyle(
+                                  style: TextStyle(
                                       color: CupertinoColors.activeGreen,
-                                      fontSize: 12),
+                                      fontSize: 12.sp),
                                 ),
                               )
                             : SizedBox(

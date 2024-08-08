@@ -178,9 +178,7 @@ class _RegisterSecondState extends State<RegisterSecond> {
                               UniversalTextInput(
                                 focusNode: focusLastname,
                                 onTap: (s) {
-                                  setState(() {
-                                    checkInput();
-                                  });
+                                  setState(() {});
                                 },
                                 controller: lastNameController,
                                 hintText: "last_name".tr(),
@@ -302,7 +300,12 @@ class _RegisterSecondState extends State<RegisterSecond> {
                   ),
                 ),
                 Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 16.w),
+                  padding: EdgeInsets.only(
+                      left: 14.w,
+                      right: 14.w,
+                      bottom: FocusScope.of(context).hasFocus
+                          ? 10.h
+                          : MediaQuery.of(context).padding.bottom),
                   child: LoginButtonItems(
                     title: "continue".tr(),
                     onTap: () async {
@@ -320,7 +323,6 @@ class _RegisterSecondState extends State<RegisterSecond> {
                     active: checkInput(),
                   ),
                 ),
-                20.getH()
               ],
             ),
           ),
@@ -343,8 +345,7 @@ class _RegisterSecondState extends State<RegisterSecond> {
   }
 
   bool checkInput() {
-    return lastNameController.text.length >= 3 &&
-        lastNameController.text.length <= 30 &&
+    return lastNameController.text.length <= 30 &&
         firstNameController.text.length <= 30 &&
         firstNameController.text.length >= 3 &&
         passwordController.length >= 6 &&

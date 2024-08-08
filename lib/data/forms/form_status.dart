@@ -7,7 +7,6 @@ enum FormStatus {
   loading,
   unauthenticated,
   authenticated,
-  firstAuth,
   uploadingImage,
   errorImage,
   successImage,

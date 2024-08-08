@@ -20,6 +20,7 @@ import 'package:ish_top/ui/tab/profile/edit/edit_profile_screen.dart';
 import 'package:ish_top/ui/tab/profile/edit_username_screen.dart';
 import 'package:ish_top/ui/tab/profile/scan/categories.dart';
 import 'package:ish_top/ui/tab/profile/scan/scanner_screen.dart';
+import 'package:ish_top/ui/tab/profile/security/privacy_security_screen.dart';
 import 'package:ish_top/ui/tab/profile/widgets/list_tile_item.dart';
 import 'package:ish_top/utils/size/size_utils.dart';
 import 'package:ish_top/utils/utility_functions.dart';
@@ -442,7 +443,7 @@ class _ProfileScreenState extends State<ProfileScreen>
                               },
                             );
                           },
-                          title: "Change Profile Photo",
+                          title: "changeProfilePhoto".tr(),
                           icon: const Icon(
                             CupertinoIcons.camera,
                             color: CupertinoColors.activeBlue,
@@ -468,14 +469,23 @@ class _ProfileScreenState extends State<ProfileScreen>
                             ),
                             color: CupertinoColors.destructiveRed),
                         ListTileItem(
-                          isSwitch: true,
-                          voidCallback: () {},
-                          title: "hidden_acc".tr(),
+                          isSwitch: null,
+                          voidCallback: () {
+                            Navigator.push(
+                              widget.context,
+                              MaterialPageRoute(
+                                builder: (context) {
+                                  return const PrivacySecurityScreen();
+                                },
+                              ),
+                            );
+                          },
+                          title: "security_privacy".tr(),
                           icon: const Icon(
-                            Icons.visibility,
+                            CupertinoIcons.lock_circle,
                             color: Colors.white,
                           ),
-                          color: CupertinoColors.systemOrange,
+                          color: CupertinoColors.systemGrey,
                         ),
                         ListTileItem(
                           voidCallback: () async {
@@ -514,6 +524,12 @@ class _ProfileScreenState extends State<ProfileScreen>
                           color: CupertinoColors.systemOrange,
                         ),
                         ListTileItem(
+                            trailingString: context.locale
+                                    .toString()
+                                    .toLowerCase()
+                                    .contains("uz")
+                                ? "uz".tr()
+                                : "ru".tr(),
                             voidCallback: () {
                               showCupertinoModalPopup(
                                 context: contextState,

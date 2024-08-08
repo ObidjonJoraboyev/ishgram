@@ -31,6 +31,13 @@ class UserGetWithQr extends UserEvent {
 
 class UserRemoveUsername extends UserEvent {}
 
+class UserChangePassword extends UserEvent {
+  final String newPassword;
+  final String oldPassword;
+
+  UserChangePassword({required this.newPassword, required this.oldPassword});
+}
+
 class UserUpdateUsername extends UserEvent {
   final String username;
   UserUpdateUsername({required this.username});

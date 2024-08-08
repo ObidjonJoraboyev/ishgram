@@ -30,6 +30,35 @@ class UserBloc extends Bloc<UserEvent, UserState> {
     on<UserRemoveUsername>(deleteUsername);
     on<UserUpdateUsername>(updateUsername);
     on<UserGetWithQr>(getUserQr);
+    on<UserChangePassword>(userChangePassword);
+  }
+
+  userChangePassword(UserChangePassword event, Emitter<UserState> emit) async {
+    emit(state.copyWith(formStatus: FormStatus.updating));
+
+    try {
+      Response response = await dio.post(
+          "https://ishgram-production.up.railway.app/api/v1/change-password",
+          data: {
+            "id": state.userModel.docId,
+            "new_password": event.newPassword,
+            "old_password": event.oldPassword
+          });
+
+      if (response.statusCode == 200) {
+        emit(state.copyWith(
+            formStatus: FormStatus.success,
+            statusMessage: "Password has been changed successfully."));
+      } else {
+        emit(state.copyWith(
+            errorMessage: "Password change failed. Please try again.",
+            formStatus: FormStatus.error));
+      }
+    } catch (o) {
+      debugPrint(o.toString());
+      emit(state.copyWith(
+          errorMessage: o.toString(), formStatus: FormStatus.error));
+    }
   }
 
   getUserQr(UserGetWithQr event, Emitter<UserState> emit) async {
@@ -120,17 +149,28 @@ class UserBloc extends Bloc<UserEvent, UserState> {
   updateUser(UpdateUser event, Emitter<UserState> emit) async {
     if (event.userModel != state.userModel) {
       emit(state.copyWith(formStatus: FormStatus.updating));
-      Response response = await dio.put(
-          "https://ishgram-production.up.railway.app/api/v1/user",
-          data: event.userModel.toJsonForUpdate());
-      if (response.statusCode == 200) {
+      try {
+        Response response = await dio.put(
+            "https://ishgram-production.up.railway.app/api/v1/user",
+            data: event.userModel.toJsonForUpdate());
+        if (response.statusCode == 200) {
+          emit(
+            state.copyWith(
+              statusMessage: response.data["data"],
+              formStatus: FormStatus.success,
+              userModel: UserModel.fromJson(
+                response.data["Data"],
+              ),
+            ),
+          );
+        } else {
+          emit(state.copyWith(
+              statusMessage: response.data["data"],
+              formStatus: FormStatus.error));
+        }
+      } catch (error) {
         emit(state.copyWith(
-            statusMessage: response.data["data"],
-            formStatus: FormStatus.success,
-            userModel: UserModel.fromJson(response.data["Data"])));
-      } else {
-        emit(state.copyWith(
-            statusMessage: response.data["data"],
+            statusMessage: "error while updating",
             formStatus: FormStatus.error));
       }
     }

@@ -30,8 +30,8 @@
   "error_password": "Parol noto'g'ri kiritilgan",
   "error_phone": "Raqam noto'g'ri kiritilgan",
   "register": "Ro'yxardan o'tish",
-  "uz": "🇺🇿  Uzbek tili",
-  "ru": "🇷🇺  Rus tili",
+  "uz": "Uzbek tili",
+  "ru": "Rus tili",
   "salary": "Ish haqi",
   "add_image": "Rasm qo'shish",
   "reset": "Tozalash",
@@ -126,5 +126,11 @@
 ,
   "deleted": "O'chirildi",
   "deactivate_ann": "E'lonni faolsizlashtirish"
-
+,
+  "security_privacy": "Maxfiylik va Xavfsizlik",
+  "changeProfilePhoto": "Profil rasmini o'zgartirish",
+  "enable_to_visible": "Agar siz barchaga ko'rinishni istasangiz, buni yoqishingiz kerak.",
+  "previous_password": "Oldingi parolingiz",
+  "new_pass": "Yangi parolingiz",
+  "enter": "Kiriting"
 }

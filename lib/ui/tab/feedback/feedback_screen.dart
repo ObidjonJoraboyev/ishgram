@@ -58,7 +58,7 @@ class _FeedbackScreenState extends State<FeedbackScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       extendBodyBehindAppBar: 1 == 1,
-      backgroundColor: CupertinoColors.destructiveRed,
+      backgroundColor: CupertinoColors.systemGrey6,
       appBar: PreferredSize(
         preferredSize: const Size(double.infinity, 65),
         child: Container(
@@ -132,18 +132,6 @@ class _FeedbackScreenState extends State<FeedbackScreen> {
             height: MediaQuery.sizeOf(context).height,
             child: Column(
               children: [
-                100.getH(),
-                100.getH(),
-                Container(
-                  decoration: const BoxDecoration(
-                    color: CupertinoColors.white,
-                  ),
-                  child: const Icon(
-                    CupertinoIcons.house_fill,
-                    size: 300,
-                    color: CupertinoColors.activeBlue,
-                  ),
-                ),
                 Expanded(
                   child: ListView(
                     controller: scrollController,

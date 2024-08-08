@@ -160,91 +160,101 @@ class _GetPasswordScreenState extends State<GetPasswordScreen> {
               ),
             ),
             backgroundColor: CupertinoColors.systemGrey6,
-            floatingActionButtonLocation:
-                FloatingActionButtonLocation.centerDocked,
-            floatingActionButton: Padding(
-              padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 12.h),
-              child: LoginButtonItems(
-                title: "Continue",
-                onTap: () async {},
-                isLoading: state.formStatus == FormStatus.loading,
-                active: checkInput(),
-              ),
-            ),
-            body: ListView(
-              physics: const NeverScrollableScrollPhysics(),
+            body: Column(
               children: [
-                Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 12.w),
-                  child: Form(
-                    key: formKey,
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: [
-                        0.getH(),
-                        Text(
-                          "📨",
-                          style: TextStyle(fontSize: 80.sp, color: Colors.red),
-                        ),
-                        Center(
-                          child: Text(
-                            "SMS",
-                            style: TextStyle(
-                              color: CupertinoColors.black,
-                              fontSize: 22.w,
-                              fontWeight: FontWeight.w600,
-                            ),
-                          ),
-                        ),
-                        10.getH(),
-                        Padding(
-                          padding: EdgeInsets.symmetric(horizontal: 32.w),
+                Expanded(
+                  child: ListView(
+                    physics: const NeverScrollableScrollPhysics(),
+                    children: [
+                      Padding(
+                        padding: EdgeInsets.symmetric(horizontal: 12.w),
+                        child: Form(
+                          key: formKey,
                           child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.center,
                             children: [
+                              0.getH(),
                               Text(
-                                "enter_code".tr(),
+                                "📨",
                                 style: TextStyle(
-                                    fontSize: 16.sp,
-                                    fontWeight: FontWeight.w400),
-                                textAlign: TextAlign.center,
+                                    fontSize: 80.sp, color: Colors.red),
                               ),
-                              Text(
-                                widget.num,
-                                style: TextStyle(
-                                    fontSize: 15.sp,
-                                    fontWeight: FontWeight.w600),
-                                textAlign: TextAlign.center,
+                              Center(
+                                child: Text(
+                                  "SMS",
+                                  style: TextStyle(
+                                    color: CupertinoColors.black,
+                                    fontSize: 22.w,
+                                    fontWeight: FontWeight.w600,
+                                  ),
+                                ),
                               ),
+                              10.getH(),
+                              Padding(
+                                padding: EdgeInsets.symmetric(horizontal: 32.w),
+                                child: Column(
+                                  children: [
+                                    Text(
+                                      "enter_code".tr(),
+                                      style: TextStyle(
+                                          fontSize: 16.sp,
+                                          fontWeight: FontWeight.w400),
+                                      textAlign: TextAlign.center,
+                                    ),
+                                    Text(
+                                      widget.num,
+                                      style: TextStyle(
+                                          fontSize: 15.sp,
+                                          fontWeight: FontWeight.w600),
+                                      textAlign: TextAlign.center,
+                                    ),
+                                  ],
+                                ),
+                              ),
+                              32.getH(),
+                              Padding(
+                                padding: EdgeInsets.symmetric(horizontal: 14.w),
+                                child: PinPutItem(
+                                    controller: passwordCtrl,
+                                    focusNode: focusNode,
+                                    password: password,
+                                    valueChanged: (v) async {
+                                      if (int.tryParse(v) == password) {
+                                        context
+                                            .read<AuthBloc>()
+                                            .add(AuthResetEvent());
+                                        Navigator.pushReplacement(
+                                          context,
+                                          MaterialPageRoute(
+                                            builder: (context) {
+                                              return RegisterSecond(
+                                                userNumber: widget.num,
+                                              );
+                                            },
+                                          ),
+                                        );
+                                      }
+                                    }),
+                              )
                             ],
                           ),
                         ),
-                        32.getH(),
-                        Padding(
-                          padding: EdgeInsets.symmetric(horizontal: 14.w),
-                          child: PinPutItem(
-                              controller: passwordCtrl,
-                              focusNode: focusNode,
-                              password: password,
-                              valueChanged: (v) async {
-                                if (int.parse(v) == password) {
-                                  context
-                                      .read<AuthBloc>()
-                                      .add(AuthResetEvent());
-                                  Navigator.pushReplacement(
-                                    context,
-                                    MaterialPageRoute(
-                                      builder: (context) {
-                                        return RegisterSecond(
-                                          userNumber: widget.num,
-                                        );
-                                      },
-                                    ),
-                                  );
-                                }
-                              }),
-                        )
-                      ],
-                    ),
+                      ),
+                    ],
+                  ),
+                ),
+                Padding(
+                  padding: EdgeInsets.only(
+                      left: 14.w,
+                      right: 14.w,
+                      bottom: focusNode.hasFocus
+                          ? 10.h
+                          : MediaQuery.of(context).padding.bottom),
+                  child: LoginButtonItems(
+                    title: "Continue",
+                    onTap: () async {},
+                    isLoading: state.formStatus == FormStatus.loading,
+                    active: checkInput(),
                   ),
                 ),
               ],
@@ -252,22 +262,7 @@ class _GetPasswordScreenState extends State<GetPasswordScreen> {
           ),
         );
       },
-      listener: (BuildContext contextListener, AuthState state) async {
-        //if (state.statusMessage.contains("register")) {
-        //           Navigator.push(context, MaterialPageRoute(builder: (context) {
-        //             return const RegisterSecond();
-        //           }));
-        //         } else if (state.statusMessage.contains("already")) {
-        //           Navigator.push(
-        //             context,
-        //             MaterialPageRoute(
-        //               builder: (context) {
-        //                 return const AuthScreen();
-        //               },
-        //             ),
-        //           );
-        //         }
-      },
+      listener: (BuildContext contextListener, AuthState state) async {},
     );
   }
 

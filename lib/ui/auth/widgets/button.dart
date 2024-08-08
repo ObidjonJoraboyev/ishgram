@@ -1,7 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:ish_top/ui/tab/announ/widgets/zoom_tap.dart';
 
 class LoginButtonItems extends StatelessWidget {
   const LoginButtonItems({
@@ -19,9 +18,9 @@ class LoginButtonItems extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ScaleOnPress(
-      onTap: active ? onTap : null,
-      scaleValue: 0.99,
+    return CupertinoButton(
+      padding: EdgeInsets.zero,
+      onPressed: active ? onTap : null,
       child: Container(
         padding: EdgeInsets.symmetric(
           vertical: 10.h,

@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -45,6 +46,9 @@ class UniversalTextInput extends StatelessWidget {
         controller: controller,
         keyboardType: type,
         validator: (String? value) {
+          if (hintText == "last_name".tr()) {
+            return null;
+          }
           if (value == null ||
               value.isEmpty ||
               value.length < 3 ||

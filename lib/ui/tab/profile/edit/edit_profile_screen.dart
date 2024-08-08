@@ -324,6 +324,10 @@ class _EditProfileScreenState extends State<EditProfileScreen>
                             child: Column(
                               children: [
                                 CupertinoTextField(
+                                  placeholderStyle: TextStyle(
+                                      color: CupertinoColors.systemGrey3,
+                                      fontSize: 15.sp,
+                                      fontWeight: FontWeight.w400),
                                   maxLength: 30,
                                   placeholder: "name".tr(),
                                   inputFormatters: [
@@ -353,6 +357,10 @@ class _EditProfileScreenState extends State<EditProfileScreen>
                                     height: 0.30.h,
                                     color: Colors.grey),
                                 CupertinoTextField(
+                                  placeholderStyle: TextStyle(
+                                      color: CupertinoColors.systemGrey3,
+                                      fontSize: 15.sp,
+                                      fontWeight: FontWeight.w400),
                                   cursorColor: CupertinoColors.activeBlue,
                                   placeholder: "last_name".tr(),
                                   padding: EdgeInsets.all(10.sp),
@@ -371,6 +379,10 @@ class _EditProfileScreenState extends State<EditProfileScreen>
                           Padding(
                             padding: EdgeInsets.symmetric(horizontal: 14.w),
                             child: CupertinoTextField(
+                              placeholderStyle: TextStyle(
+                                  color: CupertinoColors.systemGrey3,
+                                  fontSize: 15.sp,
+                                  fontWeight: FontWeight.w400),
                               maxLength: 200,
                               maxLines: null,
                               cursorColor: CupertinoColors.activeBlue,
@@ -395,6 +407,10 @@ class _EditProfileScreenState extends State<EditProfileScreen>
                             child: CupertinoTextField(
                               cursorColor: CupertinoColors.activeBlue,
                               placeholder: "username".tr(),
+                              placeholderStyle: TextStyle(
+                                  color: CupertinoColors.systemGrey3,
+                                  fontSize: 15.sp,
+                                  fontWeight: FontWeight.w400),
                               onTap: () {
                                 Navigator.push(
                                     context,
@@ -459,7 +475,7 @@ class _EditProfileScreenState extends State<EditProfileScreen>
                                         style: TextStyle(
                                           color: Colors.black,
                                           fontWeight: FontWeight.w500,
-                                          fontSize: 13.0.sp,
+                                          fontSize: 15.sp,
                                         ),
                                       )
                                     : Icon(
@@ -474,7 +490,7 @@ class _EditProfileScreenState extends State<EditProfileScreen>
                                   style: TextStyle(
                                       fontWeight: FontWeight.w400,
                                       color: Colors.black,
-                                      fontSize: 13.sp),
+                                      fontSize: 15.sp),
                                 ),
                                 backgroundColor: Colors.white,
                               ),
@@ -503,7 +519,11 @@ class _EditProfileScreenState extends State<EditProfileScreen>
                                     setState(() {});
                                   },
                                 ),
-                                title: Text("as_worker".tr()),
+                                title: Text(
+                                  "as_worker".tr(),
+                                  style: TextStyle(
+                                      color: Colors.black, fontSize: 15.sp),
+                                ),
                                 backgroundColor: Colors.white,
                               ),
                             ),

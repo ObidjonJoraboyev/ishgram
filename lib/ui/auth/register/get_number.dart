@@ -197,8 +197,12 @@ class _RegisterScreenState extends State<RegisterScreen> {
                       ),
                     ),
                     Padding(
-                      padding: EdgeInsets.symmetric(
-                          horizontal: 16.w, vertical: 12.h),
+                      padding: EdgeInsets.only(
+                          left: 14.w,
+                          right: 14.w,
+                          bottom: FocusScope.of(context).hasFocus
+                              ? 10.h
+                              : MediaQuery.of(context).padding.bottom),
                       child: LoginButtonItems(
                         title: "Continue",
                         onTap: () async {
@@ -208,7 +212,6 @@ class _RegisterScreenState extends State<RegisterScreen> {
                         active: checkInput(),
                       ),
                     ),
-                    20.getH(),
                   ],
                 ),
                 if (state.formStatus == FormStatus.loading)

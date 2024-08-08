@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -54,16 +55,13 @@ class PinPutItem extends StatelessWidget {
       validator: (value) {
         if (value!.length == 6 && int.parse(value) != password) {
           controller.clear();
-          return 'Pin is incorrect';
+          return 'error_password'.tr();
         }
         return null;
       },
       hapticFeedbackType: HapticFeedbackType.lightImpact,
       pinAnimationType: PinAnimationType.scale,
       forceErrorState: false,
-      onCompleted: (pin) {
-        debugPrint('onCompleted: $pin');
-      },
       isCursorAnimationEnabled: true,
       onChanged: valueChanged,
       autofocus: false,

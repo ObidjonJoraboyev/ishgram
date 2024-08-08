@@ -28,15 +28,7 @@ class _SplashScreenState extends State<SplashScreen> {
         MaterialPageRoute(
             builder: (context) => userNumber.isEmpty
                 ? const RegisterScreen()
-                : const CupertinoApp(
-                    theme: CupertinoThemeData(
-                      textTheme: CupertinoTextThemeData(
-                        tabLabelTextStyle: TextStyle(
-                            fontSize: 200.0), // Customize the text size here
-                      ),
-                    ),
-                    home: TabScreen(),
-                  )),
+                : const TabScreen()),
       );
     });
     super.initState();
